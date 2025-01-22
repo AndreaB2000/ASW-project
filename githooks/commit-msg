@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Regex for Conventional Commit messages
+conventional_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?: .{1,120}$"
+
+# Read the commit message
+commit_message=$(cat "$1")
+
+if [[ ! $commit_message =~ $conventional_regex ]]; then
+	echo ""
+	echo -e "\e[31mError\e[0m: Commit message does not follow the Conventional Commit format."
+	echo ""
+    echo "Format:        <type>(<scope>): <description>"
+    echo "Valid types:   build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test"
+	echo "Documentation: https://www.conventionalcommits.org/en/v1.0.0/"
+    exit 1
+fi
+
+# Success
+exit 0
+
