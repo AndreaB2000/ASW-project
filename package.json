@@ -1,6 +1,6 @@
 {
   "devDependencies": {
     "semantic-release": "^24.2.1",
-    "semantic-release-preconfigured.conventional-commits": "latest"
+    "semantic-release-preconfigured-conventional-commits": "latest"
   }
 }
