@@ -105,7 +105,6 @@ jobs:
           args: |
             "${{ env.TITLE }}
 
-            **Branch**: `${{ env.BRANCH_NAME }}`
             **Author**: ${{ github.actor }}
             **Commit**: `${{ env.COMMIT_MESSAGE }}`
             **Details**: [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
