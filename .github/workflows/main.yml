@@ -95,6 +95,8 @@ jobs:
             else
               echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
             fi
+          elif [[ "${{ job.status }}" == "cancelled" ]]; then
+            echo "TITLE=# ⚠️Pipeline Interrupted" >> $GITHUB_ENV
           else
             echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
           fi
