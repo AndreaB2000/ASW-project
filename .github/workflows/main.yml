@@ -90,10 +90,10 @@ jobs:
         id: status
         run: |
           if [[ "${{ needs.release.result }}" == "success" ]]; then # && "${{ needs.test.result }}" == "success" ]]; then
-            if [[ "${{ github.base_ref }}" == "main" ]]; then  
+            if [[ "${{ env.BRANCH_NAME }}" == "main" ]]; then  
               echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
             else
-              echo "TITLE=# ✅Pipeline Passed - ${{ github.base_ref }}" >> $GITHUB_ENV
+              echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
             fi
           else
             echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
