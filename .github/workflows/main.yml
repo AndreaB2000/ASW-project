@@ -81,15 +81,15 @@ jobs:
       - name: Determine Pipeline Status
         id: status
         run: |
-          # if [[ "${{ needs.build.result }}" == "success" && "${{ needs.test.result }}" == "success" ]]; then
+          if [[ "${{ needs.release.result }}" == "success" ]]; then # && "${{ needs.test.result }}" == "success" ]]; then
           #   if [[ "${{ needs.changelog.result }}" == "success" ]]; then
-          echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
+            echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
           #   else
           #     echo "TITLE=# ⚠️Success without changelog update" >> $GITHUB_ENV
           #   fi
-          # else
-          #   echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
-          # fi
+          else
+            echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
+          fi
 
       - name: Send Discord Notification
         uses: Ilshidur/action-discord@master
