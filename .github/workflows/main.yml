@@ -90,11 +90,11 @@ jobs:
         id: status
         run: |
           if [[ "${{ needs.release.result }}" == "success" ]]; then # && "${{ needs.test.result }}" == "success" ]]; then
-          #   if [[ "${{ needs.changelog.result }}" == "success" ]]; then
-            echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
-          #   else
-          #     echo "TITLE=# ⚠️Success without changelog update" >> $GITHUB_ENV
-          #   fi
+            if [[ "${{ github.base_ref }}" == "main" ]]; then  
+              echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
+            else
+              echo "TITLE=# ✅Pipeline Passed - ${{ github.base_ref }}" >> $GITHUB_ENV
+            fi
           else
             echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
           fi
