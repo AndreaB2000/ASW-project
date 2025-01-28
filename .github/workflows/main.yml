@@ -43,16 +43,18 @@ jobs:
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
-      - name: Login to Docker Hub
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: andreabiagini5
-        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
+      # - name: Login to Docker Hub
+      #   if: ${{ github.event_name != 'pull_request' }}
+      #   env:
+      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKER_USERNAME: andreabiagini5
+      #   run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: andreabiagini5
         run: npx semantic-release
 
   send-notification:
