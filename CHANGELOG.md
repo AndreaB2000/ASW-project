@@ -1,3 +1,9 @@
+## [0.1.3](https://github.com/AndreaB2000/ASW-project/compare/0.1.2...0.1.3) (2025-01-29)
+
+### Bug Fixes
+
+* let the package be public ([c50d0d9](https://github.com/AndreaB2000/ASW-project/commit/c50d0d92c9dfd572534cf660132548269a493a24))
+
 ## [0.1.2](https://github.com/AndreaB2000/ASW-project/compare/0.1.1...0.1.2) (2025-01-29)
 
 ### Bug Fixes
