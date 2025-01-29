@@ -1,4 +1,9 @@
 {
+  "name": "applicazioni-e-servizi-web-project",
+  "description": "Project for Applicazioni e Servizi Web.",
+  "main": "src/index.js",
+  "license": "MIT",
+  "private": false,
   "devDependencies": {
     "semantic-release": "^24.2.1",
     "semantic-release-preconfigured-conventional-commits": "latest"
