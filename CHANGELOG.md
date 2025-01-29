@@ -1,3 +1,21 @@
+## [0.1.2](https://github.com/AndreaB2000/ASW-project/compare/0.1.1...0.1.2) (2025-01-29)
+
+### Bug Fixes
+
+* empty commit to test semantic-release ([830c7fd](https://github.com/AndreaB2000/ASW-project/commit/830c7fd761288b6bd4b4d68055f3e71c87ace73b))
+
+### Build and continuous integration
+
+* add some features to push to npm, also add hello world script ([05967f2](https://github.com/AndreaB2000/ASW-project/commit/05967f24dc52ff74d442cc134dd20e6b550758db))
+* change commit message for semantic release ([4064d95](https://github.com/AndreaB2000/ASW-project/commit/4064d95cf28623008d7e4a14f207bd71e4e77185))
+* change release.config.js in order to push to docker ([38cf45a](https://github.com/AndreaB2000/ASW-project/commit/38cf45aebb6a84c2195b2d9908e04e352dd30bad))
+* fix docker login job ([1ebd8a4](https://github.com/AndreaB2000/ASW-project/commit/1ebd8a417bc255376f0d9d8c27738159ae09b1a4))
+* fix package name so that is a scoped package ([5ba4437](https://github.com/AndreaB2000/ASW-project/commit/5ba443762c52dddc301f8c2d07986422152269b0))
+
+### Style improvements
+
+* remove comments in github action yaml file ([bbb7dcc](https://github.com/AndreaB2000/ASW-project/commit/bbb7dcc07c7b44806cf2c4ab1e736cf3717ab55f))
+
 ## [0.1.1](https://github.com/AndreaB2000/ASW-project/compare/0.1.0...0.1.1) (2025-01-28)
 
 ### Documentation
