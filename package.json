@@ -1,7 +1,21 @@
 {
   "name": "@andreabiagini5/applicazioni-e-servizi-web-project",
   "description": "Project for Applicazioni e Servizi Web.",
-  "main": "dist/index.js",
+  "authors": [
+    {
+      "name": "Andrea Biagini",
+      "email": "andreabiagini5@studio.unibo.it"
+    },
+    {
+      "name": "Filippo Gurioli",
+      "email": "filippo.gurioli@studio.unibo.it"
+    },
+    {
+      "name": "Leonardo Randacio",
+      "email": "leonardo.randacio@studio.unibo.it"
+    }
+  ],
+  "main": "dist/server/index.js",
   "license": "MIT",
   "private": false,
   "scripts": {
