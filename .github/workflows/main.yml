@@ -18,12 +18,29 @@ jobs:
   # build:
   #   strategy:
   #     matrix:
-  #       os: [ubuntu, windows, macos ]
-  #       node-version: [ 22, 20 ]
+  #       os: [ubuntu-24.04, windows-2022, macos-13 ]
+  #       node-version: [ 20, 22 ]
+  #   runs-on: ${{ matrix.os }}
+  #   name: Build with Node ${{ matrix.node-version }} on ${{ matrix.os }}
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v4
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - name: Install dependencies
+  #       run: npm clean-install
+  #     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+  #       run: npm audit signatures
+  #     - name: Build
+  #       run: npm run build
+  #     - name: Test
+  #       run: npm test
 
   release:
     runs-on: ubuntu-latest
-    # needs: 
+    # needs:
     #   - build
     #   - test
     name: semantic-release
@@ -50,7 +67,7 @@ jobs:
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: andreabiagini5
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin docker.io      
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin docker.io
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,7 +76,7 @@ jobs:
 
   send-notification:
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - release
     if: always()
     steps:
