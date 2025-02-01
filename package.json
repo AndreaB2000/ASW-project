@@ -24,6 +24,8 @@
     "type-check": "npm run type-check:server && npm run type-check:client",
     "format": "prettier --write src/",
     "lint": "npm run lint:server && npm run lint:client",
+    "test": "npm run test:server && npm run test:client",
+    "install": "cd src/server && npm install && cd ../client && npm install",
     "lint:client": "cd src/client && npm run lint",
     "lint:server": "cd src/server && npm run lint",
     "type-check:server": "cd src/server && npm run type-check",
@@ -33,7 +35,9 @@
     "start:client": "cd src/client && npm run start",
     "start:server": "cd src/server && npm run start",
     "serve:client": "cd src/client && npm run serve",
-    "serve:server": "cd src/server && npm run serve"
+    "serve:server": "cd src/server && npm run serve",
+    "test:client": "cd src/client && npm run test",
+    "test:server": "cd src/server && npm run test"
   },
   "publishConfig": {
     "access": "public"
