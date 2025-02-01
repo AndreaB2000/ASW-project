@@ -21,7 +21,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server/index.js",
-    "dev": "ts-node src/server/index.ts"
+    "serve": "ts-node src/server/index.ts"
   },
   "publishConfig": {
     "access": "public"
