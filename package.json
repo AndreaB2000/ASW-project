@@ -15,19 +15,32 @@
       "email": "leonardo.randacio@studio.unibo.it"
     }
   ],
-  "main": "dist/server/index.js",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/server/index.js",
-    "serve": "ts-node src/server/index.ts"
+    "build": "npm run build:server && npm run build:client",
+    "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
+    "serve": "concurrently --kill-others-on-fail \"npm run serve:server\" \"npm run serve:client\"",
+    "type-check": "npm run type-check:server && npm run type-check:client",
+    "format": "prettier --write src/",
+    "lint": "npm run lint:server && npm run lint:client",
+    "lint:client": "cd src/client && npm run lint",
+    "lint:server": "cd src/server && npm run lint",
+    "type-check:server": "cd src/server && npm run type-check",
+    "type-check:client": "cd src/client && npm run type-check",
+    "build:server": "cd src/server && npm run build",
+    "build:client": "cd src/client && npm run build",
+    "start:client": "cd src/client && npm run start",
+    "start:server": "cd src/server && npm run start",
+    "serve:client": "cd src/client && npm run serve",
+    "serve:server": "cd src/server && npm run serve"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",
+    "concurrently": "^9.1.2",
     "semantic-release": "^24.2.1",
     "semantic-release-preconfigured-conventional-commits": "^1.1.119",
     "ts-node": "^10.9.2",

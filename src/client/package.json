@@ -1,9 +1,9 @@
 {
   "name": "client",
-  "version": "0.0.0",
   "private": false,
   "type": "module",
   "scripts": {
+    "start": "vite preview",
     "serve": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
@@ -12,8 +12,7 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "pinia": "^2.3.1",
