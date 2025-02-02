@@ -6,6 +6,9 @@ WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
+COPY src/client/package*.json src/client/
+COPY src/server/package*.json src/server/
+
 RUN npm install --production
 
 # Copy the rest of the application code
