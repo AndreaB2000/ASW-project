@@ -18,7 +18,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npm run build:server && npm run build:client",
+    "build": "rm -rf dist && npm run build:server && npm run build:client && mkdir dist && mkdir dist/client && mkdir dist/server && mv src/client/dist/* dist/client/ && mv src/server/dist/* dist/server/",
     "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
     "serve": "concurrently --kill-others-on-fail \"npm run serve:server\" \"npm run serve:client\"",
     "type-check": "npm run type-check:server && npm run type-check:client",
