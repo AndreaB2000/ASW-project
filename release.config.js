@@ -6,7 +6,12 @@ docker push --all-tags "$IMAGE_NAME"
 
 let config = require('semantic-release-preconfigured-conventional-commits');
 config.plugins.push(
-  '@semantic-release/npm',
+  [
+    '@semantic-release/npm',
+    {
+      pkgRoot: 'dist'
+    }
+  ],
   [
     '@semantic-release/exec',
     {
@@ -18,7 +23,7 @@ config.plugins.push(
     '@semantic-release/git',
     {
       assets: ['package.json', 'package-lock.json', 'CHANGELOG.md'],
-      message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+      message: 'chore(release): ${nextRelease.version} [skip ci]',
     },
   ]
 );
