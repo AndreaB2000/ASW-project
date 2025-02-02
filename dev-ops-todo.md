@@ -6,3 +6,4 @@
 - add Sonarcloud (done - to uncomment and test)
 - add Whitesource Renovate bot and/or Greenkeeper (NPM)
 - create .github/ISSUE_TEMPLATE.md and .github/PULL_REQUEST_TEMPLATE.md
+- create `npm run setup-hooks`
