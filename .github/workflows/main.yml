@@ -63,7 +63,7 @@ jobs:
           npx sonarqube-scanner \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
-  release:
+  sign-release:
     runs-on: ubuntu-latest
     needs:
       - build-test
@@ -101,7 +101,8 @@ jobs:
   send-notification:
     runs-on: ubuntu-latest
     needs:
-      - release
+      - sign-release
+      - coverage
     if: always()
     steps:
       - name: Checkout repo
@@ -128,13 +129,13 @@ jobs:
       - name: Determine Pipeline Status
         id: status
         run: |
-          if [[ "${{ needs.release.result }}" == "success" ]]; then # && "${{ needs.test.result }}" == "success" ]]; then
+          if [[ "${{ needs.sign-release.result }}" == "success" ]]; then # && "${{ needs.coverage.result }}" == "success" ]]; then
             if [[ "${{ env.BRANCH_NAME }}" == "main" ]]; then  
               echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
             else
               echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
             fi
-          elif [[ "${{ needs.release.result }}" == "cancelled" ]]; then
+          elif [[ "${{ needs.sign-release.result }}" == "cancelled" ]]; then
             echo "TITLE=# ⚠️Pipeline Interrupted" >> $GITHUB_ENV
           else
             echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
