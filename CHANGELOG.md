@@ -1,3 +1,58 @@
+## [0.2.0](https://github.com/AndreaB2000/ASW-project/compare/0.1.3...0.2.0) (2025-02-02)
+
+### Features
+
+* add client template project, still not checked all files ([1e19cb4](https://github.com/AndreaB2000/ASW-project/commit/1e19cb49fe136161362a229d8e13d99962d0a556))
+* add server template project, still not checked all files ([c663dc3](https://github.com/AndreaB2000/ASW-project/commit/c663dc3f8b9b98bd0112d830fcf10db7f292dcba))
+* create template server ([d45f0c1](https://github.com/AndreaB2000/ASW-project/commit/d45f0c1a7eb3b8d0d97b8f5a2679cb31d70c9708))
+
+### Documentation
+
+* add sonarqube stats to readme ([55d7f43](https://github.com/AndreaB2000/ASW-project/commit/55d7f4357d362e5f0cae7591732f476ef82d7b37))
+
+### Revert previous changes
+
+* before server template ([ec457c0](https://github.com/AndreaB2000/ASW-project/commit/ec457c08447b37499450eecba34dc562e4c6f4b6))
+
+### Tests
+
+* fix template tests (so that they pass) ([e433deb](https://github.com/AndreaB2000/ASW-project/commit/e433deb2a8faed0b7de70306cfa2cf531757e0d9))
+
+### Build and continuous integration
+
+* add automatic build before running e2e tests ([ff7c263](https://github.com/AndreaB2000/ASW-project/commit/ff7c2632662a44e416622cf39063fa6ee068f54a))
+* add branch name so that sonar does not ignore it ([4a1706c](https://github.com/AndreaB2000/ASW-project/commit/4a1706c1dd044e4d3fe577b666091d801d0b8f9a))
+* add commented build pipeline ([254d14b](https://github.com/AndreaB2000/ASW-project/commit/254d14b2749735f4791b7b865a4235470f1e1633))
+* add sonar cloud to the pipeline ([4819150](https://github.com/AndreaB2000/ASW-project/commit/4819150a24ead9093a62ef829d1dd4dc7718e6c7))
+* add test command and install deps command ([0b0f30f](https://github.com/AndreaB2000/ASW-project/commit/0b0f30f4d5a547373b6a64945748a892b51e5260))
+* add test command before generating sonar analysis ([27c746e](https://github.com/AndreaB2000/ASW-project/commit/27c746e9ec0d843c1a3a056c020699e0afd3acd2))
+* configure package.json ([04359ef](https://github.com/AndreaB2000/ASW-project/commit/04359efa2f3102de15c47ed343041b8ccb57b1c8))
+* create build matrix ([5626f95](https://github.com/AndreaB2000/ASW-project/commit/5626f957fd5d718b82fe9bd300b4abd65222f55a))
+* let sonarqube exclude tests folder from src files ([02e4352](https://github.com/AndreaB2000/ASW-project/commit/02e43525e54aaef1d259a30bebbedf4bab02799c))
+* move sonarqube from matrix to independent task ([eb30045](https://github.com/AndreaB2000/ASW-project/commit/eb30045e7701a6c75781ff59e20db90db5401813))
+* setup sonarqube ([5716b0b](https://github.com/AndreaB2000/ASW-project/commit/5716b0b8e4fb827c40bf17884e9f5f0d2329cb19))
+* working on build matrix ([6aae273](https://github.com/AndreaB2000/ASW-project/commit/6aae2737e04dcdeaa32aec26ca2e19f56ec6f36a))
+
+### General maintenance
+
+* add authors names to package.json ([3cec249](https://github.com/AndreaB2000/ASW-project/commit/3cec249c59219d0d01fde0251019b5651467c5df))
+* create a list of all todo devops ([90491b3](https://github.com/AndreaB2000/ASW-project/commit/90491b30590b70e2be8fd5cd696e12176cc68486))
+* rebase ci onto dev ([31883a4](https://github.com/AndreaB2000/ASW-project/commit/31883a47ce7c474ceb770435c9169d65670d71d7))
+* selected the latest version for semantic-release-preconfigured-conventional-commits ([bb83af8](https://github.com/AndreaB2000/ASW-project/commit/bb83af8e1f6aae57e4e40e9436d365c428728a21))
+* typo ([3d64516](https://github.com/AndreaB2000/ASW-project/commit/3d645169b89928bdd2467e95825d7abf29cd552d))
+* update githook echo message ([1c8b795](https://github.com/AndreaB2000/ASW-project/commit/1c8b79508cec0825580248ac2a26540aa9780374))
+
+### Style improvements
+
+* move token arg from .properties file to ci cd pipeline file ([f7fb2da](https://github.com/AndreaB2000/ASW-project/commit/f7fb2da91ad6baf11f4e98533e79e898045eeab7))
+
+### Refactoring
+
+* change scripts:dev -> scripts:serve ([09ce947](https://github.com/AndreaB2000/ASW-project/commit/09ce947fe9ac12024beb58b465538c0be709acd2))
+* change var with const and let ([eae31b8](https://github.com/AndreaB2000/ASW-project/commit/eae31b833467b00640df87901686737b93750d02))
+* move configuration files from server/client to root where possible ([3689b0a](https://github.com/AndreaB2000/ASW-project/commit/3689b0ae7376664ef760d46da304e0f57367d14b))
+* remove some useless files in server and move one to .vscode due to its importance ([746bb78](https://github.com/AndreaB2000/ASW-project/commit/746bb78bda927fd1760537153e936822664e78e1))
+
 ## [0.1.3](https://github.com/AndreaB2000/ASW-project/compare/0.1.2...0.1.3) (2025-01-29)
 
 ### Bug Fixes
