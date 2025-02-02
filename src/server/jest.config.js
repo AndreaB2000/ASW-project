@@ -9,12 +9,9 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   testMatch: ['**/test/**/*.spec.ts'],
-  collectCoverage: true, // Enable coverage collection
-  coverageDirectory: 'coverage', // Directory where coverage reports are saved
-  coverageReporters: ['text', 'lcov'], // Use lcov format for SonarCloud
-  testEnvironment: 'node', // Set test environment for server-side
-  collectCoverageFrom: [
-    'src/server/**/*.{js,ts}', // Specify the files to collect coverage from
-    '!src/server/**/*.test.{js,ts}', // Exclude test files from coverage
-  ],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov'],
+  testEnvironment: 'node',
+  collectCoverageFrom: ['src/server/**/*.{js,ts}', '!src/server/**/*.test.{js,ts}'],
 };
