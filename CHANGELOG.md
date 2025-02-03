@@ -1,3 +1,28 @@
+## [0.2.1](https://github.com/AndreaB2000/ASW-project/compare/0.2.0...0.2.1) (2025-02-03)
+
+### Bug Fixes
+
+* fake commit to trigger a new release ([1da3706](https://github.com/AndreaB2000/ASW-project/commit/1da3706497407a69e984f8d2fbc8c28cbda15ba1))
+
+### Documentation
+
+* update devops-todo ([19a3f7f](https://github.com/AndreaB2000/ASW-project/commit/19a3f7f2736ed798262533e0db389e4a03dfb3f1))
+
+### Build and continuous integration
+
+* add build task within release job ([16aabe7](https://github.com/AndreaB2000/ASW-project/commit/16aabe798e0814c418415028f22ff7bb359d4d99))
+* add files item to package.json ([b91800c](https://github.com/AndreaB2000/ASW-project/commit/b91800cfccef7670c0bd13d5e01fddd20227aef0))
+* change pkgRoot for npm to dist directory ([96bf3fa](https://github.com/AndreaB2000/ASW-project/commit/96bf3fac6682f1027fb9673be01395c164350030))
+* create npm run set-hooks command ([dd339f1](https://github.com/AndreaB2000/ASW-project/commit/dd339f168b4d78fa23ce3baef1716aea968fa0c2))
+* **fix:** replace all 'src/' occurence with '' in dist/package.json ([7f1469b](https://github.com/AndreaB2000/ASW-project/commit/7f1469bda7812c2e1952cf22ccee364b07b7106d))
+* update build command ([5baf487](https://github.com/AndreaB2000/ASW-project/commit/5baf4877f089143e679c280517d0dbfd194a7ce3))
+* update dockerfile to restore its functionality ([342b724](https://github.com/AndreaB2000/ASW-project/commit/342b724a06338f967ec8b7ddade1e0c0d69b8b90))
+
+### Refactoring
+
+* change sonar.javascript to sonar.typescript ([4759bda](https://github.com/AndreaB2000/ASW-project/commit/4759bdae797e345fa220f39169487b04375bbd93))
+* create a separate build script ([daf49a9](https://github.com/AndreaB2000/ASW-project/commit/daf49a988170fdc88e3fc4792a1c149ccfbfdcdb))
+
 ## [0.2.0](https://github.com/AndreaB2000/ASW-project/compare/0.1.3...0.2.0) (2025-02-02)
 
 ### Features
