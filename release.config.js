@@ -4,6 +4,12 @@ docker build -t "$IMAGE_NAME:\${nextRelease.version}" .
 docker push --all-tags "$IMAGE_NAME"
 `;
 
+const prepareCmd = `
+tar -czf dist.tar.gz dist
+echo "$GPG_PRIVATE_KEY" | gpg --import --batch --yes
+gpg --batch --yes --passphrase "$GPG_PASSPHRASE" --pinentry-mode loopback --detach-sign -o dist/dist.tar.gz.sig dist/dist.tar.gz
+`;
+
 let config = require('semantic-release-preconfigured-conventional-commits');
 config.plugins.push(
   [
@@ -18,7 +24,12 @@ config.plugins.push(
       publishCmd: publishCmd,
     },
   ],
-  '@semantic-release/github',
+  [
+    '@semantic-release/github',
+    {
+      assets: ['dist/dist.tar.gz', 'dist/dist.tar.gz.sig'],
+    },
+  ],
   [
     '@semantic-release/git',
     {
