@@ -6,6 +6,7 @@ docker push --all-tags "$IMAGE_NAME"
 
 const prepareCmd = `
 tar -czf dist.tar.gz dist
+mv dist.tar.gz dist/dist.tar.gz
 echo "$GPG_PRIVATE_KEY" | gpg --import --batch --yes
 gpg --batch --yes --passphrase "$GPG_PASSPHRASE" --pinentry-mode loopback --detach-sign -o dist/dist.tar.gz.sig dist/dist.tar.gz
 `;
