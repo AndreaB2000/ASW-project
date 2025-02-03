@@ -38,7 +38,7 @@ config.plugins.push(
   [
     '@semantic-release/github',
     {
-      assets: ['dist/dist.tar.gz', 'dist/dist.tar.gz.sig'],
+      assets: ['dist/dist.tar.gz', 'dist/dist.tar.gz.asc'],
     },
   ],
   [
