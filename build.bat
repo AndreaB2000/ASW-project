@@ -17,6 +17,18 @@ xcopy /E /I /Y src\server\dist\* dist\server\
 
 REM Copy the package.json and package-lock.json files to the dist folder
 copy package.json dist\
+setlocal enabledelayedexpansion
+
+REM Read package.json and replace "src/" with an empty string
+(for /f "delims=" %%i in (dist\package.json) do (
+    set "line=%%i"
+    set "line=!line:src/=!"
+    echo !line!
+)) > package.tmp
+
+REM Overwrite package.json with the modified content
+move /y package.tmp dist\package.json >nul
+
 copy package-lock.json dist\
 copy src\server\package.json dist\server\
 copy src\server\package-lock.json dist\server\

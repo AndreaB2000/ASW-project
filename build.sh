@@ -18,6 +18,7 @@ mv src/server/dist/* dist/server/
 
 # Copy the package.json and package-lock.json files to the dist folder
 cp package.json dist/
+sed -i 's#src/##g' dist/package.json
 cp package-lock.json dist/
 cp src/server/package.json dist/server/
 cp src/server/package-lock.json dist/server/
