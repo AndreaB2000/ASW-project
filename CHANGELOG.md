@@ -1,3 +1,13 @@
+## [0.2.4](https://github.com/AndreaB2000/ASW-project/compare/0.2.3...0.2.4) (2025-02-03)
+
+### Revert previous changes
+
+* restore previous package.json ([1197c2d](https://github.com/AndreaB2000/ASW-project/commit/1197c2d9cb8c1a23d12190f48f53b0005a452448))
+
+### General maintenance
+
+* fourth try ([7c24cca](https://github.com/AndreaB2000/ASW-project/commit/7c24cca005383075e3a8dadfaf4d0702eb184ac9))
+
 ## [0.2.3](https://github.com/AndreaB2000/ASW-project/compare/0.2.2...0.2.3) (2025-02-03)
 
 ### Bug Fixes
