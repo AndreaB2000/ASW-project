@@ -1,3 +1,14 @@
+## [0.2.2](https://github.com/AndreaB2000/ASW-project/compare/0.2.1...0.2.2) (2025-02-03)
+
+### Documentation
+
+* update readme with all npm commands ([e7ca211](https://github.com/AndreaB2000/ASW-project/commit/e7ca21157b641968537add0cffd40130e6777132))
+
+### Build and continuous integration
+
+* add changelog, license and readme file to build artifact ([77f6509](https://github.com/AndreaB2000/ASW-project/commit/77f6509aab0363bf5b8ad21d8cbe2bdb77227d5b))
+* avoid test file compilation in server ([1d7b82b](https://github.com/AndreaB2000/ASW-project/commit/1d7b82bea11b4d60f97a80b322fdab4e99a68411))
+
 ## [0.2.1](https://github.com/AndreaB2000/ASW-project/compare/0.2.0...0.2.1) (2025-02-03)
 
 ### Bug Fixes
