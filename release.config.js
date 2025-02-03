@@ -7,8 +7,15 @@ docker push --all-tags "$IMAGE_NAME"
 const prepareCmd = `
 tar -czf dist.tar.gz dist
 mv dist.tar.gz dist/dist.tar.gz
-echo "$GPG_PRIVATE_KEY" | gpg --import --batch --yes
-gpg --batch --yes --passphrase "$GPG_PASSPHRASE" --pinentry-mode loopback --detach-sign -o dist/dist.tar.gz.sig dist/dist.tar.gz
+if [[ -z "$GPG_PRIVATE_KEY" || -z "$GPG_PASSPHRASE" ]]; then
+  echo "Error: GPG_PRIVATE_KEY and GPG_PASSPHRASE environment variables must be set."
+  exit 1
+fi
+echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+export GPG_TTY=$(tty)
+echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --sign dist/dist.tar.gz
+gpg --armor --detach-sign dist/dist.tar.gz
+gpg --batch --yes --delete-secret-keys
 `;
 
 let config = require('semantic-release-preconfigured-conventional-commits');
