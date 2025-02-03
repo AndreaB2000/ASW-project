@@ -1,3 +1,21 @@
+## [0.2.3](https://github.com/AndreaB2000/ASW-project/compare/0.2.2...0.2.3) (2025-02-03)
+
+### Bug Fixes
+
+* **build:** trying to not specify files item to package.json file ([0a7750f](https://github.com/AndreaB2000/ASW-project/commit/0a7750fa7ae2732f3760ea40c55e8ed0129eff85))
+
+### Build and continuous integration
+
+* change how builds are inserted into dist folder ([147cbaa](https://github.com/AndreaB2000/ASW-project/commit/147cbaa853ba003733c69863b2118b2d63c28546))
+* fix build.bat ([5636493](https://github.com/AndreaB2000/ASW-project/commit/5636493fbdca125b7001737a734ec3ce87675050))
+
+### General maintenance
+
+* add a tree print to see what's wrong with build script in ci env ([087945c](https://github.com/AndreaB2000/ASW-project/commit/087945ce32556fe46ff566fb14af757eeea16ade))
+* add cool infos in package.json ([7105ed0](https://github.com/AndreaB2000/ASW-project/commit/7105ed046528d07bd5aaefb17482d73e4b607fdc))
+* second try ([3f3295f](https://github.com/AndreaB2000/ASW-project/commit/3f3295f91daf70e34a53c808a618b581468e4339))
+* third try ([1fe5a3e](https://github.com/AndreaB2000/ASW-project/commit/1fe5a3ec72398ae9c071c6e4273b8cfdfbcdfada))
+
 ## [0.2.2](https://github.com/AndreaB2000/ASW-project/compare/0.2.1...0.2.2) (2025-02-03)
 
 ### Documentation
