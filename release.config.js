@@ -5,6 +5,8 @@ docker push --all-tags "$IMAGE_NAME"
 `;
 
 const prepareCmd = `
+#!/bin/bash
+
 tar -czf dist.tar.gz dist
 mv dist.tar.gz dist/dist.tar.gz
 if [[ -z "$GPG_PRIVATE_KEY" || -z "$GPG_PASSPHRASE" ]]; then
