@@ -17,9 +17,6 @@
   ],
   "license": "MIT",
   "private": false,
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'build.bat' : 'sh build.sh', { stdio: 'inherit' })\"",
     "set-hooks": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'set-hooks.bat' : 'sh set-hooks.sh', { stdio: 'inherit' })\"",
