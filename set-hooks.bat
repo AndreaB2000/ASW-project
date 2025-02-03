@@ -26,7 +26,7 @@ echo if [[ ! $commit_message =~ $conventional_regex ]]; then >> "%TEMPLATE_FILE%
 echo 	echo "" >> "%TEMPLATE_FILE%"
 echo 	echo -e "\e[31mError\e[0m: Commit message does not follow the Conventional Commit format." >> "%TEMPLATE_FILE%"
 echo 	echo "" >> "%TEMPLATE_FILE%"
-echo     echo "Format:        <type>(<scope>)<^!^>: <description>" >> "%TEMPLATE_FILE%"
+echo     echo "Format:        <type>(<scope>)<!>: <description>" >> "%TEMPLATE_FILE%"
 echo     echo "Valid types:   build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test" >> "%TEMPLATE_FILE%"
 echo 	echo "Documentation: https://www.conventionalcommits.org/en/v1.0.0/" >> "%TEMPLATE_FILE%"
 echo     exit 1 >> "%TEMPLATE_FILE%"
