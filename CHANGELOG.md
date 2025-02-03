@@ -1,3 +1,13 @@
+## [0.2.7](https://github.com/AndreaB2000/ASW-project/compare/0.2.6...0.2.7) (2025-02-03)
+
+### Bug Fixes
+
+* change github loaded asset from tar.gz.sig to tar.gz.asc ([0b56784](https://github.com/AndreaB2000/ASW-project/commit/0b56784c378a47051f462fe41a53850067bcba47))
+
+### General maintenance
+
+* forget to add #!/bin/bash ([8d1d2cb](https://github.com/AndreaB2000/ASW-project/commit/8d1d2cbfa226c43c7cd3b3dcf9f6d551a424c453))
+
 ## [0.2.6](https://github.com/AndreaB2000/ASW-project/compare/0.2.5...0.2.6) (2025-02-03)
 
 ### Bug Fixes
