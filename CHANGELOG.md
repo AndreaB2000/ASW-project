@@ -1,3 +1,15 @@
+## [0.2.6](https://github.com/AndreaB2000/ASW-project/compare/0.2.5...0.2.6) (2025-02-03)
+
+### Bug Fixes
+
+* forget to pass prepare command to sem-rel/exec ([9c1819f](https://github.com/AndreaB2000/ASW-project/commit/9c1819fd515e7dc49c91f7d41c66b41518b280f2))
+* move tar.gz file into dist folder ([81ff929](https://github.com/AndreaB2000/ASW-project/commit/81ff929646cf54572867c25625c908f71b607883))
+* passing passphrase and private key to sem-rel ([b3b1fe5](https://github.com/AndreaB2000/ASW-project/commit/b3b1fe5295fb38e688290d246a992acb34bcd77c))
+
+### Build and continuous integration
+
+* change how to sign ([cd6e433](https://github.com/AndreaB2000/ASW-project/commit/cd6e43309ad34d941b0df91ee1345c7af575c331))
+
 ## [0.2.5](https://github.com/AndreaB2000/ASW-project/compare/0.2.4...0.2.5) (2025-02-03)
 
 ### Bug Fixes
