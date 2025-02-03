@@ -35,4 +35,8 @@ copy src\server\package-lock.json dist\server\
 copy src\client\package.json dist\client\
 copy src\client\package-lock.json dist\client\
 
+copy src\CHANGELOG.md dist\
+copy src\LICENSE dist\
+copy src\README.md dist\
+
 echo Build process completed.
