@@ -12,6 +12,9 @@ mkdir dist
 mkdir dist/client
 mkdir dist/server
 
+tree src/client/dist
+tree src/server/dist
+
 # Copy the built files to the dist folder
 mv src/client/dist/* dist/client/ 
 mv src/server/dist/* dist/server/
