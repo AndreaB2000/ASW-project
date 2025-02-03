@@ -41,7 +41,8 @@
     "serve:client": "cd src/client && npm run serve",
     "serve:server": "cd src/server && npm run serve",
     "test:client": "cd src/client && npm run test",
-    "test:server": "cd src/server && npm run test"
+    "test:server": "cd src/server && npm run test",
+    "postversion": "cp dist/package.json ."
   },
   "publishConfig": {
     "access": "public"
@@ -55,5 +56,29 @@
     "typescript": "^5.7.3",
     "sonarqube-scanner": "^4.2.6"
   },
-  "version": "0.2.0"
+  "version": "0.2.0",
+  "keywords": [
+    "web",
+    "client-server",
+    "express",
+    "vue",
+    "typescript"
+  ],
+  "homepage": "https://github.com/AndreaB2000/ASW-project/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/AndreaB2000/ASW-project/issues"
+  },
+  "main": "dist/server.app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreaB2000/ASW-project.git"
+  },
+  "engines": {
+    "node": ">=20 <=22"
+  },
+  "os": [
+    "linux",
+    "macos",
+    "windows"
+  ]
 }
