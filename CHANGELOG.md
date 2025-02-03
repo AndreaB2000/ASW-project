@@ -1,3 +1,17 @@
+## [0.2.5](https://github.com/AndreaB2000/ASW-project/compare/0.2.4...0.2.5) (2025-02-03)
+
+### Bug Fixes
+
+* fake commit to trigger a new release ([6c17984](https://github.com/AndreaB2000/ASW-project/commit/6c179842a3aa507215061e13acd3c840accc0152))
+
+### Build and continuous integration
+
+* add artifact signing ([266e257](https://github.com/AndreaB2000/ASW-project/commit/266e2574332dd679e5e6c514931b5139f9075963))
+
+### General maintenance
+
+* update set-hooks.bat ([78f87ae](https://github.com/AndreaB2000/ASW-project/commit/78f87aedc48e6891c6180879dda0c0594f35fb82))
+
 ## [0.2.4](https://github.com/AndreaB2000/ASW-project/compare/0.2.3...0.2.4) (2025-02-03)
 
 ### Revert previous changes
