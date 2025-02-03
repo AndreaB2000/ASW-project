@@ -21,6 +21,7 @@ config.plugins.push(
   [
     '@semantic-release/exec',
     {
+      prepareCmd: prepareCmd,
       publishCmd: publishCmd,
     },
   ],
