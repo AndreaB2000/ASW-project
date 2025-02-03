@@ -4,10 +4,6 @@ docker build -t "$IMAGE_NAME:\${nextRelease.version}" .
 docker push --all-tags "$IMAGE_NAME"
 `;
 
-const prepareCmd = `
-npm run build
-`;
-
 let config = require('semantic-release-preconfigured-conventional-commits');
 config.plugins.push(
   [
@@ -19,7 +15,6 @@ config.plugins.push(
   [
     '@semantic-release/exec',
     {
-      prepareCmd: prepareCmd,
       publishCmd: publishCmd,
     },
   ],
