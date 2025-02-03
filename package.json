@@ -39,7 +39,7 @@
     "serve:server": "cd src/server && npm run serve",
     "test:client": "cd src/client && npm run test",
     "test:server": "cd src/server && npm run test",
-    "postversion": "cp dist/package.json ."
+    "postversion": "cp package.json .."
   },
   "publishConfig": {
     "access": "public"
