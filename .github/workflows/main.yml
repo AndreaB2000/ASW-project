@@ -6,7 +6,7 @@ on:
   pull_request:
 
 concurrency:
-  group: 'asw-ci-cd'
+  group: ${{ github.event_name == 'pull_request' && 'asw-ci-cd-pr' || 'asw-ci-cd' }}
   cancel-in-progress: true
 
 permissions:
