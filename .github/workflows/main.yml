@@ -3,9 +3,10 @@ name: ASW CI/CD
 on:
   push:
   workflow_dispatch:
+  pull_request:
 
 concurrency:
-  group: 'asw-ci-cd'
+  group: ${{ github.event_name == 'pull_request' && 'asw-ci-cd-pr' || 'asw-ci-cd' }}
   cancel-in-progress: true
 
 permissions:
@@ -21,7 +22,7 @@ jobs:
         os: [ubuntu-24.04, windows-2022, macos-13]
         node-version: [20, 22]
     runs-on: ${{ matrix.os }}
-    name: Build with Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    name: Build and Test
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -49,7 +50,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: '22'
       - name: Install dependencies
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
@@ -79,7 +80,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: '22'
       - name: Install dependencies
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
