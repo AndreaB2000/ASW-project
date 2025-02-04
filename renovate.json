@@ -5,7 +5,14 @@
   "packageRules": [
     {
       "description": "Trigger a patch update on MEVN upgrades",
-      "matchPackageNames": ["mongodb", "express", "vue", "node"],
+      "matchPackageNames": [
+        "^(@types/)?mongoose$",
+        "^(@types/)?express$",
+        "^(@types/)?vue$",
+        "^(@types/)?node$",
+        "typescript",
+        "javascript"
+      ],
       "semanticCommitScope": "core-deps"
     }
   ]
