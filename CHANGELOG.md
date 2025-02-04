@@ -1,3 +1,22 @@
+## [0.2.10](https://github.com/AndreaB2000/ASW-project/compare/0.2.9...0.2.10) (2025-02-04)
+
+### Dependency updates
+
+* **core-deps:** update dependency typescript to v5 ([#32](https://github.com/AndreaB2000/ASW-project/issues/32)) ([34cba69](https://github.com/AndreaB2000/ASW-project/commit/34cba690f2f0529e300d182c2fde2c900a5c5274))
+
+### Build and continuous integration
+
+* ignoring ci for renovate branches and also avoid interruption for main branch ([20cd5fa](https://github.com/AndreaB2000/ASW-project/commit/20cd5fa970207d46462b95ff2481bbaabaf82910))
+* update concurrency strategy ([ccc45c4](https://github.com/AndreaB2000/ASW-project/commit/ccc45c40f03cfbf6b650702ed05d2508e22c46fc))
+* update concurrency strategy ([0295d47](https://github.com/AndreaB2000/ASW-project/commit/0295d473591a072f2816fc869c411c79fa65b617))
+
+### General maintenance
+
+* let renovate await a status check before merging ([5725ef9](https://github.com/AndreaB2000/ASW-project/commit/5725ef99c6145622dac8483ae014c48bd5a84f45))
+* re-add renovate.json ([a2e5efe](https://github.com/AndreaB2000/ASW-project/commit/a2e5efe2acc9c1dcad3b1aae17a9e0600940b6ab))
+* remove previous renovate configuration ([77b7452](https://github.com/AndreaB2000/ASW-project/commit/77b74525526081f40e1ecd68268c8457d52ab8da))
+* update renovate package rules ([1221772](https://github.com/AndreaB2000/ASW-project/commit/1221772e62fad5af28b1a362838ce0a02cc40dd9))
+
 ## [0.2.9](https://github.com/AndreaB2000/ASW-project/compare/0.2.8...0.2.9) (2025-02-04)
 
 ### Revert previous changes
