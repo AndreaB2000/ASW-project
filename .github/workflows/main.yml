@@ -88,17 +88,20 @@ jobs:
         run: npm audit signatures
       - name: Build
         run: npm run build
+      - name: Import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Sign the artifact
         run: |
           tar -czf dist.tar.gz dist
           mv dist.tar.gz dist/dist.tar.gz
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" > private-key.asc
-          gpg --fingerprint --import private-key.asc
-          export GPG_TTY=$(tty)
-          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --sign dist/dist.tar.gz
-          gpg --armor --detach-sign dist/dist.tar.gz
-          gpg --batch --yes --delete-secret-keys
-          rm private-key.asc
+          gpg --batch --yes --detach-sign --armor --local-user ${{ steps.import-gpg.outputs.fingerprint }} dist/dist.tar.gz
+      - name: Verify signature
+        run: |
+          gpg --verify dist/dist.tar.gz.asc dist/dist.tar.gz
       - name: Login to Docker Hub
         if: ${{ github.event_name != 'pull_request' }}
         env:
