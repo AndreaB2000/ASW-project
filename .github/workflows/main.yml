@@ -2,8 +2,14 @@ name: ASW CI/CD
 
 on:
   push:
+    branches-ignore:
+      - renovate/**
   workflow_dispatch:
   pull_request:
+
+concurrency:
+  group: ${{ github.event.number || github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'main') }}
 
 permissions:
   contents: write
