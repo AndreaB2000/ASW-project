@@ -1,3 +1,23 @@
+## [0.2.9](https://github.com/AndreaB2000/ASW-project/compare/0.2.8...0.2.9) (2025-02-04)
+
+### Revert previous changes
+
+* remove renovate.json to restart from scratch ([c33a708](https://github.com/AndreaB2000/ASW-project/commit/c33a70851690770e5a87d6dbad47534dc4d2baf5))
+
+### Build and continuous integration
+
+* add a more fine grained concurrency handling ([70c43de](https://github.com/AndreaB2000/ASW-project/commit/70c43de60decf6491a623a3f80b469aa9efceadd))
+* add pull request ci trigger ([4916b3d](https://github.com/AndreaB2000/ASW-project/commit/4916b3d9f197a78c026b5b3937535446678bbdc0))
+* change all ubuntu-latest to 24.04 ([d821be9](https://github.com/AndreaB2000/ASW-project/commit/d821be9f02be03a3d2de25e6686b4ea14b62f6fd))
+* correct concurrency group for build test job ([8a5f56a](https://github.com/AndreaB2000/ASW-project/commit/8a5f56a79956220a1ec5825717e8d7a87cd08a90))
+* update concurrency group ([e9e1a7d](https://github.com/AndreaB2000/ASW-project/commit/e9e1a7de8225367273987cc4b39bd0e29ac204bf))
+
+### General maintenance
+
+* add ISSUE TEMPLATE and PULL REQUEST TEMPLATE ([02230a8](https://github.com/AndreaB2000/ASW-project/commit/02230a882efd2717e485052e7586100a0f201922))
+* Merge pull request [#1](https://github.com/AndreaB2000/ASW-project/issues/1) from AndreaB2000/renovate/configure ([c0ce8a7](https://github.com/AndreaB2000/ASW-project/commit/c0ce8a775c480a7d8e8e04deb0c719a22a12fc48))
+* update renovate configuration file ([de338af](https://github.com/AndreaB2000/ASW-project/commit/de338afff08dbb0d70bfb60f8a97180657ddc75f))
+
 ## [0.2.8](https://github.com/AndreaB2000/ASW-project/compare/0.2.7...0.2.8) (2025-02-04)
 
 ### Bug Fixes
