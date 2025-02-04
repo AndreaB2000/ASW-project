@@ -15,5 +15,6 @@
       ],
       "semanticCommitScope": "core-deps"
     }
-  ]
+  ],
+  "requireStatusChecks": ["Build and Test"]
 }
