@@ -19,5 +19,3 @@ cp src/client/package-lock.json dist/client/
 cp README.md dist/
 cp LICENSE dist/
 cp CHANGELOG.md dist/
-
-tree dist/
