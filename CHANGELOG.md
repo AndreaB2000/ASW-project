@@ -1,3 +1,21 @@
+## [0.2.8](https://github.com/AndreaB2000/ASW-project/compare/0.2.7...0.2.8) (2025-02-04)
+
+### Bug Fixes
+
+* add darwin os as compatible operating systems in package.json ([1c8deca](https://github.com/AndreaB2000/ASW-project/commit/1c8deca2185d2be9ad4a86972691c51a21eb4554))
+* change compatible os from windows to win32 ([bc3f3de](https://github.com/AndreaB2000/ASW-project/commit/bc3f3de57f8301370ec7f94170ae4aa01748e21e))
+* correct signing process ([1c71ffa](https://github.com/AndreaB2000/ASW-project/commit/1c71ffae69ac599319ec3be6234bbe2ebb43169c))
+* move signing from release.config.js to task of release job ([1902aa3](https://github.com/AndreaB2000/ASW-project/commit/1902aa3ed4db9d40e6beafd896a0ca63a1bc6f7c))
+* try to sign the project with a gha ([ed67de3](https://github.com/AndreaB2000/ASW-project/commit/ed67de3efa7c111dc44d1da4d9317503d548fefd))
+
+### Revert previous changes
+
+* restore ci build matrix ([1cbfc39](https://github.com/AndreaB2000/ASW-project/commit/1cbfc3912132d4858912e96e36d59770bccf5864))
+
+### Build and continuous integration
+
+* remove tree command (not supported by macos) ([8706c20](https://github.com/AndreaB2000/ASW-project/commit/8706c209ebb1277d41d906395732414a58de83c1))
+
 ## [0.2.7](https://github.com/AndreaB2000/ASW-project/compare/0.2.6...0.2.7) (2025-02-03)
 
 ### Bug Fixes
