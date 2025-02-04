@@ -14,7 +14,7 @@ permissions:
 jobs:
   build-test:
     concurrency:
-      group: build-${{ github.workflow }}-${{ matrix.os }}-${{ github.event.number || github.ref }}
+      group: build-${{ matrix.os }}-${{ matrix.node-version }}-${{ github.event.number || github.ref }}
       cancel-in-progress: true
     strategy:
       matrix:
