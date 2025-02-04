@@ -6,7 +6,7 @@ on:
   pull_request:
 
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && 'asw-ci-cd-pr' || 'asw-ci-cd' }}
+  group: ${{ github.event_name == 'pull_request' && 'asw-ci-cd-pr-' || 'asw-ci-cd' }}
   cancel-in-progress: true
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
         run: npm test
 
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - build-test
     name: Coverage
@@ -63,7 +63,7 @@ jobs:
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
   sign-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - build-test
     name: semantic-release
@@ -114,7 +114,7 @@ jobs:
         run: npx semantic-release
 
   send-notification:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - sign-release
       - coverage
