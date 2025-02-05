@@ -7,11 +7,26 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: 'jsdom',
-      exclude: [...configDefaults.exclude, 'e2e/**'],
+      exclude: [
+        ...configDefaults.exclude,
+        'e2e/**',
+        'src/main.ts',
+        'src/assets/**',
+        'src/router/index.ts',
+        'src/components/icons/**',
+      ],
       root: fileURLToPath(new URL('./', import.meta.url)),
       coverage: {
         reporter: ['text', 'lcov'],
         reportsDirectory: 'coverage',
+        exclude: [
+          ...configDefaults.exclude,
+          'e2e/**',
+          'src/main.ts',
+          'src/assets/**',
+          'src/router/index.ts',
+          'src/components/icons/**',
+        ],
       },
     },
   }),
