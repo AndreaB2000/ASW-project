@@ -9,7 +9,7 @@ export default mergeConfig(
       environment: 'jsdom',
       exclude: [
         ...configDefaults.exclude,
-        'e2e/**',
+        'cypress/**',
         'src/main.ts',
         'src/assets/**',
         'src/router/index.ts',
@@ -24,7 +24,7 @@ export default mergeConfig(
         reportsDirectory: 'coverage',
         exclude: [
           ...configDefaults.exclude,
-          'e2e/**',
+          'cypress/**',
           'src/main.ts',
           'src/assets/**',
           'src/router/index.ts',
