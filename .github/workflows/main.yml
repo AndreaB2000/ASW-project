@@ -79,6 +79,8 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
+    outputs:
+      new_version: ${{ steps.extract-version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -119,6 +121,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+      - name: Extract published version
+        id: extract-version
+        run: |
+          VERSION=$(jq -r '.nextRelease.version // ""' release_output.txt || echo "")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
   send-notification:
     runs-on: ubuntu-24.04
@@ -151,8 +158,8 @@ jobs:
       - name: Determine Pipeline Status
         id: status
         run: |
-          if [[ "${{ needs.sign-release.result }}" == "success" ]]; then # && "${{ needs.coverage.result }}" == "success" ]]; then
-            if [[ "${{ env.BRANCH_NAME }}" == "main" ]]; then  
+          if [[ "${{ needs.sign-release.result }}" == "success" ]]; then
+            if [[ "${{ env.BRANCH_NAME }}" == "main" && "${{ needs.sign-release.outputs.new_version }}" != "" ]]; then
               echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
             else
               echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
