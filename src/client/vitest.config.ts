@@ -14,6 +14,8 @@ export default mergeConfig(
         'src/assets/**',
         'src/router/index.ts',
         'src/components/icons/**',
+        'src/views/AboutView.vue',
+        'src/views/HomeView.vue',
       ],
       root: fileURLToPath(new URL('./', import.meta.url)),
       coverage: {
@@ -26,6 +28,8 @@ export default mergeConfig(
           'src/assets/**',
           'src/router/index.ts',
           'src/components/icons/**',
+          'src/views/AboutView.vue',
+          'src/views/HomeView.vue',
         ],
       },
     },
