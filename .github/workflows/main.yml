@@ -39,8 +39,7 @@ jobs:
         run: npm clean-install
       - name: Install compatible @types/node version
         run: |
-          NODE_MAJOR=$(echo ${{ matrix.node-version }} | cut -d'.' -f1)
-          npm install -D @types/node@${NODE_MAJOR}
+          npm install -D @types/node@${{ matrix.node-version }}
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Build
