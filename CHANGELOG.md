@@ -1,3 +1,46 @@
+## [0.2.11](https://github.com/AndreaB2000/ASW-project/compare/0.2.10...0.2.11) (2025-02-07)
+
+### Dependency updates
+
+* **deps:** update dependency @types/node to v22.13.1 ([#34](https://github.com/AndreaB2000/ASW-project/issues/34)) ([dc61e8d](https://github.com/AndreaB2000/ASW-project/commit/dc61e8df6fb0cd36aff39026c3779a6533989e03))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.121 ([#30](https://github.com/AndreaB2000/ASW-project/issues/30)) ([18bbdf1](https://github.com/AndreaB2000/ASW-project/commit/18bbdf1aeb82f100aaf763186cbbc2ed11f143bf))
+* **deps:** update vitest monorepo to v3.0.5 ([#31](https://github.com/AndreaB2000/ASW-project/issues/31)) ([c28e011](https://github.com/AndreaB2000/ASW-project/commit/c28e0118aecedc42d24db5fc2f0a9fde58f6484e))
+
+### Bug Fixes
+
+* **config:** correct client/router/ path to exclude it from test coverage ([ad8f42b](https://github.com/AndreaB2000/ASW-project/commit/ad8f42b1c1a4edcf96c9348d3652361df032c886))
+
+### Tests
+
+* add test for App.vue ([574cca2](https://github.com/AndreaB2000/ASW-project/commit/574cca2e422ec029e66d5b7460aa62f22f6fdba9))
+* **client:** add tests for router and stores, exclude current views to test and coverage ([45376f1](https://github.com/AndreaB2000/ASW-project/commit/45376f11b05d35c46b73b261054edf4829e6574a))
+* **client:** add tests for TheWelcome.vue ([f2e3800](https://github.com/AndreaB2000/ASW-project/commit/f2e3800ae685e944518fdab76fcb2066490c7ae7))
+* **client:** exclude env.d.ts to coverage ([3404809](https://github.com/AndreaB2000/ASW-project/commit/3404809db8ba35170b4b369117b695ada51ea7a6))
+* **client:** remove useless test for router/index.ts ([4701c57](https://github.com/AndreaB2000/ASW-project/commit/4701c57b7f3bb7cc9b801fc2c3f847a9c4e410a7))
+
+### Build and continuous integration
+
+* update build job in order to install compatible @types/node version ([a367e0a](https://github.com/AndreaB2000/ASW-project/commit/a367e0a43010781c13a93ff20475292a72ce3b1e))
+* update build job in order to install compatible @types/node version ([c11accc](https://github.com/AndreaB2000/ASW-project/commit/c11acccd00e8f7062d6a5a23f0e9717c832f117d))
+* update build job in order to install compatible @types/node version ([6f1bb93](https://github.com/AndreaB2000/ASW-project/commit/6f1bb937a53ae4545af3aaae34a10149da495d9e))
+* update notification job ([c53a04b](https://github.com/AndreaB2000/ASW-project/commit/c53a04b9908f73c866654cd92e649bee6eb3df79))
+
+### General maintenance
+
+* **config:** exclude client/router/ files from test coverage ([b24e394](https://github.com/AndreaB2000/ASW-project/commit/b24e3949f4d35b1fd2e413203d11e47e96ebcd39))
+* **config:** exclude cypress files from test coverage ([b885065](https://github.com/AndreaB2000/ASW-project/commit/b8850658013f0af3904ca78da1af6aaf45b15f40))
+* **config:** fix email in package.json ([148e0e6](https://github.com/AndreaB2000/ASW-project/commit/148e0e6271b30f0f4536cf2456a92965c44941c5))
+* **config:** update sonar config file ([0746929](https://github.com/AndreaB2000/ASW-project/commit/074692995e78cce59c4ca263c4f28f7650fcd7e7))
+* delete temporarely TheWelcome test ([807a275](https://github.com/AndreaB2000/ASW-project/commit/807a275a3a151febb72b05aac0f79c502c2753cb))
+* **test:** fix server tests config ([9a4a855](https://github.com/AndreaB2000/ASW-project/commit/9a4a855992f948f7028a2c274cc85e337632ced0))
+* **test:** ignore files for server test coverage ([7016d46](https://github.com/AndreaB2000/ASW-project/commit/7016d469b742cd14a3da37f97ea247f81ff65148))
+
+### Refactoring
+
+* move app test file from components/test to client root ([0064a01](https://github.com/AndreaB2000/ASW-project/commit/0064a0137086bc1f1794adf62dbfa6feeb0a1eb8))
+* move test directory from client/components/test to client/test ([2ca4e40](https://github.com/AndreaB2000/ASW-project/commit/2ca4e40d06941e6e2142ef7ec20ea2de5cf02f81))
+* **server:** move server/src/test to server/test ([ce6c17b](https://github.com/AndreaB2000/ASW-project/commit/ce6c17bb28f6adbd592b0638f057295af507c147))
+
 ## [0.2.10](https://github.com/AndreaB2000/ASW-project/compare/0.2.9...0.2.10) (2025-02-04)
 
 ### Dependency updates
