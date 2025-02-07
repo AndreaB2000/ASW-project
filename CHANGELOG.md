@@ -1,3 +1,10 @@
+## [0.2.12](https://github.com/AndreaB2000/ASW-project/compare/0.2.11...0.2.12) (2025-02-07)
+
+### Dependency updates
+
+* **core-deps:** update node.js to v20 ([#38](https://github.com/AndreaB2000/ASW-project/issues/38)) ([9697d1c](https://github.com/AndreaB2000/ASW-project/commit/9697d1c2a4a986d36b85e587099f64c1d1d34d9d))
+* **deps:** update cypress version (client e2e test engine) ([a165841](https://github.com/AndreaB2000/ASW-project/commit/a16584180b721c08fbcdbd2a76c040e5657f7c9d))
+
 ## [0.2.11](https://github.com/AndreaB2000/ASW-project/compare/0.2.10...0.2.11) (2025-02-07)
 
 ### Dependency updates
