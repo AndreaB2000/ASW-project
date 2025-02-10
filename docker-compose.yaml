@@ -1,0 +1,24 @@
+networks:
+  asw_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.0.0.0/24
+          gateway: 172.0.0.254
+
+services:
+  server:
+    image: aswserver
+    container_name: aswserver
+    networks:
+      asw_network:
+        ipv4_address: 172.0.0.10
+
+  client:
+    image: aswclient
+    container_name: aswclient
+    depends_on:
+      - server
+    networks:
+      asw_network:
+        ipv4_address: 172.0.0.11

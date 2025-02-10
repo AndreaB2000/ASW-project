@@ -39,7 +39,9 @@
     "serve:server": "cd src/server && npm run serve",
     "test:client": "cd src/client && npm run test",
     "test:server": "cd src/server && npm run test",
-    "postversion": "cp package.json .."
+    "postversion": "cp package.json ..",
+    "dockerbuild": "docker build -t aswserver src/server && docker build -t aswclient src/client",
+    "dockerup": "docker compose up"
   },
   "publishConfig": {
     "access": "public"
