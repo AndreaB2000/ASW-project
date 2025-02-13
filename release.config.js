@@ -1,7 +1,12 @@
 const publishCmd = `
-IMAGE_NAME="andreabiagini5/asw"
-docker build -t "$IMAGE_NAME:\${nextRelease.version}" .
-docker push --all-tags "$IMAGE_NAME"
+CLIENT_IMAGE_NAME="andreabiagini5/aswclient"
+SERVER_IMAGE_NAME="andreabiagini5/aswserver"
+
+docker build -t "$CLIENT_IMAGE_NAME:\${nextRelease.version}" ./src/client
+docker push --all-tags "$CLIENT_IMAGE_NAME"
+
+docker build -t "$SERVER_IMAGE_NAME:\${nextRelease.version}" ./src/server
+docker push --all-tags "$SERVER_IMAGE_NAME"
 `;
 
 let config = require('semantic-release-preconfigured-conventional-commits');
