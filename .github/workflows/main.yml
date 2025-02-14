@@ -148,15 +148,10 @@ jobs:
         id: vars
         run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Capture New Version
-        run: |
-          NEW_VERSION=$(git describe --tags --abbrev=0)
-          echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
-
       - name: Get Commit Message
         id: commit_message
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B | tr '\n' ' ')
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
 
       - name: Determine Pipeline Status
@@ -164,7 +159,7 @@ jobs:
         run: |
           if [[ "${{ needs.sign-release.result }}" == "success" ]]; then
             if [[ "${{ env.BRANCH_NAME }}" == "main" && "${{ needs.sign-release.outputs.new_version }}" != "" ]]; then
-              echo "TITLE=# ✅New Release: ${{ env.NEW_VERSION }}" >> $GITHUB_ENV
+              echo "TITLE=# ✅New Release: ${{ needs.sign-release.outputs.new_version }}" >> $GITHUB_ENV
             else
               echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
             fi
