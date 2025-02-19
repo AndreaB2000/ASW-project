@@ -1,5 +1,5 @@
 # This is the client dockerfile
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /var/app
 EXPOSE 3000
 
