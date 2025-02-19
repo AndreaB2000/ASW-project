@@ -1,3 +1,9 @@
+## [0.2.14](https://github.com/AndreaB2000/ASW-project/compare/0.2.13...0.2.14) (2025-02-19)
+
+### Dependency updates
+
+* **core-deps:** update node.js to v22 ([#58](https://github.com/AndreaB2000/ASW-project/issues/58)) ([d333009](https://github.com/AndreaB2000/ASW-project/commit/d333009d799b07de3bc7aa50fe809e6ba4894f30))
+
 ## [0.2.13](https://github.com/AndreaB2000/ASW-project/compare/0.2.12...0.2.13) (2025-02-19)
 
 ### Dependency updates
