@@ -1,3 +1,41 @@
+## [0.2.13](https://github.com/AndreaB2000/ASW-project/compare/0.2.12...0.2.13) (2025-02-19)
+
+### Dependency updates
+
+* **core-deps:** update node.js to v20 ([0212e14](https://github.com/AndreaB2000/ASW-project/commit/0212e140260c06258662f60953e1ae4027b2adef))
+* **deps:** update dependency @types/node to v20.17.18 ([#51](https://github.com/AndreaB2000/ASW-project/issues/51)) ([927b203](https://github.com/AndreaB2000/ASW-project/commit/927b2034a463c1fdba32090dbc32f592c1fa6d4a))
+* **deps:** update dependency @types/node to v20.17.19 ([#54](https://github.com/AndreaB2000/ASW-project/issues/54)) ([63cf403](https://github.com/AndreaB2000/ASW-project/commit/63cf40308e6f2d315e1686071dd2eeba6b926d40))
+* **deps:** update dependency @types/node to v22.13.2 ([#52](https://github.com/AndreaB2000/ASW-project/issues/52)) ([c9e1262](https://github.com/AndreaB2000/ASW-project/commit/c9e1262ad67c186efdd75aba3377392632abf4c4))
+* **deps:** update dependency @types/node to v22.13.4 ([#55](https://github.com/AndreaB2000/ASW-project/issues/55)) ([832079c](https://github.com/AndreaB2000/ASW-project/commit/832079cb0e79dc2d5d012c5911c7baaefdc3de16))
+* **deps:** update dependency @vitest/eslint-plugin to v1.1.26 ([#37](https://github.com/AndreaB2000/ASW-project/issues/37)) ([b6f546b](https://github.com/AndreaB2000/ASW-project/commit/b6f546b8b71faefe47107891805765d2cafd07eb))
+* **deps:** update dependency @vitest/eslint-plugin to v1.1.27 ([#41](https://github.com/AndreaB2000/ASW-project/issues/41)) ([67ec5d6](https://github.com/AndreaB2000/ASW-project/commit/67ec5d6d19157aa461c838e0045cc4efaa7ec893))
+* **deps:** update dependency @vitest/eslint-plugin to v1.1.28 ([#44](https://github.com/AndreaB2000/ASW-project/issues/44)) ([b2b3336](https://github.com/AndreaB2000/ASW-project/commit/b2b333645b23d44bc08226dd5b301b8ef2fa8e22))
+* **deps:** update dependency @vitest/eslint-plugin to v1.1.31 ([#49](https://github.com/AndreaB2000/ASW-project/issues/49)) ([c6befa9](https://github.com/AndreaB2000/ASW-project/commit/c6befa92d1daef0bf71c964b558d76626a4066b8))
+* **deps:** update dependency @vue/eslint-config-typescript to v14.4.0 ([#42](https://github.com/AndreaB2000/ASW-project/issues/42)) ([c2fdca3](https://github.com/AndreaB2000/ASW-project/commit/c2fdca390b40eab28b479df021e6ca05a5aeb79a))
+* **deps:** update dependency cypress to v14.0.3 ([#45](https://github.com/AndreaB2000/ASW-project/issues/45)) ([f4383a5](https://github.com/AndreaB2000/ASW-project/commit/f4383a5ff771610a2798d32dc8526a00a27a24a4))
+* **deps:** update dependency eslint to v9.20.0 ([#39](https://github.com/AndreaB2000/ASW-project/issues/39)) ([eb21798](https://github.com/AndreaB2000/ASW-project/commit/eb217983c8adf597540f166077efa104824c8ae7))
+* **deps:** update dependency eslint to v9.20.1 ([#46](https://github.com/AndreaB2000/ASW-project/issues/46)) ([73a45f6](https://github.com/AndreaB2000/ASW-project/commit/73a45f62ae15caef36de5deeab7563d391fbb479))
+* **deps:** update dependency pinia to v3 ([#48](https://github.com/AndreaB2000/ASW-project/issues/48)) ([d33e033](https://github.com/AndreaB2000/ASW-project/commit/d33e0337afd45a44873f5549d7aa01103234c19e))
+* **deps:** update dependency prettier to v3.5.0 ([#43](https://github.com/AndreaB2000/ASW-project/issues/43)) ([0b4b265](https://github.com/AndreaB2000/ASW-project/commit/0b4b26564cf3c5635f3be10a981918a4eeaf0ff1))
+* **deps:** update dependency prettier to v3.5.1 ([#53](https://github.com/AndreaB2000/ASW-project/issues/53)) ([d0585c9](https://github.com/AndreaB2000/ASW-project/commit/d0585c9d63972ca8ea85b58aea07e18c08a4d593))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.122 ([#35](https://github.com/AndreaB2000/ASW-project/issues/35)) ([04c3f09](https://github.com/AndreaB2000/ASW-project/commit/04c3f09e150b300ebeb648b4dcbcf7a5cfb30189))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.123 ([#50](https://github.com/AndreaB2000/ASW-project/issues/50)) ([f4e1670](https://github.com/AndreaB2000/ASW-project/commit/f4e1670fdf9a3f85d9620adb51b2ac966f96e80d))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.124 ([#56](https://github.com/AndreaB2000/ASW-project/issues/56)) ([a71c6e8](https://github.com/AndreaB2000/ASW-project/commit/a71c6e8739e42dfb18058dc8bad2556b4af6aefb))
+* **deps:** update dependency vite to v6.1.0 ([#36](https://github.com/AndreaB2000/ASW-project/issues/36)) ([7721ac6](https://github.com/AndreaB2000/ASW-project/commit/7721ac6e48bb0417ce821ebfa35f1499639451e0))
+* **deps:** update dependency vite-plugin-vue-devtools to v7.7.2 ([#47](https://github.com/AndreaB2000/ASW-project/issues/47)) ([831d828](https://github.com/AndreaB2000/ASW-project/commit/831d8287906ecb334cfd832b82053694c0e6d33a))
+* **deps:** update dependency vue-tsc to v2.2.2 ([#57](https://github.com/AndreaB2000/ASW-project/issues/57)) ([51343b3](https://github.com/AndreaB2000/ASW-project/commit/51343b334232c61677f94372d34cc44822a78a37))
+
+### Build and continuous integration
+
+* **semrel:** update semantic release docker hub publish command ([0533cf2](https://github.com/AndreaB2000/ASW-project/commit/0533cf204aa0c18a91e3c2a59c72b170c66b9f97))
+* should not fail on renovate main pushes ([5f5dbd0](https://github.com/AndreaB2000/ASW-project/commit/5f5dbd0df1f003a018e9dc1adbeb0329c6a38b85))
+
+### General maintenance
+
+* **config:** add tasks for Docker in npm ([507bb35](https://github.com/AndreaB2000/ASW-project/commit/507bb355e35e8d2a333422ea903f4ca80fa0e796))
+* **config:** edit node version ([f18d35b](https://github.com/AndreaB2000/ASW-project/commit/f18d35bf08a2b3632cb2c629131d88fa0dbe7aa7))
+* **docker:** make containers work and write docker compose file ([29ff308](https://github.com/AndreaB2000/ASW-project/commit/29ff3087dfc7be18c2bca31b17e6d8c19748e2d9))
+
 ## [0.2.12](https://github.com/AndreaB2000/ASW-project/compare/0.2.11...0.2.12) (2025-02-07)
 
 ### Dependency updates
