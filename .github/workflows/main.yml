@@ -21,7 +21,7 @@ jobs:
   build-test:
     concurrency:
       group: build-${{ matrix.os }}-${{ matrix.node-version }}-${{ github.event_name == 'push' && 'push' || (github.actor == 'renovate[bot]' && 'renovate-pr' || 'pr') }}
-      cancel-in-progress: ${{ github.event_name == 'push' && github.actor != 'renovate[bot]' }}
+      cancel-in-progress: ${{ github.event_name == 'push' && !contains(github.ref, 'renovate') && !contains(github.ref, 'main') }}
     strategy:
       matrix:
         os: [ubuntu-24.04, windows-2022, macos-13]
