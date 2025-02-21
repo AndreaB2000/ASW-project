@@ -13,8 +13,7 @@
         "typescript",
         "javascript"
       ],
-      "semanticCommitScope": "core-deps",
-      "automerge": true
+      "semanticCommitScope": "core-deps"
     }
   ]
 }
