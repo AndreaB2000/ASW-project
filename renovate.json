@@ -15,10 +15,5 @@
       ],
       "semanticCommitScope": "core-deps"
     }
-  ],
-  "statusCheckNames": {
-    "build-&-test": true,
-    "coverage": true,
-    "semantic-release": true
-  }
+  ]
 }
