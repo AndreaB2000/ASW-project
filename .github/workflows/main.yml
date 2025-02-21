@@ -146,12 +146,17 @@ jobs:
 
       - name: Extract Branch Name
         id: vars
-        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "merge" ]]; then
+            echo "BRANCH_NAME=PR" >> $GITHUB_ENV
+          else
+            echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          fi
 
       - name: Get Commit Message
         id: commit_message
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B | tr '\n' ' ')
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B -n 1 ${{ github.event.pull_request.head.sha }} | tr '\n' ' ')
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
 
       - name: Determine Pipeline Status
