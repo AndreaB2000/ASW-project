@@ -20,8 +20,8 @@ permissions:
 jobs:
   build-test:
     concurrency:
-      group: build-${{ matrix.os }}-${{ matrix.node-version }}-${{ github.event_name == 'push' && 'push' || (github.actor == 'renovate[bot]' && 'renovate-pr' || 'pr') }}
-      cancel-in-progress: ${{ github.event_name == 'push' && !contains(github.ref, 'renovate') && !contains(github.ref, 'main') }}
+      group: build-${{ matrix.os }}-${{ matrix.node-version }}-${{ github.event_name == 'push' && (github.actor == 'renovate[bot]' && 'renovate' || 'push') || 'pr' }}
+      cancel-in-progress: ${{ github.event_name == 'push' && github.actor != 'renovate[bot]' }}
     strategy:
       matrix:
         os: [ubuntu-24.04, windows-2022, macos-13]
@@ -136,6 +136,7 @@ jobs:
     needs:
       - sign-release
       - coverage
+      - build-test
     if: always()
     steps:
       - name: Checkout repo
@@ -168,7 +169,7 @@ jobs:
             else
               echo "TITLE=# ✅Pipeline Passed: ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
             fi
-          elif [[ "${{ needs.sign-release.result }}" == "cancelled" ]]; then
+          elif [[ "${{ needs.sign-release.result }}" == "cancelled" || "${{ needs.build-test.result }}" == "cancelled" || "${{ needs.coverage.result }}" == "cancelled" ]]; then
             echo "TITLE=# ⚠️Pipeline Interrupted" >> $GITHUB_ENV
           else
             echo "TITLE=# ❌Pipeline Failed" >> $GITHUB_ENV
