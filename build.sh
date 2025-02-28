@@ -6,6 +6,7 @@ rm -rf dist
 # Build the server and client
 npm run build:server
 npm run build:client
+npm run build:docs
 
 # Copy the package.json and package-lock.json files to the dist folder
 cp package.json dist/
@@ -17,5 +18,6 @@ cp src/client/package-lock.json dist/client/
 
 # Copy the README.md, LICENSE, and CHANGELOG.md files to the dist folder
 cp README.md dist/
+cp -r docs/ dist/
 cp LICENSE dist/
 cp CHANGELOG.md dist/

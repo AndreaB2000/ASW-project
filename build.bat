@@ -5,6 +5,7 @@ rmdir /s /q dist
 REM Build the server and client
 call npm run build:server
 call npm run build:client
+call npm run build:docs
 
 REM Copy the package.json and package-lock.json files to the dist folder
 copy package.json dist\
@@ -17,6 +18,7 @@ copy src\client\package.json dist\client\
 copy src\client\package-lock.json dist\client\
 
 copy CHANGELOG.md dist\
+xcopy /E /I docs dist
 copy LICENSE dist\
 copy README.md dist\
 
