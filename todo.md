@@ -5,7 +5,18 @@
 ## Interesting things for express
 
 - use ssl certificate enabling https
-- use helmet for security (<https://github.com/helmetjs/helmet>)
+
+### Helmet Security https headers
+
+use helmet for security (<https://github.com/helmetjs/helmet>):
+
+```js
+import helmet from "helmet";
+
+const app = express();
+
+app.use(helmet());
+```
 
 ### Application-level middleware
 
