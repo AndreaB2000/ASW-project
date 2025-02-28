@@ -1,5 +1,6 @@
 import express from "express";
 import logger from "morgan";
+import helmet from "helmet";
 import * as path from "path";
 
 import { errorHandler, errorNotFoundHandler } from "./middlewares/errorHandler";
@@ -21,3 +22,6 @@ app.use("/", index);
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
+
+app.use(helmet());
+app.use(express.json());
