@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["."],
+  "entryPointStrategy": "expand",
+  "out": "../../dist/docs/typedoc/server",
+  "exclude": ["**/*.+(config|spec).ts", "**/node_modules/**"],
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "hideGenerator": true
+}

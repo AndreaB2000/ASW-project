@@ -33,7 +33,7 @@
     "type-check:client": "cd src/client && npm run type-check",
     "build:server": "cd src/server && npm run build",
     "build:client": "cd src/client && npm run build",
-    "build:docs": "typedoc",
+    "build:docs": "cd src/server && typedoc && cd ../client && typedoc",
     "start:client": "cd src/client && npm run start",
     "start:server": "cd src/server && npm run start",
     "serve:client": "cd src/client && npm run serve",
