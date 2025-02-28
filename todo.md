@@ -84,7 +84,7 @@ app.use(
 );
 ```
 
-### Static fiel serving
+### Static field serving
 
 If your Express app needs to serve static files (like images, CSS, JavaScript), you can use Express’s built-in middleware to handle this.
 
