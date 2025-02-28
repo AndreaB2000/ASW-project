@@ -6,30 +6,30 @@ Consegna proposta 21 Aprile
 
 __Domain__ : Sandpiles
 
-__Contexts__ : 
+__Contexts__ :
 
-  - Account Management
-  - Game Experience
-    - PVP
-    - PVE
-    - Matchmaking
-  - Game History
+- Account Management
+- Game Experience
+  - PVP
+  - PVE
+  - Matchmaking
+- Game History
 
 ## Glossary
 
 User: a human interacting with the application through
 Player: a User interacting with the sandpiles game.
-Login: 
-Register: 
+Login:
+Register:
 
 Game Board: square field divided into square Piles.
 Pile: a pawn on a Cell.
-Grain: 
-Collapse: 
+Grain:
+Collapse:
 Cell: a tile of the Game Board.
-Conquer: 
+Conquer:
 
-Clock: 
+Clock:
 Elo Ranking: ranking rappresenting the strenght of a given player.
 Matchmaking: the algorithm responsible for selecting players to face each other among the players available.
 
