@@ -6,7 +6,7 @@
 
 - use ssl certificate enabling https
 
-### Helmet Security https headers
+### Helmet Security https headers (DONE)
 
 use helmet for security (<https://github.com/helmetjs/helmet>):
 
@@ -18,7 +18,7 @@ const app = express();
 app.use(helmet());
 ```
 
-### Application-level middleware
+### Application-level middleware (DONE)
 
 parses body of the request as json and makes it available in the req.body property
 
