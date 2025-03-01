@@ -145,3 +145,6 @@ dist
 
 # SonarQube generated files
 .sonar/
+
+# MongoDB database directory
+**/mongodatabase/
