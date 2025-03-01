@@ -49,3 +49,9 @@ other among the players available.
 - Biagini: Game Experience
 - Gurioli: Account Management
 - Randacio: Matchmaking, PVE, Game History
+
+## Docker deploy
+
+To execute the system via Docker Compose, it is necessary to create the file
+`src/server/secrets/mongo_root_password.txt`. Additional instructions are
+provided in the `secrets` directory.
