@@ -8,17 +8,47 @@ networks:
 
 services:
   server:
-    image: aswserver
+    image: andreabiagini5/aswserver
     container_name: aswserver
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
     networks:
       asw_network:
         ipv4_address: 172.0.0.10
 
   client:
-    image: aswclient
+    image: andreabiagini5/aswclient
     container_name: aswclient
+    restart: always
+    ports:
+      - '4173:4173'
     depends_on:
       - server
+      - database
     networks:
       asw_network:
         ipv4_address: 172.0.0.11
+
+  database:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
+    volumes:
+      - src/server/mongodatabase:/data/db
+    secrets:
+      - mongo_root_password
+    networks:
+      asw_network:
+        ipv4_address: 172.0.0.12
+
+secrets:
+  mongo_root_password:
+    file: src/server/secrets/mongo_root_password.txt
