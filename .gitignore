@@ -148,3 +148,6 @@ dist
 
 # MongoDB database directory
 **/mongodatabase/
+
+# MongoDB root password
+src/server/secrets/mongo_root_password.txt
