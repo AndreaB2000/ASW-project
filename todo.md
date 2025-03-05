@@ -11,7 +11,7 @@
 use helmet for security (<https://github.com/helmetjs/helmet>):
 
 ```js
-import helmet from "helmet";
+import helmet from 'helmet';
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.get('/users', (req, res, next) => {
 });
 ```
 
-### Error-handling middleware
+### Error-handling middleware (DONE)
 
 ```typescript
 app.use((err, req, res, next) => {
@@ -84,7 +84,7 @@ app.use(
 );
 ```
 
-### Static field serving
+### Static field serving (DONE)
 
 If your Express app needs to serve static files (like images, CSS, JavaScript), you can use Express’s built-in middleware to handle this.
 
@@ -92,7 +92,7 @@ If your Express app needs to serve static files (like images, CSS, JavaScript), 
 app.use(express.static('public')); // Serve files from the "public" directory
 ```
 
-### Logging
+### Logging (DONE)
 
 Exploit `morgan` library
 
@@ -101,7 +101,7 @@ const morgan = require('morgan');
 app.use(morgan('tiny')); // Logs a concise output
 ```
 
-### Rate limiting
+### Rate limiting (DONE)
 
 Exploit `express-rate-limit` library
 
