@@ -8,7 +8,7 @@ config:
 ---
 
 classDiagram
-    class MongoDB
+    class Database
     class Repository
     class Service
     class Controller
@@ -17,7 +17,7 @@ classDiagram
     class Entity
     class AggregateRoot
 
-    MongoDB <|-- Repository
+    Database <|-- Repository
     Repository <|-- Service
     Service <|-- Controller
     Service <|-- Factory
