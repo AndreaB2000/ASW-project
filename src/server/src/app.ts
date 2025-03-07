@@ -31,9 +31,11 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-app.use(cors({
-  origin: 'TODO', //TODO: insert here the right client IP address
-}));
+app.use(
+  cors({
+    origin: '172.0.0.11',
+  }),
+);
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
