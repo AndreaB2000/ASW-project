@@ -17,11 +17,12 @@ classDiagram
     class Entity
     class AggregateRoot
 
-    Database <|-- Repository
-    Repository <|-- Service
-    Service <|-- Controller
-    Service <|-- Factory
-    Factory <|-- ValueObject
-    Factory <|-- Entity
-    Factory <|-- AggregateRoot
+    Database <-- Repository
+    Repository <-- Service
+    Repository <-- Factory
+    Service <-- Controller
+    Service <-- Factory
+    Factory <-- ValueObject
+    Factory <-- Entity
+    Factory <-- AggregateRoot
 ```
