@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(cors({
   origin: 'TODO', //TODO: insert here the right client IP address
-});
+}));
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
