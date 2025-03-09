@@ -57,7 +57,7 @@
     "typescript": "^5.7.3",
     "sonarqube-scanner": "^4.2.6"
   },
-  "version": "0.2.15",
+  "version": "0.2.16",
   "keywords": [
     "web",
     "client-server",

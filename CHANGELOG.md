@@ -1,3 +1,11 @@
+## [0.2.16](https://github.com/AndreaB2000/ASW-project/compare/0.2.15...0.2.16) (2025-03-09)
+
+### Dependency updates
+
+* **core-deps:** update dependency typescript to ~5.8.0 ([#101](https://github.com/AndreaB2000/ASW-project/issues/101)) ([26155a0](https://github.com/AndreaB2000/ASW-project/commit/26155a0a822032d800b92dacc36244fdb92916be))
+* **deps:** update dependency @vue/eslint-config-typescript to v14.5.0 ([#115](https://github.com/AndreaB2000/ASW-project/issues/115)) ([769d0e5](https://github.com/AndreaB2000/ASW-project/commit/769d0e5f119aadcc29c7d58dc8cdda5d40b9620d))
+* **deps:** update dependency eslint-plugin-vue to v9.33.0 ([#113](https://github.com/AndreaB2000/ASW-project/issues/113)) ([fe9c5dc](https://github.com/AndreaB2000/ASW-project/commit/fe9c5dc04dee3fcea0f65b661a90dd07cf613f65))
+
 ## [0.2.15](https://github.com/AndreaB2000/ASW-project/compare/0.2.14...0.2.15) (2025-03-07)
 
 ### Dependency updates
