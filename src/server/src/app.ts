@@ -3,11 +3,11 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import * as path from 'path';
 import rateLimit from 'express-rate-limit';
-
+const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
-
 // Routes
 import { index } from './routes/index';
+
 // Create Express server
 export const app = express();
 
