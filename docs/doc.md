@@ -109,16 +109,15 @@ The system provides visual cues and side-by-side comparisons, such as “critica
 #### Learning Outcome
 
 By reviewing these comparisons, Victor identifies a recurring mistake in his opening setup.
-He uses community forums integrated on the site to discuss these insights with other experienced players.
 
 ## Persona 2: The New Player
 
 ### Profile
 
-Name: Jordan
-Experience: New to the game, with minimal experience in Sandpiles
-Goal: Establish a foothold in ranked play and improve through competitive matches
-Usage Pattern: Just registered, excited to test skills in a ranked environment, learning from early wins and losses
+- Name: Jordan
+- Experience: New to the game, with minimal experience in Sandpiles
+- Goal: Establish a foothold in ranked play and improve through competitive matches
+- Usage Pattern: Just registered, excited to test skills in a ranked environment, learning from early wins and losses
 
 ### Scenario 1: New Account Creation and First Ranked Game
 
@@ -130,7 +129,7 @@ The system offers a quick tutorial on basic rules and interface navigation.
 #### Entering Ranked Play
 
 After registration, Jordan opts to play his first ranked game.
-The system pairs him with another new challenger with a similar provisional rating.
+The system pairs him with another new challenger with a similar rating.
 
 #### Gameplay and Outcome
 
@@ -158,10 +157,10 @@ Jordan uses this feedback to revisit the tutorial section and accesses community
 
 ### Profile
 
-Name: Taylor (Guest)
-Experience: Occasional player who visits without creating an account
-Goal: Enjoy a single game for leisure without any long-term commitment
-Usage Pattern: Uses the guest play option for quick, casual matches without saving history or affecting ratings
+- Name: Taylor (Guest)
+- Experience: Occasional player who visits without creating an account
+- Goal: Enjoy a single game for leisure without any long-term commitment
+- Usage Pattern: Uses the guest play option for quick, casual matches without saving history or affecting ratings
 
 ### Scenario 1: Quick Casual Game as a Guest
 
