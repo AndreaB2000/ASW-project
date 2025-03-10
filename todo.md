@@ -117,3 +117,4 @@ app.use(limiter);
 ## Remember To
 
 - remove template README.md files around the project, or at least evaluate if they are needed.
+- remove all "TODOS" from report.md
