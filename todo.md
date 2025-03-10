@@ -113,3 +113,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 ```
+
+## Remember To
+
+- remove template README.md files around the project, or at least evaluate if they are needed.
