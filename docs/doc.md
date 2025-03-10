@@ -60,7 +60,7 @@ Elo Ranking: ranking rappresenting the strenght of a given player.
 Matchmaking: the algorithm responsible for selecting players to face each
 other among the players available.
 
-## Divisione Lavoro
+## Work division
 
 - Biagini: Game Experience
 - Gurioli: Account Management
