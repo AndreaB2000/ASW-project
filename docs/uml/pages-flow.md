@@ -6,7 +6,7 @@ flowchart TD
     Home <--> Register(Register)
     Home <--> Login(Login)
     Home <--> Tutorial(Tutorial)
-    Tutorial --> MatchMaking
+    Tutorial -->|play online| MatchMaking
     Tutorial -->|play bot| Match
     Home <-->|play online| MatchMaking(Match Making)
     Home <--> Leaderboard(Leaderboard)
