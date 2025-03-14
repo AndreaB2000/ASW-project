@@ -118,3 +118,7 @@ app.use(limiter);
 
 - remove template README.md files around the project, or at least evaluate if they are needed.
 - remove all "TODOS" from report.md
+
+## Others
+
+- Add catchy phrase in landing page: "Ogni granello conta: fai cadere la sabbia con strategia, osserva le cascate di reazioni a catena e scopri pattern sorprendenti!"
