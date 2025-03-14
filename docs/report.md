@@ -56,6 +56,9 @@ The user can:
       1. Disconnect from the current game
 1. View the website leaderboard
 1. View a tutorial on _Sandpiles_ game rules
+1. Developers
+   1. Use the public API to access data about players and games, in an authenticated manner
+   1. Find the public API documentation on the _Sandpiles_ website
 
 #### System Functional Requirements
 
