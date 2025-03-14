@@ -2,26 +2,25 @@
 
 ```mermaid
 flowchart TD
-    A@{ shape: circle, label: "Start" } -->|auto login| Home(Home)
+    A@{ shape: circle, label: "Start" } -->|auto login| Play(Play)
     A@{ shape: circle, label: "Start" } --> Landing(Landing)
     Landing <--> Login(Login)
     Landing <--> Register(Register)
     Landing <--> Tutorial(Tutorial)
     Landing -->|play bot| Match
     Register -->|registration completed| Login
-    Login --> Home
-    Home <--> Tutorial(Tutorial)
-    Home <-->|play online| MatchMaking(Match Making)
-    Home <--> Leaderboard(Leaderboard)
-    Home -->|play bot| Match
-    Home <--> Profile(Profile)
+    Login --> Play
+    Play <--> Tutorial(Tutorial)
+    Play <-->|play online| MatchMaking(Match Making)
+    Play -->|play bot| Match
+    Play <--> Profile(Profile)
     Tutorial -->|play online| MatchMaking
     Tutorial -->|play bot| Match
     MatchMaking -->|opponent found| Match(Match)
-    Match -->|quit| Home
+    Match -->|quit| Play
     Match -->|game over| GameEnd("Game End (stats)")
     GameEnd -->|play again| Match
-    GameEnd --> Home
+    GameEnd --> Play
     GameEnd --> Leaderboard
     GameEnd <--> Profile
     Leaderboard <--> Profile
