@@ -11,10 +11,10 @@ flowchart TD
     Register -->|registration completed| Login
     Login --> Play
     Play <--> Tutorial(Tutorial)
-    Play <-->|play online| MatchMaking(Match Making)
+    Play <-->|play ranked| MatchMaking(Match Making)
     Play -->|play bot| Match
     Play <--> Profile(Profile)
-    Tutorial -->|play online| MatchMaking
+    Tutorial -->|play ranked| MatchMaking
     Tutorial -->|play bot| Match
     MatchMaking -->|opponent found| Match(Match)
     Match -->|quit| Play
@@ -22,7 +22,7 @@ flowchart TD
     GameEnd -->|play again| Match
     GameEnd --> Play
     GameEnd --> Leaderboard
-    GameEnd <--> Profile
+    GameEnd --> Profile
     Leaderboard <--> Profile
     Profile <--> MatchHistory(Match History)
     MatchHistory <--> Replay(Replay)
