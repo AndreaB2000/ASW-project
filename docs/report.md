@@ -91,7 +91,7 @@ The user can:
 
 ## Design
 
-The following design has been developed starting from the user stories specified [here](user-stories.md). From the user stories we also have derived an ubiquitous language in order to clearly define domain jargon, and the pages flow diagram as shown below.
+The following design has been developed starting from the user stories specified [here](user-stories.md). From the user stories we also have derived the domain model (which established an ubiquitous jargon) and the pages flow diagram as shown below.
 
 ```mermaid
 flowchart TD
@@ -125,13 +125,98 @@ Based on the pages flow a project mockup has been developed also taking into acc
 
 Requirements suggested an hexagonal client server architecture as explained in the dedicated [sub-section](#architecture).
 
-### Ubiquitous Language
+### Domain Model
+
+**Domain**: Sandpiles game
+
+**Contexts**:
+
+- Account Management
+- Game Experience
+  - PVP
+  - PVE
+  - Matchmaking
+- Game History
+
+**Glossary**:
+
+_User_: a human interacting with the application through the UI
+
+_Player_: a User interacting with the sandpiles game.
+
+_Login_: access the application with a given account.
+
+_Register_: the creation of a new account.
+
+_Game Board_: square field divided into square Cells
+
+_Cell_: a tile of the Game Board.
+
+_Pile_: a pawn on a Cell owned by a Player, with a number of Grains.
+
+_Grain_: fundamental unit of a Pile.
+
+_Owner of a Pile_: the player who owns the pile.
+
+_Game_: a sequence of Turns on the Game Board ending when the Win Condition is satisfied for one player.
+
+_Win Condition_: the Game Board state where all Piles are owned by one player or the opponent clock's time is finished.
+
+_Turn_: a player move and its eventual collapses.
+
+_Move_: interaction by which a player increases the number of grains in an owned pile by 1.
+
+_Collapse_: the event of a pile reaching 4 grains. This event will:
+
+- remove the current pile
+- let the adjacent cells be conquered by the owner of the collapsing pile
+
+_Conquer_: the event of a cell where:
+
+- if empty, a pile with 1 grain is placed
+- if not empty, the pile is incremented by 1 and, if the owner is different, the ownership is changed to the conqueror (i.e. the player who made the move)
+
+_Clock_: time counter that tracks how many seconds each player has left to play to game
+
+_Glicko rating system_: method used to calculate and update player ratings in competitive games and sports ([link](https://en.wikipedia.org/wiki/Glicko_rating_system)).
+
+_Glicko Ranking_: ranking rappresenting the strenght of a given player.
+
+_Matchmaking_: the algorithm responsible for selecting players to face each
+other among the players available.
+
+#### Context map
+
+The following context map arises from the previous description.
+
+```mermaid
+stateDiagram-v2
+   state GameExperience {
+      PVP --> PVE
+      PVP --> Matchmaking
+      PVE --> PVP
+      PVE --> Matchmaking
+      Matchmaking --> PVP
+      Matchmaking --> PVE
+   }
+
+   AccountManagement --> GameExperience
+   AccountManagement --> GameHistory
+   GameExperience --> AccountManagement
+   GameExperience --> GameHistory
+   GameHistory --> AccountManagement
+   GameHistory --> GameExperience
+```
+
+<!-- NON HO ANCORA MAPPATO I PUNTI DI CONNESSIONE TRA I VARI CONTESTI -->
 
 ### Mockup
 
 ### Architecture
 
 ### Detailed Design
+
+<!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
 
 ## Technologies
 
