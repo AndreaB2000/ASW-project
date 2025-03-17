@@ -91,20 +91,51 @@ The user can:
 
 ## Design
 
+The following design has been developed starting from the user stories specified [here](user-stories.md). From the user stories we also have derived an ubiquitous language in order to clearly define domain jargon, and the pages flow diagram as shown below.
+
+```mermaid
+flowchart TD
+    A@{ shape: circle, label: "Start" } -->|auto login| Play(Play)
+    A@{ shape: circle, label: "Start" } --> Landing(Landing)
+    Landing <--> Login(Login)
+    Landing <--> Register(Register)
+    Landing <--> Tutorial(Tutorial)
+    Landing -->|play bot| Match
+    Register -->|registration completed| Login
+    Login --> Play
+    Play <--> Tutorial(Tutorial)
+    Play <-->|play ranked| MatchMaking(Match Making)
+    Play -->|play bot| Match
+    Play <--> Profile(Profile)
+    Tutorial -->|play ranked| MatchMaking
+    Tutorial -->|play bot| Match
+    MatchMaking -->|opponent found| Match(Match)
+    Match -->|quit| Play
+    Match -->|game over| GameEnd("Game End (stats)")
+    GameEnd -->|play again| Match
+    GameEnd --> Play
+    GameEnd --> Leaderboard
+    GameEnd --> Profile
+    Leaderboard <--> Profile
+    Profile <--> MatchHistory(Match History)
+    MatchHistory <--> Replay(Replay)
+```
+
+Based on the pages flow a project mockup has been developed also taking into account user experience and adopting a user centered approach.
+
+Requirements suggested an hexagonal client server architecture as explained in the dedicated [sub-section](#architecture).
+
+### Ubiquitous Language
+
 ### Mockup
+
+### Architecture
 
 ### Detailed Design
 
-## Architecture
-
-Design dell’architettura del sistema e delle interfacce utente.
-Figure 1: Death Star
-0.4
-
 ## Technologies
 
-Tecnologie adottate e motivazioni.
-0.5
+MEVN
 
 ## Code
 
