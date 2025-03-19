@@ -36,14 +36,14 @@ describe('MatchRepository', () => {
       save: jest.fn<any>().mockResolvedValue(mockSavedMatch),
     }));
 
-    await expect(MatchRepository.create(mockMatchData)).toEqual(mockSavedMatch);
+    expect(await MatchRepository.create(mockMatchData)).toEqual(mockSavedMatch);
   });
 
   it('should find all matches', async () => {
     const mockMatches = [{ _id: MATCH_ID, players: PLAYERS, moves: [] as Move[] }];
     (Match.find as jest.Mock).mockReturnValue(mockMatches);
 
-    await expect(MatchRepository.findAll()).toEqual(mockMatches);
+    expect(await MatchRepository.findAll()).toEqual(mockMatches);
     expect(Match.find).toHaveBeenCalledTimes(1);
   });
 
@@ -51,7 +51,7 @@ describe('MatchRepository', () => {
     const mockMatch = { _id: MATCH_ID, players: PLAYERS, moves: [] as Move[] };
     (Match.findById as jest.Mock).mockReturnValue(mockMatch);
 
-    await expect(MatchRepository.findById(MATCH_ID)).toEqual(mockMatch);
+    expect(await MatchRepository.findById(MATCH_ID)).toEqual(mockMatch);
     expect(Match.findById).toHaveBeenCalledWith(MATCH_ID);
   });
 
@@ -59,12 +59,12 @@ describe('MatchRepository', () => {
     const match = { _id: MATCH_ID, initialState: INITIAL_STATE };
     (Match.findById as jest.Mock).mockReturnValue(match);
 
-    await expect(MatchRepository.getInitialBoardState(MATCH_ID)).toEqual(match.initialState);
+    expect(await MatchRepository.getInitialBoardState(MATCH_ID)).toEqual(match.initialState);
   });
 
   it('should get null initial board state if the given ID does not exist', async () => {
     (Match.findById as jest.Mock).mockReturnValue(null);
-    await expect(MatchRepository.getInitialBoardState(MATCH_ID)).toEqual(null);
+    expect(await MatchRepository.getInitialBoardState(MATCH_ID)).toEqual(null);
   });
 
   it('should add a move to a match with a given ID', async () => {
@@ -78,8 +78,8 @@ describe('MatchRepository', () => {
     (Match.findByIdAndUpdate as jest.Mock).mockReturnValue(mockUpdatedMatch);
     (Match.findById as jest.Mock).mockReturnValue(mockUpdatedMatch);
 
-    await expect(MatchRepository.addMove(MATCH_ID, move)).toEqual(mockUpdatedMatch);
-    await expect(MatchRepository.findById(MATCH_ID)).toEqual(mockUpdatedMatch);
+    expect(await MatchRepository.addMove(MATCH_ID, move)).toEqual(mockUpdatedMatch);
+    expect(await MatchRepository.findById(MATCH_ID)).toEqual(mockUpdatedMatch);
   });
 
   it('should get all moves of a match', async () => {
@@ -95,12 +95,12 @@ describe('MatchRepository', () => {
     };
     (Match.findById as jest.Mock).mockReturnValue(mockMatch);
 
-    await expect(MatchRepository.getMoves(MATCH_ID)).toEqual(mockMatch.moves);
+    expect(await MatchRepository.getMoves(MATCH_ID)).toEqual(mockMatch.moves);
   });
 
   it('should get null moves if the given ID does not exist', async () => {
     (Match.findById as jest.Mock).mockReturnValue(null);
-    await expect(MatchRepository.getMoves(MATCH_ID)).toEqual(null);
+    expect(await MatchRepository.getMoves(MATCH_ID)).toEqual(null);
   });
 
   it('should get the latest board state', async () => {
@@ -117,7 +117,7 @@ describe('MatchRepository', () => {
     };
     (Match.findById as jest.Mock).mockReturnValue(mockMatch);
 
-    await expect(MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(
+    expect(await MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(
       mockMatch.moves[0].newState,
     );
   });
@@ -130,19 +130,19 @@ describe('MatchRepository', () => {
     };
     (Match.findById as jest.Mock).mockReturnValue(mockMatch);
 
-    await expect(MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(mockMatch.initialState);
+    expect(await MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(mockMatch.initialState);
   });
 
   it('should get null board state if the given ID does not exist', async () => {
     (Match.findById as jest.Mock).mockReturnValue(null);
-    await expect(MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(null);
+    expect(await MatchRepository.getLatestBoardState(MATCH_ID)).toEqual(null);
   });
 
   it('should delete a match by ID', async () => {
     const deletedMatch = { _id: MATCH_ID, players: PLAYERS, moves: [] as Move[] };
     (Match.findByIdAndDelete as jest.Mock).mockReturnValue(deletedMatch);
 
-    await expect(MatchRepository.delete(MATCH_ID)).toEqual(deletedMatch);
+    expect(await MatchRepository.delete(MATCH_ID)).toEqual(deletedMatch);
     expect(Match.findByIdAndDelete).toHaveBeenCalledWith(MATCH_ID);
   });
 });
