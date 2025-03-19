@@ -35,7 +35,7 @@ describe('MatchService', () => {
 
     (MatchRepository.create as jest.Mock).mockReturnValue(mockMatch);
 
-    await expect(MatchService.createMatch(PLAYERS)).toEqual(mockMatch);
+    expect(await MatchService.createMatch(PLAYERS)).toEqual(mockMatch);
     expect(MatchRepository.create).toHaveBeenCalledWith({
       players: PLAYERS,
       initialState: INITIAL_STATE,
@@ -72,7 +72,7 @@ describe('MatchService', () => {
 
     (MatchRepository.addMove as jest.Mock).mockReturnValue(updatedMatch);
 
-    await expect(MatchService.addMove(MATCH_ID, move)).toEqual(updatedMatch);
+    expect(await MatchService.addMove(MATCH_ID, move)).toEqual(updatedMatch);
     expect(MatchRepository.addMove).toHaveBeenCalledWith(MATCH_ID, move);
   });
 
@@ -84,7 +84,7 @@ describe('MatchService', () => {
 
     (MatchRepository.findAll as jest.Mock).mockReturnValue(matches);
 
-    await expect(MatchService.getMatchesByPlayer(PLAYER1)).toEqual(matches);
+    expect(await MatchService.getMatchesByPlayer(PLAYER1)).toEqual(matches);
     expect(MatchRepository.findAll).toHaveBeenCalled();
   });
 });
