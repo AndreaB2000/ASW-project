@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../src/app';
+import { describe } from 'node:test';
 
 describe('GET /', () => {
   it('should return 200 OK', () => {
