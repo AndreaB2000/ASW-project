@@ -158,7 +158,7 @@ _Grain_: fundamental unit of a Pile.
 
 _Owner of a Pile_: the player who owns the pile.
 
-_Game_: a sequence of Turns on the Game Board ending when the Win Condition is satisfied for one player.
+_Match_: a sequence of Turns on the Game Board ending when the Win Condition is satisfied for one player.
 
 _Win Condition_: the Game Board state where all Piles are owned by one player or the opponent clock's time is finished.
 
@@ -190,25 +190,38 @@ other among the players available.
 The following context map arises from the previous description.
 
 ```mermaid
-stateDiagram-v2
-   state GameExperience {
-      PVP --> PVE
-      PVP --> Matchmaking
-      PVE --> PVP
-      PVE --> Matchmaking
-      Matchmaking --> PVP
-      Matchmaking --> PVE
-   }
+graph
+   subgraph gameExperience["Game experience"]
+      subgraph matchContext["Match context"]
+         player1("Player")
+         GameBoard
+         Cell
+         Pile
+         Grain
+         PileOwner
+         Match
+         WinCondition
+         Move
+         Turn
+         Collapse
+         Conquer
+         Clock
+         glickoRanking1("Glicko Ranking")
+      end
 
-   AccountManagement --> GameExperience
-   AccountManagement --> GameHistory
-   GameExperience --> AccountManagement
-   GameExperience --> GameHistory
-   GameHistory --> AccountManagement
-   GameHistory --> GameExperience
+      subgraph matchMaking["Matchmaking"]
+         glickoRanking2("Glicko Ranking") <--> glickoRanking1
+         player2("Player") <--> player1
+      end
+   end
+
+   subgraph accountManagement["Account management"]
+      User <--> player1
+      User <--> player2
+      Login
+      Register
+   end
 ```
-
-<!-- NON HO ANCORA MAPPATO I PUNTI DI CONNESSIONE TRA I VARI CONTESTI -->
 
 ### Mockup
 
