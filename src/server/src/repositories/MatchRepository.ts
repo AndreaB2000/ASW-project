@@ -1,4 +1,45 @@
-import Match, { MatchDocument, Move, BoardState } from '../models/Match';
+import { Move, BoardState } from '../models/Match';
+import { Document, Schema, model } from 'mongoose';
+
+export interface MatchDocument extends Document {
+  players: string[];
+  createdAt: Date;
+  initialState: BoardState;
+  moves: Move[];
+}
+
+const matchSchema = new Schema<MatchDocument>({
+  players: {
+    type: [String],
+    required: true,
+    validate: {
+      validator: function (players: string[]) {
+        return players.length === 2; // There should be exactly 2 players
+      },
+      message: 'Una partita richiede esattamente due giocatori.',
+    },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  initialState: {
+    type: Schema.Types.Mixed, // Cells matrix
+    required: true,
+  },
+  moves: [
+    {
+      player: { type: String, required: true },
+      grainPlaced: {
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
+      },
+      newState: { type: Schema.Types.Mixed, required: true }, // Cells matrix
+    },
+  ],
+});
+
+const Match = model<MatchDocument>('Match', matchSchema);
 
 class MatchRepository {
   /**

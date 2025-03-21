@@ -1,5 +1,5 @@
 import MatchRepository from '../repositories/MatchRepository';
-import { BoardState, MatchDocument, Move } from '../models/Match';
+import { BoardState, Move } from '../models/Match';
 
 class MatchService {
   /**

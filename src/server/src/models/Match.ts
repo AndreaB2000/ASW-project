@@ -1,7 +1,5 @@
-import { Document, Schema, model } from 'mongoose';
-
 interface Pile {
-  owner: string;
+  owner: Player;
   grains: number;
 }
 
@@ -12,49 +10,96 @@ interface Cell {
 export type BoardState = Cell[][];
 
 export interface Move {
-  player: string;
-  grainPlaced: { x: number; y: number };
-  newState: BoardState;
+  x: number;
+  y: number;
 }
 
-export interface MatchDocument extends Document {
-  players: string[];
-  createdAt: Date;
-  initialState: BoardState;
-  moves: Move[];
+export enum Player {
+  PLAYER1,
+  PLAYER2,
 }
 
-const matchSchema = new Schema<MatchDocument>({
-  players: {
-    type: [String],
-    required: true,
-    validate: {
-      validator: function (players: string[]) {
-        return players.length === 2; // There should be exactly 2 players
-      },
-      message: 'Una partita richiede esattamente due giocatori.',
-    },
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  initialState: {
-    type: Schema.Types.Mixed, // Cells matrix
-    required: true,
-  },
-  moves: [
-    {
-      player: { type: String, required: true },
-      grainPlaced: {
-        x: { type: Number, required: true },
-        y: { type: Number, required: true },
-      },
-      newState: { type: Schema.Types.Mixed, required: true }, // Cells matrix
-    },
-  ],
-});
+/**
+ * Value object representing a Sandpiles match
+ */
+export interface Match {
+  /**
+   * Returns the player1's username
+   */
+  get player1(): string; // player1 always starts first
+  /**
+   * Returns the player2's username
+   */
+  get player2(): string;
+  /**
+   * Returns the match creation date
+   */
+  get creationDate(): Date;
+  /**
+   * Returns the initial state of the board
+   */
+  get initialState(): BoardState;
+  /**
+   * Returns an sorted list of the moves
+   */
+  get moves(): Move[];
+}
 
-const Match = model<MatchDocument>('Match', matchSchema);
+export class MatchImpl implements Match {
+  /**
+   * Match constructor
+   * @param _player1 Player1's username
+   * @param _player2 Player2's username
+   */
+  constructor(
+    private readonly _player1: string,
+    private readonly _player2: string,
+    private readonly _creationDate?: Date,
+  ) {}
 
-export default Match;
+  get player1(): string {
+    return this._player1;
+  }
+  get player2(): string {
+    return this._player2;
+  }
+  get creationDate(): Date {
+    return this._creationDate;
+  }
+  get initialState(): BoardState {
+    return [
+      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+      [{}, {}, {}, {}, {}, {}, { pile: { owner: Player.PLAYER1, grains: 1 } }, {}, {}],
+      [
+        {},
+        {},
+        {},
+        {},
+        {},
+        { pile: { owner: Player.PLAYER1, grains: 1 } },
+        {},
+        { pile: { owner: Player.PLAYER1, grains: 1 } },
+        {},
+      ],
+      [{}, {}, {}, {}, {}, {}, { pile: { owner: Player.PLAYER1, grains: 1 } }, {}, {}],
+      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+      [{}, {}, { pile: { owner: Player.PLAYER2, grains: 1 } }, {}, {}, {}, {}, {}, {}],
+      [
+        {},
+        { pile: { owner: Player.PLAYER2, grains: 1 } },
+        {},
+        { pile: { owner: Player.PLAYER2, grains: 1 } },
+        {},
+        {},
+        {},
+        {},
+        {},
+      ],
+      [{}, {}, { pile: { owner: Player.PLAYER2, grains: 1 } }, {}, {}, {}, {}, {}, {}],
+      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+    ];
+  }
+  get moves(): Move[] {
+    throw new Error('Method not implemented.');
+  }
+}
