@@ -1,22 +1,8 @@
-interface Pile {
-  owner: Player;
-  grains: number;
-}
-
-interface Cell {
-  pile?: Pile;
-}
-
-export type BoardState = Cell[][];
+import { BoardState, initialState} from './BoardState';
 
 export interface Move {
   x: number;
   y: number;
-}
-
-export enum Player {
-  PLAYER1,
-  PLAYER2,
 }
 
 /**
@@ -26,11 +12,11 @@ export interface Match {
   /**
    * Returns the player1's username
    */
-  get player1(): string; // player1 always starts first
+  get player1Name(): string; // player1 always starts first
   /**
    * Returns the player2's username
    */
-  get player2(): string;
+  get player2Name(): string;
   /**
    * Returns the match creation date
    */
@@ -48,56 +34,26 @@ export interface Match {
 export class MatchImpl implements Match {
   /**
    * Match constructor
-   * @param _player1 Player1's username
-   * @param _player2 Player2's username
+   * @param _player1Name Player1's username
+   * @param _player2Name Player2's username
    */
   constructor(
-    private readonly _player1: string,
-    private readonly _player2: string,
+    private readonly _player1Name: string,
+    private readonly _player2Name: string,
     private readonly _creationDate?: Date,
   ) {}
 
-  get player1(): string {
-    return this._player1;
+  get player1Name(): string {
+    return this._player1Name;
   }
-  get player2(): string {
-    return this._player2;
+  get player2Name(): string {
+    return this._player2Name;
   }
   get creationDate(): Date {
     return this._creationDate;
   }
   get initialState(): BoardState {
-    return [
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, { pile: { owner: Player.PLAYER1, grains: 1 } }, {}, {}],
-      [
-        {},
-        {},
-        {},
-        {},
-        {},
-        { pile: { owner: Player.PLAYER1, grains: 1 } },
-        {},
-        { pile: { owner: Player.PLAYER1, grains: 1 } },
-        {},
-      ],
-      [{}, {}, {}, {}, {}, {}, { pile: { owner: Player.PLAYER1, grains: 1 } }, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-      [{}, {}, { pile: { owner: Player.PLAYER2, grains: 1 } }, {}, {}, {}, {}, {}, {}],
-      [
-        {},
-        { pile: { owner: Player.PLAYER2, grains: 1 } },
-        {},
-        { pile: { owner: Player.PLAYER2, grains: 1 } },
-        {},
-        {},
-        {},
-        {},
-        {},
-      ],
-      [{}, {}, { pile: { owner: Player.PLAYER2, grains: 1 } }, {}, {}, {}, {}, {}, {}],
-      [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-    ];
+    return initialState();
   }
   get moves(): Move[] {
     throw new Error('Method not implemented.');

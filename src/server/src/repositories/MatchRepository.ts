@@ -1,4 +1,5 @@
-import { Move, BoardState } from '../models/Match';
+import { BoardState } from '../models/BoardState';
+import { Move } from '../models/Match';
 import { Document, Schema, model } from 'mongoose';
 
 export interface MatchDocument extends Document {
