@@ -22,7 +22,7 @@
     "pug": "^3.0.1"
   },
   "devDependencies": {
-    "@types/express": "5.0.0",
+    "@types/express": "5.0.1",
     "@types/http-errors": "2.0.4",
     "@types/jest": "29.5.14",
     "@types/morgan": "1.9.9",
