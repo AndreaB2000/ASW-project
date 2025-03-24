@@ -225,11 +225,86 @@ graph
 
 ### Mockup
 
+![Dashboard](images/mockup/Dashboard.png)
+
+![Landing](images/mockup/Landing.png)
+
+![Leaderboard](images/mockup/Leaderboard.png)
+
+![Login](images/mockup/Login.png)
+
+![Match end](images/mockup/Match%20end.png)
+
+![Match](images/mockup/Match.png)
+
+![Matchmaking](images/mockup/Matchmaking.png)
+
+![Profile and Match History](images/mockup/Profile%20&%20match%20history.png)
+
+![Register](images/mockup/Register.png)
+
+\newpage
+
+The following are the responsive versions of the mockup pages.
+
+![Dashboard Responsive](images/mockup/Dashboard%20Responsive.png)
+
+![Landing Responsive](images/mockup/Landing%20Responsive.png)
+
+![Leaderboard Responsive](images/mockup/Leaderboard%20Responsive.png)
+
+![Login Responsive](images/mockup/Login%20Responsive.png)
+
+![Match end Responsive](images/mockup/Match%20end%20Responsive.png)
+
+![Match Responsive](images/mockup/Match%20Responsive.png)
+
+![Matchmaking Responsive](images/mockup/Matchmaking%20Responsive.png)
+
+![Profile and Match History Responsive](images/mockup/Profile%20&%20history%20Responsive.png)
+
+![Register Responsive](images/mockup/Register%20Responsive.png)
+
+\newpage
+
 ### Architecture
+
+#### Frontend
+
+The frontend uses a component-based architecture.
+
+The main components map one-to-one the pages listed in the [mockup](#mockup).
+
+Also some components are present in all pages, such as the header and the footer.
+
+```mermaid
+classDiagram
+      class Header
+%% TODO ADD UML COMPONENT DIAGRAM
+```
+
+Components diagram
+
+#### Backend
+
+The backend uses an hexagonal architecture, leveraging Domain Driven Design (DDD) principles.
 
 ### Detailed Design
 
+#### Game State Data Representation
+
+A given match can be represented uniquely by:
+
+- A starting board
+- A list of moves
+
+The starting board can be represented as a matrix of dimensions dxd where every given x<sub>i,j</sub> is the number of grains in the cell with coordinates i,j.
+
+The list of moves can be represented as a list of tuples (i,j) where the tuple represents the coordinates of the cell where the player has decided to add a grain.
+
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
+
+## Implementation
 
 ## Technologies
 
@@ -238,17 +313,22 @@ MEVN
 ## Code
 
 Solo aspetti rilevanti.
-0.6
 
 ## Tests
 
-Test effettuati sul codice e test con utenti.
-10.7
+<!-- Test effettuati sul codice e test con utenti. -->
+
+jest and stuff
+
+<!-- TODO specificare come runnare i test, coverage, decisioni ecc-->
 
 ## Deployment
 
-Rilascio, installazione e messa in funzione.
-0.8
+<!-- Rilascio, installazione e messa in funzione. -->
+
+To execute the system via Docker Compose, it is necessary to create the file
+`src/server/secrets/mongo_root_password.txt`. Additional instructions are
+provided in the `secrets` directory.
 
 ## Conclusioni
 
