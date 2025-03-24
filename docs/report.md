@@ -278,9 +278,53 @@ The main components map one-to-one the pages listed in the [mockup](#mockup).
 Also some components are present in all pages, such as the header and the footer.
 
 ```mermaid
-classDiagram
-      class Header
-%% TODO ADD UML COMPONENT DIAGRAM
+graph LR
+   subgraph App
+      Header
+      Navbar
+      Footer
+   end
+   Match
+   Matchmaking
+   Profile
+   Leaderboard
+   MatchHistory
+   Replay
+   GameEnd
+
+   Landing
+   Login
+   Register
+
+   %% Header dependencies
+   Match --> Header
+   Matchmaking --> Header
+   Profile --> Header
+   Leaderboard --> Header
+   MatchHistory --> Header
+   Replay --> Header
+   GameEnd --> Header
+
+   %% Navbar dependencies
+   Match --> Navbar
+   Matchmaking --> Navbar
+   Profile --> Navbar
+   Leaderboard --> Navbar
+   MatchHistory --> Navbar
+   Replay --> Navbar
+   GameEnd --> Navbar
+
+   %% Footer dependencies
+   Landing --> Footer
+   Login --> Footer
+   Register --> Footer
+   Match --> Footer
+   Matchmaking --> Footer
+   Profile --> Footer
+   Leaderboard --> Footer
+   MatchHistory --> Footer
+   Replay --> Footer
+   GameEnd --> Footer
 ```
 
 Components diagram
