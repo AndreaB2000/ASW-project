@@ -190,10 +190,11 @@ other among the players available.
 The following context map arises from the previous description.
 
 ```mermaid
-graph
+graph LR
    subgraph gameExperience["Game experience"]
       subgraph matchContext["Match context"]
          player1("Player")
+         glickoRanking1("Glicko Ranking")
          GameBoard
          Cell
          Pile
@@ -206,7 +207,6 @@ graph
          Collapse
          Conquer
          Clock
-         glickoRanking1("Glicko Ranking")
       end
 
       subgraph matchMaking["Matchmaking"]
@@ -287,9 +287,31 @@ Components diagram
 
 #### Backend
 
-The backend uses an hexagonal architecture, leveraging Domain Driven Design (DDD) principles.
+The backend uses an hexagonal architecture, leveraging Domain Driven Design [DDD](https://it.wikipedia.org/wiki/Domain-driven_design) principles.
+
+```mermaid
+graph TD
+      subgraph Domain[Domain]
+         ValueObject
+         Entity
+         AggregateRoot
+      end
+      Factory --> Domain
+      DB
+      Repository --> DB
+      Service --> Repository
+      API --> Service
+      Service --> Factory
+      Repository --> Factory
+```
+
+This graph represents the dependencies in the hexagonal architecture.
+
+The arrows should be read as "depends on" (e.g. A --> B should be read A depends on B).
 
 ### Detailed Design
+
+Repository classes should only implement CRUD (Create, Read, Update, Delete) operations, while higher-level operations should be implemented in the Service classes.
 
 #### Game State Data Representation
 
