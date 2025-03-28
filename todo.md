@@ -2,6 +2,12 @@
 
 - generate the html doc file using typedoc
 
+## Vue
+
+a vue.js design system for building reusable components and design patterns.
+
+<https://github.com/arielsalminen/vue-design-system>
+
 ## Interesting things for express
 
 - use ssl certificate enabling https
