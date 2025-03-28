@@ -27,6 +27,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
+      - [APIs](#apis)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -395,6 +396,10 @@ The starting board can be represented as a matrix of dimensions dxd where every 
 The list of moves can be represented as a list of tuples (i,j) where the tuple represents the coordinates of the cell where the player has decided to add a grain.
 
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
+
+#### APIs
+
+<!-- TODO ADD STATUS CODES ACCEPTED -->
 
 ## Implementation
 
