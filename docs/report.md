@@ -28,7 +28,8 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
       - [APIs](#apis)
-        - [Matchmaking](#matchmaking)
+      - [Matchmaking](#matchmaking)
+        - [API](#api)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -402,7 +403,36 @@ The list of moves can be represented as a list of tuples (i,j) where the tuple r
 
 <!-- TODO ADD STATUS CODES ACCEPTED -->
 
-##### Matchmaking
+#### Matchmaking
+
+The matchmaking system is responsible for pairing players with similar Glicko ratings.
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+
+classDiagram
+    class MatchmakingAPI
+    class MatchmakingService
+    class Player
+    class PlayerRepository
+    class MatchQueueRepository
+
+    MatchmakingAPI --> MatchmakingService
+    MatchmakingService --> Player
+    MatchmakingService --> PlayerRepository
+    PlayerRepository --> Player
+    MatchmakingService --> MatchQueueRepository
+    MatchQueueRepository --> MatchQueue
+    MatchmakingService --> MatchQueue
+```
+
+Server side matchmaking class diagram
+
+##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
 
