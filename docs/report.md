@@ -28,6 +28,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
       - [APIs](#apis)
+        - [Matchmaking](#matchmaking)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -400,6 +401,17 @@ The list of moves can be represented as a list of tuples (i,j) where the tuple r
 #### APIs
 
 <!-- TODO ADD STATUS CODES ACCEPTED -->
+
+##### Matchmaking
+
+- `POST /matchmaking/new`: requests a new match, returns the matchId
+
+  - Body: `{"player": string}`
+  - Returns:
+    - 200 OK - `{"matchId": <string>}`
+    - 400 Bad request - `{}` when the body is not complete
+    - 401 Unauthorized - `{}` when the client is not logged in
+    - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
 
