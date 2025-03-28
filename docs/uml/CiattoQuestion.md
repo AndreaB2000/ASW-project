@@ -36,7 +36,7 @@ classDiagram
         + storeMatchToDb(id : string) void
     }
 
-    MatchRepositoryWithTooManyOps o-- MatchServiceWithSavingLogic
+    MatchServiceWithSavingLogic o-- MatchRepositoryWithTooManyOps
 ```
 
 ```mermaid
@@ -70,7 +70,7 @@ classDiagram
         }
     }"
 
-    MatchRepositoryWithSavingLogic o-- MatchServiceWithoutSavingLogic
+    MatchServiceWithoutSavingLogic o-- MatchRepositoryWithSavingLogic
 ```
 
 ```mermaid
