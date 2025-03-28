@@ -2,6 +2,8 @@
 
 Project for Applicazioni e Servizi Web.
 
+Follow this link to see project documentation: [Documentation](./docs/report.md)
+
 ## SonarCloud
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AndreaB2000_ASW-project&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AndreaB2000_ASW-project)
