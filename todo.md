@@ -128,3 +128,12 @@ app.use(limiter);
 ## Others
 
 - Add catchy phrase in landing page: "Ogni granello conta: fai cadere la sabbia con strategia, osserva le cascate di reazioni a catena e scopri pattern sorprendenti!"
+
+## Pre release checklist
+
+### Convert from mermaid to draw.io
+
+- open draw.io and
+- in the top bar go to `Arrange` > `Insert` > `Advanced` > `Mermaid`
+- copy paste our badly displayed mermaid graphs
+- change the style and then export as png to our documentation
