@@ -42,7 +42,9 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Match](#match-2)
         - [API](#api-3)
       - [Matchmaking](#matchmaking-3)
+      - [Match](#match-3)
         - [API](#api-4)
+        - [Matchmaking](#matchmaking-4)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -838,6 +840,17 @@ Server side matchmaking class diagram
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
+    - 500 Internal server error - `{}` when a generic error occurs
+
+##### Matchmaking
+
+- `POST /matchmaking/new`: requests a new match, returns the matchId
+
+  - Body: `{"player": string}`
+  - Returns:
+    - 200 OK - `{"matchId": <string>}`
+    - 400 Bad request - `{}` when the body is not complete
+    - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
