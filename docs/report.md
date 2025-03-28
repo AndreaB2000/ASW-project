@@ -10,6 +10,30 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
 
 <!-- TODO PUT DELIVERY DATE HERE -->
 
+- [Sandpiles](#sandpiles)
+  - [Introduction](#introduction)
+  - [Requirements](#requirements)
+    - [Functional Requirements](#functional-requirements)
+      - [User Functional Requirements](#user-functional-requirements)
+      - [System Functional Requirements](#system-functional-requirements)
+    - [Non-Functional Requirements](#non-functional-requirements)
+    - [Implementation Requirements](#implementation-requirements)
+  - [Design](#design)
+    - [Domain Model](#domain-model)
+      - [Context map](#context-map)
+    - [Mockup](#mockup)
+    - [Architecture](#architecture)
+      - [Frontend](#frontend)
+      - [Backend](#backend)
+    - [Detailed Design](#detailed-design)
+      - [Game State Data Representation](#game-state-data-representation)
+  - [Implementation](#implementation)
+  - [Technologies](#technologies)
+  - [Code](#code)
+  - [Tests](#tests)
+  - [Deployment](#deployment)
+  - [Conclusions](#conclusions)
+
 ## Introduction
 
 _Sandpiles_ is a project designed to emulate the functionality of online board game platforms, providing an interactive and competitive environment for players of all skill levels to play _Sandpiles_. The platform offers real-time matchmaking, AI-driven opponent, statistics review and match history review.
@@ -398,6 +422,6 @@ To execute the system via Docker Compose, it is necessary to create the file
 `src/server/secrets/mongo_root_password.txt`. Additional instructions are
 provided in the `secrets` directory.
 
-## Conclusioni
+## Conclusions
 
-Conclusioni
+Conclusions
