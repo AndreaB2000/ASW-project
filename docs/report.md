@@ -32,7 +32,6 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
           - [No Opponent Found Case](#no-opponent-found-case)
-      - [Match](#match)
         - [API](#api)
       - [Match](#match)
         - [API](#api-1)
@@ -497,6 +496,17 @@ The server will notify the player when a match is found. <!-- BEING IMPLEMENTED 
 The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant. <!-- NOT IMPLEMENTED -->
 
 The server will remove a player from the queue if the player has not updated it's request for `t * 2` seconds. <!-- NOT IMPLEMENTED -->
+
+##### API
+
+- `POST /matchmaking/new`: requests a new match, returns the matchId
+
+  - Body: `{"player": string}`
+  - Returns:
+    - 200 OK - `{"matchId": <string>}`
+    - 400 Bad request - `{}` when the body is not complete
+    - 401 Unauthorized - `{}` when the client is not logged in
+    - 500 Internal server error - `{}` when a generic error occurs
 
 #### Match
 
