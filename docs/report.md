@@ -27,6 +27,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
+      - [APIs](#apis)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
