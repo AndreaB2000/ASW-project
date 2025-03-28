@@ -55,6 +55,9 @@ The user can:
 
 1. User authentication
    1. Register a new account on the website
+      1. Choose a unique username
+      1. Choose a password
+      1. Confirm the password
    1. Login to the website using an existing account
    1. Logout from the website
 1. Profile
