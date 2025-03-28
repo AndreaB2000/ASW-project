@@ -559,6 +559,7 @@ The server will remove a player from the queue if the player has not updated it'
     - 404 Not found - `{}` when the provided match ID does not exist
     - 500 Internal server error - `{}` when a generic error occurs
 
+
 ## Implementation
 
 ## Technologies
