@@ -151,3 +151,6 @@ dist
 
 # MongoDB root password
 src/server/secrets/mongo_root_password.txt
+
+# All pdf files
+*.pdf
