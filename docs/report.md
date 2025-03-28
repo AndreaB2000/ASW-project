@@ -329,6 +329,8 @@ graph LR
 
 Components diagram
 
+The arrows should be read as "depends on" (e.g. A --> B should be read A depends on B).
+
 #### Backend
 
 The backend uses an hexagonal architecture, leveraging Domain Driven Design [DDD](https://it.wikipedia.org/wiki/Domain-driven_design) principles.
