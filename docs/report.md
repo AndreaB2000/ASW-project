@@ -30,6 +30,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Matchmaking](#matchmaking)
       - [Match](#match)
         - [API](#api)
+        - [Matchmaking](#matchmaking-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
