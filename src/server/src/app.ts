@@ -7,6 +7,7 @@ const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 // Routes
 import { index } from './routes/index';
+import { account } from './routes/account';
 
 // Create Express server
 export const app = express();
@@ -20,6 +21,7 @@ app.use(logger('dev'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', index);
+app.use('/account', account);
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
