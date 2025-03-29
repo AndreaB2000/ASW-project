@@ -16,6 +16,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.16.2",
     "express-rate-limit": "^7.5.0",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.27.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "5.0.0",
     "@types/http-errors": "2.0.4",
     "@types/jest": "^29.5.14",
