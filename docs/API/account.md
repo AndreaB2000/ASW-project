@@ -1,0 +1,24 @@
+# Account Management APIs
+
+- `POST /register`: Register a new user account.
+  - body:
+    - `username`: The desired username for the account.
+    - `password`: The desired password for the account.
+  - response:
+    - `201 Created`: Account successfully created.
+    - `400 Bad Request`: Invalid input data (e.g., password not complex enough, username already exists).
+    - `409 Conflict`: Username already exists.
+- `POST /login`: Authenticate a user and obtain an access token.
+  - body:
+    - `username`: The username of the account.
+    - `password`: The password of the account.
+  - response:
+    - `200 OK - JWT`: Authentication successful, returns an access token.
+    - `401 Unauthorized`: Invalid username or password.
+    - `403 Forbidden`: Account is locked or inactive.
+- `POST /logout`: Invalidate the user's access token.
+  - Headers:
+    - `Authorization`: Bearer token.
+  - response:
+    - `200 OK`: Logout successful.
+    - `401 Unauthorized`: Invalid or expired token.
