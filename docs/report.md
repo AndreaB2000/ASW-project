@@ -172,6 +172,8 @@ _User_: a human interacting with the application through the UI
 
 _Player_: a User interacting with the sandpiles game.
 
+_Account_: a User representation with username and password used to access application.
+
 _Login_: access the application with a given account.
 
 _Register_: the creation of a new account.
