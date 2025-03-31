@@ -1,3 +1,6 @@
+import * as matchFactory from '../models/Match';
+import { Match } from '../models/Match';
+import { Move } from '../models/Move';
 import * as repository from '../repositories/match';
 
 export const newMatch = async (
@@ -5,7 +8,8 @@ export const newMatch = async (
   player2: string,
   creationDate: Date,
 ): Promise<string> => {
-  return repository.createMatch(player1, player2, creationDate);
+  const match = matchFactory.create(player1, player2, creationDate);
+  return repository.createMatch(match);
 };
 
 export const addMove = async (
