@@ -60,7 +60,29 @@ classDiagram
         +deleteMatch(matchId: string) void
     }
 
+    %% A fixed-sized matrix of cells
     class BoardState {
+
+        %% The default board state
+        +initialBoardState() BoardState$
+
+        +getCell(x: int, y: int) Cell
+    }
+
+    %% Board cell which can contain a pile
+    class Cell {
+        +pile: Pile?
+        +putPile(pile: Pile) void
+        +removePile() void
+    }
+
+    class Pile {
+        +numberOfGrains: int
+        +owner: string
+
+        %% Returns true if the grain has been added, false if it cannot be added
+        +addGrain() boolean
+        +changeOwner(newOwner: string) void
     }
 
     MatchRepository ..> Database
@@ -68,4 +90,8 @@ classDiagram
     MatchRepository ..> Match
     MatchService ..> Match
     Match ..> Move
+    Match ..> BoardState
+    MatchRepository ..> BoardState
+    BoardState *-- Cell
+    Cell *-- Pile
 ```
