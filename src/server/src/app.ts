@@ -5,6 +5,7 @@ import * as path from 'path';
 import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
+import { validationHandler } from './middlewares/validationHandler';
 // Routes
 import { index } from './routes/index';
 import { account } from './routes/account';
@@ -41,6 +42,7 @@ app.use(
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
+app.use(validationHandler);
 
 app.use(helmet());
 app.use(express.json());
