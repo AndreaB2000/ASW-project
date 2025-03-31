@@ -18,7 +18,7 @@ export interface Account {
  * @param password the password of the user
  * @returns {Account} the account object
  */
-export const createAccount = (username: string, password: string): Account =>
+export const create = (username: string, password: string): Account =>
   new AccountImpl(username, password);
 
 class AccountImpl implements Account {
