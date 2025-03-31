@@ -1,5 +1,5 @@
 import * as repository from '../repositories/account';
-import * as model from '../models/Account';
+import * as accountFactory from '../models/Account';
 
 /**
  * Register a new account
@@ -11,7 +11,7 @@ export const registerAccount = async (username: string, password: string): Promi
   const existingAccounts = await repository.readAllAccounts();
   const accountExists = existingAccounts.some(account => account.username === username);
   if (accountExists) return false;
-  const account = model.createAccount(username, password);
+  const account = accountFactory.create(username, password);
   repository.createAccount(account);
   return true;
 };
