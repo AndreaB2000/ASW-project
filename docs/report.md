@@ -418,6 +418,7 @@ classDiagram
     class MatchmakingAPI
     class MatchmakingService
     class Player
+    class Rating
     class PlayerRepository
     class MatchQueueRepository
 
@@ -425,6 +426,7 @@ classDiagram
     MatchmakingService --> Player
     MatchmakingService --> PlayerRepository
     PlayerRepository --> Player
+    Player --> Rating
     MatchmakingService --> MatchQueueRepository
     MatchQueueRepository --> MatchQueue
     MatchmakingService --> MatchQueue
