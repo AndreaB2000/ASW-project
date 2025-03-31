@@ -40,9 +40,9 @@ app.use(
   }),
 );
 
+app.use(helmet());
+app.use(express.json());
+
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
 app.use(validationHandler);
-
-app.use(helmet());
-app.use(express.json());

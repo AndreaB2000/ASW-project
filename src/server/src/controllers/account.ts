@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { registerAccount } from '../services/account';
-import { validationResult } from 'express-validator/lib';
 
 /**
  * POST /register
