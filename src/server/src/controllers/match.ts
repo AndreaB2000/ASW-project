@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as service from '../services/match';
 
 /**
  * PUT /match/<id>/move
