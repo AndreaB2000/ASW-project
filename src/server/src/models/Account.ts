@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 /**
- * Account representation with username and password used to access application.
+ * Value object - Account representation with username and password used to access application.
  */
 export interface Account {
   /**
