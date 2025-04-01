@@ -1,13 +1,11 @@
 import { Account } from '../models/Account';
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 /**
  * Stores user account information.
  */
 export const createAccount = async (account: Account): Promise<void> => {
-  const { username, password } = account;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { username, hashedPassword } = account;
   const user = new DBAccount({ username, hashedPassword });
   await user.save();
   console.log(`User created: ${username}`);
@@ -21,7 +19,7 @@ export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find({}, 'username');
   return accounts.map(account => ({
     username: account.username,
-    password: account.password,
+    hashedPassword: account.password,
   }));
 };
 
