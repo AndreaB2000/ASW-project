@@ -1,17 +1,15 @@
-import bcrypt from 'bcrypt';
-
 /**
- * Value object - Account representation with username and password used to access application.
+ * User representation with username and password used to access application.
  */
 export interface Account {
   /**
-   * Username of the account
+   * Username of the user
    */
   get username(): string;
   /**
-   * Hashed password of the account
+   * Password of the user
    */
-  get hashedPassword(): string;
+  get password(): string;
 }
 
 /**
@@ -30,13 +28,12 @@ class AccountImpl implements Account {
   get username(): string {
     return this.name;
   }
-
-  get hashedPassword(): string {
+  get password(): string {
     return this.psw;
   }
 
   constructor(username: string, password: string) {
     this.name = username;
-    this.psw = bcrypt.hashSync(password, 10);
+    this.psw = password;
   }
 }
