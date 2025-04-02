@@ -11,11 +11,12 @@ import { validationHandler } from './middlewares/validationHandler';
 // Routes
 import { match } from './routes/match';
 import { account } from './routes/account';
+import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();
 
-// connectDB();
+connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -55,8 +56,6 @@ app.use(
 );
 
 app.use(helmet());
-app.use(express.json());
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
-app.use(validationHandler);
