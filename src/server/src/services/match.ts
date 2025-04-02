@@ -19,8 +19,10 @@ export const addMove = async (
 ): Promise<boolean> => {
   const match: Match = await repository.findMatch(matchId);
 
-  // Checks
-  if (true) {
+  if (
+    (movingPlayer == match.player1 && match.moves.length % 2 == 0) ||
+    (movingPlayer == match.player2 && match.moves.length % 2 == 1)
+  ) {
     return match.addMove(newMove);
   }
 };
