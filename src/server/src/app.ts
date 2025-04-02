@@ -10,11 +10,12 @@ import { connectDB } from './db-connection';
 // Routes
 import { match } from './routes/match';
 import { account } from './routes/account';
+import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();
 
-// connectDB();
+connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -25,6 +26,7 @@ app.use(logger('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('/ping', (_, res) => {
@@ -32,6 +34,9 @@ app.get('/ping', (_, res) => {
 });
 app.use('/match', match);
 app.use('/account', account);
+app.get('/ping', (_, res) => {
+  res.send('pong');
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
@@ -50,8 +55,6 @@ app.use(
 );
 
 app.use(helmet());
-app.use(express.json());
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
-app.use(validationHandler);
