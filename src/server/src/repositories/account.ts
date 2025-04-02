@@ -1,13 +1,12 @@
 import { Account } from '../models/Account';
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
+import * as accountFactory from '../models/Account';
 
 /**
  * Stores user account information.
  */
 export const createAccount = async (account: Account): Promise<void> => {
-  const { username, password } = account;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { username, hashedPassword } = account;
   const user = new DBAccount({ username, hashedPassword });
   await user.save();
   console.log(`User created: ${username}`);
@@ -19,10 +18,10 @@ export const createAccount = async (account: Account): Promise<void> => {
  */
 export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find({}, 'username');
-  return accounts.map(account => ({
-    username: account.username,
-    password: account.password,
-  }));
+  const accountPromises = accounts.map(account =>
+    accountFactory.create(account.username, account.password),
+  );
+  return Promise.all(accountPromises);
 };
 
 const accountSchema = new mongoose.Schema({
