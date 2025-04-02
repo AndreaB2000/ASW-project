@@ -1,9 +1,13 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import { Match } from '../models/Match';
-import { Move } from '../models/Move';
 
 export const createMatch = async (match: Match): Promise<string> => {
-  const dbmatch = new DBMatch(match.player1, match.player2, match.creationDate);
+  const dbmatch = new DBMatch({
+    player1: match.player1,
+    player2: match.player2,
+    creationDate: match.creationDate,
+    moves: [],
+  });
   return (await dbmatch.save())._id.toString();
 };
 
@@ -11,7 +15,7 @@ export const findMatch = async (matchId: string): Promise<Match | null> => {
   return await DBMatch.findById(matchId);
 };
 
-const MatchSchema = new Schema<Match>({
+const matchSchema = new mongoose.Schema({
   player1: { type: String, required: true },
   player2: { type: String, required: true },
   creationDate: { type: Date, required: true, default: Date.now },
@@ -23,4 +27,4 @@ const MatchSchema = new Schema<Match>({
   ],
 });
 
-const DBMatch = mongoose.model('Match', MatchSchema);
+const DBMatch = mongoose.model<Match>('Match', matchSchema);
