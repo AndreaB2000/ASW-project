@@ -12,11 +12,12 @@ import cookieParser from 'cookie-parser';
 import { account } from './routes/account';
 import { match } from './routes/match';
 import { account } from './routes/account';
+import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();
 
-// connectDB();
+connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -27,6 +28,7 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/account', account);
@@ -37,6 +39,9 @@ app.get('/ping', (_, res) => {
 });
 app.use('/match', match);
 app.use('/account', account);
+app.get('/ping', (_, res) => {
+  res.send('pong');
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
