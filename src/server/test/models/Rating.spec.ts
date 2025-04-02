@@ -17,10 +17,18 @@ describe('Rating factory', () => {
 
 describe('Rating Model', () => {
 
-  it('should always be higher', async () => {
+  it('should be higher than lower rating', async () => {
     const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+    const rating2: Rating = create(startingRating - 100, startingDeviation, startingVolatility);
 
-    expect(rating.higherThan()).toBe(true);
+    expect(rating.higherThan(rating2)).toBe(true);
+  });
+
+  it('should be lower than higher rating', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+    const rating2: Rating = create(startingRating + 100, startingDeviation, startingVolatility);
+
+    expect(rating.higherThan(rating2)).toBe(false);
   });
 
 });
