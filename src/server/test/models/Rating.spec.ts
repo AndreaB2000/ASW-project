@@ -31,4 +31,17 @@ describe('Rating Model', () => {
     expect(rating.higherThan(rating2)).toBe(false);
   });
 
+  it('should work with < operator', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+    const rating2: Rating = create(startingRating + 100, startingDeviation, startingVolatility);
+
+    expect(rating < rating2).toBe(true);
+  });
+
+  it('should work with > operator', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+    const rating2: Rating = create(startingRating + 100, startingDeviation, startingVolatility);
+
+    expect(rating > rating2).toBe(false);
+  });
 });
