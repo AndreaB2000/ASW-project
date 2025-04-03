@@ -6,9 +6,9 @@ export interface Rating {
     higherThan(comparedRating: Rating): boolean;
 
     /**
-     * The rating value.
+     * Exposes the rating value for comparisons.
      */
-    get rating(): number;
+    valueOf(): number;
 }
 
 export const create = (rating: number, deviation: number, volatility: number): Rating =>
@@ -25,11 +25,11 @@ class GlickoRating implements Rating {
         this._volatility = volatility;
     }
 
-    get rating(): number {
-        return this._rating;
+    public higherThan(comparedRating: Rating): boolean {
+        return this > comparedRating;
     }
 
-    public higherThan(comparedRating: Rating): boolean {
-        return this._rating > comparedRating.rating;
+    public valueOf(): number {
+        return this._rating;
     }
 }
