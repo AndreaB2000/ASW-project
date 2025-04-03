@@ -42,7 +42,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
     volumes:
-      - src/server/mongodatabase:/data/db
+      - ./src/server/mongodatabase:/data/db
     secrets:
       - mongo_root_password
     networks:
