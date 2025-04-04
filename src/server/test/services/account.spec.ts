@@ -1,6 +1,7 @@
 import { registerAccount } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import * as accountFactory from '../../src/models/Account';
+import { describe, beforeEach, it, jest, expect } from '@jest/globals';
 
 jest.mock('../../src/repositories/account');
 jest.mock('../../src/models/Account');
