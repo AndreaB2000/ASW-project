@@ -44,7 +44,7 @@
     "dockerbuild": "npm run dockerbuild:server && npm run dockerbuild:client",
     "dockerbuild:server": "sudo docker build -t andreabiagini5/aswserver src/server/",
     "dockerbuild:client": "sudo docker build -t andreabiagini5/aswclient src/client/",
-    "dockerstart": "mkdir -p src/server/mongodatabase && sudo chown 999:$(id -g) src/server/mongodatabase && sudo chmod 755 src/server/mongodatabase && sudo docker compose up"
+    "dockerstart": "sudo docker compose up"
   },
   "publishConfig": {
     "access": "public"
