@@ -10,7 +10,7 @@ export const createPlayer = async (player: Player): Promise<void> => {
     const dbPlayer = new DBPlayer({
         username,
         rating: {
-            rating: rating.value,
+            value: rating.value,
             deviation: rating.deviation,
             volatility: rating.volatility
         }
@@ -28,7 +28,7 @@ export const readAllPlayers = async (): Promise<Player[]> => {
         PlayerFactory.create(
             player.username,
             RatingFactory.create(
-                player.rating.rating,
+                player.rating.value,
                 player.rating.deviation,
                 player.rating.volatility
             )
@@ -46,7 +46,7 @@ export const readPlayerByUsername = async (username: string): Promise<Player | n
     return player ? PlayerFactory.create(
         player.username,
         RatingFactory.create(
-            player.rating.rating,
+            player.rating.value,
             player.rating.deviation,
             player.rating.volatility
         )
@@ -62,7 +62,7 @@ export const readPlayerByUsername = async (username: string): Promise<Player | n
 export const updatePlayerRating = async (username: string, rating: Rating): Promise<void> => {
     await DBPlayer.findOneAndUpdate(
         { username },
-        { $set: { rating: { rating: rating.value, deviation: rating.deviation, volatility: rating.volatility } } },
+        { $set: { rating: { value: rating.value, deviation: rating.deviation, volatility: rating.volatility } } },
         { new: true }
     );
 };
@@ -80,7 +80,7 @@ export const deletePlayer = async (username: string): Promise<boolean> => {
 const playerSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     rating: {
-        rating: { type: Number, required: true },
+        value: { type: Number, required: true },
         deviation: { type: Number, required: true },
         volatility: { type: Number, required: true }
     }
