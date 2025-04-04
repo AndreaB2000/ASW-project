@@ -46,12 +46,7 @@ describe('Player Repository', () => {
 
   describe('readAllPlayers', () => {
     it('should call find with correct parameters', async () => {
-
-      const findSpy = jest.spyOn(DBPlayer, 'find');
-
-      await readAllPlayers();
-
-      expect(findSpy).toHaveBeenCalledWith({}, 'username rating');
+      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find');
     });
   });
 
