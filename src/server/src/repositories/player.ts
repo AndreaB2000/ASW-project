@@ -10,7 +10,7 @@ export const createPlayer = async (player: Player): Promise<void> => {
     const dbPlayer = new DBPlayer({
         username,
         rating: {
-            rating: rating.rating,
+            rating: rating.value,
             deviation: rating.deviation,
             volatility: rating.volatility
         }
@@ -62,7 +62,7 @@ export const readPlayerByUsername = async (username: string): Promise<Player | n
 export const updatePlayerRating = async (username: string, rating: Rating): Promise<void> => {
     await DBPlayer.findOneAndUpdate(
         { username },
-        { $set: { rating: { rating: rating.rating, deviation: rating.deviation, volatility: rating.volatility } } },
+        { $set: { rating: { rating: rating.value, deviation: rating.deviation, volatility: rating.volatility } } },
         { new: true }
     );
 };

@@ -1,14 +1,14 @@
 import { Rating, RatingFactory } from '../../src/models/Rating';
 import { describe, it, expect } from '@jest/globals';
 
-const startingRating: number = 1500;
-const startingDeviation: number = 350;
-const startingVolatility: number = 0.06;
+const value: number = 1500;
+const deviation: number = 350;
+const volatility: number = 0.06;
 
 describe('Rating factory', () => {
 
   it('should create a new rating', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
 
     expect(rating).not.toBeNull();
   });
@@ -18,48 +18,48 @@ describe('Rating factory', () => {
 describe('Rating Model', () => {
 
   it('should be higher than lower rating', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
-    const rating2: Rating = RatingFactory.create(startingRating - 100, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
+    const rating2: Rating = RatingFactory.create(value - 100, deviation, volatility);
 
     expect(rating.higherThan(rating2)).toBe(true);
   });
 
   it('should be lower than higher rating', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
-    const rating2: Rating = RatingFactory.create(startingRating + 100, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
+    const rating2: Rating = RatingFactory.create(value + 100, deviation, volatility);
 
     expect(rating.higherThan(rating2)).toBe(false);
   });
 
   it('should work with < operator', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
-    const rating2: Rating = RatingFactory.create(startingRating + 100, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
+    const rating2: Rating = RatingFactory.create(value + 100, deviation, volatility);
 
     expect(rating < rating2).toBe(true);
   });
 
   it('should work with > operator', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
-    const rating2: Rating = RatingFactory.create(startingRating + 100, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
+    const rating2: Rating = RatingFactory.create(value + 100, deviation, volatility);
 
     expect(rating > rating2).toBe(false);
   });
 
   it('should expose the rating', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
 
-    expect(rating.rating).toBe(startingRating);
+    expect(rating.value).toBe(value);
   });
 
   it('should expose the deviation', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
 
-    expect(rating.deviation).toBe(startingDeviation);
+    expect(rating.deviation).toBe(deviation);
   });
 
   it('should expose the volatility', async () => {
-    const rating: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
+    const rating: Rating = RatingFactory.create(value, deviation, volatility);
 
-    expect(rating.volatility).toBe(startingVolatility);
+    expect(rating.volatility).toBe(volatility);
   });
 });

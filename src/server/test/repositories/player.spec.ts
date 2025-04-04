@@ -85,7 +85,7 @@ describe('Player Repository', () => {
   
       expect(DBPlayer.findOneAndUpdate).toHaveBeenCalledWith(
         { username: 'testUser' },
-        { $set: { rating: { rating: newRating.rating, deviation: newRating.deviation, volatility: newRating.volatility } } },
+        { $set: { rating: { rating: newRating.value, deviation: newRating.deviation, volatility: newRating.volatility } } },
         { new: true }
       );
     });
