@@ -13,11 +13,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const result = await registerAccount(username, password);
-    if (!result) {
-      res.status(409).json({ message: 'Account already exists' });
-      return;
-    }
-    res.status(201).json({ message: 'Account registered successfully', username });
+    if (!result) res.status(409).json({ message: 'Account already exists' });
+    else res.status(201).json({ message: 'Account registered successfully', username });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
