@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import fs from 'fs';
 import path from 'path';
 
 /**
@@ -29,12 +29,11 @@ export const connectDB = async (): Promise<void> => {
           errorMsg += `\n- ${key}`;
         }
       }
-      throw new Error(errorMsg);
-    }
-    const uri = `${protocol}://${username}:${password}@${ip}:${port}/${dbName}`;
-    console.log('Connecting to MongoDB...');
-    await mongoose.connect(uri);
-    console.log('MongoDB connected successfully');
+      const uri = `${host}://${ip}:${port}/${dbName}`;
+      console.log(`Connecting to ${uri}`);
+      await mongoose.connect(uri);
+      console.log('Connected to MongoDB');
+    });
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);
