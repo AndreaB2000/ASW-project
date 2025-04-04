@@ -8,7 +8,7 @@ describe('Player Repository', () => {
   const mockPlayer = {
     username: 'testUser',
     rating: {
-      rating: 1500,
+      value: 1500,
       deviation: 200,
       volatility: 0.06,
     },
@@ -34,11 +34,11 @@ describe('Player Repository', () => {
       const mockDbPlayers = [
         {
           username: 'testUser1',
-          rating: { rating: 1500, deviation: 200, volatility: 0.06 },
+          rating: { value: 1500, deviation: 200, volatility: 0.06 },
         },
         {
           username: 'testUser2',
-          rating: { rating: 1600, deviation: 180, volatility: 0.05 },
+          rating: { value: 1600, deviation: 180, volatility: 0.05 },
         },
       ];
       jest.spyOn(DBPlayer, 'find').mockResolvedValue(mockDbPlayers);
@@ -55,7 +55,7 @@ describe('Player Repository', () => {
     it('should return a player by username', async () => {
       const mockDbPlayer = {
         username: 'testUser',
-        rating: { rating: 1500, deviation: 200, volatility: 0.06 },
+        rating: { value: 1500, deviation: 200, volatility: 0.06 },
       };
       jest.spyOn(DBPlayer, 'findOne').mockResolvedValue(mockDbPlayer);
 
@@ -84,7 +84,7 @@ describe('Player Repository', () => {
   
       expect(DBPlayer.findOneAndUpdate).toHaveBeenCalledWith(
         { username: 'testUser' },
-        { $set: { rating: { rating: newRating.value, deviation: newRating.deviation, volatility: newRating.volatility } } },
+        { $set: { rating: { value: newRating.value, deviation: newRating.deviation, volatility: newRating.volatility } } },
         { new: true }
       );
     });
