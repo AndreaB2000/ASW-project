@@ -11,9 +11,9 @@ export const connectDB = async (): Promise<void> => {
     const protocol = process.env.DB_PROTOCOL;
     const username = process.env.DB_APP_USERNAME;
     const password = process.env.DB_APP_PASSWORD;
-    const dbName = process.env.DB_NAME || 'aswdb';
-    const port = process.env.DB_PORT || '27017';
-    const ip = process.env.DB_IP || 'localhost';
+    const dbName = process.env.DB_NAME;
+    const port = process.env.DB_PORT;
+    const ip = process.env.DB_IP;
     if (!username || !password || !dbName || !port || !ip || !protocol) {
       let errorMsg =
         'Missing MongoDB credentials. Please verify that the following variables are defined in the .env root file.';
