@@ -44,4 +44,22 @@ describe('Rating Model', () => {
 
     expect(rating > rating2).toBe(false);
   });
+
+  it('should expose the rating', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+
+    expect(rating.rating).toBe(startingRating);
+  });
+
+  it('should expose the deviation', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+
+    expect(rating.deviation).toBe(startingDeviation);
+  });
+
+  it('should expose the volatility', async () => {
+    const rating: Rating = create(startingRating, startingDeviation, startingVolatility);
+
+    expect(rating.volatility).toBe(startingVolatility);
+  });
 });
