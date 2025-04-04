@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import createError from 'http-errors';
 
 /**
  * Validation middleware.
@@ -13,5 +14,5 @@ export const validationHandler = (req: Request, res: Response, next: NextFunctio
   const errors = validationResult(req);
   if (errors.isEmpty()) return next();
   console.log('Validation errors:', errors.array());
-  res.status(422).json({ errors: errors.array() });
+  next(createError(422, 'Validation error', { errors: errors.array() }));
 };
