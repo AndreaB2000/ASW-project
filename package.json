@@ -20,7 +20,7 @@
   "scripts": {
     "build": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'build.bat' : 'sh build.sh', { stdio: 'inherit' })\"",
     "set-hooks": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'set-hooks.bat' : 'sh set-hooks.sh', { stdio: 'inherit' })\"",
-    "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
+    "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\" \"npm run start:db\"",
     "serve": "concurrently --kill-others-on-fail \"npm run serve:server\" \"npm run serve:client\"",
     "type-check": "npm run type-check:server && npm run type-check:client",
     "format": "prettier --write src/",
@@ -36,6 +36,7 @@
     "build:docs": "cd src/server && npx typedoc",
     "start:client": "cd src/client && npm run start",
     "start:server": "cd src/server && npm run start",
+    "start:db": "docker compose up database",
     "serve:client": "cd src/client && npm run serve",
     "serve:server": "cd src/server && npm run serve",
     "test:client": "cd src/client && npm run test",

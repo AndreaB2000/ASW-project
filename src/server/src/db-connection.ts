@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import fs from 'fs';
+import dotenv from 'dotenv';
 import path from 'path';
 
 /**
@@ -7,24 +7,34 @@ import path from 'path';
  */
 export const connectDB = async (): Promise<void> => {
   try {
-    const host = process.env.MONGO_HOST || 'mongodb';
-    const ip = process.env.MONGO_IP || '127.0.0.1';
-    const port = process.env.MONGO_PORT || '27017';
-    const dbName = process.env.MONGO_DB || 'ASW-DB';
-    const username = process.env.MONGO_USERNAME || 'user';
-    const passwordFile =
-      process.env.MONGO_PASSWORD_FILE ||
-      path.join(__dirname, '..', 'secrets', 'mongo_root_password.txt');
-    fs.readFile(passwordFile, 'utf8', async (err, password) => {
-      if (err) {
-        console.error('Error reading password file:', err);
-        return;
+    dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '.env') });
+    const protocol = process.env.DB_PROTOCOL;
+    const username = process.env.DB_APP_USERNAME;
+    const password = process.env.DB_APP_PASSWORD;
+    const dbName = process.env.DB_NAME || 'aswdb';
+    const port = process.env.DB_PORT || '27017';
+    const ip = process.env.DB_IP || 'localhost';
+    if (!username || !password || !dbName || !port || !ip || !protocol) {
+      let errorMsg =
+        'Missing MongoDB credentials. Please verify that the following variables are defined in the .env root file.';
+      for (const key of [
+        'DB_PROTOCOL',
+        'DB_APP_USERNAME',
+        'DB_APP_PASSWORD',
+        'DB_NAME',
+        'DB_PORT',
+        'DB_IP',
+      ]) {
+        if (!process.env[key]) {
+          errorMsg += `\n- ${key}`;
+        }
       }
-      const uri = `${host}://${ip}:${port}/${dbName}`;
-      console.log(`Connecting to ${uri}`);
-      await mongoose.connect(uri);
-      console.log('Connected to MongoDB');
-    });
+      throw new Error(errorMsg);
+    }
+    const uri = `${protocol}://${username}:${password}@${ip}:${port}/${dbName}`;
+    console.log('Connecting to MongoDB...');
+    await mongoose.connect(uri);
+    console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);
