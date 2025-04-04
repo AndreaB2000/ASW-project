@@ -6,13 +6,15 @@ import { Rating, RatingFactory } from "../models/Rating";
  * Stores player information.
  */
 export const createPlayer = async (player: Player): Promise<void> => {
-    const { username, rating } = player;
+    console.log("Creating player:", player);
+    console.log("Creating player:", player.rating);
+    console.log("Creating player:", player.rating.value);
     const dbPlayer = new DBPlayer({
-        username,
+        username: player.username,
         rating: {
-            value: rating.value,
-            deviation: rating.deviation,
-            volatility: rating.volatility
+            value: player.rating.value,
+            deviation: player.rating.deviation,
+            volatility: player.rating.volatility
         }
     });
     await dbPlayer.save();

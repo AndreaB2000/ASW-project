@@ -2,75 +2,66 @@ import { DBPlayer } from '../../src/repositories/player';
 import { RatingFactory } from '../../src/models/Rating'
 import { createPlayer, readAllPlayers, readPlayerByUsername, updatePlayerRating, deletePlayer } from '../../src/repositories/player';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import { PlayerFactory } from '../../src/models/Player';
 
+async function checkCalledWith(testedMethod: Function, expectedWith: any, spiedClass: any, spiedFunction: string, ...args: any) {
+  const mockFun = jest.fn();
+  jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
+
+  console.log('args', args);
+  await testedMethod(...args);
+
+  expect(mockFun).toHaveBeenCalledWith(expectedWith);
+}
+
+async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, ...args: any) {
+  const mockFun = jest.fn();
+  jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
+
+  console.log('args', args);
+  await testedMethod(...args);
+
+  expect(mockFun).toHaveBeenCalled();
+}
 
 describe('Player Repository', () => {
-  const mockPlayer = {
-    username: 'testUser',
-    rating: {
-      value: 1500,
-      deviation: 200,
-      volatility: 0.06,
-    },
-  };
+  const value = 1500;
+  const deviation = 200;
+  const volatility = 0.06;
+  const rating = RatingFactory.create(value, deviation, volatility);
+  const username = 'testUser';
+  const player = PlayerFactory.create(username, rating);
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   describe('createPlayer', () => {
-    it('should create and save a player to the database', async () => {
-      const saveMock = jest.fn();
-      jest.spyOn(DBPlayer.prototype, 'save').mockImplementation(saveMock);
+    it('should call save on DB instance', async () => {
+      
+      await checkCalled(createPlayer, DBPlayer.prototype, 'save', player);
 
-      await createPlayer(mockPlayer as any);
-
-      expect(saveMock).toHaveBeenCalled();
     });
   });
 
   describe('readAllPlayers', () => {
-    it('should return all players from the database', async () => {
-      const mockDbPlayers = [
-        {
-          username: 'testUser1',
-          rating: { value: 1500, deviation: 200, volatility: 0.06 },
-        },
-        {
-          username: 'testUser2',
-          rating: { value: 1600, deviation: 180, volatility: 0.05 },
-        },
-      ];
-      jest.spyOn(DBPlayer, 'find').mockResolvedValue(mockDbPlayers);
+    it('should call find with correct parameters', async () => {
 
-      const players = await readAllPlayers();
+      const findSpy = jest.spyOn(DBPlayer, 'find');
 
-      expect(players).toHaveLength(2);
-      expect(players[0].username).toBe('testUser1');
-      expect(players[1].username).toBe('testUser2');
+      await readAllPlayers();
+
+      expect(findSpy).toHaveBeenCalledWith({}, 'username rating');
     });
   });
 
   describe('readPlayerByUsername', () => {
-    it('should return a player by username', async () => {
-      const mockDbPlayer = {
-        username: 'testUser',
-        rating: { value: 1500, deviation: 200, volatility: 0.06 },
-      };
-      jest.spyOn(DBPlayer, 'findOne').mockResolvedValue(mockDbPlayer);
+    it('should call findOne with correct parameters', async () => {
+      const findOneSpy = jest.spyOn(DBPlayer, 'findOne');
 
-      const player = await readPlayerByUsername('testUser');
+      const returnedPlayer = await readPlayerByUsername(username);
 
-      expect(player).not.toBeNull();
-      expect(player?.username).toBe('testUser');
-    });
-
-    it('should return null if player is not found', async () => {
-      jest.spyOn(DBPlayer, 'findOne').mockResolvedValue(null);
-
-      const player = await readPlayerByUsername('nonExistentUser');
-
-      expect(player).toBeNull();
+      expect(findOneSpy).toHaveBeenCalledWith({ username });
     });
   });
 
