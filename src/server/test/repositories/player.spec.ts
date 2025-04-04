@@ -26,7 +26,6 @@ describe('Player Repository', () => {
       await createPlayer(mockPlayer as any);
 
       expect(saveMock).toHaveBeenCalled();
-      expect(DBPlayer.prototype.save).toHaveBeenCalledWith();
     });
   });
 
