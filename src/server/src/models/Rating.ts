@@ -15,7 +15,7 @@ export interface Rating {
      * The rating value.
      * @returns {number} the rating value
      */
-    get rating(): number;
+    get value(): number;
 
     /**
      * The deviation value.
@@ -46,12 +46,12 @@ export class RatingFactory {
 
 
 class GlickoRating implements Rating {
-    private _rating: number;
+    private _value: number;
     private _deviation: number;
     private _volatility: number;
 
-    constructor(rating: number, deviation: number, volatility: number) {
-        this._rating = rating;
+    constructor(value: number, deviation: number, volatility: number) {
+        this._value = value;
         this._deviation = deviation;
         this._volatility = volatility;
     }
@@ -61,11 +61,11 @@ class GlickoRating implements Rating {
     }
 
     public valueOf(): number {
-        return this._rating;
+        return this._value;
     }
 
-    get rating(): number {
-        return this._rating;
+    get value(): number {
+        return this._value;
     }
 
     get deviation(): number {
