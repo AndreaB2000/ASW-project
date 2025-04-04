@@ -7,8 +7,8 @@ export const account = Router();
 account.post(
   '/register',
   [
-    body('username').isString().withMessage('Username must be a string'),
-    body('password').isString().withMessage('Password must be a string'),
+    body('username').notEmpty().isString().withMessage('Username must be a string'),
+    body('password').notEmpty().isString().withMessage('Password must be a string'),
   ],
   controller.register,
 );
