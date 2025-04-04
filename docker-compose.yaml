@@ -7,6 +7,18 @@ networks:
           gateway: 172.0.0.254
 
 services:
+  client:
+    image: andreabiagini5/aswclient
+    container_name: aswclient
+    restart: always
+    ports:
+      - '4173:4173'
+    depends_on:
+      - server
+      - database
+    networks:
+      asw_network:
+        ipv4_address: 172.0.0.11
   server:
     image: andreabiagini5/aswserver
     container_name: aswserver
@@ -21,19 +33,6 @@ services:
       asw_network:
         ipv4_address: 172.0.0.10
 
-  client:
-    image: andreabiagini5/aswclient
-    container_name: aswclient
-    restart: always
-    ports:
-      - '4173:4173'
-    depends_on:
-      - server
-      - database
-    networks:
-      asw_network:
-        ipv4_address: 172.0.0.11
-
   database:
     image: mongo
     container_name: mongodb
@@ -43,8 +42,12 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_ADMIN_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_APP_USERNAME: ${DB_APP_USERNAME}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD}
     volumes:
       - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     networks:
       asw_network:
         ipv4_address: ${DB_IP}
