@@ -29,6 +29,12 @@ services:
       - database
     environment:
       PORT: 3000
+      DB_APP_USERNAME: ${DB_APP_USERNAME}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PROTOCOL: ${DB_PROTOCOL}
+      DB_IP: ${DB_IP}
+      DB_PORT: ${DB_PORT}
     networks:
       asw_network:
         ipv4_address: 172.0.0.10
