@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { createMatch, DBMatch, findMatch, updateMatch } from '../../src/repositories/match';
+import {
+  createMatch,
+  DBMatch,
+  deleteMatch,
+  findMatch,
+  updateMatch,
+} from '../../src/repositories/match';
 import * as matchFactory from '../../src/models/Match';
 import { Match } from '../../src/models/Match';
 
@@ -64,6 +70,41 @@ describe('Match Repository', () => {
       await updateMatch(TEST_ID, mockUpdatedMatch);
 
       expect(findOneAndUpdateMock).toHaveBeenCalledWith({ matchId: TEST_ID }, mockUpdatedMatch);
+    });
+  });
+
+  describe('deleteMatch', () => {
+    it('should call the model delete function with the correct parameters', async () => {
+      const deleteOneMock = jest.fn(() =>
+        Promise.resolve({ acknowledged: true, deletedCount: 1 }),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.deleteOne>;
+      jest.spyOn(DBMatch, 'deleteOne').mockImplementation(deleteOneMock);
+
+      const deleted = await deleteMatch(TEST_ID);
+
+      expect(deleteOneMock).toHaveBeenCalledWith({ matchId: TEST_ID });
+    });
+
+    it('should return true if the given ID exists', async () => {
+      const deleteOneMock = jest.fn(() =>
+        Promise.resolve({ acknowledged: true, deletedCount: 1 }),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.deleteOne>;
+      jest.spyOn(DBMatch, 'deleteOne').mockImplementation(deleteOneMock);
+
+      const deleted = await deleteMatch(TEST_ID);
+
+      expect(deleted).toBe(true);
+    });
+
+    it('should return false if the given ID does not exist', async () => {
+      const deleteOneMock = jest.fn(() =>
+        Promise.resolve({ acknowledged: true, deletedCount: 0 }),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.deleteOne>;
+      jest.spyOn(DBMatch, 'deleteOne').mockImplementation(deleteOneMock);
+
+      const deleted = await deleteMatch('otherid');
+
+      expect(deleted).toBe(false);
     });
   });
 });
