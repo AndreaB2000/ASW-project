@@ -15,6 +15,10 @@ export const findMatch = async (matchId: string): Promise<Match | null> => {
   return await DBMatch.findById(matchId);
 };
 
+export const updateMatch = async (matchId: string, newMatch: Match): Promise<void> => {
+  await DBMatch.findOneAndUpdate({ matchId }, newMatch);
+};
+
 const matchSchema = new mongoose.Schema({
   player1: { type: String, required: true },
   player2: { type: String, required: true },
