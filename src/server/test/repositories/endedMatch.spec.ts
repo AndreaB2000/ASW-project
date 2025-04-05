@@ -5,7 +5,7 @@ import {
   deleteMatch,
   findMatch,
   updateMatch,
-} from '../../src/repositories/match';
+} from '../../src/repositories/endedMatch';
 import * as matchFactory from '../../src/models/Match';
 import { Match } from '../../src/models/Match';
 
