@@ -1,15 +1,17 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { createMatch, DBMatch, findMatch } from '../../src/repositories/match';
+import { createMatch, DBMatch, findMatch, updateMatch } from '../../src/repositories/match';
 import * as matchFactory from '../../src/models/Match';
 import { Match } from '../../src/models/Match';
 
 describe('Match Repository', () => {
   const PLAYER1 = 'Alice';
   const PLAYER2 = 'Bob';
+  const PLAYER3 = 'Carl';
   const NOW = new Date();
   //const TEST_ID = new mongoose.Types.ObjectId().toString();
   const TEST_ID = 'testid';
   const mockMatch: Match = matchFactory.create(PLAYER1, PLAYER2, NOW);
+  const mockUpdatedMatch: Match = matchFactory.create(PLAYER3, PLAYER2, NOW);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -49,6 +51,19 @@ describe('Match Repository', () => {
       const foundMatch = await findMatch('otherid');
 
       expect(foundMatch).toBe(null);
+    });
+  });
+
+  describe('updateMatch', () => {
+    it('should call the model update function with the correct parameters', async () => {
+      const findOneAndUpdateMock = jest.fn(() =>
+        Promise.resolve(),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.findOneAndUpdate>;
+      jest.spyOn(DBMatch, 'findOneAndUpdate').mockImplementation(findOneAndUpdateMock);
+
+      await updateMatch(TEST_ID, mockUpdatedMatch);
+
+      expect(findOneAndUpdateMock).toHaveBeenCalledWith({ matchId: TEST_ID }, mockUpdatedMatch);
     });
   });
 });
