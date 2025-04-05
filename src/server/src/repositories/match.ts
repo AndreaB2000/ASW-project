@@ -27,4 +27,4 @@ const matchSchema = new mongoose.Schema({
   ],
 });
 
-const DBMatch = mongoose.model<Match>('Match', matchSchema);
+export const DBMatch = mongoose.model<Match>('Match', matchSchema);
