@@ -15,8 +15,13 @@ export const findMatch = async (matchId: string): Promise<Match | null> => {
   return await DBMatch.findById(matchId);
 };
 
+// Maybe it can return a boolean representing the effectiveness of the update?
 export const updateMatch = async (matchId: string, newMatch: Match): Promise<void> => {
   await DBMatch.findOneAndUpdate({ matchId }, newMatch);
+};
+
+export const deleteMatch = async (matchId: string): Promise<boolean> => {
+  return (await DBMatch.deleteOne({ matchId })).deletedCount > 0;
 };
 
 const matchSchema = new mongoose.Schema({
