@@ -1,7 +1,7 @@
 import * as matchFactory from '../models/Match';
 import { Match } from '../models/Match';
 import { Move } from '../models/Move';
-import * as repository from '../repositories/match';
+import * as repository from '../repositories/endedMatch';
 
 export const newMatch = async (
   player1: string,
