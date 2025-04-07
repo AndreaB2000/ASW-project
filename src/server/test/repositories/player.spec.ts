@@ -3,32 +3,15 @@ import { RatingFactory } from '../../src/models/Rating'
 import { createPlayer, readAllPlayers, readPlayerByUsername, updatePlayerRating, deletePlayer } from '../../src/repositories/player';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { PlayerFactory } from '../../src/models/Player';
-
-async function checkCalledWith(testedMethod: Function, expectedWith: any, spiedClass: any, spiedFunction: string, expectedReturn: any, ...args: any) {
-  const mockFun = jest.fn().mockReturnValue(expectedReturn);
-  jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
-
-  await testedMethod(...args);
-
-  expect(mockFun).toHaveBeenCalledWith(...expectedWith);
-}
-
-async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, ...args: any) {
-  const mockFun = jest.fn();
-  jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
-
-  await testedMethod(...args);
-
-  expect(mockFun).toHaveBeenCalled();
-}
+import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 
 describe('Player Repository', () => {
-  const value = 1500;
-  const deviation = 200;
-  const volatility = 0.06;
-  const rating = RatingFactory.create(value, deviation, volatility);
-  const username = 'testUser';
-  const player = PlayerFactory.create(username, rating);
+  const testValue = 1500;
+  const testDeviation = 200;
+  const testVolatility = 0.06;
+  const testRating = RatingFactory.create(testValue, testDeviation, testVolatility);
+  const testUsername = 'testUser';
+  const testPlayer = PlayerFactory.create(testUsername, testRating);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,9 +19,7 @@ describe('Player Repository', () => {
 
   describe('createPlayer', () => {
     it('should call save on DB instance', async () => {
-      
-      await checkCalled(createPlayer, DBPlayer.prototype, 'save', player);
-
+      await checkCalled(createPlayer, DBPlayer.prototype, 'save', null, testPlayer);
     });
   });
 
@@ -55,11 +36,13 @@ describe('Player Repository', () => {
 
   describe('readPlayerByUsername', () => {
     it('should call findOne with correct parameters', async () => {
-      const findOneSpy = jest.spyOn(DBPlayer, 'findOne');
+      checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, testUsername);
 
-      const returnedPlayer = await readPlayerByUsername(username);
+      // const findOneSpy = jest.spyOn(DBPlayer, 'findOne');
 
-      expect(findOneSpy).toHaveBeenCalledWith({ username });
+      // const returnedPlayer = await readPlayerByUsername(testUsername);
+
+      // expect(findOneSpy).toHaveBeenCalledWith({ username: testUsername });
     });
   });
 
