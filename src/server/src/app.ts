@@ -12,7 +12,6 @@ import cookieParser from 'cookie-parser';
 import { account } from './routes/account';
 import { match } from './routes/match';
 import { account } from './routes/account';
-import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();
