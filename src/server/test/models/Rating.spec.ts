@@ -6,17 +6,14 @@ const deviation: number = 350;
 const volatility: number = 0.06;
 
 describe('Rating factory', () => {
-
   it('should create a new rating', async () => {
     const rating: Rating = RatingFactory.create(value, deviation, volatility);
 
     expect(rating).not.toBeNull();
   });
-
 });
 
 describe('Rating Model', () => {
-
   it('should be higher than lower rating', async () => {
     const rating: Rating = RatingFactory.create(value, deviation, volatility);
     const rating2: Rating = RatingFactory.create(value - 100, deviation, volatility);
