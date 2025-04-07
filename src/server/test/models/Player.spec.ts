@@ -6,20 +6,21 @@ const startingRating: number = 1500;
 const startingDeviation: number = 350;
 const startingVolatility: number = 0.06;
 const PLAYER_NAME: string = 'Alice';
-const PLAYER_RATING: Rating = RatingFactory.create(startingRating, startingDeviation, startingVolatility);
+const PLAYER_RATING: Rating = RatingFactory.create(
+  startingRating,
+  startingDeviation,
+  startingVolatility,
+);
 
 describe('Player factory', () => {
-
   it('should create a new player', async () => {
     const player: Player = PlayerFactory.create(PLAYER_NAME, PLAYER_RATING);
 
     expect(player).not.toBeNull();
   });
-
 });
 
 describe('Player Model', () => {
-
   it('should have correct username', async () => {
     const player: Player = PlayerFactory.create(PLAYER_NAME, PLAYER_RATING);
 
@@ -31,5 +32,4 @@ describe('Player Model', () => {
 
     expect(player.rating).not.toBeNull();
   });
-
 });
