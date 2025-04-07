@@ -6,9 +6,6 @@ import { Rating, RatingFactory } from "../models/Rating";
  * Stores player information.
  */
 export const createPlayer = async (player: Player): Promise<void> => {
-    console.log("Creating player:", player);
-    console.log("Creating player:", player.rating);
-    console.log("Creating player:", player.rating.value);
     const dbPlayer = new DBPlayer({
         username: player.username,
         rating: {
