@@ -4,21 +4,19 @@ import { createPlayer, readAllPlayers, readPlayerByUsername, updatePlayerRating,
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { PlayerFactory } from '../../src/models/Player';
 
-async function checkCalledWith(testedMethod: Function, expectedWith: any, spiedClass: any, spiedFunction: string, ...args: any) {
-  const mockFun = jest.fn();
+async function checkCalledWith(testedMethod: Function, expectedWith: any, spiedClass: any, spiedFunction: string, expectedReturn: any, ...args: any) {
+  const mockFun = jest.fn().mockReturnValue(expectedReturn);
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
-  console.log('args', args);
   await testedMethod(...args);
 
-  expect(mockFun).toHaveBeenCalledWith(expectedWith);
+  expect(mockFun).toHaveBeenCalledWith(...expectedWith);
 }
 
 async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, ...args: any) {
   const mockFun = jest.fn();
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
-  console.log('args', args);
   await testedMethod(...args);
 
   expect(mockFun).toHaveBeenCalled();
@@ -46,7 +44,12 @@ describe('Player Repository', () => {
 
   describe('readAllPlayers', () => {
     it('should call find with correct parameters', async () => {
-      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find');
+      const mockPlayers = [
+        { username: 'user1', rating: { value: 1500, deviation: 200, volatility: 0.06 } },
+        { username: 'user2', rating: { value: 1600, deviation: 190, volatility: 0.05 } }
+      ];
+
+      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find', mockPlayers);
     });
   });
 
