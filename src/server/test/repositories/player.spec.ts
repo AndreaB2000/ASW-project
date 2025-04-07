@@ -1,6 +1,12 @@
 import { DBPlayer } from '../../src/repositories/player';
-import { RatingFactory } from '../../src/models/Rating'
-import { createPlayer, readAllPlayers, readPlayerByUsername, updatePlayerRating, deletePlayer } from '../../src/repositories/player';
+import { RatingFactory } from '../../src/models/Rating';
+import {
+  createPlayer,
+  readAllPlayers,
+  readPlayerByUsername,
+  updatePlayerRating,
+  deletePlayer,
+} from '../../src/repositories/player';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { PlayerFactory } from '../../src/models/Player';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
@@ -27,21 +33,35 @@ describe('Player Repository', () => {
     it('should call find with correct parameters', async () => {
       const mockPlayers = [
         { username: 'user1', rating: { value: 1500, deviation: 200, volatility: 0.06 } },
-        { username: 'user2', rating: { value: 1600, deviation: 190, volatility: 0.05 } }
+        { username: 'user2', rating: { value: 1600, deviation: 190, volatility: 0.05 } },
       ];
 
-      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find', mockPlayers, []);
+      await checkCalledWith(
+        readAllPlayers,
+        [{}, 'username rating'],
+        DBPlayer,
+        'find',
+        mockPlayers,
+        [],
+      );
     });
   });
 
   describe('readPlayerByUsername', () => {
     it('should call findOne with correct parameters', async () => {
-      await checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, [testUsername]);
+      await checkCalledWith(
+        readPlayerByUsername,
+        [{ username: testUsername }],
+        DBPlayer,
+        'findOne',
+        testPlayer,
+        [testUsername],
+      );
     });
   });
 
   describe('updatePlayerRating', () => {
-    it("should call findOneAndUpdate with correct parameters", async () => {
+    it('should call findOneAndUpdate with correct parameters', async () => {
       const newRating = RatingFactory.create(1600, 190, 0.05);
       const expectedWith = [
         { username: 'testUser' },
@@ -50,21 +70,17 @@ describe('Player Repository', () => {
             rating: {
               value: newRating.value,
               deviation: newRating.deviation,
-              volatility: newRating.volatility
-            }
-          }
+              volatility: newRating.volatility,
+            },
+          },
         },
-        { new: true }
+        { new: true },
       ];
 
-      await checkCalledWith(
-        updatePlayerRating,
-        expectedWith,
-        DBPlayer,
-        'findOneAndUpdate',
-        null,
-        ['testUser', newRating]
-      );
+      await checkCalledWith(updatePlayerRating, expectedWith, DBPlayer, 'findOneAndUpdate', null, [
+        'testUser',
+        newRating,
+      ]);
     });
   });
 
@@ -76,7 +92,7 @@ describe('Player Repository', () => {
         DBPlayer,
         'deleteOne',
         { acknowledged: true, deletedCount: 1 },
-        ['testUser']
+        ['testUser'],
       );
     });
 
@@ -86,7 +102,7 @@ describe('Player Repository', () => {
         DBPlayer,
         'deleteOne',
         { acknowledged: true, deletedCount: 1 },
-        ['testUser']
+        ['testUser'],
       );
 
       const resDel0 = await checkCalled(
@@ -94,7 +110,7 @@ describe('Player Repository', () => {
         DBPlayer,
         'deleteOne',
         { acknowledged: true, deletedCount: 0 },
-        ['testUser']
+        ['testUser'],
       );
 
       expect(resDel1).toBe(true);
