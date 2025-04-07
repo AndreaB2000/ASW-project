@@ -2,12 +2,15 @@ import request from 'supertest';
 import express from 'express';
 import { register } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
+import { jest, describe, it, expect } from '@jest/globals';
 
 const app = express();
 app.use(express.json());
 app.post('/register', register);
 
-jest.mock('../../src/services/account');
+jest.mock('../../src/services/account', () => ({
+  registerAccount: jest.fn(),
+}));
 
 describe('POST /register', () => {
   it('should return 400 if username is missing', async () => {
@@ -23,8 +26,6 @@ describe('POST /register', () => {
   });
 
   it('should return 409 if account already exists', async () => {
-    (accountService.registerAccount as jest.Mock).mockResolvedValue(false);
-
     const res = await request(app)
       .post('/register')
       .send({ username: 'existingUser', password: 'test123' });
@@ -33,8 +34,7 @@ describe('POST /register', () => {
   });
 
   it('should return 201 if account is registered successfully', async () => {
-    (accountService.registerAccount as jest.Mock).mockResolvedValue(true);
-
+    jest.mocked(accountService.registerAccount).mockResolvedValue(true);
     const res = await request(app)
       .post('/register')
       .send({ username: 'newUser', password: 'test123' });
@@ -43,8 +43,9 @@ describe('POST /register', () => {
   });
 
   it('should return 500 if an error occurs', async () => {
-    (accountService.registerAccount as jest.Mock).mockRejectedValue(new Error('Unexpected error'));
-
+    jest
+      .mocked(accountService.registerAccount)
+      .mockRejectedValue(new Error('Internal server error'));
     const res = await request(app)
       .post('/register')
       .send({ username: 'errorUser', password: 'test123' });
