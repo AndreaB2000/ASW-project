@@ -13,7 +13,7 @@
  * @param mockedReturn mocked return value of the spied function.
  * @param args args to be passed to the tested method.
  */
-export async function checkCalledWith(testedMethod: Function, expectedWith: Array<any>, spiedClass: any, spiedFunction: string, mockedReturn: any, ...args: any) {
+export async function checkCalledWith(testedMethod: Function, expectedWith: Array<any>, spiedClass: any, spiedFunction: string, mockedReturn: any, args: Array<any>) {
   const mockFun = jest.fn().mockReturnValue(mockedReturn);
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
@@ -30,7 +30,7 @@ export async function checkCalledWith(testedMethod: Function, expectedWith: Arra
  * @param mockedReturn mocked return value of the spied function.
  * @param args args to be passed to the tested method.
  */
-export async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, mockedReturn: any, ...args: any) {
+export async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, mockedReturn: any, args: Array<any>) {
   const mockFun = jest.fn().mockReturnValue(mockedReturn);
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
