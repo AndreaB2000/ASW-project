@@ -7,7 +7,7 @@ import * as accountFactory from '../models/Account';
  */
 export const createAccount = async (account: Account): Promise<void> => {
   const { username, hashedPassword } = account;
-  const user = new DBAccount({ username, hashedPassword });
+  const user = new DBAccount({ username, password: hashedPassword });
   await user.save();
   console.log(`User created: ${username}`);
 };
@@ -17,7 +17,7 @@ export const createAccount = async (account: Account): Promise<void> => {
  * @returns { Account }[] - List of all accounts
  */
 export const readAllAccounts = async (): Promise<Account[]> => {
-  const accounts = await DBAccount.find({}, 'username');
+  const accounts = await DBAccount.find();
   const accountPromises = accounts.map(
     async account => await accountFactory.create(account.username, account.password),
   );
