@@ -8,6 +8,5 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['./test/setup.ts'],
   collectCoverageFrom: ['src/**/*.{js,ts}', '!src/test/**/*', '!src/server.ts', '!jest.config.ts'],
 };
