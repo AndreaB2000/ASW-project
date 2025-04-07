@@ -8,7 +8,6 @@ import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './db-connection';
 
 // Routes
-import { index } from './routes/index';
 import { match } from './routes/match';
 import { account } from './routes/account';
 
@@ -28,7 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/', index);
 app.use('/match', match);
 app.use('/account', account);
 app.get('/ping', (_, res) => {
