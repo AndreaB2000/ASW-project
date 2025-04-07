@@ -36,47 +36,69 @@ describe('Player Repository', () => {
 
   describe('readPlayerByUsername', () => {
     it('should call findOne with correct parameters', async () => {
-      checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, [testUsername]);
-
-      // const findOneSpy = jest.spyOn(DBPlayer, 'findOne');
-
-      // const returnedPlayer = await readPlayerByUsername(testUsername);
-
-      // expect(findOneSpy).toHaveBeenCalledWith({ username: testUsername });
+      await checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, [testUsername]);
     });
   });
 
   describe('updatePlayerRating', () => {
-    it("should update a player's rating", async () => {
+    it("should call findOneAndUpdate with correct parameters", async () => {
       const newRating = RatingFactory.create(1600, 190, 0.05);
-  
-      jest.spyOn(DBPlayer, 'findOneAndUpdate').mockResolvedValue({ username: 'testUser', rating: newRating });
-  
-      await updatePlayerRating('testUser', newRating);
-  
-      expect(DBPlayer.findOneAndUpdate).toHaveBeenCalledWith(
+      const expectedWith = [
         { username: 'testUser' },
-        { $set: { rating: { value: newRating.value, deviation: newRating.deviation, volatility: newRating.volatility } } },
+        {
+          $set: {
+            rating: {
+              value: newRating.value,
+              deviation: newRating.deviation,
+              volatility: newRating.volatility
+            }
+          }
+        },
         { new: true }
+      ];
+
+      await checkCalledWith(
+        updatePlayerRating,
+        expectedWith,
+        DBPlayer,
+        'findOneAndUpdate',
+        null,
+        ['testUser', newRating]
       );
     });
   });
 
   describe('deletePlayer', () => {
-    it('should delete a player by username', async () => {
-      jest.spyOn(DBPlayer, 'deleteOne').mockResolvedValue({ acknowledged: true, deletedCount: 1 });
-
-      const result = await deletePlayer('testUser');
-
-      expect(result).toBe(true);
+    it('should call deleteOne with given username', async () => {
+      await checkCalledWith(
+        deletePlayer,
+        [{ username: 'testUser' }],
+        DBPlayer,
+        'deleteOne',
+        { acknowledged: true, deletedCount: 1 },
+        ['testUser']
+      );
     });
 
-    it('should return false if no player was deleted', async () => {
-      jest.spyOn(DBPlayer, 'deleteOne').mockResolvedValue({ acknowledged: true, deletedCount: 0 });
+    it('should return deletion result', async () => {
+      const resDel1 = await checkCalled(
+        deletePlayer,
+        DBPlayer,
+        'deleteOne',
+        { acknowledged: true, deletedCount: 1 },
+        ['testUser']
+      );
 
-      const result = await deletePlayer('nonExistentUser');
+      const resDel0 = await checkCalled(
+        deletePlayer,
+        DBPlayer,
+        'deleteOne',
+        { acknowledged: true, deletedCount: 0 },
+        ['testUser']
+      );
 
-      expect(result).toBe(false);
+      expect(resDel1).toBe(true);
+      expect(resDel0).toBe(false);
     });
   });
 });
