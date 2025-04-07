@@ -5,11 +5,11 @@ import * as path from 'path';
 import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
-import { validationHandler } from './middlewares/validationHandler';
+import { connectDB } from './db-connection';
+
 // Routes
 import { index } from './routes/index';
 import { account } from './routes/account';
-import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();
