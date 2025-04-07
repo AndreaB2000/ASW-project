@@ -12,6 +12,6 @@ export const registerAccount = async (username: string, password: string): Promi
   const accountExists = existingAccounts.some(account => account.username === username);
   if (accountExists) return false;
   const account = await accountFactory.createWithHashing(username, password);
-  repository.createAccount(account);
+  await repository.createAccount(account);
   return true;
 };
