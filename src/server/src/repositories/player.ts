@@ -1,20 +1,20 @@
-import mongoose from "mongoose";
-import { Player, PlayerFactory } from "../models/Player";
-import { Rating, RatingFactory } from "../models/Rating";
+import mongoose from 'mongoose';
+import { Player, PlayerFactory } from '../models/Player';
+import { Rating, RatingFactory } from '../models/Rating';
 
 /**
  * Stores player information.
  */
 export const createPlayer = async (player: Player): Promise<void> => {
-    const dbPlayer = new DBPlayer({
-        username: player.username,
-        rating: {
-            value: player.rating.value,
-            deviation: player.rating.deviation,
-            volatility: player.rating.volatility
-        }
-    });
-    await dbPlayer.save();
+  const dbPlayer = new DBPlayer({
+    username: player.username,
+    rating: {
+      value: player.rating.value,
+      deviation: player.rating.deviation,
+      volatility: player.rating.volatility,
+    },
+  });
+  await dbPlayer.save();
 };
 
 /**
@@ -22,17 +22,13 @@ export const createPlayer = async (player: Player): Promise<void> => {
  * @returns { Player[] } - List of all players
  */
 export const readAllPlayers = async (): Promise<Player[]> => {
-    const players = await DBPlayer.find({}, "username rating");
-    return players.map(player =>
-        PlayerFactory.create(
-            player.username,
-            RatingFactory.create(
-                player.rating.value,
-                player.rating.deviation,
-                player.rating.volatility
-            )
-        )
-    );
+  const players = await DBPlayer.find({}, 'username rating');
+  return players.map(player =>
+    PlayerFactory.create(
+      player.username,
+      RatingFactory.create(player.rating.value, player.rating.deviation, player.rating.volatility),
+    ),
+  );
 };
 
 /**
@@ -41,15 +37,17 @@ export const readAllPlayers = async (): Promise<Player[]> => {
  * @returns {Promise<Player | null>} - The found player or null.
  */
 export const readPlayerByUsername = async (username: string): Promise<Player | null> => {
-    const player = await DBPlayer.findOne({ username });
-    return player ? PlayerFactory.create(
+  const player = await DBPlayer.findOne({ username });
+  return player
+    ? PlayerFactory.create(
         player.username,
         RatingFactory.create(
-            player.rating.value,
-            player.rating.deviation,
-            player.rating.volatility
-        )
-    ) : null;
+          player.rating.value,
+          player.rating.deviation,
+          player.rating.volatility,
+        ),
+      )
+    : null;
 };
 
 /**
@@ -59,11 +57,15 @@ export const readPlayerByUsername = async (username: string): Promise<Player | n
  * @returns {Promise<void>}
  */
 export const updatePlayerRating = async (username: string, rating: Rating): Promise<void> => {
-    await DBPlayer.findOneAndUpdate(
-        { username },
-        { $set: { rating: { value: rating.value, deviation: rating.deviation, volatility: rating.volatility } } },
-        { new: true }
-    );
+  await DBPlayer.findOneAndUpdate(
+    { username },
+    {
+      $set: {
+        rating: { value: rating.value, deviation: rating.deviation, volatility: rating.volatility },
+      },
+    },
+    { new: true },
+  );
 };
 
 /**
@@ -72,17 +74,17 @@ export const updatePlayerRating = async (username: string, rating: Rating): Prom
  * @returns {Promise<boolean>} - True if deleted, false otherwise.
  */
 export const deletePlayer = async (username: string): Promise<boolean> => {
-    const result = await DBPlayer.deleteOne({ username });
-    return result.deletedCount > 0;
+  const result = await DBPlayer.deleteOne({ username });
+  return result.deletedCount > 0;
 };
 
 const playerSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    rating: {
-        value: { type: Number, required: true },
-        deviation: { type: Number, required: true },
-        volatility: { type: Number, required: true }
-    }
+  username: { type: String, required: true, unique: true },
+  rating: {
+    value: { type: Number, required: true },
+    deviation: { type: Number, required: true },
+    volatility: { type: Number, required: true },
+  },
 });
 
-export const DBPlayer = mongoose.model("Player", playerSchema);
+export const DBPlayer = mongoose.model('Player', playerSchema);
