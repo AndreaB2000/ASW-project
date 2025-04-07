@@ -19,7 +19,7 @@ describe('Player Repository', () => {
 
   describe('createPlayer', () => {
     it('should call save on DB instance', async () => {
-      await checkCalled(createPlayer, DBPlayer.prototype, 'save', null, testPlayer);
+      await checkCalled(createPlayer, DBPlayer.prototype, 'save', null, [testPlayer]);
     });
   });
 
@@ -30,13 +30,13 @@ describe('Player Repository', () => {
         { username: 'user2', rating: { value: 1600, deviation: 190, volatility: 0.05 } }
       ];
 
-      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find', mockPlayers);
+      await checkCalledWith(readAllPlayers, [{}, 'username rating'], DBPlayer, 'find', mockPlayers, []);
     });
   });
 
   describe('readPlayerByUsername', () => {
     it('should call findOne with correct parameters', async () => {
-      checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, testUsername);
+      checkCalledWith(readPlayerByUsername, [ { username: testUsername } ], DBPlayer, 'findOne', testPlayer, [testUsername]);
 
       // const findOneSpy = jest.spyOn(DBPlayer, 'findOne');
 
