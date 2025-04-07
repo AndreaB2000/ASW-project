@@ -13,13 +13,15 @@
  * @param mockedReturn mocked return value of the spied function.
  * @param args args to be passed to the tested method.
  */
-export async function checkCalledWith(testedMethod: Function, expectedWith: Array<any>, spiedClass: any, spiedFunction: string, mockedReturn: any, args: Array<any>) {
+export async function checkCalledWith<R>(testedMethod: (...args: any[]) => Promise<R>, expectedWith: Array<any>, spiedClass: any, spiedFunction: string, mockedReturn: any, args: any[]): Promise<R> {
   const mockFun = jest.fn().mockReturnValue(mockedReturn);
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
-  await testedMethod(...args);
+  const result = await testedMethod(...args);
 
   expect(mockFun).toHaveBeenCalledWith(...expectedWith);
+
+  return result;
 }
 
 /**
@@ -30,11 +32,13 @@ export async function checkCalledWith(testedMethod: Function, expectedWith: Arra
  * @param mockedReturn mocked return value of the spied function.
  * @param args args to be passed to the tested method.
  */
-export async function checkCalled(testedMethod: Function, spiedClass: any, spiedFunction: string, mockedReturn: any, args: Array<any>) {
+export async function checkCalled<R>(testedMethod: (...args: any[]) => Promise<R>, spiedClass: any, spiedFunction: string, mockedReturn: any, args: any[]): Promise<R> {
   const mockFun = jest.fn().mockReturnValue(mockedReturn);
   jest.spyOn(spiedClass, spiedFunction).mockImplementation(mockFun);
 
-  await testedMethod(...args);
+  const result = await testedMethod(...args);
 
   expect(mockFun).toHaveBeenCalled();
+
+  return result;
 }
