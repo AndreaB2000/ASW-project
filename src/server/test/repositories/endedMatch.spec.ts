@@ -4,6 +4,7 @@ import {
   DBMatch,
   deleteMatch,
   findMatch,
+  findMatchesByPlayer,
   updateMatch,
 } from '../../src/repositories/endedMatch';
 import * as matchFactory from '../../src/models/Match';
@@ -57,6 +58,33 @@ describe('Match Repository', () => {
       const foundMatch = await findMatch('otherid');
 
       expect(foundMatch).toBe(null);
+    });
+  });
+
+  describe('findMatchesByPlayer', () => {
+    it('should call the find function with the given player and return the corresponding matches list', async () => {
+      const findMock = jest.fn(() =>
+        Promise.resolve([mockMatch, mockUpdatedMatch]),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.find>;
+      jest.spyOn(DBMatch, 'find').mockImplementation(findMock);
+
+      const foundMatch = await findMatchesByPlayer(PLAYER2);
+
+      expect(findMock).toHaveBeenCalledWith({
+        $or: [{ player1: PLAYER2 }, { player2: PLAYER2 }],
+      });
+      expect(foundMatch).toEqual([mockMatch, mockUpdatedMatch]);
+    });
+
+    it('should return null if there are no matches played by the given player', async () => {
+      const findMock = jest.fn(() =>
+        Promise.resolve([mockMatch, mockUpdatedMatch]),
+      ) as unknown as jest.MockedFunction<typeof DBMatch.find>;
+      jest.spyOn(DBMatch, 'find').mockImplementation(findMock);
+
+      const foundMatch = await findMatchesByPlayer('otherplayer');
+
+      expect(foundMatch).toEqual([mockMatch, mockUpdatedMatch]);
     });
   });
 
