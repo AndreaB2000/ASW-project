@@ -1,7 +1,8 @@
 import * as matchFactory from '../models/Match';
 import { Match } from '../models/Match';
 import { Move } from '../models/Move';
-import * as repository from '../repositories/endedMatch';
+import * as endedMatchRepo from '../repositories/endedMatch';
+import * as inProgressMatchRepo from '../repositories/endedMatch';
 
 export const newMatch = async (
   player1: string,
@@ -9,7 +10,18 @@ export const newMatch = async (
   creationDate: Date,
 ): Promise<string> => {
   const match = matchFactory.create(player1, player2, creationDate);
-  return repository.createMatch(match);
+  return inProgressMatchRepo.createMatch(match);
+};
+
+export const getMatch = async (matchId: string): Promise<Match> => {
+  return inProgressMatchRepo.findMatch(matchId) ?? endedMatchRepo.findMatch(matchId);
+};
+
+export const getMatchesByPlayer = async (player: string): Promise<Match[]> => {
+  return [
+    ...(await inProgressMatchRepo.findMatchesByPlayer(player)),
+    ...(await endedMatchRepo.findMatchesByPlayer(player)),
+  ];
 };
 
 export const addMove = async (
@@ -17,7 +29,7 @@ export const addMove = async (
   movingPlayer: string,
   newMove: Move,
 ): Promise<boolean> => {
-  const match: Match = await repository.findMatch(matchId);
+  const match: Match = await endedMatchRepo.findMatch(matchId);
 
   if (
     (movingPlayer == match.player1 && match.moves.length % 2 == 0) ||
@@ -25,8 +37,4 @@ export const addMove = async (
   ) {
     return match.addMove(newMove);
   }
-};
-
-export const getMatch = async (matchId: string): Promise<Match> => {
-  return repository.findMatch(matchId);
 };

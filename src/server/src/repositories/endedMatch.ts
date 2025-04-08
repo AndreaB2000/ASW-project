@@ -15,6 +15,12 @@ export const findMatch = async (matchId: string): Promise<Match | null> => {
   return await DBMatch.findById(matchId);
 };
 
+export const findMatchesByPlayer = async (player: string): Promise<Match[]> => {
+  return await DBMatch.find({
+    $or: [{ player1: player }, { player2: player }],
+  });
+};
+
 // Maybe it can return a boolean representing the effectiveness of the update?
 export const updateMatch = async (matchId: string, newMatch: Match): Promise<void> => {
   await DBMatch.findOneAndUpdate({ matchId }, newMatch);
