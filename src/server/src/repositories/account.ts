@@ -29,4 +29,4 @@ const accountSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-const DBAccount = mongoose.model('Account', accountSchema);
+export const DBAccount = mongoose.model('Account', accountSchema);
