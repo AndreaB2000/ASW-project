@@ -9,7 +9,6 @@ export const createAccount = async (account: Account): Promise<void> => {
   const { username, hashedPassword } = account;
   const user = new DBAccount({ username, password: hashedPassword });
   await user.save();
-  console.log(`User created: ${username}`);
 };
 
 /**
