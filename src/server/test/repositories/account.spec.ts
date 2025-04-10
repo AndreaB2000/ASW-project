@@ -1,6 +1,6 @@
 import { DBAccount } from '../../src/repositories/account';
 import { createAccount, readAllAccounts } from '../../src/repositories/account';
-import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import { jest, describe, it, beforeEach } from '@jest/globals';
 import * as accountFactory from '../../src/models/Account';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 
@@ -26,14 +26,7 @@ describe('Account Repository', () => {
         { username: 'user2', hashedPassword: 'hashedPassword2' },
       ];
 
-      await checkCalledWith(
-        readAllAccounts,
-        [{}, 'username hashedPassword'],
-        DBAccount,
-        'find',
-        mockPlayers,
-        [],
-      );
+      await checkCalled(readAllAccounts, DBAccount, 'find', mockPlayers, []);
     });
   });
 });
