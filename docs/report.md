@@ -32,8 +32,9 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
           - [No Opponent Found Case](#no-opponent-found-case)
-        - [API](#api)
       - [Match](#match)
+        - [API](#api)
+      - [Match](#match-1)
         - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -496,6 +497,10 @@ The server will notify the player when a match is found. <!-- BEING IMPLEMENTED 
 The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant. <!-- NOT IMPLEMENTED -->
 
 The server will remove a player from the queue if the player has not updated it's request for `t * 2` seconds. <!-- NOT IMPLEMENTED -->
+
+#### Match
+
+[Match UML](uml/match.md)
 
 ##### API
 
