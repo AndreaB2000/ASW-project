@@ -35,6 +35,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Match](#match)
         - [API](#api)
       - [Matchmaking](#matchmaking-1)
+      - [Match](#match-1)
         - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -589,6 +590,10 @@ classDiagram
 
 Server side matchmaking class diagram
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
@@ -596,6 +601,12 @@ Server side matchmaking class diagram
   - Body: `{"player": string}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
+
+- `POST /match/new`: creates a match, returns its ID
+
+  - Body: `{"player1": string, "player2": string}`
+  - Returns:
+    - 201 Created - `{"matchId": <string>}`
     - 400 Bad request - `{}` when the body is not complete
     - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
