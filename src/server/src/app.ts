@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import { account } from './routes/account';
 import { match } from './routes/match';
 import { account } from './routes/account';
+import { match } from './routes/match';
 
 // Create Express server
 export const app = express();
@@ -35,6 +36,7 @@ app.use('/account', account);
 app.get('/ping', (_, res) => {
   res.send('pong');
 });
+app.use('/match', match);
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
