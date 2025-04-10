@@ -780,6 +780,10 @@ classDiagram
 
 Server side matchmaking class diagram
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
@@ -787,8 +791,6 @@ Server side matchmaking class diagram
   - Body: `{"player": string}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
-
-#### APIs relative to matches management
 
 - `POST /match/new`: creates a match, returns its ID
 
