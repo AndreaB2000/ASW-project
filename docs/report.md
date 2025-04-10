@@ -444,7 +444,11 @@ classDiagram
 
 ##### Matchmaking sequence diagram
 
-###### Simple Case
+#### Match
+
+[Match UML](uml/match.md)
+
+##### API
 
 ```mermaid
 sequenceDiagram
