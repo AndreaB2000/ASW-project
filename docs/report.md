@@ -499,17 +499,6 @@ The server will remove a player from the queue if the player has not updated it'
 
 ##### API
 
-- `POST /matchmaking/new`: requests a new match, returns the matchId
-
-  - Body: `{"player": string}`
-  - Returns:
-    - 200 OK - `{"matchId": <string>}`
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 500 Internal server error - `{}` when a generic error occurs
-
-##### API
-
 - `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exceeded
 
   - Body: `{"player": string, "waitingTime": number}`
