@@ -8,8 +8,8 @@ import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './db-connection';
 
 // Routes
-import { account } from './routes/account';
 import { match } from './routes/match';
+import { account } from './routes/account';
 
 // Create Express server
 export const app = express();
@@ -32,6 +32,7 @@ app.get('/ping', (_, res) => {
   res.send('pong');
 });
 app.use('/match', match);
+app.use('/account', account);
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
