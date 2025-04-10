@@ -42,11 +42,10 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Match](#match-2)
         - [API](#api-3)
       - [Matchmaking](#matchmaking-2)
-        - [API](#api-4)
       - [Match](#match-3)
-        - [API](#api-5)
+        - [API](#api-4)
       - [Matchmaking](#matchmaking-3)
-        - [API](#api-6)
+        - [API](#api-5)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -780,6 +779,10 @@ classDiagram
 
 Server side matchmaking class diagram
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
@@ -787,12 +790,6 @@ Server side matchmaking class diagram
   - Body: `{"player": string}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
-
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
 
 - `POST /match/new`: creates a match, returns its ID
 
