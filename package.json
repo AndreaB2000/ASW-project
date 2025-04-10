@@ -36,7 +36,7 @@
     "build:docs": "cd src/server && npx typedoc",
     "start:client": "npm run start:server && cd src/client && npm run start",
     "start:server": "npm run start:db && cd src/server && npm run start",
-    "start:db": "docker compose up database",
+    "start:db": "docker compose up database -d",
     "serve:client": "cd src/client && npm run serve",
     "serve:server": "cd src/server && npm run serve",
     "test:client": "cd src/client && npm run test",
