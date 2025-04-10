@@ -84,8 +84,5 @@
     "macos",
     "win32",
     "darwin"
-  ],
-  "dependencies": {
-    "helmet": "^8.0.0"
-  }
+  ]
 }
