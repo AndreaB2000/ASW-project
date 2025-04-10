@@ -27,10 +27,10 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
-      - [Matchmaking](#matchmaking)
+      - [APIs relative to matches management](#apis-relative-to-matches-management)
       - [Match](#match)
         - [API](#api)
-      - [Matchmaking](#matchmaking-1)
+      - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
@@ -38,10 +38,10 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [API](#api-1)
       - [Match](#match-1)
         - [API](#api-2)
-      - [Matchmaking](#matchmaking-2)
+      - [Matchmaking](#matchmaking-1)
       - [Match](#match-2)
         - [API](#api-3)
-      - [Matchmaking](#matchmaking-3)
+      - [Matchmaking](#matchmaking-2)
         - [API](#api-4)
       - [Match](#match-3)
         - [API](#api-5)
@@ -419,7 +419,7 @@ The list of moves can be represented as a list of tuples (i,j) where the tuple r
 
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
 
-#### Matchmaking
+#### APIs relative to matches management
 
 The matchmaking system is responsible for pairing players with similar Glicko ratings.
 
