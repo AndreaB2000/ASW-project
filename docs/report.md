@@ -38,6 +38,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [API](#api-1)
       - [Match](#match-1)
         - [API](#api-2)
+        - [Matchmaking](#matchmaking-2)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -651,6 +652,17 @@ The server will remove a player from the queue if the player has not updated it'
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
+    - 500 Internal server error - `{}` when a generic error occurs
+
+##### Matchmaking
+
+- `POST /matchmaking/new`: requests a new match, returns the matchId
+
+  - Body: `{"player": string}`
+  - Returns:
+    - 200 OK - `{"matchId": <string>}`
+    - 400 Bad request - `{}` when the body is not complete
+    - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
