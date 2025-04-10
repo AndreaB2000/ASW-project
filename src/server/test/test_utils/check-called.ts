@@ -3,7 +3,7 @@
  * @description Utility functions to check if a method was called with specific arguments
  *             in a jest test environment. Thought to be used for repository test files.
  */
-import { jest, expect} from '@jest/globals';
+import { jest, expect } from '@jest/globals';
 
 /**
  * Tests if a spied function is called with the expected arguments inside a given method.
