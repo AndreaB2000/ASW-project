@@ -38,7 +38,8 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [API](#api-1)
       - [Match](#match-1)
         - [API](#api-2)
-        - [Matchmaking](#matchmaking-2)
+      - [Matchmaking](#matchmaking-2)
+        - [API](#api-3)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -654,7 +655,36 @@ The server will remove a player from the queue if the player has not updated it'
     - 404 Not found - `{}` when the provided match ID does not exist
     - 500 Internal server error - `{}` when a generic error occurs
 
-##### Matchmaking
+#### Matchmaking
+
+The matchmaking system is responsible for pairing players with similar Glicko ratings.
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+
+classDiagram
+    class MatchmakingAPI
+    class MatchmakingService
+    class Player
+    class PlayerRepository
+    class MatchQueueRepository
+
+    MatchmakingAPI --> MatchmakingService
+    MatchmakingService --> Player
+    MatchmakingService --> PlayerRepository
+    PlayerRepository --> Player
+    MatchmakingService --> MatchQueueRepository
+    MatchQueueRepository --> MatchQueue
+    MatchmakingService --> MatchQueue
+```
+
+Server side matchmaking class diagram
+
+##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
 
