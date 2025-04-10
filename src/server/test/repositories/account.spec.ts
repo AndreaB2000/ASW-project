@@ -1,53 +1,39 @@
+import { DBAccount } from '../../src/repositories/account';
 import { createAccount, readAllAccounts } from '../../src/repositories/account';
+import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import * as accountFactory from '../../src/models/Account';
-import { jest, expect, it, describe, afterEach } from '@jest/globals';
+import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 
-jest.mock('../models/Account', () => ({
-  create: jest.fn(),
-}));
+describe('Account Repository', () => {
+  const testUsername = 'testUser';
+  const testPassword = 'testPassword';
+  const testAccount = accountFactory.createWithHashing(testUsername, testPassword);
 
-describe('accountService', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   describe('createAccount', () => {
-    it('should save a new user to the database', async () => {
-      const saveMock = jest.fn();
-      mockModel.mockImplementation(() => ({ save: saveMock }));
-
-      const account = { username: 'testuser', hashedPassword: 'hashed123' };
-
-      await createAccount(account);
-
-      expect(mockModel).toHaveBeenCalledWith({
-        username: 'testuser',
-        password: 'hashed123',
-      });
-      expect(saveMock).toHaveBeenCalled();
+    it('should call save on DB instance', async () => {
+      await checkCalled(createAccount, DBAccount.prototype, 'save', null, [testAccount]);
     });
   });
 
   describe('readAllAccounts', () => {
-    it('should fetch all users and convert them using accountFactory', async () => {
-      const fakeUsers = [
-        { username: 'user1', password: 'pass1' },
-        { username: 'user2', password: 'pass2' },
+    it('should call find with correct parameters', async () => {
+      const mockPlayers = [
+        { username: 'user1', hashedPassword: 'hashedPassword1' },
+        { username: 'user2', hashedPassword: 'hashedPassword2' },
       ];
 
-      (mockModel.find as jest.Mock).mockResolvedValue(fakeUsers);
-      (accountFactory.create as jest.Mock).mockImplementation((username, password) => ({
-        username,
-        hashedPassword: password,
-      }));
-
-      const result = await readAllAccounts();
-
-      expect(mockModel.find).toHaveBeenCalled();
-      expect(result).toEqual([
-        { username: 'user1', hashedPassword: 'pass1' },
-        { username: 'user2', hashedPassword: 'pass2' },
-      ]);
+      await checkCalledWith(
+        readAllAccounts,
+        [{}, 'username hashedPassword'],
+        DBAccount,
+        'find',
+        mockPlayers,
+        [],
+      );
     });
   });
 });
