@@ -27,8 +27,8 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
-      - [APIs relative to matches management](#apis-relative-to-matches-management)
       - [Matchmaking](#matchmaking)
+      - [Match](#match)
         - [API](#api)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -435,6 +435,10 @@ classDiagram
 
 Server side matchmaking class diagram
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId
@@ -442,12 +446,6 @@ Server side matchmaking class diagram
   - Body: `{"player": string}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
-
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
 
 - `POST /match/new`: creates a match, returns its ID
 
