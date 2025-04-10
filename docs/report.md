@@ -27,12 +27,12 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
-      - [APIs relative to matches management](#apis-relative-to-matches-management)
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
           - [No Opponent Found Case](#no-opponent-found-case)
+      - [Match](#match)
         - [API](#api)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -494,6 +494,10 @@ The server will notify the player when a match is found.
 
 The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exeded
@@ -501,12 +505,6 @@ The server will also notify the player if the waiting time exceeds a certain tim
   - Body: `{"player": string, "waitingTime": number}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
-
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
 
 - `POST /match/new`: creates a match, returns its ID
 
