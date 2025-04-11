@@ -7,7 +7,12 @@ export interface MatchmakingCandidate {
 }
 
 export class MatchmakingCandidateFactory {
-  public static create = (playerId: string, rating: number, waitingTime: number, requestTime: Date): MatchmakingCandidate =>
+  public static create = (
+    playerId: string,
+    rating: number,
+    waitingTime: number,
+    requestTime: Date,
+  ): MatchmakingCandidate =>
     new MatchmakingCandidateImpl(playerId, rating, waitingTime, requestTime);
 }
 
@@ -24,19 +29,19 @@ class MatchmakingCandidateImpl implements MatchmakingCandidate {
     this._requestTime = requestTime;
   }
 
-  get playerId(): string{
+  get playerId(): string {
     return this._playerId;
-  };
+  }
 
-  get rating(): number{
+  get rating(): number {
     return this._rating;
-  };
+  }
 
-  get waitingTime(): number{
+  get waitingTime(): number {
     return this._waitingTime;
-  };
+  }
 
-  get requestTime(): Date{
+  get requestTime(): Date {
     return this._requestTime;
-  };
+  }
 }
