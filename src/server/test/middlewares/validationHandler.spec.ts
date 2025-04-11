@@ -3,6 +3,7 @@ import { validationHandler } from '../../src/middlewares/validationHandler';
 import express from 'express';
 import { body } from 'express-validator';
 import { describe, beforeAll, it, expect } from '@jest/globals';
+import { mockConsole } from '../test_utils/mock-console';
 
 describe('Validation Middleware', () => {
   let app: express.Express;
@@ -22,7 +23,10 @@ describe('Validation Middleware', () => {
       ],
       mockEndpoint,
     );
+    mockConsole();
   });
+
+  afterAll(() => jest.resetAllMocks());
 
   it('should return 422 if validationResult is not empty', async () => {
     const res = await request(app).post('/test').send({ password: 'test123' });
