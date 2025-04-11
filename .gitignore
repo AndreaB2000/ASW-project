@@ -154,3 +154,6 @@ src/server/secrets/mongo_root_password.txt
 
 # All pdf files
 *.pdf
+
+# direnv directory specific rc
+.envrc
