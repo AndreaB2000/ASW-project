@@ -520,16 +520,17 @@ classDiagram
     class Player
     class Rating
     class PlayerRepository
-    class MatchQueueRepository
+    class MatchmakingQueueRepository
+    class MatchmakingQueue
 
     MatchmakingAPI --> MatchmakingService
     MatchmakingService --> Player
     MatchmakingService --> PlayerRepository
     PlayerRepository --> Player
     Player --> Rating
-    MatchmakingService --> MatchQueueRepository
-    MatchQueueRepository --> MatchQueue
-    MatchmakingService --> MatchQueue
+    MatchmakingService --> MatchmakingQueueRepository
+    MatchmakingQueueRepository --> MatchmakingQueue
+    MatchmakingService --> MatchmakingQueue
 ```
 
 ##### Matchmaking sequence diagram
