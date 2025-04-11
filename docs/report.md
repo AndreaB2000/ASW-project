@@ -31,6 +31,10 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Match](#match)
         - [API](#api)
       - [Matchmaking](#matchmaking-1)
+        - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
+        - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
+          - [Simple Case](#simple-case)
+          - [No Opponent Found Case](#no-opponent-found-case)
         - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -501,6 +505,8 @@ Server side matchmaking class diagram
 
 The matchmaking system is responsible for pairing players with similar Glicko ratings.
 
+##### Server side matchmaking class diagram
+
 ```mermaid
 ---
   config:
@@ -526,13 +532,63 @@ classDiagram
     MatchmakingService --> MatchQueue
 ```
 
-Server side matchmaking class diagram
+##### Matchmaking sequence diagram
+
+###### Simple Case
+
+```mermaid
+sequenceDiagram
+   participant Client1
+   participant Server
+   participant Client2
+
+   Client1->>Server: requestMatch(playerId1, waitingTime = 0)
+   Note over Server: playerId1 is added to the queue
+   Note over Client1: waits t seconds
+   Client1->>Server: requestMatch(playerId1, waitingTime = 1)
+
+   Client2->>Server: requestMatch(playerId2, waitingTime = 0)
+
+   Note over Server: playerId1 is removed from the queue
+   Server-->>Client1: matchFound(matchId)
+   Server-->>Client2: matchFound(matchId)
+```
+
+###### No Opponent Found Case
+
+```mermaid
+sequenceDiagram
+   participant Client1
+   participant Server
+   Note over Server: patience is set to 3
+
+   Client1->>Server: requestMatch(playerId1, waitingTime = 0)
+   Note over Server: playerId1 is added to the queue
+   Note over Client1: waits t seconds
+   Client1->>Server: requestMatch(playerId1, waitingTime = 1)
+   Note over Client1: waits t seconds
+   Client1->>Server: requestMatch(playerId1, waitingTime = 2)
+   Note over Client1: waits t seconds
+   Client1->>Server: requestMatch(playerId1, waitingTime = 3)
+   Note over Server: playerId1 is removed from the queue
+   Server-->>Client1: matchFound(null)
+```
+
+Time t is the time the client waits before sending a new request to the server.
+
+The server will check if there are other players in the queue with similar Glicko ratings. If so, it will create a match and notify both players.
+
+If no players are found, the server will add the player to the queue and wait for other players to join.
+
+The server will notify the player when a match is found.
+
+The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
 
 ##### API
 
-- `POST /matchmaking/new`: requests a new match, returns the matchId
+- `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exeded
 
-  - Body: `{"player": string}`
+  - Body: `{"player": string, "waitingTime": number}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
     - 400 Bad request - `{}` when the body is not complete
