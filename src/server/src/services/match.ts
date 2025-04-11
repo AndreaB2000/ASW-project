@@ -2,7 +2,7 @@ import * as matchFactory from '../models/Match';
 import { Match } from '../models/Match';
 import { Move } from '../models/Move';
 import * as endedMatchRepo from '../repositories/endedMatch';
-import * as inProgressMatchRepo from '../repositories/endedMatch';
+import * as inProgressMatchRepo from '../repositories/inProgressMatch';
 
 export const newMatch = async (
   player1: string,
@@ -13,7 +13,7 @@ export const newMatch = async (
   return inProgressMatchRepo.createMatch(match);
 };
 
-export const getMatch = async (matchId: string): Promise<Match> => {
+export const getMatch = async (matchId: string): Promise<Match | null> => {
   return inProgressMatchRepo.findMatch(matchId) ?? endedMatchRepo.findMatch(matchId);
 };
 
@@ -29,12 +29,20 @@ export const addMove = async (
   movingPlayer: string,
   newMove: Move,
 ): Promise<boolean> => {
-  const match: Match = await endedMatchRepo.findMatch(matchId);
+  let match = await inProgressMatchRepo.findMatch(matchId);
 
+  if (match == null) {
+    return false;
+  }
+
+  let ret: boolean = false;
   if (
     (movingPlayer == match.player1 && match.moves.length % 2 == 0) ||
     (movingPlayer == match.player2 && match.moves.length % 2 == 1)
   ) {
-    return match.addMove(newMove);
+    ret = match.addMove(newMove);
+    inProgressMatchRepo.updateMatch(matchId, match);
   }
+
+  return ret;
 };
