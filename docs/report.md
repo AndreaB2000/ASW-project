@@ -428,6 +428,7 @@ classDiagram
     class PlayerRepository
     class MatchmakingQueueRepository
     class MatchmakingQueue
+    class MatchmakingCandidate
 
     MatchmakingAPI --> MatchmakingService
     MatchmakingService --> Player
@@ -437,6 +438,7 @@ classDiagram
     MatchmakingService --> MatchmakingQueueRepository
     MatchmakingQueueRepository --> MatchmakingQueue
     MatchmakingService --> MatchmakingQueue
+    MatchmakingQueue --> MatchmakingCandidate
 ```
 
 ##### Matchmaking sequence diagram
