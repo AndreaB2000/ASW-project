@@ -58,6 +58,32 @@ describe('Player Repository', () => {
         [testUsername],
       );
     });
+
+    it('should return player if found', async () => {
+      const player = await checkCalledWith(
+        readPlayerByUsername,
+        [{ username: testUsername }],
+        DBPlayer,
+        'findOne',
+        testPlayer,
+        [testUsername],
+      );
+
+      expect(player).toEqual(testPlayer);
+    });
+
+    it('should return null if player not found', async () => {
+      const player = await checkCalledWith(
+        readPlayerByUsername,
+        [{ username: testUsername }],
+        DBPlayer,
+        'findOne',
+        null,
+        [testUsername],
+      );
+
+      expect(player).toBeNull();
+    });
   });
 
   describe('updatePlayerRating', () => {
