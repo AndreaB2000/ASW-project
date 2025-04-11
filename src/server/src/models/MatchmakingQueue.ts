@@ -29,6 +29,12 @@ export interface MatchmakingQueue extends Iterable<MatchmakingCandidate> {
   has(playerId: string): boolean;
 
   /**
+   * Removes a candidate from the queue.
+   * @param playerId - The ID of the player to remove.
+   */
+  remove(playerId: string): void;
+
+  /**
    * Get the number of candidates in the queue.
    * @returns {number} - The number of candidates in the queue.
    */
@@ -57,6 +63,10 @@ class MatchmakingQueueImpl implements MatchmakingQueue {
 
   has(playerId: string): boolean {
     return this._candidates.has(playerId);
+  }
+
+  remove(playerId: string): void {
+    this._candidates.delete(playerId);
   }
 
   public get size(): number {
