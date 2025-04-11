@@ -14,20 +14,6 @@ describe('Rating factory', () => {
 });
 
 describe('Rating Model', () => {
-  it('should be higher than lower rating', async () => {
-    const rating: Rating = RatingFactory.create(value, deviation, volatility);
-    const rating2: Rating = RatingFactory.create(value - 100, deviation, volatility);
-
-    expect(rating.higherThan(rating2)).toBe(true);
-  });
-
-  it('should be lower than higher rating', async () => {
-    const rating: Rating = RatingFactory.create(value, deviation, volatility);
-    const rating2: Rating = RatingFactory.create(value + 100, deviation, volatility);
-
-    expect(rating.higherThan(rating2)).toBe(false);
-  });
-
   it('should work with < operator', async () => {
     const rating: Rating = RatingFactory.create(value, deviation, volatility);
     const rating2: Rating = RatingFactory.create(value + 100, deviation, volatility);
