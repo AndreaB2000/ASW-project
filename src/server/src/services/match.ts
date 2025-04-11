@@ -46,3 +46,11 @@ export const addMove = async (
 
   return ret;
 };
+
+export const deleteMatch = async (matchId: string): Promise<boolean> => {
+  if (inProgressMatchRepo.deleteMatch(matchId)) {
+    return true;
+  } else {
+    return endedMatchRepo.deleteMatch(matchId);
+  }
+};

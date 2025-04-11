@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
-import { newMatch, getMatch, getMatchesByPlayer, addMove } from '../../src/services/match';
+import {
+  newMatch,
+  getMatch,
+  getMatchesByPlayer,
+  addMove,
+  deleteMatch,
+} from '../../src/services/match';
 import * as inProgressMatchRepo from '../../src/repositories/inProgressMatch';
 import * as endedMatchRepo from '../../src/repositories/endedMatch';
 import * as matchFactory from '../../src/models/Match';
@@ -166,6 +172,56 @@ describe('Match Service', () => {
 
       expect(mockFindMatch).toHaveBeenCalledWith(OTHER_ID);
       expect(mockUpdateMatch).not.toHaveBeenCalled();
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('deleteMatch', () => {
+    it('should delete an in progress match given its ID', async () => {
+      const mockInProgressDelete = jest.fn().mockReturnValue(true);
+      jest
+        .spyOn(inProgressMatchRepo, 'deleteMatch')
+        .mockImplementation(mockInProgressDelete as any);
+
+      const mockEndedDelete = jest.fn().mockReturnValue(false);
+      jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
+
+      const result = await deleteMatch(TEST_ID);
+
+      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockEndedDelete).not.toHaveBeenCalled();
+      expect(result).toBe(true);
+    });
+
+    it('should delete an ended match given its ID', async () => {
+      const mockInProgressDelete = jest.fn().mockReturnValue(false);
+      jest
+        .spyOn(inProgressMatchRepo, 'deleteMatch')
+        .mockImplementation(mockInProgressDelete as any);
+
+      const mockEndedDelete = jest.fn().mockReturnValue(true);
+      jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
+
+      const result = await deleteMatch(TEST_ID);
+
+      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockEndedDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(result).toBe(true);
+    });
+
+    it('should not delete a match if the give ID does not exist', async () => {
+      const mockInProgressDelete = jest.fn().mockReturnValue(false);
+      jest
+        .spyOn(inProgressMatchRepo, 'deleteMatch')
+        .mockImplementation(mockInProgressDelete as any);
+
+      const mockEndedDelete = jest.fn().mockReturnValue(false);
+      jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
+
+      const result = await deleteMatch(TEST_ID);
+
+      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockEndedDelete).toHaveBeenCalledWith(TEST_ID);
       expect(result).toBe(false);
     });
   });
