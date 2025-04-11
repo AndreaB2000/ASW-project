@@ -2,7 +2,7 @@ import { DBAccount } from '../../src/repositories/account';
 import { createAccount, readAllAccounts } from '../../src/repositories/account';
 import { jest, describe, it, beforeEach } from '@jest/globals';
 import * as accountFactory from '../../src/models/Account';
-import { checkCalled, checkCalledWith } from '../test_utils/check-called';
+import { checkCalled } from '../test_utils/check-called';
 
 describe('Account Repository', () => {
   const testUsername = 'testUser';
