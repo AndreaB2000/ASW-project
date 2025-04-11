@@ -508,10 +508,6 @@ The server will remove a player from the queue if the player has not updated it'
     - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
-#### Match
-
-[Match UML](uml/match.md)
-
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exceeded
@@ -519,6 +515,12 @@ The server will remove a player from the queue if the player has not updated it'
   - Body: `{"player": string, "waitingTime": number}`
   - Returns:
     - 200 OK - `{"matchId": <string>}`
+
+#### Match
+
+[Match UML](uml/match.md)
+
+##### API
 
 - `POST /match/new`: creates a match, returns its ID
 
