@@ -12,6 +12,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.useFlatConfig": true,
   "markdownlint.config": {
-    "MD033": { "allowed_elements": ["sub"] }
+    "MD033": { "allowed_elements": ["sub"] },
+    "MD024": false,
   }
 }
