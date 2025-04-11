@@ -4,7 +4,6 @@ import {
   MatchmakingCandidateFactory,
 } from '../../src/models/MatchmakingCandidate';
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import test from 'node:test';
 
 const candidateId1: string = 'testPlayerId1';
 const candidateId2: string = 'testPlayerId2';
@@ -89,5 +88,14 @@ describe('Matchmaking Queue', () => {
   it('should return undefined if requested candidate is not present', async () => {
     testQueue.add(candidate1);
     expect(testQueue.get(candidateId2)).toBeUndefined();
+  });
+
+  it('should remove candidate from queue', async () => {
+    testQueue.add(candidate1);
+    testQueue.add(candidate2);
+    testQueue.remove(candidateId1);
+    expect(testQueue.size).toBe(1);
+    expect(testQueue.has(candidateId1)).toBe(false);
+    expect(testQueue.has(candidateId2)).toBe(true);
   });
 });
