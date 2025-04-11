@@ -157,3 +157,6 @@ src/server/secrets/mongo_root_password.txt
 
 # direnv directory specific rc
 .envrc
+
+# personal binaries folder
+bin/
