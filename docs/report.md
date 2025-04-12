@@ -444,15 +444,6 @@ Server side matchmaking class diagram
 
 ##### API
 
-- `POST /match/new`: creates a match, returns its ID
-
-  - Body: `{"player1": string, "player2": string}`
-  - Returns:
-    - 201 Created - `{"matchId": <string>}`
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 500 Internal server error - `{}` when a generic error occurs
-
 - `PUT /match/<id>/move`: Adds a move only if the provided player can make it
 
   - Body: `{"player1": string, "x": int, "y": int}`
