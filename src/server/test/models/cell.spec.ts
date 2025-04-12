@@ -1,7 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import * as cellFactory from '../../src/models/Cell';
 import * as pileFactory from '../../src/models/Pile';
-import { Pile } from '../../src/models/Pile';
 
 describe('Cell', () => {
   it('should create an empty cell with createEmpty', () => {
