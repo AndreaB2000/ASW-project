@@ -8,3 +8,6 @@ export interface Cell {
 class CellImpl implements Cell {
   constructor(public pile: Pile = null) {}
 }
+
+export const createEmpty = () => create(null);
+export const create = (pile: Pile) => new CellImpl(pile);
