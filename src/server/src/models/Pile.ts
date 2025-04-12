@@ -11,8 +11,8 @@ class PileImpl implements Pile {
 }
 
 export const create = (owner: string, numberOfGrains: number): Pile => {
-  if (numberOfGrains < 0 || numberOfGrains > 4) {
-    throw new Error('The number of grains must be between 0 and 4');
+  if (numberOfGrains < 1 || numberOfGrains > 4) {
+    throw new Error('The number of grains must be between 1 and 4');
   }
   return new PileImpl(owner, numberOfGrains);
 };
