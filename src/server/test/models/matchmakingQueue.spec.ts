@@ -45,6 +45,15 @@ describe('Matchmaking queue factory', () => {
 
     expect(queue.empty()).toBe(true);
   });
+
+  it('should create a matchmaking queue with given candidates', async () => {
+    const queue: MatchmakingQueue = MatchmakingQueueFactory.create([candidate1, candidate2]);
+
+    expect(queue.empty()).toBe(false);
+    expect(queue.size).toBe(2);
+    expect(queue.has(candidateId1)).toBe(true);
+    expect(queue.has(candidateId2)).toBe(true);
+  });
 });
 
 describe('Matchmaking Queue', () => {
