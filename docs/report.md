@@ -472,7 +472,7 @@ Server side matchmaking class diagram
     - 404 Not found - `{}` when the provided player does not exist
     - 500 Internal server error - `{}` when a generic error occurs
 
-- `DELETE /match/:id/delete`: deletes a match
+- `DELETE /match/<id>/delete`: deletes a match
 
   - Body: `{}`
   - Returns:
