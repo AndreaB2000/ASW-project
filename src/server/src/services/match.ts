@@ -17,7 +17,7 @@ export const getMatch = async (matchId: string): Promise<Match | null> => {
   return inProgressMatchRepo.findMatch(matchId) ?? endedMatchRepo.findMatch(matchId);
 };
 
-export const getMatchesByPlayer = async (player: string): Promise<Match[]> => {
+export const getMatchesByPlayer = async (player: string): Promise<string[]> => {
   return [
     ...(await inProgressMatchRepo.findMatchesByPlayer(player)),
     ...(await endedMatchRepo.findMatchesByPlayer(player)),
