@@ -47,3 +47,17 @@ export const getMatchesByPlayer = async (req: Request, res: Response): Promise<v
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+/**
+ * DELETE /match/:id/delete
+ * Deletes the match corresponding to the given ID.
+ */
+export const deleteMatch = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const deleted = await service.deleteMatch(req.params.id);
+    if (!deleted) res.status(404).json({ message: 'This match does not exist' });
+    else res.status(200).json({ message: 'The match has been successfully deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
