@@ -39,6 +39,7 @@ describe('PUT /match/:id/move', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
+    expect(matchService.addMove).not.toHaveBeenCalled();
   });
 
   it('should return 400 if x coordinate is missing', async () => {
@@ -46,6 +47,7 @@ describe('PUT /match/:id/move', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
+    expect(matchService.addMove).not.toHaveBeenCalled();
   });
 
   it('should return 400 if y coordinate is missing', async () => {
@@ -53,12 +55,33 @@ describe('PUT /match/:id/move', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
+    expect(matchService.addMove).not.toHaveBeenCalled();
+  });
+
+  it("should return 400 if the moving player can't make a move", async () => {
+    jest.mocked(matchService.addMove).mockResolvedValue(false);
+
+    const res = await request(app).put(ROUTE).send(NOT_IN_TURN_BODY);
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: "This player can't make a move" });
+    expect(matchService.addMove).toHaveBeenCalled();
+  });
+
+  it('should return 500 if an error occurs', async () => {
+    jest.mocked(matchService.addMove).mockRejectedValue(new Error('Generic error'));
+
+    const res = await request(app).put(ROUTE).send(IN_TURN_BODY);
+
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.error).toBeDefined();
   });
 
   it('should call service.addMove with correct parameters', async () => {
     jest.mocked(matchService.addMove).mockResolvedValue(true);
 
-    const res = await request(app).put(ROUTE).send(IN_TURN_BODY);
+    await request(app).put(ROUTE).send(IN_TURN_BODY);
 
     expect(matchService.addMove).toHaveBeenCalledWith(
       MATCH_ID,
@@ -74,25 +97,6 @@ describe('PUT /match/:id/move', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ message: 'Move added successfully' });
-  });
-
-  it("should return 400 if the moving player can't make a move", async () => {
-    jest.mocked(matchService.addMove).mockResolvedValue(false);
-
-    const res = await request(app).put(ROUTE).send(NOT_IN_TURN_BODY);
-
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: "This player can't make a move" });
-  });
-
-  it('should return 500 if an error occurs', async () => {
-    jest.mocked(matchService.addMove).mockRejectedValue(new Error('Generic error'));
-
-    const res = await request(app).put(ROUTE).send(IN_TURN_BODY);
-
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
-    expect(res.body.error).toBeDefined();
   });
 });
 
@@ -112,6 +116,7 @@ describe('getMatch', () => {
 
     expect(res.status).toBe(404);
     expect(res.body).toEqual({ message: 'This match does not exist' });
+    expect(matchService.getMatch).toHaveBeenCalled();
   });
 
   it('should return 500 if an error occurs', async () => {
@@ -122,6 +127,14 @@ describe('getMatch', () => {
     expect(res.status).toBe(500);
     expect(res.body.message).toBe('Internal server error');
     expect(res.body.error).toBeDefined();
+  });
+
+  it('should call matchService.getMatch with correct parameters', async () => {
+    jest.mocked(matchService.getMatch).mockResolvedValue(TEST_MATCH);
+
+    await request(app).get(ROUTE);
+
+    expect(matchService.getMatch).toHaveBeenCalledWith(MATCH_ID);
   });
 
   it('should return 200 and the match if it exists', async () => {
@@ -141,6 +154,7 @@ describe('getMatch', () => {
 
 describe('getMatchesByPlayer', () => {
   const ROUTE = `/match/byplayer/${PLAYER_IN_TURN}`;
+  const LIST_OF_IDS = [MATCH_ID, OTHER_ID];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -156,14 +170,21 @@ describe('getMatchesByPlayer', () => {
     expect(res.body.error).toBeDefined();
   });
 
+  it('should call matchService.getMatchesByPlayer with correct parameters', async () => {
+    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(LIST_OF_IDS);
+
+    await request(app).get(ROUTE);
+
+    expect(matchService.getMatchesByPlayer).toHaveBeenCalledWith(PLAYER_IN_TURN);
+  });
+
   it('should return 200 and a list of matchIDs relative to the given player', async () => {
-    const listOfIDs = [MATCH_ID, OTHER_ID];
-    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(listOfIDs);
+    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(LIST_OF_IDS);
 
     const res = await request(app).get(ROUTE);
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ player: PLAYER_IN_TURN, matchIDs: listOfIDs });
+    expect(res.body).toEqual({ player: PLAYER_IN_TURN, matchIDs: LIST_OF_IDS });
   });
 });
 
@@ -181,6 +202,7 @@ describe('deleteMatch', () => {
 
     expect(res.status).toBe(404);
     expect(res.body).toEqual({ message: 'This match does not exist' });
+    expect(matchService.deleteMatch).toHaveBeenCalled();
   });
 
   it('should return 500 if an error occurs', async () => {
@@ -191,6 +213,14 @@ describe('deleteMatch', () => {
     expect(res.status).toBe(500);
     expect(res.body.message).toBe('Internal server error');
     expect(res.body.error).toBeDefined();
+  });
+
+  it('should call matchService.deleteMatch with correct parameters', async () => {
+    jest.mocked(matchService.deleteMatch).mockResolvedValue(true);
+
+    await request(app).delete(ROUTE);
+
+    expect(matchService.deleteMatch).toHaveBeenCalledWith(MATCH_ID);
   });
 
   it('should return 200 and the match if it exists', async () => {
