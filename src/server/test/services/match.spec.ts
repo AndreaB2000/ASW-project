@@ -114,7 +114,7 @@ describe('Match Service', () => {
 
   describe('getMatchesByPlayer', () => {
     it('should return matches relative to the given player', async () => {
-      const mockFun = jest.fn().mockReturnValue([EXPECTED_MATCH, OTHER_MATCH]);
+      const mockFun = jest.fn().mockReturnValue([TEST_ID, OTHER_ID]);
       jest.spyOn(endedMatchRepo, 'findMatchesByPlayer').mockImplementation(mockFun as any);
 
       const mockFun2 = jest.fn().mockReturnValue([]);
@@ -123,7 +123,7 @@ describe('Match Service', () => {
       const result = await getMatchesByPlayer(PLAYER2);
 
       expect(mockFun).toHaveBeenCalledWith(PLAYER2);
-      expect(result).toStrictEqual([EXPECTED_MATCH, OTHER_MATCH]);
+      expect(result).toStrictEqual([TEST_ID, OTHER_ID]);
     });
   });
 

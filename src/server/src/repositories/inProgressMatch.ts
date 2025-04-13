@@ -16,10 +16,11 @@ export const findMatch = async (matchId: string): Promise<Match | null> => {
   return await DBMatch.findById(matchId);
 };
 
-export const findMatchesByPlayer = async (player: string): Promise<Match[]> => {
-  return await DBMatch.find({
+export const findMatchesByPlayer = async (player: string): Promise<string[]> => {
+  const matches = await DBMatch.find({
     $or: [{ player1: player }, { player2: player }],
   });
+  return matches.map(match => match._id.toString());
 };
 
 // Maybe it can return a boolean representing the effectiveness of the update?
@@ -30,15 +31,3 @@ export const updateMatch = async (matchId: string, newMatch: Match): Promise<voi
 export const deleteMatch = async (matchId: string): Promise<boolean> => {
   return (await DBMatch.deleteOne({ matchId })).deletedCount > 0;
 };
-
-const matchSchema = new mongoose.Schema({
-  player1: { type: String, required: true },
-  player2: { type: String, required: true },
-  creationDate: { type: Date, required: true, default: Date.now },
-  moves: [
-    {
-      x: { type: Number, required: true },
-      y: { type: Number, required: true },
-    },
-  ],
-});

@@ -67,10 +67,13 @@ describe('Match Repository', () => {
         [{ $or: [{ player1: PLAYER2 }, { player2: PLAYER2 }] }],
         DBMatch,
         'find',
-        [mockMatch, mockUpdatedMatch],
+        [
+          { _id: TEST_ID, ...mockMatch },
+          { _id: OTHER_ID, ...mockUpdatedMatch },
+        ],
         [PLAYER2],
       );
-      expect(foundMatch).toEqual([mockMatch, mockUpdatedMatch]);
+      expect(foundMatch).toEqual([TEST_ID, OTHER_ID]);
     });
 
     it('should return null if there are no matches played by the given player', async () => {
