@@ -1,7 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import { addMove, getMatch } from '../../src/controllers/match';
+import { addMove, getMatch, getMatchesByPlayer } from '../../src/controllers/match';
 import * as matchService from '../../src/services/match';
 import * as moveFactory from '../../src/models/Move';
 import * as matchFactory from '../../src/models/Match';
@@ -9,13 +9,17 @@ import * as matchFactory from '../../src/models/Match';
 const app = express();
 app.use(express.json());
 app.put('/match/:id/move', addMove);
+app.get('/match/:id', getMatch);
+app.get('/match/byplayer/:player', getMatchesByPlayer);
 
 jest.mock('../../src/services/match', () => ({
   addMove: jest.fn(),
   getMatch: jest.fn(),
+  getMatchesByPlayer: jest.fn(),
 }));
 
 const MATCH_ID = 'testid';
+const OTHER_ID = 'testid';
 const PLAYER_IN_TURN = 'player1';
 const PLAYER_NOT_IN_TURN = 'player2';
 
@@ -90,13 +94,14 @@ describe('PUT /match/:id/move', () => {
   });
 });
 
-// Add getMatch tests here
-app.get('/match/:id', getMatch);
-
 describe('getMatch', () => {
   const ROUTE = `/match/${MATCH_ID}`;
   const DATE = new Date();
   const TEST_MATCH = matchFactory.create(PLAYER_IN_TURN, PLAYER_NOT_IN_TURN, DATE);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('should return 404 if the given ID does not exist', async () => {
     jest.mocked(matchService.getMatch).mockResolvedValue(null);
@@ -129,5 +134,33 @@ describe('getMatch', () => {
       // Object must be converted in strings to make the tests pass
       creationDate: TEST_MATCH.creationDate.toISOString(),
     });
+  });
+});
+
+describe('getMatchesByPlayer', () => {
+  const ROUTE = `/match/byplayer/${PLAYER_IN_TURN}`;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return 500 if an error occurs', async () => {
+    jest.mocked(matchService.getMatchesByPlayer).mockRejectedValue(new Error('Generic error'));
+
+    const res = await request(app).get(ROUTE);
+
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.error).toBeDefined();
+  });
+
+  it('should return 200 and a list of matchIDs relative to the given player', async () => {
+    const listOfIDs = [MATCH_ID, OTHER_ID];
+    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(listOfIDs);
+
+    const res = await request(app).get(ROUTE);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ player: PLAYER_IN_TURN, matchIDs: listOfIDs });
   });
 });

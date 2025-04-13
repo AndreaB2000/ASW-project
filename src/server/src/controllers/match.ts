@@ -34,3 +34,16 @@ export const getMatch = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+/**
+ * GET /match/byplayer/:player
+ * Returns a list of matches played by the specified player.
+ */
+export const getMatchesByPlayer = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const matchIDs = await service.getMatchesByPlayer(req.params.player);
+    res.status(200).json({ player: req.params.player, matchIDs: matchIDs });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
