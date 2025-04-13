@@ -511,7 +511,7 @@ The server will remove a player from the queue if the player has not updated it'
 
 - `PUT /match/<id>/move`: Adds a move only if the provided player can make it
 
-  - Body: `{"player1": string, "x": int, "y": int}`
+  - Body: `{movingPlayer: string, x: number, y: number}`
   - Returns:
     - 200 OK - `{}` when the move is successfully added to the match
     - 400 Bad request - `{}` when the body is not complete
@@ -523,26 +523,25 @@ The server will remove a player from the queue if the player has not updated it'
 
   - Body: `{}`
   - Returns:
-    - 200 OK - `{<match>}` when the move is successfully added to the match
+    - 200 OK - `{id: number, <match>}` when the move is successfully added to the match
     - 401 Unauthorized - `{}` when the client is not logged in
     - 404 Not found - `{}` when there is no match with the given ID
     - 500 Internal server error - `{}` when a generic error occurs
 
-- `GET /match/query/<player>`: returns a list of match IDs
+- `GET /match/byplayer/<player>`: returns a list of match IDs
 
   - Body: `{}`
   - Returns:
-    - 200 OK - `{"matches": [<matches>]}` the list can be empty
+    - 200 OK - `{player: string, matchIDs: string[]}` the list can be empty
     - 401 Unauthorized - `{}` when the client is not logged in
     - 404 Not found - `{}` when the provided player does not exist
     - 500 Internal server error - `{}` when a generic error occurs
 
-- `DELETE /match/delete?id=<matchId>`: deletes a match
+- `DELETE /match/:id/delete`: deletes a match
 
   - Body: `{}`
   - Returns:
     - 200 OK - `{}` when the match is successfully deleted
-    - 400 Bad request - `{}` when query args are not specified
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
