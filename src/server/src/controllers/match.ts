@@ -3,7 +3,7 @@ import * as service from '../services/match';
 import * as moveFactory from '../models/Move';
 
 /**
- * PUT /match/<id>/move
+ * PUT /match/:id/move
  * Adds a move to a certain match.
  */
 export const addMove = async (req: Request, res: Response): Promise<void> => {
@@ -16,6 +16,20 @@ export const addMove = async (req: Request, res: Response): Promise<void> => {
     const result = await service.addMove(req.params.id, movingPlayer, moveFactory.create(x, y));
     if (!result) res.status(400).json({ message: "This player can't make a move" });
     else res.status(200).json({ message: 'Move added successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+/**
+ * GET /match/:id
+ * Returns the match corresponding to the given ID.
+ */
+export const getMatch = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const match = await service.getMatch(req.params.id);
+    if (match == null) res.status(404).json({ message: 'This match does not exist' });
+    else res.status(200).json({ id: req.params.id, ...match });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
