@@ -19,6 +19,9 @@ classDiagram
         +creationDate: Date
         +initialState: BoardState
         +moves: List~Move~
+
+        +addMove(move: Move)
+        +getCurrentState()
     }
 
     class Database
@@ -77,12 +80,14 @@ classDiagram
     }
 
     %% A fixed-sized matrix of cells
-    class BoardState {
+    class Board {
 
         %% The default board state
-        +initialBoardState() BoardState$
+        +defaultBoard() Board$
 
         +getCell(x: int, y: int) Cell
+        +setCell(x: int, y: int, cell: Cell) void
+        +applyMove(movingPlayer: string, move: Move) void
     }
 
     %% Board cell which can contain a pile
@@ -108,8 +113,8 @@ classDiagram
     EndedMatchRepository ..> Match
     MatchService ..> Match
     Match ..> Move
-    Match ..> BoardState
-    BoardState *-- Cell
+    Match ..> Board
+    Board *-- Cell
     Cell *-- Pile
 ```
 
