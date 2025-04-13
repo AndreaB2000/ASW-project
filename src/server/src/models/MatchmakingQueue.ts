@@ -42,7 +42,13 @@ export interface MatchmakingQueue extends Iterable<MatchmakingCandidate> {
 }
 
 export class MatchmakingQueueFactory {
-  public static create = (): MatchmakingQueue => new MatchmakingQueueImpl();
+  public static create = (candidates?: MatchmakingCandidate[]): MatchmakingQueue => {
+    const queue = new MatchmakingQueueImpl();
+    if (candidates) {
+      candidates.forEach(candidate => queue.add(candidate));
+    }
+    return queue;
+  };
 }
 
 class MatchmakingQueueImpl implements MatchmakingQueue {
