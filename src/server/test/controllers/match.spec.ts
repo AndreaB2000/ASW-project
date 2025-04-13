@@ -1,7 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import { addMove, getMatch, getMatchesByPlayer } from '../../src/controllers/match';
+import { addMove, deleteMatch, getMatch, getMatchesByPlayer } from '../../src/controllers/match';
 import * as matchService from '../../src/services/match';
 import * as moveFactory from '../../src/models/Move';
 import * as matchFactory from '../../src/models/Match';
@@ -11,11 +11,13 @@ app.use(express.json());
 app.put('/match/:id/move', addMove);
 app.get('/match/:id', getMatch);
 app.get('/match/byplayer/:player', getMatchesByPlayer);
+app.delete('/match/:id/delete', deleteMatch);
 
 jest.mock('../../src/services/match', () => ({
   addMove: jest.fn(),
   getMatch: jest.fn(),
   getMatchesByPlayer: jest.fn(),
+  deleteMatch: jest.fn(),
 }));
 
 const MATCH_ID = 'testid';
@@ -162,5 +164,41 @@ describe('getMatchesByPlayer', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ player: PLAYER_IN_TURN, matchIDs: listOfIDs });
+  });
+});
+
+describe('deleteMatch', () => {
+  const ROUTE = `/match/${MATCH_ID}/delete`;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return 404 if the given ID does not exist', async () => {
+    jest.mocked(matchService.deleteMatch).mockResolvedValue(false);
+
+    const res = await request(app).delete(ROUTE);
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ message: 'This match does not exist' });
+  });
+
+  it('should return 500 if an error occurs', async () => {
+    jest.mocked(matchService.deleteMatch).mockRejectedValue(new Error('Generic error'));
+
+    const res = await request(app).delete(ROUTE);
+
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe('Internal server error');
+    expect(res.body.error).toBeDefined();
+  });
+
+  it('should return 200 and the match if it exists', async () => {
+    jest.mocked(matchService.deleteMatch).mockResolvedValue(true);
+
+    const res = await request(app).delete(ROUTE);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ message: 'The match has been successfully deleted' });
   });
 });
