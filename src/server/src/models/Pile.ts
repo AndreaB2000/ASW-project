@@ -1,5 +1,12 @@
 export interface Pile {
+  /**
+   * The owner of the pile.
+   */
   owner: string;
+
+  /**
+   * The number of grains contained in the pile.
+   */
   numberOfGrains: number;
 }
 
