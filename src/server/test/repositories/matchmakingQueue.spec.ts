@@ -20,8 +20,8 @@ describe('MatchmakingQueue Repository', () => {
   describe('getQueue', () => {
     it('should return queue if present in DB', async () => {
       const mockCandidates = [
-        MatchmakingCandidateFactory.create('player1', 1500, 10, new Date()),
-        MatchmakingCandidateFactory.create('player2', 1600, 20, new Date()),
+        MatchmakingCandidateFactory.create('player1', 1500, new Date()),
+        MatchmakingCandidateFactory.create('player2', 1600, new Date()),
       ];
       const returnedValue = await checkCalledWith(
         getQueue,
@@ -54,7 +54,7 @@ describe('MatchmakingQueue Repository', () => {
 
   describe('addCandidate', () => {
     it('should call findByIdAndUpdate with correct parameters', async () => {
-      const candidate = MatchmakingCandidateFactory.create('player1', 1500, 10, new Date());
+      const candidate = MatchmakingCandidateFactory.create('player1', 1500, new Date());
 
       await checkCalledWith(
         addCandidate,
@@ -88,7 +88,6 @@ describe('MatchmakingQueue Repository', () => {
       const updatedCandidate = MatchmakingCandidateFactory.create(
         candidateId,
         1600,
-        20,
         new Date(),
       );
 
