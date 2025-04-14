@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+function goToRegistration() {
+  router.push('/registration')
+}
+</script>
 
 <template>
   <section>
@@ -16,7 +24,7 @@
           <button style="background-color: #1EC6E0;">Play with BOT</button>
           <button style="background-color: #E0961E;">Login</button>
           <button>Tutorial</button>
-          <button>Register</button>
+          <button @click="goToRegistration">Register</button>
         </section>
       </section>
       <img src="../assets/sandpiles-template-img.svg"></img>
