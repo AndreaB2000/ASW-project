@@ -52,7 +52,6 @@ export class MatchmakingQueueFactory {
 }
 
 class MatchmakingQueueImpl implements MatchmakingQueue {
-
   private _candidates: Map<string, MatchmakingCandidate> = new Map();
 
   public empty(): boolean {
@@ -80,6 +79,8 @@ class MatchmakingQueueImpl implements MatchmakingQueue {
   }
 
   [Symbol.iterator](): Iterator<MatchmakingCandidate> {
-    return this._candidates.values();
+    const array = Array.from(this._candidates.values());
+    const sorted = array.sort((a, b) => a.requestTime.getTime() - b.requestTime.getTime());
+    return sorted[Symbol.iterator]();
   }
 }
