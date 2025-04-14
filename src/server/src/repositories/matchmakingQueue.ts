@@ -8,7 +8,6 @@ import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/Matc
 const candidateSchema = new mongoose.Schema<MatchmakingCandidate>({
   playerId: { type: String, required: true },
   rating: { type: Number, required: true },
-  waitingTime: { type: Number, required: true },
   requestTime: { type: Date, required: true },
 });
 
