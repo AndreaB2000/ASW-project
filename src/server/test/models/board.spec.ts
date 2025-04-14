@@ -34,7 +34,7 @@ describe('Board', () => {
     const numOfGrains = 1;
     const customState = [{ x: X, y: Y, pile: pileFactory.create(PLAYER1, numOfGrains) }];
 
-    const customBoard = boardFactory.createCustom(PLAYER1, PLAYER2, width, height, customState);
+    const customBoard = boardFactory.createCustom(width, height, customState);
 
     expect(customBoard.state[X][Y].pile).not.toBeNull();
     expect(customBoard.state[X][Y].pile?.owner).toBe(PLAYER1);
@@ -50,7 +50,7 @@ describe('Board', () => {
     const numOfGrains = 1;
     const customState = [{ x: X, y: Y, pile: pileFactory.create(PLAYER1, numOfGrains) }];
 
-    expect(() => boardFactory.createCustom(PLAYER1, PLAYER2, width, height, customState)).toThrow(
+    expect(() => boardFactory.createCustom(width, height, customState)).toThrow(
       'Board width and heignt must be greater than 5',
     );
   });
@@ -142,8 +142,6 @@ describe('Board', () => {
 
   it('should behave like expected in a specific scenario', () => {
     const board = boardFactory.createCustom(
-      PLAYER1,
-      PLAYER2,
       boardFactory.DEFAULT_WIDTH,
       boardFactory.DEFAULT_HEIGHT,
       [
@@ -159,8 +157,6 @@ describe('Board', () => {
     );
 
     const boardAfterMove = boardFactory.createCustom(
-      PLAYER1,
-      PLAYER2,
       boardFactory.DEFAULT_WIDTH,
       boardFactory.DEFAULT_HEIGHT,
       [
@@ -186,7 +182,7 @@ describe('Board', () => {
   });
 
   it('should behave like expected in another specific scenario', () => {
-    const board = boardFactory.createCustom(PLAYER1, PLAYER2, 8, 8, [
+    const board = boardFactory.createCustom(8, 8, [
       { x: 6, y: 7, pile: pileFactory.create(PLAYER1, 1) },
       { x: 7, y: 6, pile: pileFactory.create(PLAYER1, 2) },
       { x: 6, y: 6, pile: pileFactory.create(PLAYER1, 1) },
@@ -210,7 +206,7 @@ describe('Board', () => {
       { x: 6, y: 0, pile: pileFactory.create(PLAYER2, 1) },
     ]);
 
-    const boardAfterMove = boardFactory.createCustom(PLAYER1, PLAYER2, 8, 8, [
+    const boardAfterMove = boardFactory.createCustom(8, 8, [
       { x: 6, y: 7, pile: pileFactory.create(PLAYER1, 1) },
       { x: 7, y: 6, pile: pileFactory.create(PLAYER1, 2) },
       { x: 6, y: 6, pile: pileFactory.create(PLAYER1, 2) },

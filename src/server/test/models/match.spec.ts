@@ -9,28 +9,32 @@ import { describe, it, expect, beforeEach } from '@jest/globals';
 describe('Match', () => {
   let match: Match;
   let matchWithCustomBoard: Match;
-  const PLAYER1 = 'Alice';
-  const PLAYER2 = 'Bob';
+  const player1 = 'Alice';
+  const player2 = 'Bob';
   const NOW = new Date();
-  const MOVE = moveFactory.create(1, 2);
-  const MOVE2 = moveFactory.create(2, 3);
+  const validMove1 = moveFactory.create(2, 2);
+  const validMove2 = moveFactory.create(
+    boardFactory.DEFAULT_WIDTH - 2,
+    boardFactory.DEFAULT_HEIGHT - 2,
+  );
+  const invalidMove = moveFactory.create(2, 3);
   const customWidth = 6;
   const customHeight = 6;
-  const customBoardEntry = { x: 0, y: 0, pile: pileFactory.create(PLAYER1, 1) };
+  const customBoardEntry = { x: 0, y: 0, pile: pileFactory.create(player1, 1) };
 
   beforeEach(() => {
-    match = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, NOW);
+    match = matchFactory.createWithDefaultInitialState(player1, player2, NOW);
     matchWithCustomBoard = matchFactory.createWithCustomInitialState(
-      PLAYER1,
-      PLAYER2,
+      player1,
+      player2,
       NOW,
-      boardFactory.createCustom(PLAYER1, PLAYER2, customWidth, customHeight, [customBoardEntry]),
+      boardFactory.createCustom(customWidth, customHeight, [customBoardEntry]),
     );
   });
 
   it('should have the correct fields inside, given at creation time', () => {
-    expect(match.player1).toBe(PLAYER1);
-    expect(match.player2).toBe(PLAYER2);
+    expect(match.player1).toBe(player1);
+    expect(match.player2).toBe(player2);
     expect(match.creationDate).toBe(NOW);
   });
 
@@ -39,20 +43,43 @@ describe('Match', () => {
   });
 
   it('addMove should add a move to the moves list', () => {
-    const result = match.addMove(MOVE);
+    const result = match.addMove(validMove1);
 
     expect(result).toBe(true);
     expect(match.moves.length).toBe(1);
-    expect(match.moves[0]).toBe(MOVE);
+    expect(match.moves[0]).toBe(validMove1);
   });
 
   it('addMove should add multiple moves to the moves list in order', () => {
-    match.addMove(MOVE);
-    match.addMove(MOVE2);
+    const result1 = match.addMove(validMove1);
+    const result2 = match.addMove(validMove2);
 
+    expect(result1).toBe(true);
+    expect(result2).toBe(true);
     expect(match.moves.length).toBe(2);
-    expect(match.moves[0]).toBe(MOVE);
-    expect(match.moves[1]).toBe(MOVE2);
+    expect(match.moves[0]).toBe(validMove1);
+    expect(match.moves[1]).toBe(validMove2);
+  });
+
+  it('addMove should not add an invalid move (on a null pile)', () => {
+    const result = match.addMove(invalidMove);
+
+    expect(result).toBe(false);
+    expect(match.moves.length).toBe(0);
+  });
+
+  it('addMove should not add an invalid move (on a pile owned by someone else)', () => {
+    const result = match.addMove(validMove2);
+
+    expect(result).toBe(false);
+    expect(match.moves.length).toBe(0);
+  });
+
+  it('addMove should not change the initial board state', () => {
+    const result1 = match.addMove(validMove1);
+    const result2 = match.addMove(validMove2);
+
+    expect(match.initialState).toStrictEqual(boardFactory.createDefault(player1, player2));
   });
 
   it('should create a match with a custom initial state', () => {
