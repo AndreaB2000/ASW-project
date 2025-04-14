@@ -186,28 +186,6 @@ describe('Board', () => {
   });
 
   it('should behave like expected in another specific scenario', () => {
-    /*
-
-    [{},		{},		{B,1},		{A,1},		{A,2},		{},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{B,1},		{A,1},		{A,1},		{A,1},		{},		{}],
-    [{},		{B,2},		{A,2},		{A,1},		{A,1},		{A,2},		{A,2},		{}],
-    [{B,1},		{B,2},		{},		{A,3},		{A,3},		{A,1},		{A,2},		{A,1}],
-    [{},		{B,2},		{A,2},		{A,1},		{A,1},		{A,2},		{A,2},		{}]
-
-    [{},		{},		{B,1},		{A,1},		{A,1},		{A,1},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{},		{},		{},		{},		{},		{}],
-    [{},		{},		{B,1},		{A,1},		{A,1},		{A,1},		{},		{}],
-    [{},		{B,2},		{A,2},		{A,1},		{A,1},		{A,2},		{A,2},		{}],
-    [{B,1},		{A,2},		{},		{A,3},		{A,3},		{A,1},		{A,2},		{A,1}}],
-    [{},		{B,2},		{A,2},		{A,1},		{A,1},		{A,2},		{A,2},		{}]    
-
-    */
-
     const board = boardFactory.createCustom(PLAYER1, PLAYER2, 8, 8, [
       { x: 6, y: 7, pile: pileFactory.create(PLAYER1, 1) },
       { x: 7, y: 6, pile: pileFactory.create(PLAYER1, 2) },
@@ -215,7 +193,7 @@ describe('Board', () => {
       { x: 5, y: 6, pile: pileFactory.create(PLAYER1, 2) },
       { x: 6, y: 5, pile: pileFactory.create(PLAYER1, 3) },
       { x: 4, y: 5, pile: pileFactory.create(PLAYER1, 1) },
-      { x: 0, y: 4, pile: pileFactory.create(PLAYER1, 1) },
+      { x: 0, y: 5, pile: pileFactory.create(PLAYER1, 1) },
       { x: 7, y: 4, pile: pileFactory.create(PLAYER1, 3) },
       { x: 6, y: 4, pile: pileFactory.create(PLAYER1, 3) },
       { x: 5, y: 4, pile: pileFactory.create(PLAYER1, 3) },
@@ -263,9 +241,7 @@ describe('Board', () => {
       { x: 6, y: 0, pile: pileFactory.create(PLAYER2, 1) },
     ]);
 
-    console.log('Expected', JSON.stringify(boardAfterMove.state));
     board.applyMove(PLAYER1, moveFactory.create(6, 5));
-    console.log('Actual', JSON.stringify(board.state));
 
     expect(board.state).toStrictEqual(boardAfterMove.state);
   });
