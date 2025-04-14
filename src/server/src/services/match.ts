@@ -9,7 +9,7 @@ export const newMatch = async (
   player2: string,
   creationDate: Date,
 ): Promise<string> => {
-  const match = matchFactory.create(player1, player2, creationDate);
+  const match = matchFactory.createWithDefaultInitialState(player1, player2, creationDate);
   return inProgressMatchRepo.createMatch(match);
 };
 

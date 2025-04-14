@@ -23,15 +23,15 @@ describe('Match Service', () => {
   let EXPECTED_MATCH: Match;
   let MATCH_WITH_A_MOVE: Match;
   let MATCH_WITH_2_MOVES: Match;
-  const OTHER_MATCH: Match = matchFactory.create(PLAYER3, PLAYER2, DATE);
+  const OTHER_MATCH: Match = matchFactory.createWithDefaultInitialState(PLAYER3, PLAYER2, DATE);
   const TEST_MOVE = moveFactory.create(1, 2);
   const TEST_MOVE2 = moveFactory.create(2, 4);
 
   function initializeMatches() {
-    EXPECTED_MATCH = matchFactory.create(PLAYER1, PLAYER2, DATE);
-    MATCH_WITH_A_MOVE = matchFactory.create(PLAYER1, PLAYER2, DATE);
+    EXPECTED_MATCH = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
+    MATCH_WITH_A_MOVE = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
     MATCH_WITH_A_MOVE.addMove(TEST_MOVE);
-    MATCH_WITH_2_MOVES = matchFactory.create(PLAYER1, PLAYER2, DATE);
+    MATCH_WITH_2_MOVES = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
     MATCH_WITH_2_MOVES.addMove(TEST_MOVE);
     MATCH_WITH_2_MOVES.addMove(TEST_MOVE2);
   }

@@ -24,7 +24,6 @@ describe('Cell', () => {
     const cell = cellFactory.createEmpty();
 
     cell.addGrain(PLAYER);
-    console.log(JSON.stringify(cell));
 
     expect(cell.pile).not.toBeNull();
     expect(cell.pile.owner).toBe(PLAYER);
