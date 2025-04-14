@@ -107,4 +107,30 @@ describe('Matchmaking Queue', () => {
     expect(testQueue.has(candidateId1)).toBe(false);
     expect(testQueue.has(candidateId2)).toBe(true);
   });
+
+  it('should not remove candidate if not present', async () => {
+    testQueue.add(candidate1);
+    testQueue.remove(candidateId2);
+    expect(testQueue.size).toBe(1);
+    expect(testQueue.has(candidateId1)).toBe(true);
+  });
+
+  it('should return request time ordered based iterator', async () => {
+    const candidate3 = MatchmakingCandidateFactory.create(
+      'testPlayerId3',
+      1700,
+      3,
+      new Date('2023-09-01:00:00Z'),
+    );
+
+    const candidates: MatchmakingCandidate[] = [candidate1, candidate2, candidate3];
+    const queue: MatchmakingQueue = MatchmakingQueueFactory.create(candidates);
+    const expectedOrder: MatchmakingCandidate[] = [
+      candidate3,
+      candidate1,
+      candidate2,
+    ];
+
+    expect(Array.from(queue)).toEqual(expectedOrder);
+  });
 });
