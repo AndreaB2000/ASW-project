@@ -11,31 +11,34 @@ import * as inProgressMatchRepo from '../../src/repositories/inProgressMatch';
 import * as endedMatchRepo from '../../src/repositories/endedMatch';
 import * as matchFactory from '../../src/models/Match';
 import * as moveFactory from '../../src/models/Move';
+import * as boardFactory from '../../src/models/Board';
 import { Match } from '../../src/models/Match';
 
 describe('Match Service', () => {
-  const PLAYER1 = 'player1';
-  const PLAYER2 = 'player2';
-  const PLAYER3 = 'player3';
+  const player1 = 'player1';
+  const player2 = 'player2';
+  const player3 = 'player3';
   const DATE = new Date();
-  const TEST_ID = 'testid';
-  const OTHER_ID = 'otherid';
-  let EXPECTED_MATCH: Match;
-  let MATCH_WITH_A_MOVE: Match;
-  let MATCH_WITH_2_MOVES: Match;
-  const OTHER_MATCH: Match = matchFactory.createWithDefaultInitialState(PLAYER3, PLAYER2, DATE);
-  const TEST_MOVE = moveFactory.create(1, 2);
-  const TEST_MOVE2 = moveFactory.create(2, 4);
+  const matchID = 'testid';
+  const otherID = 'otherid';
+  let expectedMatch: Match;
+  let matchWithAMove: Match;
+  let matchWith2Moves: Match;
+  const otherMatch: Match = matchFactory.createWithDefaultInitialState(player3, player2, DATE);
+  const testMove = moveFactory.create(2, 2);
+  const testMove2 = moveFactory.create(
+    boardFactory.DEFAULT_WIDTH - 2,
+    boardFactory.DEFAULT_HEIGHT - 2,
+  );
 
   function initializeMatches() {
-    EXPECTED_MATCH = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
-    MATCH_WITH_A_MOVE = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
-    MATCH_WITH_A_MOVE.addMove(TEST_MOVE);
-    MATCH_WITH_2_MOVES = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, DATE);
-    MATCH_WITH_2_MOVES.addMove(TEST_MOVE);
-    MATCH_WITH_2_MOVES.addMove(TEST_MOVE2);
+    expectedMatch = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWithAMove = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWithAMove.addMove(testMove);
+    matchWith2Moves = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWith2Moves.addMove(testMove);
+    matchWith2Moves.addMove(testMove2);
   }
-  initializeMatches();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -46,13 +49,13 @@ describe('Match Service', () => {
     it('should create a new match in the inProgress repository, and return its ID', async () => {
       const newId = await checkCalledWith(
         newMatch,
-        [EXPECTED_MATCH],
+        [expectedMatch],
         inProgressMatchRepo,
         'createMatch',
-        TEST_ID,
-        [PLAYER1, PLAYER2, DATE],
+        matchID,
+        [player1, player2, DATE],
       );
-      expect(newId).toBe(TEST_ID);
+      expect(newId).toBe(matchID);
     });
   });
 
@@ -60,41 +63,41 @@ describe('Match Service', () => {
     it('should return the match corresponding to the given ID', async () => {
       const match = await checkCalledWith(
         getMatch,
-        [TEST_ID],
+        [matchID],
         inProgressMatchRepo,
         'findMatch',
-        [EXPECTED_MATCH],
-        [TEST_ID],
+        [expectedMatch],
+        [matchID],
       );
-      expect(match).toStrictEqual([EXPECTED_MATCH]);
+      expect(match).toStrictEqual([expectedMatch]);
     });
 
     it('should return the match corresponding to the given ID if it is in progress', async () => {
       const mockEndedFun = jest.fn().mockReturnValue(null);
       jest.spyOn(endedMatchRepo, 'findMatch').mockImplementation(mockEndedFun as any);
 
-      const mockInProgressFun = jest.fn().mockReturnValue(EXPECTED_MATCH);
+      const mockInProgressFun = jest.fn().mockReturnValue(expectedMatch);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockInProgressFun as any);
 
-      const result = await getMatch(TEST_ID);
+      const result = await getMatch(matchID);
 
       expect(mockEndedFun).not.toHaveBeenCalled();
-      expect(mockInProgressFun).toHaveBeenCalledWith(TEST_ID);
-      expect(result).toStrictEqual(EXPECTED_MATCH);
+      expect(mockInProgressFun).toHaveBeenCalledWith(matchID);
+      expect(result).toStrictEqual(expectedMatch);
     });
 
     it('should return the match corresponding to the given ID if it is ended', async () => {
-      const mockEndedFun = jest.fn().mockReturnValue(EXPECTED_MATCH);
+      const mockEndedFun = jest.fn().mockReturnValue(expectedMatch);
       jest.spyOn(endedMatchRepo, 'findMatch').mockImplementation(mockEndedFun as any);
 
       const mockInProgressFun = jest.fn().mockReturnValue(null);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockInProgressFun as any);
 
-      const result = await getMatch(TEST_ID);
+      const result = await getMatch(matchID);
 
-      expect(mockEndedFun).toHaveBeenCalledWith(TEST_ID);
-      expect(mockInProgressFun).toHaveBeenCalledWith(TEST_ID);
-      expect(result).toStrictEqual(EXPECTED_MATCH);
+      expect(mockEndedFun).toHaveBeenCalledWith(matchID);
+      expect(mockInProgressFun).toHaveBeenCalledWith(matchID);
+      expect(result).toStrictEqual(expectedMatch);
     });
 
     it('should return an empty list if the ID does not exist', async () => {
@@ -104,26 +107,26 @@ describe('Match Service', () => {
       const mockInProgressFun = jest.fn().mockReturnValue(null);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockInProgressFun as any);
 
-      const result = await getMatch(OTHER_ID);
+      const result = await getMatch(otherID);
 
-      expect(mockEndedFun).toHaveBeenCalledWith(OTHER_ID);
-      expect(mockInProgressFun).toHaveBeenCalledWith(OTHER_ID);
+      expect(mockEndedFun).toHaveBeenCalledWith(otherID);
+      expect(mockInProgressFun).toHaveBeenCalledWith(otherID);
       expect(result).toStrictEqual(null);
     });
   });
 
   describe('getMatchesByPlayer', () => {
     it('should return matches relative to the given player', async () => {
-      const mockFun = jest.fn().mockReturnValue([TEST_ID, OTHER_ID]);
+      const mockFun = jest.fn().mockReturnValue([matchID, otherID]);
       jest.spyOn(endedMatchRepo, 'findMatchesByPlayer').mockImplementation(mockFun as any);
 
       const mockFun2 = jest.fn().mockReturnValue([]);
       jest.spyOn(inProgressMatchRepo, 'findMatchesByPlayer').mockImplementation(mockFun2 as any);
 
-      const result = await getMatchesByPlayer(PLAYER2);
+      const result = await getMatchesByPlayer(player2);
 
-      expect(mockFun).toHaveBeenCalledWith(PLAYER2);
-      expect(result).toStrictEqual([TEST_ID, OTHER_ID]);
+      expect(mockFun).toHaveBeenCalledWith(player2);
+      expect(result).toStrictEqual([matchID, otherID]);
     });
   });
 
@@ -131,31 +134,31 @@ describe('Match Service', () => {
     it('should add a move to the corresponding match if the given player can make a move', async () => {
       const mockFindMatch = jest
         .fn()
-        .mockReturnValueOnce(EXPECTED_MATCH)
-        .mockReturnValue(MATCH_WITH_A_MOVE);
+        .mockReturnValueOnce(expectedMatch)
+        .mockReturnValue(matchWithAMove);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockFindMatch as any);
 
       const mockUpdateMatch = jest.fn();
       jest.spyOn(inProgressMatchRepo, 'updateMatch').mockImplementation(mockUpdateMatch as any);
 
-      const result = await addMove(TEST_ID, PLAYER1, TEST_MOVE);
-      const result2 = await addMove(TEST_ID, PLAYER2, TEST_MOVE2);
+      const result = await addMove(matchID, player1, testMove);
+      const result2 = await addMove(matchID, player2, testMove2);
       initializeMatches();
 
-      expect(mockUpdateMatch).toHaveBeenNthCalledWith(1, TEST_ID, MATCH_WITH_A_MOVE);
-      expect(mockUpdateMatch).toHaveBeenNthCalledWith(2, TEST_ID, MATCH_WITH_2_MOVES);
+      expect(mockUpdateMatch).toHaveBeenNthCalledWith(1, matchID, matchWithAMove);
+      expect(mockUpdateMatch).toHaveBeenNthCalledWith(2, matchID, matchWith2Moves);
       expect(result).toBe(true);
       expect(result2).toBe(true);
     });
 
     it('should not add a move to the corresponding match if the given player cannot make a move', async () => {
-      const mockFindMatch = jest.fn().mockReturnValue(EXPECTED_MATCH);
+      const mockFindMatch = jest.fn().mockReturnValue(expectedMatch);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockFindMatch as any);
 
       const mockUpdateMatch = jest.fn();
       jest.spyOn(inProgressMatchRepo, 'updateMatch').mockImplementation(mockUpdateMatch as any);
 
-      const result = await addMove(TEST_ID, PLAYER2, TEST_MOVE);
+      const result = await addMove(matchID, player2, testMove);
 
       expect(mockUpdateMatch).not.toHaveBeenCalled();
       expect(result).toBe(false);
@@ -168,9 +171,9 @@ describe('Match Service', () => {
       const mockUpdateMatch = jest.fn();
       jest.spyOn(inProgressMatchRepo, 'updateMatch').mockImplementation(mockUpdateMatch as any);
 
-      const result = await addMove(OTHER_ID, PLAYER2, TEST_MOVE);
+      const result = await addMove(otherID, player2, testMove);
 
-      expect(mockFindMatch).toHaveBeenCalledWith(OTHER_ID);
+      expect(mockFindMatch).toHaveBeenCalledWith(otherID);
       expect(mockUpdateMatch).not.toHaveBeenCalled();
       expect(result).toBe(false);
     });
@@ -186,9 +189,9 @@ describe('Match Service', () => {
       const mockEndedDelete = jest.fn().mockReturnValue(false);
       jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
 
-      const result = await deleteMatch(TEST_ID);
+      const result = await deleteMatch(matchID);
 
-      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockInProgressDelete).toHaveBeenCalledWith(matchID);
       expect(mockEndedDelete).not.toHaveBeenCalled();
       expect(result).toBe(true);
     });
@@ -202,10 +205,10 @@ describe('Match Service', () => {
       const mockEndedDelete = jest.fn().mockReturnValue(true);
       jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
 
-      const result = await deleteMatch(TEST_ID);
+      const result = await deleteMatch(matchID);
 
-      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
-      expect(mockEndedDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockInProgressDelete).toHaveBeenCalledWith(matchID);
+      expect(mockEndedDelete).toHaveBeenCalledWith(matchID);
       expect(result).toBe(true);
     });
 
@@ -218,10 +221,10 @@ describe('Match Service', () => {
       const mockEndedDelete = jest.fn().mockReturnValue(false);
       jest.spyOn(endedMatchRepo, 'deleteMatch').mockImplementation(mockEndedDelete as any);
 
-      const result = await deleteMatch(TEST_ID);
+      const result = await deleteMatch(matchID);
 
-      expect(mockInProgressDelete).toHaveBeenCalledWith(TEST_ID);
-      expect(mockEndedDelete).toHaveBeenCalledWith(TEST_ID);
+      expect(mockInProgressDelete).toHaveBeenCalledWith(matchID);
+      expect(mockEndedDelete).toHaveBeenCalledWith(matchID);
       expect(result).toBe(false);
     });
   });
