@@ -5,17 +5,55 @@ import * as pileFactory from './Pile';
 import { Pile } from './Pile';
 
 export interface Board {
+  /**
+   * The height of the board.
+   */
   height: number;
+
+  /**
+   * The width of the board.
+   */
   width: number;
+
+  /**
+   * The state of the board.
+   */
   state: Cell[][];
+
+  /**
+   * Returns the cell at the specified position.
+   *
+   * @param x the horizontal coordinate.
+   * @param y the vertical coordinate.
+   */
   getCell(x: number, y: number): Cell;
+
+  /**
+   * Sets the value of the cell at the specified position.
+   *
+   * @param x the horizontal coordinate.
+   * @param y the vertical coordinate.
+   * @param cell the new cell.
+   */
   setCell(x: number, y: number, cell: Cell): void;
+
+  /**
+   * Applies the privided move to the state.
+   *
+   * @param movingPlayer the player who is making the move.
+   * @param move the move to be applied.
+   */
   applyMove(movingPlayer: string, move: Move): void;
+
+  /**
+   * Creates a defensive copy of the board.
+   */
+  copy(): Board;
 }
 
 type BoardEntry = { x: number; y: number; pile: Pile };
 
-// Based on the default initial piles positioning, width and heignt must be greater than 5
+// Based on the default initial piles positioning, width and height must be greater than 5
 export const DEFAULT_WIDTH = 9;
 export const DEFAULT_HEIGHT = 9;
 const INITIAL_STATE = (player1: string, player2: string): BoardEntry[] => [
@@ -57,25 +95,39 @@ class BoardImpl implements Board {
     } while (collapsingPiles.length != 0);
   }
 
-  getCell(x: number, y: number) {
+  getCell(x: number, y: number): Cell {
     return this.state[x][y];
   }
 
-  setCell(x: number, y: number, cell: Cell) {
+  setCell(x: number, y: number, cell: Cell): void {
     this.state[x][y] = Object.assign({}, cell);
+  }
+
+  copy(): Board {
+    // Estrae le pile esistenti per riutilizzare createCustom
+    const existingPiles: BoardEntry[] = [];
+
+    for (let x = 0; x < this.height; x++) {
+      for (let y = 0; y < this.width; y++) {
+        const cell = this.state[x][y];
+        if (cell.pile) {
+          existingPiles.push({
+            x,
+            y,
+            pile: pileFactory.create(cell.pile.owner, cell.pile.numberOfGrains),
+          });
+        }
+      }
+    }
+
+    return createCustom(this.width, this.height, existingPiles);
   }
 }
 
 export const createDefault = (player1: string, player2: string): Board =>
-  createCustom(player1, player2, DEFAULT_WIDTH, DEFAULT_HEIGHT, INITIAL_STATE(player1, player2));
+  createCustom(DEFAULT_WIDTH, DEFAULT_HEIGHT, INITIAL_STATE(player1, player2));
 
-export const createCustom = (
-  player1: string,
-  player2: string,
-  width: number,
-  height: number,
-  piles: Array<BoardEntry>,
-): Board => {
+export const createCustom = (width: number, height: number, piles: Array<BoardEntry>): Board => {
   if (width > 5 && height > 5) {
     return new BoardImpl(
       width,
