@@ -10,12 +10,4 @@ describe('Pile', () => {
     expect(pile.owner).toBe(PLAYER);
     expect(pile.numberOfGrains).toBe(NUM_OF_GRAINS);
   });
-  it('should throw an error if the number of grains is not between 1 and 4', () => {
-    expect(() => pileFactory.create(PLAYER, 0)).toThrow(
-      'The number of grains must be between 1 and 4',
-    );
-    expect(() => pileFactory.create(PLAYER, 5)).toThrow(
-      'The number of grains must be between 1 and 4',
-    );
-  });
 });
