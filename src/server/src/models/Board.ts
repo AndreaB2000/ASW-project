@@ -1,5 +1,6 @@
 import * as cellFactory from './Cell';
 import { Cell } from './Cell';
+import { Move } from './Move';
 import * as pileFactory from './Pile';
 import { Pile } from './Pile';
 
@@ -9,6 +10,7 @@ export interface Board {
   state: Cell[][];
   getCell(x: number, y: number): Cell;
   setCell(x: number, y: number, cell: Cell): void;
+  applyMove(movingPlayer: string, move: Move): void;
 }
 
 type BoardEntry = { x: number; y: number; pile: Pile };
@@ -27,6 +29,33 @@ class BoardImpl implements Board {
     public readonly height: number,
     public state: Cell[][],
   ) {}
+
+  applyMove(movingPlayer: string, move: Move): void {
+    this.state[move.x][move.y].addGrain(movingPlayer);
+
+    const collapsingPiles: [x: number, y: number][] = [];
+
+    do {
+      // Empties array
+      collapsingPiles.length = 0;
+
+      for (let i = 0; i < this.height; i++) {
+        for (let j = 0; j < this.width; j++) {
+          if (this.state[i][j].pile != null && this.state[i][j].pile.numberOfGrains >= 4)
+            collapsingPiles.push([i, j]);
+        }
+      }
+
+      collapsingPiles.forEach(([i, j]) => {
+        this.state[i][j].collapse();
+
+        this.state[(i - 1) % this.width][j].addGrain(movingPlayer);
+        this.state[(i + 1) % this.width][j].addGrain(movingPlayer);
+        this.state[i][(j - 1) % this.height].addGrain(movingPlayer);
+        this.state[i][(j + 1) % this.height].addGrain(movingPlayer);
+      });
+    } while (collapsingPiles.length != 0);
+  }
 
   getCell(x: number, y: number) {
     return this.state[x][y];
