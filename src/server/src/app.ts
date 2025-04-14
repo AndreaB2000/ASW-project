@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: '172.0.0.11',
+    origin: '*',
   }),
 );
 
