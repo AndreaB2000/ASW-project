@@ -2,6 +2,9 @@ import { Pile } from './Pile';
 import * as pileFactory from './Pile';
 
 export interface Cell {
+  /**
+   * The pile contained in the cell.
+   */
   pile?: Pile;
 
   /**
@@ -11,6 +14,11 @@ export interface Cell {
    */
   addGrain(player: string): void;
 
+  /**
+   * If the cell contains a pile with 4 grains, the pile is deleted, if the pile
+   * contains more than 4 grains, 4 grains are removed and the remaining are
+   * left.
+   */
   collapse(): void;
 }
 
