@@ -579,19 +579,21 @@ sequenceDiagram
    Server-->>Client1: matchFound(null)
 ```
 
-Time t is the time the client waits before sending a new request to the server.
+Time t is the time the client waits before sending a new request to the server. <!-- NOT IMPLEMENTED -->
 
-The server will check if there are other players in the queue with similar Glicko ratings. If so, it will create a match and notify both players.
+The server will check if there are other players in the queue with similar Glicko ratings. If so, it will create a match and notify both players. <!-- BEING IMPLEMENTED -->
 
-If no players are found, the server will add the player to the queue and wait for other players to join.
+If no players are found, the server will add the player to the queue and wait for other players to join. <!-- BEING IMPLEMENTED -->
 
-The server will notify the player when a match is found.
+The server will notify the player when a match is found. <!-- BEING IMPLEMENTED -->
 
-The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
+The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant. <!-- NOT IMPLEMENTED -->
+
+The server will remove a player from the queue if the player has not updated it's request for `t * 2` seconds. <!-- NOT IMPLEMENTED -->
 
 ##### API
 
-- `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exeded
+- `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exceeded
 
   - Body: `{"player": string, "waitingTime": number}`
   - Returns:
