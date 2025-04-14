@@ -103,7 +103,11 @@ describe('PUT /match/:id/move', () => {
 describe('getMatch', () => {
   const ROUTE = `/match/${MATCH_ID}`;
   const DATE = new Date();
-  const TEST_MATCH = matchFactory.create(PLAYER_IN_TURN, PLAYER_NOT_IN_TURN, DATE);
+  const TEST_MATCH = matchFactory.createWithDefaultInitialState(
+    PLAYER_IN_TURN,
+    PLAYER_NOT_IN_TURN,
+    DATE,
+  );
 
   beforeEach(() => {
     jest.clearAllMocks();
