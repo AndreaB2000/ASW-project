@@ -19,8 +19,8 @@ describe('Match Repository', () => {
   const OTHER_ID = 'otherid';
   const NOW = new Date();
   const TEST_ID = 'testid';
-  const mockMatch: Match = matchFactory.create(PLAYER1, PLAYER2, NOW);
-  const mockUpdatedMatch: Match = matchFactory.create(PLAYER3, PLAYER2, NOW);
+  const mockMatch: Match = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, NOW);
+  const mockUpdatedMatch: Match = matchFactory.createWithDefaultInitialState(PLAYER3, PLAYER2, NOW);
 
   beforeEach(() => {
     jest.clearAllMocks();
