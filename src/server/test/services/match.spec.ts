@@ -24,12 +24,13 @@ describe('Match Service', () => {
   let expectedMatch: Match;
   let matchWithAMove: Match;
   let matchWith2Moves: Match;
-  const otherMatch: Match = matchFactory.createWithDefaultInitialState(player3, player2, DATE);
+  let matchWith3Moves: Match;
   const testMove = moveFactory.create(2, 2);
   const testMove2 = moveFactory.create(
     boardFactory.DEFAULT_WIDTH - 2,
     boardFactory.DEFAULT_HEIGHT - 2,
   );
+  const testMove3 = moveFactory.create(3, 2);
 
   function initializeMatches() {
     expectedMatch = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
@@ -38,6 +39,10 @@ describe('Match Service', () => {
     matchWith2Moves = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
     matchWith2Moves.addMove(testMove);
     matchWith2Moves.addMove(testMove2);
+    matchWith3Moves = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWith3Moves.addMove(testMove);
+    matchWith3Moves.addMove(testMove2);
+    matchWith3Moves.addMove(testMove3);
   }
 
   beforeEach(() => {
@@ -131,11 +136,12 @@ describe('Match Service', () => {
   });
 
   describe('addMove', () => {
-    it('should add a move to the corresponding match if the given player can make a move', async () => {
+    it('should add multiple moves to the corresponding match if the given player can make a move', async () => {
       const mockFindMatch = jest
         .fn()
         .mockReturnValueOnce(expectedMatch)
-        .mockReturnValue(matchWithAMove);
+        .mockReturnValueOnce(matchWithAMove)
+        .mockReturnValue(matchWith2Moves);
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockImplementation(mockFindMatch as any);
 
       const mockUpdateMatch = jest.fn();
@@ -143,12 +149,15 @@ describe('Match Service', () => {
 
       const result = await addMove(matchID, player1, testMove);
       const result2 = await addMove(matchID, player2, testMove2);
+      const result3 = await addMove(matchID, player1, testMove3);
       initializeMatches();
 
       expect(mockUpdateMatch).toHaveBeenNthCalledWith(1, matchID, matchWithAMove);
       expect(mockUpdateMatch).toHaveBeenNthCalledWith(2, matchID, matchWith2Moves);
+      expect(mockUpdateMatch).toHaveBeenNthCalledWith(3, matchID, matchWith3Moves);
       expect(result).toBe(true);
       expect(result2).toBe(true);
+      expect(result3).toBe(true);
     });
 
     it('should not add a move to the corresponding match if the given player cannot make a move', async () => {
