@@ -61,10 +61,39 @@ export const deleteMatch = async (matchId: string): Promise<boolean> => {
   return (await DBMatch.deleteOne({ matchId })).deletedCount > 0;
 };
 
+// Mongoose schemas
+
+const pileSchema = new mongoose.Schema({
+  owner: {
+    type: String,
+    required: true,
+  },
+  numberOfGrains: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+});
+
+const cellSchema = new mongoose.Schema({
+  pile: {
+    type: pileSchema,
+    required: false,
+    default: null,
+  },
+});
+
+const boardSchema = new mongoose.Schema({
+  height: { type: Number, required: true },
+  width: { type: Number, required: true },
+  state: [[cellSchema]],
+});
+
 const matchSchema = new mongoose.Schema({
   player1: { type: String, required: true },
   player2: { type: String, required: true },
   creationDate: { type: Date, required: true, default: Date.now },
+  initialState: boardSchema,
   moves: [
     {
       x: { type: Number, required: true },
