@@ -1,11 +1,19 @@
-# This is the client dockerfile
-FROM node:22-alpine
-WORKDIR /var/app
-EXPOSE 3000
+# Build stage
+FROM node:slim AS build
+WORKDIR /app
 
 COPY package*.json ./
-COPY ./ ./
-# RUN npm install --production
 RUN npm install
 
-CMD ["npm", "start"]
+COPY . .
+RUN npm run build
+
+# Nginx stage
+FROM nginx:1.27-alpine-slim AS production
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Optional: custom nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
