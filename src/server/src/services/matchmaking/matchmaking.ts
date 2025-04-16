@@ -1,6 +1,9 @@
-import { MatchmakingCandidate, MatchmakingCandidateFactory } from '../models/MatchmakingCandidate';
-import { getQueue } from '../repositories/matchmakingQueue';
-import { readPlayerByUsername } from '../repositories/player';
+import {
+  MatchmakingCandidate,
+  MatchmakingCandidateFactory,
+} from '../../models/MatchmakingCandidate';
+import { getQueue } from '../../repositories/matchmakingQueue';
+import { readPlayerByUsername } from '../../repositories/player';
 
 /**
  * finds a suitable opponent for the requesting player
@@ -20,13 +23,16 @@ export const findSuitableOpponent = async (
   );
 
   const queue = await getQueue();
-  const suitableOpponent = Array.from(queue).find(
-    (candidate) => opponentSelectionLogic(requestingPlayer, candidate)
+  const suitableOpponent = Array.from(queue).find(candidate =>
+    opponentSelectionLogic(requestingPlayer, candidate),
   );
 
   return suitableOpponent.playerId || null;
-}
+};
 
-const opponentSelectionLogic = (candidate1: MatchmakingCandidate, candidate2: MatchmakingCandidate): boolean => {
+const opponentSelectionLogic = (
+  candidate1: MatchmakingCandidate,
+  candidate2: MatchmakingCandidate,
+): boolean => {
   return true;
-}
+};
