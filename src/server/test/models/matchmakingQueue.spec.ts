@@ -7,18 +7,14 @@ import { describe, it, expect, beforeEach } from '@jest/globals';
 
 const candidateId1: string = 'testPlayerId1';
 const candidateId2: string = 'testPlayerId2';
-const rating1: number = 1500;
-const rating2: number = 1600;
 const requestTime1: Date = new Date('2023-10-01T00:00:00Z');
 const requestTime2: Date = new Date('2023-10-02T00:00:00Z');
 const candidate1: MatchmakingCandidate = MatchmakingCandidateFactory.create(
   candidateId1,
-  rating1,
   requestTime1,
 );
 const candidate2: MatchmakingCandidate = MatchmakingCandidateFactory.create(
   candidateId2,
-  rating2,
   requestTime2,
 );
 
@@ -114,7 +110,6 @@ describe('Matchmaking Queue', () => {
   it('should return request time ordered based iterator', async () => {
     const candidate3 = MatchmakingCandidateFactory.create(
       'testPlayerId3',
-      1700,
       new Date('2023-09-01:00:00Z'),
     );
 

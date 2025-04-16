@@ -15,24 +15,24 @@ export interface MatchmakingQueue extends Iterable<MatchmakingCandidate> {
   add(candidate: MatchmakingCandidate): void;
 
   /**
-   * Get a candidate from the queue by player ID.
-   * @param playerId - The ID of the player to get.
+   * Get a candidate from the queue by player username.
+   * @param username - The username of the player to get.
    * @returns {MatchmakingCandidate | undefined} - The candidate if player is in queue, undefined otherwise.
    */
-  get(playerId: string): MatchmakingCandidate | undefined;
+  get(username: string): MatchmakingCandidate | undefined;
 
   /**
    * Check if a player is in the queue.
-   * @param playerId - The ID of the player to check.
+   * @param username - The username of the player to check.
    * @returns {boolean} - True if the player is in the queue, false otherwise.
    */
-  has(playerId: string): boolean;
+  has(username: string): boolean;
 
   /**
    * Removes a candidate from the queue.
-   * @param playerId - The ID of the player to remove.
+   * @param username - The username of the player to remove.
    */
-  remove(playerId: string): void;
+  remove(username: string): void;
 
   /**
    * Get the number of candidates in the queue.
@@ -59,7 +59,7 @@ class MatchmakingQueueImpl implements MatchmakingQueue {
   }
 
   public add(candidate: MatchmakingCandidate): void {
-    this._candidates.set(candidate.playerId, candidate);
+    this._candidates.set(candidate.username, candidate);
   }
 
   get(playerId: string): MatchmakingCandidate | undefined {
