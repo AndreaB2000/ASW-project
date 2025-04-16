@@ -2,6 +2,7 @@ import { findSuitableOpponent } from '../../../src/services/matchmaking/matchmak
 import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { MatchmakingQueueFactory } from '../../../src/models/MatchmakingQueue';
 import { jest, describe, it, expect } from '@jest/globals';
+import * as opponentSelectionLogic from '../../../src/services/matchmaking/opponentSelectionLogic';
 
 const playerId = 'player';
 const requestedTime: Date = new Date('2023-10-01T00:00:00Z');
@@ -32,6 +33,14 @@ describe('matchmaking service', () => {
 
       const result = await findSuitableOpponent(requestingPlayerId);
       expect(result).toEqual(candidate.username);
+    });
+
+    it('should return null if no suitable opponent is present', async () => {
+      const requestingPlayerId = 'requestingPlayer';
+      jest.spyOn(opponentSelectionLogic, 'evaluateOpponentMatch').mockResolvedValue(false);
+
+      const result = await findSuitableOpponent(requestingPlayerId);
+      expect(result).toBe(undefined);
     });
   });
 });

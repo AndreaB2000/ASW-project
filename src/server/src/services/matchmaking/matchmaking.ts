@@ -1,4 +1,6 @@
 import { getQueue } from '../../repositories/matchmakingQueue';
+import { evaluateOpponentMatch } from './opponentSelectionLogic';
+import '../../utils/array.extensions';
 
 /**
  * Finds a suitable opponent for the requesting player
@@ -7,15 +9,12 @@ import { getQueue } from '../../repositories/matchmakingQueue';
  */
 export const findSuitableOpponent = async (
   requestingPlayerUsername: string,
-): Promise<string | null> => {
+): Promise<string | undefined> => {
+  const today = new Date();
   const queue = await getQueue();
-  const suitableOpponent = Array.from(queue).find(candidateOpponent =>
-    opponentSelectionLogic(requestingPlayerUsername, candidateOpponent.username),
+  const suitableOpponent = await Array.from(queue).findAsync(candidateOpponent =>
+    evaluateOpponentMatch(requestingPlayerUsername, today, candidateOpponent.username, candidateOpponent.requestTime),
   );
 
-  return suitableOpponent.username || null;
-};
-
-const opponentSelectionLogic = (candidate1: string, candidate2: string): boolean => {
-  return true;
+  return suitableOpponent?.username;
 };
