@@ -1,9 +1,7 @@
 import { findSuitableOpponent } from '../../../src/services/matchmaking/matchmaking';
-import { getQueue } from '../../../src/repositories/matchmakingQueue';
 import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { MatchmakingQueueFactory } from '../../../src/models/MatchmakingQueue';
 import { jest, describe, it, expect } from '@jest/globals';
-import { RatingFactory } from '../../../src/models/Rating';
 
 const playerId = 'player';
 const requestedTime: Date = new Date('2023-10-01T00:00:00Z');
