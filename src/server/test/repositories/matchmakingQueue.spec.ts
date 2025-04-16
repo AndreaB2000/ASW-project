@@ -5,7 +5,6 @@ import {
   getQueue,
   addCandidate,
   removeCandidate,
-  updateCandidate,
 } from '../../src/repositories/matchmakingQueue';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
@@ -20,8 +19,8 @@ describe('MatchmakingQueue Repository', () => {
   describe('getQueue', () => {
     it('should return queue if present in DB', async () => {
       const mockCandidates = [
-        MatchmakingCandidateFactory.create('player1', 1500, new Date()),
-        MatchmakingCandidateFactory.create('player2', 1600, new Date()),
+        MatchmakingCandidateFactory.create('player1', new Date()),
+        MatchmakingCandidateFactory.create('player2', new Date()),
       ];
       const returnedValue = await checkCalledWith(
         getQueue,
@@ -54,7 +53,7 @@ describe('MatchmakingQueue Repository', () => {
 
   describe('addCandidate', () => {
     it('should call findByIdAndUpdate with correct parameters', async () => {
-      const candidate = MatchmakingCandidateFactory.create('player1', 1500, new Date());
+      const candidate = MatchmakingCandidateFactory.create('player1', new Date());
 
       await checkCalledWith(
         addCandidate,
@@ -78,30 +77,6 @@ describe('MatchmakingQueue Repository', () => {
         'findByIdAndUpdate',
         null,
         [candidateId],
-      );
-    });
-  });
-
-  describe('updateCandidate', () => {
-    it('should call findByIdAndUpdate with correct parameters', async () => {
-      const candidateId = 'player1';
-      const updatedCandidate = MatchmakingCandidateFactory.create(
-        candidateId,
-        1600,
-        new Date(),
-      );
-
-      await checkCalledWith(
-        updateCandidate,
-        [
-          UNIQUE_ID,
-          { $set: { 'candidates.$[elem]': updatedCandidate } },
-          { arrayFilters: [{ 'elem.id': candidateId }] },
-        ],
-        DBMatchmakingQueue,
-        'findByIdAndUpdate',
-        null,
-        [candidateId, updatedCandidate],
       );
     });
   });
