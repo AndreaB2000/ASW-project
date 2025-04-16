@@ -6,8 +6,7 @@ import {
 import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/MatchmakingQueue';
 
 const candidateSchema = new mongoose.Schema<MatchmakingCandidate>({
-  playerId: { type: String, required: true },
-  rating: { type: Number, required: true },
+  username: { type: String, required: true },
   requestTime: { type: Date, required: true },
 });
 
@@ -47,15 +46,4 @@ export async function removeCandidate(candidateId: string): Promise<void> {
   await DBMatchmakingQueue.findByIdAndUpdate(UNIQUE_ID, {
     $pull: { candidates: { id: candidateId } },
   });
-}
-
-export async function updateCandidate(
-  candidateId: string,
-  updatedCandidate: MatchmakingCandidate,
-): Promise<void> {
-  await DBMatchmakingQueue.findByIdAndUpdate(
-    UNIQUE_ID,
-    { $set: { 'candidates.$[elem]': updatedCandidate } },
-    { arrayFilters: [{ 'elem.id': candidateId }] },
-  );
 }
