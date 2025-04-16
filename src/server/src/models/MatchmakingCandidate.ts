@@ -1,35 +1,24 @@
 export interface MatchmakingCandidate {
-  get playerId(): string;
-  get rating(): number;
+  get username(): string;
   get requestTime(): Date;
 }
 
 export class MatchmakingCandidateFactory {
-  public static create = (
-    playerId: string,
-    rating: number,
-    requestTime: Date,
-  ): MatchmakingCandidate =>
-    new MatchmakingCandidateImpl(playerId, rating, requestTime);
+  public static create = (playerId: string, requestTime: Date): MatchmakingCandidate =>
+    new MatchmakingCandidateImpl(playerId, requestTime);
 }
 
 class MatchmakingCandidateImpl implements MatchmakingCandidate {
   private _playerId: string;
-  private _rating: number;
   private _requestTime: Date;
 
-  constructor(playerId: string, rating: number, requestTime: Date) {
+  constructor(playerId: string, requestTime: Date) {
     this._playerId = playerId;
-    this._rating = rating;
     this._requestTime = requestTime;
   }
 
-  get playerId(): string {
+  get username(): string {
     return this._playerId;
-  }
-
-  get rating(): number {
-    return this._rating;
   }
 
   get requestTime(): Date {
