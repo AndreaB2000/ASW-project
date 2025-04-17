@@ -1,15 +1,42 @@
 <script setup lang="ts">
-import WelcomeItem from './WelcomeItem.vue'
-import DocumentationIcon from './icons/IconDocumentation.vue'
-import ToolingIcon from './icons/IconTooling.vue'
-import EcosystemIcon from './icons/IconEcosystem.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
-import SupportIcon from './icons/IconSupport.vue'
+import WelcomeItem from './WelcomeItem.vue';
+import DocumentationIcon from './icons/IconDocumentation.vue';
+import ToolingIcon from './icons/IconTooling.vue';
+import EcosystemIcon from './icons/IconEcosystem.vue';
+import CommunityIcon from './icons/IconCommunity.vue';
+import SupportIcon from './icons/IconSupport.vue';
+import { ref } from 'vue';
+import { socket } from '@/App.vue';
 
-const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
+const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md');
+
+const message = ref('');
+const sentMessage = ref('');
+const receivedMessage = ref('');
+
+socket.on('reply', msg => {
+  console.log(`Reply received: ${msg}`);
+  receivedMessage.value = msg;
+});
+
+function sendMessage() {
+  if (message.value.trim()) {
+    sentMessage.value = message.value;
+    socket.emit('message', message.value);
+    console.log('Messaggio inviato:', message.value);
+    message.value = ''; // Resetta l'input
+  }
+}
 </script>
 
 <template>
+  <div>
+    <input v-model="message" @keyup.enter="sendMessage" placeholder="Scrivi un messaggio..." />
+    <button @click="sendMessage">Invia</button>
+    <p v-if="sentMessage">Hai inviato: {{ sentMessage }}</p>
+    <p v-if="receivedMessage">Hai ricevuto: {{ receivedMessage }}</p>
+  </div>
+  <p id="reply"></p>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
