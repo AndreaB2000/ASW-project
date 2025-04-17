@@ -1,6 +1,6 @@
 import {
   findSuitableOpponent,
-  findOpponentOrAddToQueue,
+  findMatchOrQueue,
 } from '../../../src/services/matchmaking/matchmaking';
 import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { MatchmakingQueueFactory } from '../../../src/models/MatchmakingQueue';
@@ -59,7 +59,7 @@ describe('matchmaking service', () => {
       // Mock findSuitableOpponent to return a suitable opponent
       jest.spyOn(opponentSelectionLogic, 'evaluateOpponentMatch').mockResolvedValue(true);
 
-      const result = await findOpponentOrAddToQueue(requestingPlayerId);
+      const result = await findMatchOrQueue(requestingPlayerId);
 
       expect(result).toEqual(candidate.username);
     });
@@ -77,7 +77,7 @@ describe('matchmaking service', () => {
       // Spy on addCandidate to ensure it is called
       const addCandidateSpy = jest.spyOn(matchmakingQueueRepository, 'addCandidate');
 
-      const result = await findOpponentOrAddToQueue(requestingPlayerId);
+      const result = await findMatchOrQueue(requestingPlayerId);
 
       expect(result).toBeUndefined();
       expect(addCandidateSpy).toHaveBeenCalledWith(
