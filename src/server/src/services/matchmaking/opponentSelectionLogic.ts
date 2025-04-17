@@ -14,5 +14,6 @@ export const evaluateOpponentMatch = async (
     return false;
   }
 
+  // TODO : implement the logic to evaluate the match
   return true;
 };
