@@ -30,8 +30,7 @@ export const findSuitableOpponent = async (
  * @param username The username of the player.
  * @returns The username of the suitable opponent, or undefined if the player was added to the queue.
  */
-export const findOpponentOrAddToQueue = async (username: string): Promise<string | undefined> => {
-
+export const findMatchOrQueue = async (username: string): Promise<string | undefined> => {
   const suitableOpponent = await findSuitableOpponent(username);
 
   if (suitableOpponent) {
