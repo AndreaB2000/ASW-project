@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import {
   MatchmakingCandidate,
-  MatchmakingCandidateFactory,
 } from '../../src/models/MatchmakingCandidate';
 import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/MatchmakingQueue';
 
