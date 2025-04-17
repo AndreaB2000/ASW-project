@@ -49,6 +49,5 @@ app.use(
 );
 
 app.use(helmet());
-
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
