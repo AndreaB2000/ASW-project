@@ -14,7 +14,7 @@ import { account } from './routes/account';
 // Create Express server
 export const app = express();
 
-connectDB();
+// connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -45,11 +45,10 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: '172.0.0.11',
+    origin: 'http://localhost:5173',
   }),
 );
 
 app.use(helmet());
-
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
