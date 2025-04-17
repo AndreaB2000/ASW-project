@@ -15,7 +15,7 @@ import { account } from './routes/account';
 // Create Express server
 export const app = express();
 
-connectDB();
+// connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -49,6 +49,5 @@ app.use(
 );
 
 app.use(helmet());
-
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
