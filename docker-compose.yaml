@@ -7,20 +7,6 @@ networks:
           gateway: 172.0.0.254
 
 services:
-  server:
-    image: andreabiagini5/aswserver
-    container_name: aswserver
-    restart: always
-    ports:
-      - '3000:3000'
-    depends_on:
-      - database
-    environment:
-      PORT: 3000
-    networks:
-      asw_network:
-        ipv4_address: 172.0.0.10
-
   client:
     image: andreabiagini5/aswclient
     container_name: aswclient
