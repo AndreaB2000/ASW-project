@@ -7,12 +7,11 @@ const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
 import cookieParser from 'cookie-parser';
+import { validationHandler } from './middlewares/validationHandler';
 
 // Routes
 import { account } from './routes/account';
 import { match } from './routes/match';
-import { account } from './routes/account';
-import { connectDB } from './db-connection';
 
 // Create Express server
 export const app = express();

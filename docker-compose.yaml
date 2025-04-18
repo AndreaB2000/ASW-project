@@ -7,21 +7,6 @@ networks:
           gateway: 172.0.0.254
 
 services:
-  server:
-    image: andreabiagini5/aswserver
-    container_name: aswserver
-    restart: always
-    ports:
-      - '3000:3000'
-    depends_on:
-      - database
-    environment:
-      - PORT=3000
-      - MONGO_URI=mongodb://admin:$(cat /run/secrets/mongo_root_password)@mongodb:27017/ASW-DB
-    networks:
-      asw_network:
-        ipv4_address: 172.0.0.10
-
   client:
     build:
       context: ./src/client
