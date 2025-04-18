@@ -34,15 +34,23 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
           - [No Opponent Found Case](#no-opponent-found-case)
       - [Match](#match)
         - [API](#api)
-      - [Matchmaking](#matchmaking-1)
-      - [Match](#match-1)
-        - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
   - [Tests](#tests)
   - [Deployment](#deployment)
   - [Conclusions](#conclusions)
+
+> > > > > > > 198f4c6 (fix: solved errors from merge with incomplete feat/matchmaking)
+
+        - [API](#api-1)
+
+- [Implementation](#implementation)
+- [Technologies](#technologies)
+- [Code](#code)
+- [Tests](#tests)
+- [Deployment](#deployment)
+- [Conclusions](#conclusions)
 
 ## Introduction
 
@@ -557,58 +565,6 @@ The server will remove a player from the queue if the player has not updated it'
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
-    - 500 Internal server error - `{}` when a generic error occurs
-
-#### Matchmaking
-
-The matchmaking system is responsible for pairing players with similar Glicko ratings.
-
-```mermaid
----
-  config:
-    class:
-      hideEmptyMembersBox: true
----
-
-classDiagram
-    class MatchmakingAPI
-    class MatchmakingService
-    class Player
-    class Rating
-    class PlayerRepository
-    class MatchQueueRepository
-
-    MatchmakingAPI --> MatchmakingService
-    MatchmakingService --> Player
-    MatchmakingService --> PlayerRepository
-    PlayerRepository --> Player
-    Player --> Rating
-    MatchmakingService --> MatchQueueRepository
-    MatchQueueRepository --> MatchQueue
-    MatchmakingService --> MatchQueue
-```
-
-Server side matchmaking class diagram
-
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
-
-- `POST /matchmaking/new`: requests a new match, returns the matchId
-
-  - Body: `{"player": string}`
-  - Returns:
-    - 200 OK - `{"matchId": <string>}`
-
-- `POST /match/new`: creates a match, returns its ID
-
-  - Body: `{"player1": string, "player2": string}`
-  - Returns:
-    - 201 Created - `{"matchId": <string>}`
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
