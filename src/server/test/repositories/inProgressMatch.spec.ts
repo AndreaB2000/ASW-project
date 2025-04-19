@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { DBMatch } from '../../src/repositories/match';
 import {
   createMatch,
   deleteMatch,
@@ -9,7 +10,6 @@ import {
 import * as matchFactory from '../../src/models/Match';
 import { Match } from '../../src/models/Match';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
-import { DBMatch } from '../../src/repositories/endedMatch';
 
 describe('Match Repository', () => {
   const PLAYER1 = 'Alice';

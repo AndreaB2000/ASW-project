@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { DBMatch } from '../../src/repositories/match';
 import {
   createMatch,
-  DBMatch,
   deleteMatch,
   findMatch,
   findMatchesByPlayer,
