@@ -1,37 +1,79 @@
-import { connect } from 'http2';
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+import { Match } from '../models/Match';
 
-export async function connectToDatabase() {
-  try {
-    await mongoose.connect('mongodb://172.0.0.12:27017', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    } as mongoose.ConnectOptions);
+export class MatchRepository {
+  constructor() {}
 
-    console.log('Connesso a MongoDB con Mongoose');
-  } catch (err) {
-    console.error('Errore di connessione:', err);
-    throw err;
+  async createMatch(match: Match): Promise<string> {
+    const dbmatch = new DBMatch({
+      player1: match.player1,
+      player2: match.player2,
+      creationDate: match.creationDate,
+      initialState: match.initialState,
+      moves: [],
+    });
+    return (await dbmatch.save())._id.toString();
+  }
+
+  async findMatch(matchId: string): Promise<Match | null> {
+    return await DBMatch.findById(matchId);
+  }
+
+  async findMatchesByPlayer(player: string): Promise<string[]> {
+    const matches = await DBMatch.find({
+      $or: [{ player1: player }, { player2: player }],
+    });
+    return matches.map(match => match._id.toString());
+  }
+
+  async updateMatch(matchId: string, newMatch: Match): Promise<void> {
+    await DBMatch.findOneAndUpdate({ matchId }, newMatch);
+  }
+
+  async deleteMatch(matchId: string): Promise<boolean> {
+    return (await DBMatch.deleteOne({ matchId })).deletedCount > 0;
   }
 }
 
-interface Match {
-  player1: string;
-  player2: string;
-  creationDate: Date;
-}
+// Mongoose schemas
 
-export async function createMatch(player1: string, player2: string, creationDate: Date) {
-  connectToDatabase();
-  const match = new DBMatch({ player1, player2, creationDate });
-  return (await match.save())._id.toString();
-}
-
-const MatchSchema = new Schema<Match>({
-  player1: { type: String, required: true },
-  player2: { type: String, required: true },
-  creationDate: { type: Date, required: true },
+const pileSchema = new mongoose.Schema({
+  owner: {
+    type: String,
+    required: true,
+  },
+  numberOfGrains: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
 });
 
-const DBMatch = mongoose.model('Match', MatchSchema);
+const cellSchema = new mongoose.Schema({
+  pile: {
+    type: pileSchema,
+    required: false,
+    default: null,
+  },
+});
+
+const boardSchema = new mongoose.Schema({
+  height: { type: Number, required: true },
+  width: { type: Number, required: true },
+  state: [[cellSchema]],
+});
+
+const matchSchema = new mongoose.Schema({
+  player1: { type: String, required: true },
+  player2: { type: String, required: true },
+  creationDate: { type: Date, required: true, default: Date.now },
+  initialState: { type: boardSchema, required: true },
+  moves: [
+    {
+      x: { type: Number, required: true },
+      y: { type: Number, required: true },
+    },
+  ],
+});
+
+export const DBMatch = mongoose.model<Match>('Match', matchSchema);
