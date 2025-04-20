@@ -1,12 +1,4 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
-import path from 'path';
-
-if (import.meta.env.DEV) {
-  process.env.SERVER_IP = 'localhost';
-} else if (import.meta.env.PROD) {
-  dotenv.config({ path: path.resolve(__dirname, '..', '..', '..', '.env') });
-}
 
 let ip = 'localhost';
 let port = 3000;
