@@ -6,7 +6,6 @@ import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './db-connection';
-import { validationHandler } from './middlewares/validationHandler';
 
 // Routes
 import { match } from './routes/match';
@@ -26,7 +25,6 @@ app.use(logger('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/match', match);
