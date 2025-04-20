@@ -28,7 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/match', match);
-app.use('/account', account);
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
