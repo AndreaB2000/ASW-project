@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import createError from 'http-errors';
 
 /**
  * Validation middleware.
