@@ -1,5 +1,4 @@
 import { app } from './app';
-import { Server } from 'socket.io';
 import * as ioHandler from './sockets/socket';
 import { registerSocketHandlers } from './sockets/registerSocketHandlers';
 
