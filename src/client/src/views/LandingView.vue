@@ -8,13 +8,7 @@ function goToRegistration() {
   router.push('/registration')
 }
 
-function pingServer() {
-  socket.on('pong', _ => {
-    console.log("received pong from server");
-  });
-  socket.emit('ping');
-  console.log("sending ping from client");
-}
+
 </script>
 
 <template>
@@ -31,7 +25,7 @@ function pingServer() {
         </p>
         <section class="buttons">
           <button style="background-color: #1EC6E0;">Play with BOT</button>
-          <button @click="pingServer" style="background-color: #E0961E;">Ping</button>
+          <button style="background-color: #E0961E;">Login</button>
           <button>Tutorial</button>
           <button @click="goToRegistration">Register</button>
         </section>

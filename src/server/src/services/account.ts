@@ -1,17 +1,17 @@
 import * as repository from '../repositories/account';
 import * as accountFactory from '../models/Account';
+import { Account } from '../models/Account';
 
 /**
  * Register a new account
- * @param username the username of the user
- * @param password the password of the user
+ * @async
+ * @param {Account} account - The account to register
  * @returns boolean indicating success or failure
  */
-export const registerAccount = async (username: string, password: string): Promise<boolean> => {
+export const registerAccount = async (account: Account): Promise<boolean> => {
   const existingAccounts = await repository.readAllAccounts();
-  const accountExists = existingAccounts.some(account => account.username === username);
+  const accountExists = existingAccounts.some(a => account.username === a.username);
   if (accountExists) return false;
-  const account = await accountFactory.createWithHashing(username, password);
   await repository.createAccount(account);
   return true;
 };
