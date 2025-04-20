@@ -12,6 +12,8 @@ const form = reactive({
   repeatPassword: '',
 });
 
+console.log(import.meta.env.MODE);
+
 function register(event: Event) {
   api
     .get('/ping')
