@@ -2,8 +2,7 @@ import { registerAccount } from '../services/account';
 import { Account } from '../models/Account';
 
 /**
- * POST /register
- * Register a new user
+ * Register a new account
  */
 export const register = async (account: Account): Promise<RegisterResult> => {
   try {

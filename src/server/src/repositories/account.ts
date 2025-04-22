@@ -17,10 +17,7 @@ export const createAccount = async (account: Account): Promise<void> => {
  */
 export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find({}, 'username');
-  const accountPromises = accounts.map(account =>
-    accountFactory.create(account.username, account.password),
-  );
-  return Promise.all(accountPromises);
+  return accounts.map(account => accountFactory.create(account.username, account.password));
 };
 
 const accountSchema = new mongoose.Schema({

@@ -37,7 +37,7 @@ export const createWithHashing = async (username: string, password: string): Pro
  * @param hashedPassword the hashed password of the user
  * @returns {Account} the account object
  */
-export const create = async (username: string, hashedPassword: string): Promise<Account> =>
+export const create = (username: string, hashedPassword: string): Account =>
   new AccountImpl(username, hashedPassword);
 
 class AccountImpl implements Account {

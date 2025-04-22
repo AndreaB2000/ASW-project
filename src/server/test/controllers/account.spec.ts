@@ -1,55 +1,56 @@
-import request from 'supertest';
-import express from 'express';
-import { register } from '../../src/controllers/account';
-import * as accountService from '../../src/services/account';
-import { jest, describe, it, expect } from '@jest/globals';
+import { register, RegisterResult } from '../../src/controllers/account';
+import { registerAccount } from '../../src/services/account';
+import { Account } from '../../src/models/Account';
+import { jest, describe, it, expect, beforeAll } from '@jest/globals';
+import { mockConsole } from '../test_utils/mock-console';
 
-const app = express();
-app.use(express.json());
-app.post('/register', register);
-
+// Mock the registerAccount function
 jest.mock('../../src/services/account', () => ({
   registerAccount: jest.fn(),
 }));
 
-describe('POST /register', () => {
-  it('should return 400 if username is missing', async () => {
-    const res = await request(app).post('/register').send({ password: 'test123' });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'Username and password are required' });
+const mockedRegisterAccount = registerAccount as jest.MockedFunction<typeof registerAccount>;
+
+describe('register', () => {
+  const validAccount: Account = {
+    username: 'testuser',
+    hashedPassword: 'hashedPass123',
+    checkPassword: () => Promise.resolve(true),
+  };
+
+  beforeAll(mockConsole);
+
+  it('should return error if username is missing', async () => {
+    const account = { ...validAccount, username: '' };
+    const result = await register(account as Account);
+    expect(result).toEqual(new RegisterResult(false, 'Username and password are required', ''));
   });
 
-  it('should return 400 if password is missing', async () => {
-    const res = await request(app).post('/register').send({ username: 'testUser' });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'Username and password are required' });
+  it('should return error if password is missing', async () => {
+    const account = { ...validAccount, hashedPassword: '' };
+    const result = await register(account as Account);
+    expect(result).toEqual(
+      new RegisterResult(false, 'Username and password are required', 'testuser'),
+    );
   });
 
-  it('should return 409 if account already exists', async () => {
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'existingUser', password: 'test123' });
-    expect(res.status).toBe(409);
-    expect(res.body).toEqual({ message: 'Account already exists' });
+  it('should return failure if registerAccount returns false', async () => {
+    mockedRegisterAccount.mockResolvedValueOnce(false);
+    const result = await register(validAccount);
+    expect(result).toEqual(new RegisterResult(false, 'Account already exists', 'testuser'));
   });
 
-  it('should return 201 if account is registered successfully', async () => {
-    jest.mocked(accountService.registerAccount).mockResolvedValue(true);
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'newUser', password: 'test123' });
-    expect(res.status).toBe(201);
-    expect(res.body).toEqual({ message: 'Account registered successfully', username: 'newUser' });
+  it('should return success if registerAccount returns true', async () => {
+    mockedRegisterAccount.mockResolvedValueOnce(true);
+    const result = await register(validAccount);
+    expect(result).toEqual(new RegisterResult(true, 'Account created successfully', 'testuser'));
   });
 
-  it('should return 500 if an error occurs', async () => {
-    jest
-      .mocked(accountService.registerAccount)
-      .mockRejectedValue(new Error('Internal server error'));
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'errorUser', password: 'test123' });
-    expect(res.status).toBe(500);
-    expect(res.body).toEqual({ message: 'Internal server error', error: {} });
+  it('should handle exceptions and return internal server error', async () => {
+    mockedRegisterAccount.mockImplementationOnce(() => {
+      throw new Error('Database error');
+    });
+    const result = await register(validAccount);
+    expect(result).toEqual(new RegisterResult(false, 'Internal server error', 'testuser'));
   });
 });
