@@ -1,9 +1,6 @@
 <script setup lang="ts">
+import { socket } from '@/services/socket';
 import { reactive } from 'vue';
-// import { api } from '../services/api';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
 
 const form = reactive({
   username: '',
@@ -13,36 +10,12 @@ const form = reactive({
 });
 
 function register(event: Event) {
-  // api
-  //   .get('/ping')
-  //   .then(response => {
-  //     console.log(response);
-  //   })
-  //   .catch(error => {
-  //     console.error('Error:', error);
-  //   });
-  // event.preventDefault();
-  // if (form.password !== form.repeatPassword) {
-  //   alert('Passwords do not match');
-  //   return;
-  // }
-  // const data = {
-  //   username: form.username,
-  //   email: form.email,
-  //   password: form.password,
-  // };
-  // api.post('/account/register', data).then(response => {
-  //   if (response.status === 201) {
-  //     alert('Registration successful');
-  //     router.push('/login');
-  //   } else if (response.status === 409) {
-  //     alert('Account already exists');
-  //   } else if (response.status === 500) {
-  //     alert('Server error, please try again later');
-  //   } else if (response.status === 400) {
-  //     alert('Invalid data, please check your input');
-  //   }
-  // });
+  event.preventDefault();
+  if (form.password !== form.repeatPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  console.log('Registration data:', form);
 }
 </script>
 

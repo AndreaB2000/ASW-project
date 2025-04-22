@@ -9,7 +9,6 @@ import { connectDB } from './db-connection';
 
 // Routes
 import { match } from './routes/match';
-import { account } from './routes/account';
 
 // Create Express server
 export const app = express();

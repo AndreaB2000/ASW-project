@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import { socket } from '@/services/api'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-function goToRegistration() {
-  router.push('/registration')
-}
-
-
 </script>
 
 <template>
@@ -27,7 +17,7 @@ function goToRegistration() {
           <button style="background-color: #1EC6E0;">Play with BOT</button>
           <button style="background-color: #E0961E;">Login</button>
           <button>Tutorial</button>
-          <button @click="goToRegistration">Register</button>
+          <button @click="$router.push('/registration')">Register</button>
         </section>
       </section>
       <img src="../assets/sandpiles-template-img.svg"></img>

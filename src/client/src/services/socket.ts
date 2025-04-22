@@ -14,7 +14,6 @@ if (import.meta.env.PROD) {
 console.log(`[API URL]: ${protocol}://${ip}:${port}/`);
 
 /**
- * This is the API client for the application.
- * It uses axios to make HTTP requests to the backend server.
+ * Socket connection to the server
  */
 export const socket = io(`${protocol}://${ip}:${port}`);
