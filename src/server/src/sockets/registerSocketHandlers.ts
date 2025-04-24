@@ -9,8 +9,8 @@ export const registerSocketHandlers = (io: Server): void => {
     socket.on('disconnect', () => {
       console.log('User disconnected');
     });
-    socket.on('ping', () => {
-      socket.emit('pong');
+    socket.on('ping', callback => {
+      callback('pong');
     });
   });
 

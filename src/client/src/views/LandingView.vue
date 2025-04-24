@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { socket } from '@/services/socket';
+
+function test() {
+  socket.emit('ping', (response: any) => {
+    console.log(response);
+  });
+}
+
+
 </script>
 
 <template>
@@ -15,7 +24,7 @@
         </p>
         <section class="buttons">
           <button style="background-color: #1EC6E0;">Play with BOT</button>
-          <button style="background-color: #E0961E;">Login</button>
+          <button @click=test style="background-color: #E0961E;">Login</button>
           <button>Tutorial</button>
           <button @click="$router.push('/registration')">Register</button>
         </section>
