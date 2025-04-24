@@ -2,17 +2,10 @@ import { check, validationResult } from 'express-validator/lib';
 import { Server } from 'socket.io';
 import * as controller from '../controllers/account';
 import * as accountModel from '../models/Account';
+import { root } from '../routes/root';
 
 export const registerSocketHandlers = (io: Server): void => {
-  io.on('connection', socket => {
-    console.log('User connected');
-    socket.on('disconnect', () => {
-      console.log('User disconnected');
-    });
-    socket.on('ping', callback => {
-      callback('pong');
-    });
-  });
+  io.on('connection', root);
 
   const accountNamespace = io.of('/account');
   accountNamespace.on('connection', socket => {

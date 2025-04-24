@@ -2,12 +2,10 @@
 import { socket } from '@/services/socket';
 
 function test() {
-  socket.emit('ping', (response: any) => {
+  socket.emit('ping', (response: string) => {
     console.log(response);
   });
 }
-
-
 </script>
 
 <template>
