@@ -20,7 +20,7 @@
   "scripts": {
     "build": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'build.bat' : 'sh build.sh', { stdio: 'inherit' })\"",
     "set-hooks": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'set-hooks.bat' : 'sh set-hooks.sh', { stdio: 'inherit' })\"",
-    "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\" \"npm run start:db\"",
+    "start": "npm run check-env-file && concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\" \"npm run start:db\"",
     "serve": "concurrently --kill-others-on-fail \"npm run serve:server\" \"npm run serve:client\" \"npm run start:db\"",
     "type-check": "npm run type-check:server && npm run type-check:client",
     "format": "prettier --write src/",
@@ -46,7 +46,8 @@
     "dockerbuild": "npm run dockerbuild:server && npm run dockerbuild:client",
     "dockerbuild:server": "sudo docker build -t andreabiagini5/aswserver src/server/",
     "dockerbuild:client": "sudo docker build -t andreabiagini5/aswclient src/client/",
-    "dockerstart": "sudo docker compose up"
+    "dockerstart": "sudo docker compose up",
+    "check-env-file": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'check-env-file.bat' : '/bin/bash check-env-file.sh', { stdio: 'inherit' })\""
   },
   "publishConfig": {
     "access": "public"

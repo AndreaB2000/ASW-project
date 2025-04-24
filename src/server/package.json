@@ -1,7 +1,7 @@
 {
   "name": "server",
   "scripts": {
-    "start": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'check-env-file.bat' : 'sh check-env-file.sh', { stdio: 'inherit' })\" && cd src/ && ts-node server.ts",
+    "start": "cd src/ && ts-node server.ts",
     "build": "npm run build-ts",
     "serve": "nodemon",
     "test": "jest",

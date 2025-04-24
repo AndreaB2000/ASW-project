@@ -2,7 +2,7 @@
 FROM node:22-alpine
 WORKDIR /var/app
 EXPOSE 3000
-
+RUN apk add --no-cache bash
 COPY package*.json ./
 COPY ./ ./
 # RUN npm install --production

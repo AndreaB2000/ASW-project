@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { socket } from '@/services/socket';
 import { reactive } from 'vue';
 
 const form = reactive({
