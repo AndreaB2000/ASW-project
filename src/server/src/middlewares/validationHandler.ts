@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { validationResult } from 'express-validator';
+// import { validationResult } from 'express-validator';
 
 /**
  * Validation middleware.
@@ -10,8 +10,8 @@ import { validationResult } from 'express-validator';
  * @returns {void}
  */
 export const validationHandler = (req: Request, res: Response, next: NextFunction): void => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) return next();
-  console.log('Validation errors:', errors.array());
-  res.status(422).json({ errors: errors.array() });
+  // const errors = validationResult(req);
+  // if (errors.isEmpty()) return next();
+  // console.log('Validation errors:', errors.array());
+  // res.status(422).json({ errors: errors.array() });
 };

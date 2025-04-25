@@ -1,8 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import * as path from 'path';
-import rateLimit from 'express-rate-limit';
+// import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
@@ -44,12 +44,12 @@ app.get('/ping', (_, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
-  app.use(
-    rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 100,
-    }),
-  );
+  // app.use(
+  //   rateLimit({
+  //     windowMs: 15 * 60 * 1000,
+  //     max: 100,
+  //   }),
+  // );
 }
 
 app.use(
@@ -58,6 +58,6 @@ app.use(
   }),
 );
 
-app.use(helmet());
+// app.use(helmet());
 app.use(errorNotFoundHandler);
 app.use(errorHandler);
