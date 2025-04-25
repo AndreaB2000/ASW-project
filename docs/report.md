@@ -41,17 +41,6 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
   - [Deployment](#deployment)
   - [Conclusions](#conclusions)
 
-> > > > > > > 198f4c6 (fix: solved errors from merge with incomplete feat/matchmaking)
-
-        - [API](#api-1)
-
-- [Implementation](#implementation)
-- [Technologies](#technologies)
-- [Code](#code)
-- [Tests](#tests)
-- [Deployment](#deployment)
-- [Conclusions](#conclusions)
-
 ## Introduction
 
 _Sandpiles_ is a project designed to emulate the functionality of online board game platforms, providing an interactive and competitive environment for players of all skill levels to play _Sandpiles_. The platform offers real-time matchmaking, AI-driven opponent, statistics review and match history review.
