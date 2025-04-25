@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main>This is the home page</main>
+  <main>this is a login page</main>
 </template>
