@@ -32,8 +32,12 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
           - [No Opponent Found Case](#no-opponent-found-case)
+<<<<<<< HEAD
         - [API](#api)
       - [Match](#match)
+=======
+      - [Match](#match-1)
+>>>>>>> fef742f (chore: solve rebase conflicts in server report)
         - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -497,6 +501,10 @@ The server will also notify the player if the waiting time exceeds a certain tim
 
 The server will remove a player from the queue if the player has not updated it's request for `t * 2` seconds. <!-- NOT IMPLEMENTED -->
 
+#### Match
+
+[Match UML](uml/match.md)
+
 ##### API
 
 - `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exceeded
@@ -505,12 +513,15 @@ The server will remove a player from the queue if the player has not updated it'
   - Returns:
     - 200 OK - `{"matchId": <string>}`
 
+<<<<<<< HEAD
 #### Match
 
 [Match UML](uml/match.md)
 
 ##### API
 
+=======
+>>>>>>> fef742f (chore: solve rebase conflicts in server report)
 - `POST /match/new`: creates a match, returns its ID
 
   - Body: `{"player1": string, "player2": string}`
