@@ -8,14 +8,18 @@ networks:
 
 services:
   client:
-    image: andreabiagini5/aswclient
+    build:
+      context: ./src/client
+      args:
+        - VITE_SERVER_IP=${SERVER_IP}
+        - VITE_SERVER_PORT=${SERVER_PORT}
+        - VITE_SERVER_PROTOCOL=${SERVER_PROTOCOL}
     container_name: aswclient
     restart: always
     ports:
-      - '4173:4173'
+      - '80:80'
     depends_on:
       - server
-      - database
     networks:
       asw_network:
         ipv4_address: 172.0.0.11
@@ -24,11 +28,11 @@ services:
     container_name: aswserver
     restart: always
     ports:
-      - '3000:3000'
+      - '${SERVER_PORT}:${SERVER_INTERNAL_PORT}'
     depends_on:
       - database
     environment:
-      PORT: 3000
+      PORT: ${SERVER_INTERNAL_PORT}
       DB_APP_USERNAME: ${DB_APP_USERNAME}
       DB_APP_PASSWORD: ${DB_APP_PASSWORD}
       DB_NAME: ${DB_NAME}
@@ -37,7 +41,7 @@ services:
       DB_PORT: ${DB_PORT}
     networks:
       asw_network:
-        ipv4_address: 172.0.0.10
+        ipv4_address: ${SERVER_IP}
 
   database:
     image: mongo
