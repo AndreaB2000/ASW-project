@@ -32,12 +32,9 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
           - [Simple Case](#simple-case)
           - [No Opponent Found Case](#no-opponent-found-case)
-<<<<<<< HEAD
-        - [API](#api)
       - [Match](#match)
-=======
-      - [Match](#match-1)
->>>>>>> fef742f (chore: solve rebase conflicts in server report)
+        - [API](#api)
+      - [Matchmaking](#matchmaking-1)
         - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
@@ -513,15 +510,6 @@ The server will remove a player from the queue if the player has not updated it'
   - Returns:
     - 200 OK - `{"matchId": <string>}`
 
-<<<<<<< HEAD
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
-
-=======
->>>>>>> fef742f (chore: solve rebase conflicts in server report)
 - `POST /match/new`: creates a match, returns its ID
 
   - Body: `{"player1": string, "player2": string}`
@@ -568,6 +556,48 @@ The server will remove a player from the queue if the player has not updated it'
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
+    - 500 Internal server error - `{}` when a generic error occurs
+
+#### Matchmaking
+
+The matchmaking system is responsible for pairing players with similar Glicko ratings.
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+
+classDiagram
+    class MatchmakingAPI
+    class MatchmakingService
+    class Player
+    class Rating
+    class PlayerRepository
+    class MatchQueueRepository
+
+    MatchmakingAPI --> MatchmakingService
+    MatchmakingService --> Player
+    MatchmakingService --> PlayerRepository
+    PlayerRepository --> Player
+    Player --> Rating
+    MatchmakingService --> MatchQueueRepository
+    MatchQueueRepository --> MatchQueue
+    MatchmakingService --> MatchQueue
+```
+
+Server side matchmaking class diagram
+
+##### API
+
+- `POST /matchmaking/new`: requests a new match, returns the matchId
+
+  - Body: `{"player": string}`
+  - Returns:
+    - 200 OK - `{"matchId": <string>}`
+    - 400 Bad request - `{}` when the body is not complete
+    - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
