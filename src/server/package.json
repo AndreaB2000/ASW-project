@@ -44,43 +44,6 @@
     "eslint-plugin-import": "2.32.0",
     "jest": "^30.0.0",
     "@types/bcrypt": "^5.0.2",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "@babel/preset-typescript": "^7.27.0",
-||||||| parent of b1b7fd0 (chore: fix rebase conflict on package-lock)
-    "@types/express": "5.0.0",
-    "@types/http-errors": "2.0.4",
-    "@types/jest": "^29.5.14",
-    "@types/morgan": "1.9.9",
-    "@types/node": "22.13.4",
-    "@types/supertest": "6.0.2",
-    "@typescript-eslint/eslint-plugin": "8.24.1",
-    "@typescript-eslint/parser": "8.24.1",
-    "concurrently": "9.1.2",
-    "eslint": "9.20.1",
-    "eslint-config-prettier": "10.0.1",
-    "eslint-plugin-import": "2.31.0",
-    "jest": "^29.7.0",
-=======
-    "@babel/preset-typescript": "^7.27.0",
-||||||| parent of 91a50ec (chore: merge conflict solve in server package-lock.json)
-    "@babel/preset-typescript": "^7.27.0",
-=======
->>>>>>> 91a50ec (chore: merge conflict solve in server package-lock.json)
-    "@types/express": "5.0.0",
-    "@types/http-errors": "2.0.4",
-    "@types/jest": "^29.5.14",
-    "@types/morgan": "1.9.9",
-    "@types/node": "22.13.4",
-    "@types/supertest": "6.0.2",
-    "@typescript-eslint/eslint-plugin": "8.24.1",
-    "@typescript-eslint/parser": "8.24.1",
-    "concurrently": "9.1.2",
-    "eslint": "9.20.1",
-    "eslint-config-prettier": "10.0.1",
-    "eslint-plugin-import": "2.31.0",
-    "jest": "^29.7.0",
->>>>>>> b1b7fd0 (chore: fix rebase conflict on package-lock)
     "nodemon": "^3.1.9",
     "prettier": "3.6.1",
     "supertest": "7.1.1",
