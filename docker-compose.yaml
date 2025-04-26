@@ -22,7 +22,7 @@ services:
       - server
     networks:
       asw_network:
-        ipv4_address: ${CLIENT_IP}
+        ipv4_address: 172.0.0.11
   server:
     image: andreabiagini5/aswserver
     container_name: aswserver
