@@ -22,7 +22,7 @@ services:
       - server
     networks:
       asw_network:
-        ipv4_address: ${CLIENT_IP}
+        ipv4_address: 172.0.0.11
   server:
     image: andreabiagini5/aswserver
     container_name: aswserver
@@ -39,8 +39,6 @@ services:
       DB_PROTOCOL: ${DB_PROTOCOL}
       DB_IP: ${DB_IP}
       DB_PORT: ${DB_PORT}
-      CLIENT_IP: ${CLIENT_IP}
-      NODE_ENV: 'production'
     networks:
       asw_network:
         ipv4_address: ${SERVER_IP}
