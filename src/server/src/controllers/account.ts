@@ -1,30 +1,22 @@
+import { Request, Response } from 'express';
 import { registerAccount } from '../services/account';
-import { Account } from '../models/Account';
+import * as factory from '../models/Account';
 
 /**
- * Register a new account
+ * POST /register
+ * Register a new user
  */
-export const register = async (account: Account): Promise<RegisterResult> => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!account.username || !account.hashedPassword) {
-      return new RegisterResult(false, 'Username and password are required', account.username);
+    const { username, password } = req.body;
+    if (!username || !password) {
+      res.status(400).json({ message: 'Username and password are required' });
+      return;
     }
-    const result = await registerAccount(account);
-    if (!result) return new RegisterResult(false, 'Account already exists', account.username);
-    else return new RegisterResult(true, 'Account created successfully', account.username);
+    const result = await registerAccount(await factory.createWithHashing(username, password));
+    if (!result) res.status(409).json({ message: 'Account already exists' });
+    else res.status(201).json({ message: 'Account registered successfully', username });
   } catch (error) {
-    console.error('Error registering account:', error);
-    return new RegisterResult(false, 'Internal server error', account.username);
+    res.status(500).json({ message: 'Internal server error', error });
   }
 };
-
-export class RegisterResult {
-  success: boolean;
-  message: string;
-  username: string;
-  constructor(success: boolean, message: string, username: string) {
-    this.success = success;
-    this.message = message;
-    this.username = username;
-  }
-}

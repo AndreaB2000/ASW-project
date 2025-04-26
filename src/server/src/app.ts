@@ -8,6 +8,7 @@ import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './db-connection';
 
 // Routes
+import { account } from './routes/account';
 import { match } from './routes/match';
 
 // Create Express server
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/account', account);
 app.use('/match', match);
 
 if (process.env.NODE_ENV === 'production') {
