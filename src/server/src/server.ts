@@ -1,38 +1,40 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server } from 'socket.io';
-import * as path from 'path';
-import { connectDB } from './db-connection';
+import { app } from './app';
+import * as ioHandler from './sockets/socket';
+import { registerSocketHandlers } from './sockets/registerSocketHandlers';
 
-const app = express();
-app.use(express.static(path.join(__dirname, '../public/')));
-const httpServer = createServer(app);
-connectDB();
-const io = new Server(httpServer, {
-  cors: {
-    origin:
-      process.env.NODE_ENV === 'production'
-        ? process.env.CLIENT_IP || 'http://localhost:4173'
-        : '*',
-  },
-});
+const port = app.get('port');
 
-io.on('connection', socket => {
-  console.log(socket.id + ' user connected');
-});
+const server = app.listen(port, onListening);
+server.on('error', onError);
 
-io.engine.on('connection_error', err => {
-  console.log(err.req);
-  console.log(err.code);
-  console.log(err.message);
-});
+ioHandler.initializeIO(server);
+registerSocketHandlers(ioHandler.getIO());
 
-httpServer.listen(process.env.PORT || 3000);
+function onError(error: NodeJS.ErrnoException) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 
-httpServer.on('listening', () => {
-  console.log(
-    `Server is running on port ${process.env.PORT || 3000} in ${
-      process.env.NODE_ENV || 'development'
-    } mode`,
-  );
-});
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+    default:
+      throw error;
+  }
+}
+
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  console.log(`Listening on ${bind}`);
+}
+
+export default server;
+export { onError };
