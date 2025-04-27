@@ -2,6 +2,8 @@ import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
 import * as matchService from '../services/match';
 import * as moveFactory from '../models/Move';
+import { requestMatch } from '../controllers/matchmaking';
+import { getPlayerSocket } from '../sockets/socket';
 
 const QUEUE_ROOM = 'queue';
 
@@ -20,6 +22,7 @@ export const root = (socket: Socket) => {
   });
 
   match(socket);
+  matchmaking(socket);
 };
 
 const match = (socket: Socket) => {
@@ -79,3 +82,15 @@ const match = (socket: Socket) => {
       });
   });
 };
+
+
+const matchmaking = (socket: Socket) => {
+  socket.on('requestMatch', async (data) => {
+    console.log('Requesting match with data:', data);
+    socket.emit('matchFound', await requestMatch(data.username));
+  });
+};
+
+export const emitUsername = (username: string, event: string, data: any) => {
+  getPlayerSocket(username)?.emit(event, data);
+}
