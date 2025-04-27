@@ -452,16 +452,16 @@ sequenceDiagram
    participant Server
    participant Client2
 
-   Client1->>Server: requestMatch(playerId1, waitingTime = 0)
+   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
    Note over Server: playerId1 is added to the queue
    Note over Client1: waits t seconds
-   Client1->>Server: requestMatch(playerId1, waitingTime = 1)
+   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
 
-   Client2->>Server: requestMatch(playerId2, waitingTime = 0)
+   Client2->>Server: emit('requestMatch', { playerId: playerId2 })
 
    Note over Server: playerId1 is removed from the queue
-   Server-->>Client1: matchFound(matchId)
-   Server-->>Client2: matchFound(matchId)
+   Server-->>Client1: emit('matchFound', { matchId })
+   Server-->>Client2: emit('matchFound', { matchId })
 ```
 
 ###### No Opponent Found Case
@@ -472,16 +472,14 @@ sequenceDiagram
    participant Server
    Note over Server: patience is set to 3
 
-   Client1->>Server: requestMatch(playerId1, waitingTime = 0)
+   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
    Note over Server: playerId1 is added to the queue
    Note over Client1: waits t seconds
-   Client1->>Server: requestMatch(playerId1, waitingTime = 1)
    Note over Client1: waits t seconds
-   Client1->>Server: requestMatch(playerId1, waitingTime = 2)
    Note over Client1: waits t seconds
-   Client1->>Server: requestMatch(playerId1, waitingTime = 3)
+   Note over Server: playerId1 max waiting time exceeded
    Note over Server: playerId1 is removed from the queue
-   Server-->>Client1: matchFound(null)
+   Server-->>Client1: emit('matchFound', { matchId: null })
 ```
 
 Time t is the time the client waits before sending a new request to the server. <!-- NOT IMPLEMENTED -->
@@ -501,12 +499,6 @@ The server will remove a player from the queue if the player has not updated it'
 [Match UML](uml/match.md)
 
 ##### API
-
-- `POST /matchmaking/new`: requests a new match, returns the matchId or `null` match string if waiting time limit is exceeded
-
-  - Body: `{"player": string, "waitingTime": number}`
-  - Returns:
-    - 200 OK - `{"matchId": <string>}`
 
 - `POST /match/new`: creates a match, returns its ID
 
