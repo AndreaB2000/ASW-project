@@ -1,4 +1,4 @@
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import * as http from 'http';
 
 let io: Server;
@@ -18,13 +18,13 @@ export function getIO(): Server {
   return io;
 }
 
-const playerSockets = new Map<string, string>(); // playerId -> socketId
+const playerSockets = new Map<string, Socket>(); // playerId -> socketId
 
-export function registerPlayerSocket(playerId: string, socketId: string) {
+export function registerPlayerSocket(playerId: string, socketId: Socket) {
   playerSockets.set(playerId, socketId);
 }
 
-export function getPlayerSocket(playerId: string): string | undefined {
+export function getPlayerSocket(playerId: string): Socket | undefined {
   return playerSockets.get(playerId);
 }
 
