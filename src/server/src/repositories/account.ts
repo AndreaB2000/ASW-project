@@ -7,7 +7,10 @@ import * as accountFactory from '../models/Account';
  */
 export const createAccount = async (account: Account): Promise<void> => {
   const { username, hashedPassword } = account;
-  const user = new DBAccount({ username, hashedPassword });
+  const user = new DBAccount({
+    username: username,
+    password: hashedPassword,
+  });
   await user.save();
 };
 

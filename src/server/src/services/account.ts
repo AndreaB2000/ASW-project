@@ -1,5 +1,4 @@
 import * as repository from '../repositories/account';
-import * as accountFactory from '../models/Account';
 import { Account } from '../models/Account';
 
 /**
