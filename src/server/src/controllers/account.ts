@@ -13,7 +13,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'Username and password are required' });
       return;
     }
-    const result = await registerAccount(await factory.createWithHashing(username, password));
+    const user = await factory.createWithHashing(username, password);
+    const result = await registerAccount(user);
     if (!result) res.status(409).json({ message: 'Account already exists' });
     else res.status(201).json({ message: 'Account registered successfully', username });
   } catch (error) {
