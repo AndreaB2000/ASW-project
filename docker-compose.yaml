@@ -59,6 +59,7 @@ services:
       DB_APP_PASSWORD: ${DB_APP_PASSWORD}
     volumes:
       - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     networks:
       asw_network:
         ipv4_address: ${DB_IP}
