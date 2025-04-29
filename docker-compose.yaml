@@ -48,6 +48,7 @@ services:
   database:
     image: mongo
     container_name: mongodb
+    command: ${MONGODB_COMMAND}
     restart: always
     ports:
       - '${DB_PORT}:27017'
@@ -60,6 +61,7 @@ services:
     volumes:
       - mongo_data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./mongod.conf:/etc/mongod.conf
     networks:
       asw_network:
         ipv4_address: ${DB_IP}
