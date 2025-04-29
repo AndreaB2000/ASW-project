@@ -71,3 +71,8 @@ other among the players available.
 To execute the system via Docker Compose, it is necessary to create the file
 `src/server/secrets/mongo_root_password.txt`. Additional instructions are
 provided in the `secrets` directory.
+
+## MongoDB verbosity
+
+To display MongoDB logs, change the `MONGODB_COMMAND` variable to `mongod`.
+To hide logs, use the `mongod --config /etc/mongod.conf` command instead.
