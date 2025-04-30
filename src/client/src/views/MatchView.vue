@@ -25,8 +25,11 @@ function updateBoard() {
         const cell = match.initialState.state[x][y];
         if (cell.pile == null) {
           button.innerHTML = '';
+          button.classList.remove('player1')
+          button.classList.remove('player2')
         } else {
           button.innerHTML = cell.pile.numberOfGrains;
+          button.classList.add(cell.pile.owner == match.player1 ? 'player1' : 'player2')
         }
       }
     }
@@ -38,8 +41,13 @@ socket.on('matchStart', (matchId) => {
 })
 
 function handleButtonClick(x: number, y: number) {
-  socket.emit('matchmaking');
+  /* if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME)) {
+    socket.emit('addMove', x, y)
+    // Move animation
+  } */
 }
+
+socket.emit('matchmaking');
 </script>
 
 <template>
@@ -59,9 +67,7 @@ function handleButtonClick(x: number, y: number) {
               :id="`${x-1}-${y-1}`"
               @click="handleButtonClick(x-1, y-1)"
               class="grid-button"
-            >
-              ({{ x-1 }}, {{ y-1 }})
-            </button>
+            ></button>
           </div>
         </div>
       </section>
@@ -140,6 +146,14 @@ section {
           &:hover {
             background-color: #7e7e7e !important;
           }
+        }
+
+        .player1 {
+          background-color: green;
+        }
+
+        .player2 {
+          background-color: blue;
         }
       }
     }
