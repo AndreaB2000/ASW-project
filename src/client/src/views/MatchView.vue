@@ -4,7 +4,13 @@ import { reactive, ref } from 'vue';
 
 const gridSize = 9;
 
-let match = reactive<any>({});
+// This will be relocated somewhere else
+const MY_USERNAME = 'player1'
+
+let player1 = ref('');
+let player2 = ref('');
+let currentState = reactive<any>({});
+let moves = reactive<{x: number, y: number}[]>([]);
 
 function updateMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any) => {
@@ -12,7 +18,9 @@ function updateMatch(matchId: string) {
       console.error('Error getting match', error);
       return;
     }
-    match = reactive(matchData);
+    currentState = reactive(matchData.initialState.state);
+    player1.value = matchData.player1;
+    player2.value = matchData.player2;
     updateBoard();
   });
 }
@@ -22,29 +30,34 @@ function updateBoard() {
     for (let y = 0; y < gridSize; y++) {
       const button = document.getElementById(`${x}-${y}`)
       if (button) {
-        const cell = match.initialState.state[x][y];
+        const cell = currentState[x][y];
         if (cell.pile == null) {
           button.innerHTML = '';
           button.classList.remove('player1')
           button.classList.remove('player2')
         } else {
           button.innerHTML = cell.pile.numberOfGrains;
-          button.classList.add(cell.pile.owner == match.player1 ? 'player1' : 'player2')
+          button.classList.add(cell.pile.owner == player1.value ? 'player1' : 'player2')
         }
       }
     }
   }
 }
 
-socket.on('matchStart', (matchId) => {
-  updateMatch(matchId)
-})
+socket.on('matchStart', (matchId: string) => {
+  updateMatch(matchId);
+});
+
+/* socket.on('move', (x: number, y: number) => {
+  applyMove(x, y);
+  updateBoard();
+}); */
 
 function handleButtonClick(x: number, y: number) {
-  /* if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME)) {
+  if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME)) {
     socket.emit('addMove', x, y)
     // Move animation
-  } */
+  }
 }
 
 socket.emit('matchmaking');
@@ -57,7 +70,7 @@ socket.emit('matchmaking');
       <h1>SANDPILES</h1>
     </section>
     <section class="content">
-      <p>{{ match.player1 }}</p>
+      <p>{{ player1 }}</p>
       <section class="board">
         <div class="grid">
           <div v-for="x in gridSize" :key="x" class="grid-row">
@@ -71,7 +84,7 @@ socket.emit('matchmaking');
           </div>
         </div>
       </section>
-      <p>{{ match.player2 }}</p>
+      <p>{{ player2 }}</p>
     </section>
   </section>
 </template>
