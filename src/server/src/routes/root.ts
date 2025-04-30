@@ -63,7 +63,7 @@ const match = (socket: Socket) => {
     }
   });
 
-  socket.on('addMove', data => {
-    console.log(data);
+  socket.on('addMove', (x: number, y: number) => {
+    console.log(x, y);
   });
 };
