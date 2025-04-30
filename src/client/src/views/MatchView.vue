@@ -5,20 +5,22 @@ import { reactive, ref } from 'vue';
 const gridSize = 9;
 
 // This will be relocated somewhere else
-const MY_USERNAME = 'player1'
+const MY_USERNAME = ref('');
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 let player1 = ref('');
 let player2 = ref('');
-let currentState = reactive<any>({});
+let currentState: any = {};
 let moves = reactive<{x: number, y: number}[]>([]);
 
-function updateMatch(matchId: string) {
+function getMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any) => {
     if (error) {
       console.error('Error getting match', error);
       return;
     }
-    currentState = reactive(matchData.initialState.state);
+    currentState = matchData.initialState.state;
     player1.value = matchData.player1;
     player2.value = matchData.player2;
     updateBoard();
@@ -44,8 +46,52 @@ function updateBoard() {
   }
 }
 
+async function applyMove(movingPlayer: string, x: number, y: number): Promise<void> {
+  currentState[x][y].pile.numberOfGrains += 1;
+
+  const collapsingPiles: [x: number, y: number][] = [];
+
+  do {
+    // Empties array
+    collapsingPiles.length = 0;
+
+    for (let i = 0; i < gridSize; i++) {
+      for (let j = 0; j < gridSize; j++) {
+        if (currentState[i][j].pile != null && currentState[i][j].pile.numberOfGrains >= 4)
+          collapsingPiles.push([i, j]);
+      }
+    }
+
+    collapsingPiles.forEach(([i, j]) => {
+      if (currentState[i][j].pile != null) {
+        if (currentState[i][j].pile.numberOfGrains > 4) {
+          currentState[i][j].pile.numberOfGrains = currentState[i][j].pile.numberOfGrains - 4;
+        } else if (currentState[i][j].pile.numberOfGrains == 4) {
+          currentState[i][j].pile = null;
+        }
+      }
+
+      [
+        {x: (i-1+gridSize) % gridSize, y: j},
+        {x: (i+1) % gridSize, y: j},
+        {x: i, y: (j-1+gridSize) % gridSize},
+        {x: i, y: (j+1) % gridSize}
+      ].forEach((coord) => {
+        if (currentState[coord.x][coord.y].pile == null) {
+          currentState[coord.x][coord.y].pile = {'owner': movingPlayer, 'numberOfGrains': 1}
+        } else {
+          currentState[coord.x][coord.y].pile.numberOfGrains += 1;
+        }
+      });
+
+    });
+    updateBoard();
+    await sleep(1000);
+  } while (collapsingPiles.length != 0);
+}
+
 socket.on('matchStart', (matchId: string) => {
-  updateMatch(matchId);
+  getMatch(matchId);
 });
 
 /* socket.on('move', (x: number, y: number) => {
@@ -54,9 +100,10 @@ socket.on('matchStart', (matchId: string) => {
 }); */
 
 function handleButtonClick(x: number, y: number) {
-  if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME)) {
-    socket.emit('addMove', x, y)
-    // Move animation
+  if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME.value)) {
+    socket.emit('addMove', x, y);
+    console.log(currentState);
+    applyMove(MY_USERNAME.value, x, y);
   }
 }
 
@@ -70,6 +117,7 @@ socket.emit('matchmaking');
       <h1>SANDPILES</h1>
     </section>
     <section class="content">
+      <input type="text" v-model="MY_USERNAME"/>
       <p>{{ player1 }}</p>
       <section class="board">
         <div class="grid">
