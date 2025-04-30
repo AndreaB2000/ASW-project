@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { socket } from '@/services/socket';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
-let message = "Match hasn't started yet :("
+let match = reactive({
+  player1: '',
+  player2: '',
+  state: [],
+  moves: []
+});
 
 function sendMessage(topic: string, data: any = {}) {
   socket.emit(topic, (response: string) => {
@@ -10,19 +15,24 @@ function sendMessage(topic: string, data: any = {}) {
   });
 }
 
+function updateMatch(response: any) {
+  match.player1 = response.player1;
+  match.player2 = response.player2;
+  match.state = response.state;
+  match.moves = response.moves;
+}
 
 socket.on('matchStart', () => {
-  message = "Match has started!";
+  socket.emit('getMatch', (response: any) => {
+    updateMatch(response);
+  });
 })
 
 function handleButtonClick(x: number, y: number) {
   console.log(`Button clicked at coordinates: (${x}, ${y})`);
-  socket.emit('joinMatch');
-  // Puoi aggiungere qui la logica per gestire il click
-  // o chiamare sendMessage con le coordinate
+  socket.emit('matchmaking');
 }
 
-// Creiamo un array con le coordinate da 1 a 9
 const gridSize = ref(9);
 </script>
 
@@ -33,21 +43,22 @@ const gridSize = ref(9);
       <h1>SANDPILES</h1>
     </section>
     <section class="content">
+      <p>{{ match.player1 }}</p>
       <section class="board">
         <div class="grid">
           <div v-for="x in gridSize" :key="x" class="grid-row">
             <button
               v-for="y in gridSize"
-              :key="`${x}-${y}`"
-              @click="handleButtonClick(x, y)"
+              :key="`${x-1}-${y-1}`"
+              @click="handleButtonClick(x-1, y-1)"
               class="grid-button"
             >
-              ({{x}}, {{y}})
+              ({{ x-1 }}, {{ y-1 }})
             </button>
           </div>
         </div>
       </section>
-      <p>{{ message }}</p>
+      <p>{{ match.player2 }}</p>
     </section>
   </section>
 </template>
