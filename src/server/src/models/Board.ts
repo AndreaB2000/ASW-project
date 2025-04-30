@@ -124,6 +124,9 @@ class BoardImpl implements Board {
   }
 }
 
+export const createFromObject = (object: any): Board =>
+  new BoardImpl(object.width, object.height, object.state);
+
 export const createDefault = (player1: string, player2: string): Board =>
   createCustom(DEFAULT_WIDTH, DEFAULT_HEIGHT, INITIAL_STATE(player1, player2));
 

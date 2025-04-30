@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Match } from '../models/Match';
+import * as matchFactory from '../models/Match';
 
 export class MatchRepository {
   constructor() {}
@@ -16,7 +17,7 @@ export class MatchRepository {
   }
 
   async findMatch(matchId: string): Promise<Match | null> {
-    return await DBMatch.findById(matchId);
+    return matchFactory.createFromObject(await DBMatch.findById(matchId));
   }
 
   async findMatchesByPlayer(player: string): Promise<string[]> {
@@ -27,7 +28,7 @@ export class MatchRepository {
   }
 
   async updateMatch(matchId: string, newMatch: Match): Promise<void> {
-    await DBMatch.findOneAndUpdate({ matchId }, newMatch);
+    await DBMatch.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(matchId) }, newMatch);
   }
 
   async deleteMatch(matchId: string): Promise<boolean> {

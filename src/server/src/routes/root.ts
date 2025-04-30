@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
 import * as matchService from '../services/match';
+import * as moveFactory from '../models/Move';
 
 const QUEUE_ROOM = 'queue';
 
@@ -63,7 +64,10 @@ const match = (socket: Socket) => {
     }
   });
 
-  socket.on('addMove', (x: number, y: number) => {
-    console.log(x, y);
+  socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
+    const success = await matchService.addMove(matchId, movingPlayer, moveFactory.create(x, y));
+    if (success) {
+      io.to(matchId).emit('move', movingPlayer, x, y);
+    }
   });
 };
