@@ -14,8 +14,8 @@ describe('Match', () => {
   const NOW = new Date();
   const validMove1 = moveFactory.create(2, 2);
   const validMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 2,
-    boardFactory.DEFAULT_HEIGHT - 2,
+    boardFactory.DEFAULT_WIDTH - 3,
+    boardFactory.DEFAULT_HEIGHT - 3,
   );
   const invalidMove = moveFactory.create(2, 3);
   const customWidth = 6;
@@ -42,44 +42,46 @@ describe('Match', () => {
     expect(match.moves).toStrictEqual([] as Move[]);
   });
 
-  it('addMove should add a move to the moves list', () => {
-    const result = match.addMove(validMove1);
+  describe('addMove', () => {
+    it('should add a move to the moves list', () => {
+      const result = match.addMove(validMove1);
 
-    expect(result).toBe(true);
-    expect(match.moves.length).toBe(1);
-    expect(match.moves[0]).toBe(validMove1);
-  });
+      expect(result).toBe(true);
+      expect(match.moves.length).toBe(1);
+      expect(match.moves[0]).toBe(validMove1);
+    });
 
-  it('addMove should add multiple moves to the moves list in order', () => {
-    const result1 = match.addMove(validMove1);
-    const result2 = match.addMove(validMove2);
+    it('should add multiple moves to the moves list in order', () => {
+      const result1 = match.addMove(validMove1);
+      const result2 = match.addMove(validMove2);
 
-    expect(result1).toBe(true);
-    expect(result2).toBe(true);
-    expect(match.moves.length).toBe(2);
-    expect(match.moves[0]).toBe(validMove1);
-    expect(match.moves[1]).toBe(validMove2);
-  });
+      expect(result1).toBe(true);
+      expect(result2).toBe(true);
+      expect(match.moves.length).toBe(2);
+      expect(match.moves[0]).toBe(validMove1);
+      expect(match.moves[1]).toBe(validMove2);
+    });
 
-  it('addMove should not add an invalid move (on a null pile)', () => {
-    const result = match.addMove(invalidMove);
+    it('should not add an invalid move (on a null pile)', () => {
+      const result = match.addMove(invalidMove);
 
-    expect(result).toBe(false);
-    expect(match.moves.length).toBe(0);
-  });
+      expect(result).toBe(false);
+      expect(match.moves.length).toBe(0);
+    });
 
-  it('addMove should not add an invalid move (on a pile owned by someone else)', () => {
-    const result = match.addMove(validMove2);
+    it('should not add an invalid move (on a pile owned by someone else)', () => {
+      const result = match.addMove(validMove2);
 
-    expect(result).toBe(false);
-    expect(match.moves.length).toBe(0);
-  });
+      expect(result).toBe(false);
+      expect(match.moves.length).toBe(0);
+    });
 
-  it('addMove should not change the initial board state', () => {
-    const result1 = match.addMove(validMove1);
-    const result2 = match.addMove(validMove2);
+    it('should not change the initial board state', () => {
+      match.addMove(validMove1);
+      match.addMove(validMove2);
 
-    expect(match.initialState).toStrictEqual(boardFactory.createDefault(player1, player2));
+      expect(match.initialState).toStrictEqual(boardFactory.createDefault(player1, player2));
+    });
   });
 
   it('should create a match with a custom initial state', () => {

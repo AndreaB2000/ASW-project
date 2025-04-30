@@ -19,10 +19,10 @@ describe('Board', () => {
     expect(board.state[2][2].pile).not.toBeNull();
     expect(board.state[2][2].pile?.owner).toBe(PLAYER1);
     expect(
-      board.state[boardFactory.DEFAULT_WIDTH - 2][boardFactory.DEFAULT_WIDTH - 2].pile,
+      board.state[boardFactory.DEFAULT_WIDTH - 3][boardFactory.DEFAULT_WIDTH - 3].pile,
     ).not.toBeNull();
     expect(
-      board.state[boardFactory.DEFAULT_WIDTH - 2][boardFactory.DEFAULT_WIDTH - 2].pile?.owner,
+      board.state[boardFactory.DEFAULT_WIDTH - 3][boardFactory.DEFAULT_WIDTH - 3].pile?.owner,
     ).toBe(PLAYER2);
   });
 

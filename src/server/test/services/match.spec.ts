@@ -17,7 +17,6 @@ import { Match } from '../../src/models/Match';
 describe('Match Service', () => {
   const player1 = 'player1';
   const player2 = 'player2';
-  const player3 = 'player3';
   const DATE = new Date();
   const matchID = 'testid';
   const otherID = 'otherid';
@@ -27,8 +26,8 @@ describe('Match Service', () => {
   let matchWith3Moves: Match;
   const testMove = moveFactory.create(2, 2);
   const testMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 2,
-    boardFactory.DEFAULT_HEIGHT - 2,
+    boardFactory.DEFAULT_WIDTH - 3,
+    boardFactory.DEFAULT_HEIGHT - 3,
   );
   const testMove3 = moveFactory.create(3, 2);
 
