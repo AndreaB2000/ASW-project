@@ -2,38 +2,44 @@
 import { socket } from '@/services/socket';
 import { reactive, ref } from 'vue';
 
-let match = reactive({
-  player1: '',
-  player2: '',
-  state: [],
-  moves: []
-});
+const gridSize = 9;
 
-function sendMessage(topic: string, data: any = {}) {
-  socket.emit(topic, (response: string) => {
-    console.log(response);
+let match = reactive<any>({});
+
+function updateMatch(matchId: string) {
+  socket.emit('getMatch', matchId, (error: any, matchData: any) => {
+    if (error) {
+      console.error('Error getting match', error);
+      return;
+    }
+    match = reactive(matchData);
+    updateBoard();
   });
 }
 
-function updateMatch(response: any) {
-  match.player1 = response.player1;
-  match.player2 = response.player2;
-  match.state = response.state;
-  match.moves = response.moves;
+function updateBoard() {
+  for (let x = 0; x < gridSize; x++) {
+    for (let y = 0; y < gridSize; y++) {
+      const button = document.getElementById(`${x}-${y}`)
+      if (button) {
+        const cell = match.initialState.state[x][y];
+        if (cell.pile == null) {
+          button.innerHTML = '';
+        } else {
+          button.innerHTML = cell.pile.numberOfGrains;
+        }
+      }
+    }
+  }
 }
 
-socket.on('matchStart', () => {
-  socket.emit('getMatch', (response: any) => {
-    updateMatch(response);
-  });
+socket.on('matchStart', (matchId) => {
+  updateMatch(matchId)
 })
 
 function handleButtonClick(x: number, y: number) {
-  console.log(`Button clicked at coordinates: (${x}, ${y})`);
   socket.emit('matchmaking');
 }
-
-const gridSize = ref(9);
 </script>
 
 <template>
@@ -50,6 +56,7 @@ const gridSize = ref(9);
             <button
               v-for="y in gridSize"
               :key="`${x-1}-${y-1}`"
+              :id="`${x-1}-${y-1}`"
               @click="handleButtonClick(x-1, y-1)"
               class="grid-button"
             >
@@ -110,10 +117,14 @@ section {
         .grid-row {
           display: flex;
           gap: 5px;
+          justify-content: center;
         }
 
         .grid-button {
-          aspect-ratio: 1;
+          aspect-ratio: 1; // Mantiene il rapporto 1:1
+          width: 100%; // Occupa tutto lo spazio disponibile nel flex
+          max-width: 60px; // Limita la larghezza massima
+          min-width: 60px; // Limita la larghezza minima
           display: flex;
           justify-content: center;
           align-items: center;
@@ -124,7 +135,7 @@ section {
           cursor: pointer;
           transition: background-color 0.3s ease;
           font-size: 0.8rem;
-          flex: 1;
+          padding: 0;
 
           &:hover {
             background-color: #7e7e7e !important;
