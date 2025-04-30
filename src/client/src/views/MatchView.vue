@@ -14,6 +14,8 @@ let player2 = ref('');
 let currentState: any = {};
 let matchId: string = '';
 
+let moveInProgress = ref(false);
+
 function getMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any) => {
     if (error) {
@@ -47,11 +49,15 @@ function updateBoard() {
 }
 
 async function applyMove(movingPlayer: string, x: number, y: number): Promise<void> {
+  moveInProgress.value = true;
   currentState[x][y].pile.numberOfGrains += 1;
 
   const collapsingPiles: [x: number, y: number][] = [];
 
   do {
+    updateBoard();
+    await sleep(1000);
+
     // Empties array
     collapsingPiles.length = 0;
 
@@ -81,13 +87,13 @@ async function applyMove(movingPlayer: string, x: number, y: number): Promise<vo
           currentState[coord.x][coord.y].pile = {'owner': movingPlayer, 'numberOfGrains': 1}
         } else {
           currentState[coord.x][coord.y].pile.numberOfGrains += 1;
+          currentState[coord.x][coord.y].pile.owner = movingPlayer;
         }
       });
 
     });
-    updateBoard();
-    await sleep(1000);
   } while (collapsingPiles.length != 0);
+  moveInProgress.value = false;
 }
 
 socket.on('matchStart', (mId: string) => {
@@ -95,14 +101,18 @@ socket.on('matchStart', (mId: string) => {
   getMatch(mId);
 });
 
-socket.on('move', (movingPlayer: string, x: number, y: number) => {
-  applyMove(movingPlayer, x, y);
+socket.on('move', async (movingPlayer: string, x: number, y: number) => {
+  console.log('Move received from server');
+  await applyMove(movingPlayer, x, y);
   updateBoard();
 });
 
 function handleButtonClick(x: number, y: number) {
-  if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME.value)) {
-    socket.emit('addMove', matchId, MY_USERNAME.value, x, y);
+  if (!moveInProgress.value) {
+    console.log(`Pressed cell ${x}, ${y}. Cell:`, currentState[x][y]);
+    if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME.value)) {
+      socket.emit('addMove', matchId, MY_USERNAME.value, x, y);
+    }
   }
 }
 
