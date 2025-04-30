@@ -17,7 +17,12 @@ export class MatchRepository {
   }
 
   async findMatch(matchId: string): Promise<Match | null> {
-    return matchFactory.createFromObject(await DBMatch.findById(matchId));
+    const match = await DBMatch.findById(matchId);
+    if (match) {
+      return matchFactory.createFromObject(match);
+    } else {
+      return null;
+    }
   }
 
   async findMatchesByPlayer(player: string): Promise<string[]> {
