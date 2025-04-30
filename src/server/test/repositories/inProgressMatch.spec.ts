@@ -10,6 +10,7 @@ import {
 import * as matchFactory from '../../src/models/Match';
 import { Match } from '../../src/models/Match';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
+import mongoose from 'mongoose';
 
 describe('Match Repository', () => {
   const PLAYER1 = 'Alice';
@@ -18,7 +19,7 @@ describe('Match Repository', () => {
   const OTHER_PLAYER = 'otherplayer';
   const OTHER_ID = 'otherid';
   const NOW = new Date();
-  const TEST_ID = 'testid';
+  const TEST_ID = '507f1f77bcf86cd799439011';
   const mockMatch: Match = matchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, NOW);
   const mockUpdatedMatch: Match = matchFactory.createWithDefaultInitialState(PLAYER3, PLAYER2, NOW);
 
@@ -49,7 +50,7 @@ describe('Match Repository', () => {
         mockMatch,
         [TEST_ID],
       );
-      expect(foundMatch).toBe(mockMatch);
+      expect(foundMatch).toStrictEqual(mockMatch);
     });
 
     it('should return null if a match with the given ID does not exist', async () => {
@@ -93,7 +94,7 @@ describe('Match Repository', () => {
     it('should call the model update function with the correct parameters', async () => {
       await checkCalledWith(
         updateMatch,
-        [{ matchId: TEST_ID }, mockUpdatedMatch],
+        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }, mockUpdatedMatch],
         DBMatch,
         'findOneAndUpdate',
         [],
