@@ -38,6 +38,15 @@ export interface Match {
   addMove(newMove: Move): boolean;
 }
 
+export const createFromObject = (object: any) =>
+  new MatchImpl(
+    object.player1,
+    object.player2,
+    object.creationDate,
+    boardFactory.createFromObject(object.initialState),
+    object.moves,
+  );
+
 export const createWithDefaultInitialState = (
   player1: string,
   player2: string,

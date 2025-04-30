@@ -12,7 +12,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 let player1 = ref('');
 let player2 = ref('');
 let currentState: any = {};
-let moves = reactive<{x: number, y: number}[]>([]);
+let matchId: string = '';
 
 function getMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any) => {
@@ -90,20 +90,19 @@ async function applyMove(movingPlayer: string, x: number, y: number): Promise<vo
   } while (collapsingPiles.length != 0);
 }
 
-socket.on('matchStart', (matchId: string) => {
-  getMatch(matchId);
+socket.on('matchStart', (mId: string) => {
+  matchId = mId;
+  getMatch(mId);
 });
 
-/* socket.on('move', (x: number, y: number) => {
-  applyMove(x, y);
+socket.on('move', (movingPlayer: string, x: number, y: number) => {
+  applyMove(movingPlayer, x, y);
   updateBoard();
-}); */
+});
 
 function handleButtonClick(x: number, y: number) {
   if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME.value)) {
-    socket.emit('addMove', x, y);
-    console.log(currentState);
-    applyMove(MY_USERNAME.value, x, y);
+    socket.emit('addMove', matchId, MY_USERNAME.value, x, y);
   }
 }
 
