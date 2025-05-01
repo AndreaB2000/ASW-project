@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue';
 import PlayerInMatch from '../components/PlayerInMatch.vue';
+import Pile from '../components/Pile.vue';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { socket } from '@/services/socket';
 import { useUserStore } from '@/stores/userStore';
@@ -31,9 +32,9 @@ function updateBoard() {
         const cell = match.currentState[x][y];
         button.classList.remove('player1', 'player2', 'inactive');
         if (cell.pile == null) {
-          button.innerHTML = '';
+          // button.innerHTML = '';
         } else {
-          button.innerHTML = cell.pile.numberOfGrains;
+          // button.innerHTML = `<Pile :number-of-grains="${cell.pile.numberOfGrains}" />`;
           if (cell.pile.owner == match.player1) {
             button.classList.add('player1');
           } else if (cell.pile.owner == match.player2) {
@@ -99,7 +100,15 @@ socket.emit('matchmaking');
             :id="`${Math.floor((index - 1) / GRID_SIZE)}-${(index - 1) % GRID_SIZE}`"
             @click="handleButtonClick(Math.floor((index - 1) / GRID_SIZE), (index - 1) % GRID_SIZE)"
             class="grid-button"
-          ></button>
+          >
+            <Pile
+              :number-of-grains="
+                match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[
+                  (index - 1) % GRID_SIZE
+                ]?.pile?.numberOfGrains ?? 0
+              "
+            />
+          </button>
         </div>
       </MDBCol>
       <MDBCol md="3" class="d-flex justify-content-center align-items-center">
