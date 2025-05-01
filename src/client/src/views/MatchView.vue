@@ -3,6 +3,7 @@ import { socket } from '@/services/socket';
 import { reactive, ref } from 'vue';
 
 const gridSize = 9;
+const moveDelayMillis = 400;
 
 // This will be relocated somewhere else
 const MY_USERNAME = ref('');
@@ -41,7 +42,15 @@ function updateBoard() {
           button.classList.remove('player2')
         } else {
           button.innerHTML = cell.pile.numberOfGrains;
-          button.classList.add(cell.pile.owner == player1.value ? 'player1' : 'player2')
+          if (cell.pile.owner == player1.value) {
+            button.classList.remove('player2');
+            button.classList.add('player1');
+          } else if (cell.pile.owner == player2.value) {
+            button.classList.remove('player1');
+            button.classList.add('player2');
+          } else {
+            console.error("Something went terribly wrong.");
+          }
         }
       }
     }
@@ -56,7 +65,7 @@ async function applyMove(movingPlayer: string, x: number, y: number): Promise<vo
 
   do {
     updateBoard();
-    await sleep(1000);
+    await sleep(moveDelayMillis);
 
     // Empties array
     collapsingPiles.length = 0;
@@ -69,12 +78,10 @@ async function applyMove(movingPlayer: string, x: number, y: number): Promise<vo
     }
 
     collapsingPiles.forEach(([i, j]) => {
-      if (currentState[i][j].pile != null) {
-        if (currentState[i][j].pile.numberOfGrains > 4) {
-          currentState[i][j].pile.numberOfGrains = currentState[i][j].pile.numberOfGrains - 4;
-        } else if (currentState[i][j].pile.numberOfGrains == 4) {
-          currentState[i][j].pile = null;
-        }
+      if (currentState[i][j].pile.numberOfGrains > 4) {
+        currentState[i][j].pile.numberOfGrains = currentState[i][j].pile.numberOfGrains - 4;
+      } else if (currentState[i][j].pile.numberOfGrains == 4) {
+        currentState[i][j].pile = null;
       }
 
       [
