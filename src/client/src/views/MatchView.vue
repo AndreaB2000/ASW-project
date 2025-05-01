@@ -88,10 +88,10 @@ socket.emit('matchmaking');
       <MDBCol md="9"></MDBCol>
     </MDBRow>
     <MDBRow center class="my-5">
-      <MDBCol md="4" class="d-flex justify-content-center align-items-center">
+      <MDBCol md="3" class="d-flex justify-content-center align-items-center">
         <PlayerInMatch :username="match.player1" />
       </MDBCol>
-      <MDBCol md="4" class="d-flex justify-content-center">
+      <MDBCol md="6" class="d-flex justify-content-center">
         <div
           class="grid d-grid"
           :style="`grid-template-columns: repeat(${GRID_SIZE}, 1fr);`"
@@ -106,7 +106,7 @@ socket.emit('matchmaking');
           ></button>
         </div>
       </MDBCol>
-      <MDBCol md="4" class="d-flex justify-content-center align-items-center">
+      <MDBCol md="3" class="d-flex justify-content-center align-items-center">
         <PlayerInMatch :username="match.player2" />
       </MDBCol>
     </MDBRow>
