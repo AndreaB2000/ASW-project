@@ -1,21 +1,11 @@
 <script setup lang="ts">
 import { socket } from '@/services/socket';
-import { reactive, ref } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+import { useMatchStore } from '@/stores/matchStore';
+import { GRID_SIZE } from '@/utils/match';
 
-const gridSize = 9;
-const moveDelayMillis = 400;
-
-// This will be relocated somewhere else
-const MY_USERNAME = ref('');
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-let player1 = ref('');
-let player2 = ref('');
-let currentState: any = {};
-let matchId: string = '';
-
-let moveInProgress = ref(false);
+const user = useUserStore();
+const match = useMatchStore();
 
 function getMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any) => {
@@ -23,33 +13,33 @@ function getMatch(matchId: string) {
       console.error('Error getting match', error);
       return;
     }
-    currentState = matchData.initialState.state;
-    player1.value = matchData.player1;
-    player2.value = matchData.player2;
+    match.currentState = matchData.initialState.state;
+    match.player1 = matchData.player1;
+    match.player2 = matchData.player2;
     updateBoard();
   });
 }
 
 function updateBoard() {
-  for (let x = 0; x < gridSize; x++) {
-    for (let y = 0; y < gridSize; y++) {
+  for (let x = 0; x < GRID_SIZE; x++) {
+    for (let y = 0; y < GRID_SIZE; y++) {
       const button = document.getElementById(`${x}-${y}`)
       if (button) {
-        const cell = currentState[x][y];
+        const cell = match.currentState[x][y];
         if (cell.pile == null) {
           button.innerHTML = '';
           button.classList.remove('player1')
           button.classList.remove('player2')
         } else {
           button.innerHTML = cell.pile.numberOfGrains;
-          if (cell.pile.owner == player1.value) {
+          if (cell.pile.owner == match.player1) {
             button.classList.remove('player2');
             button.classList.add('player1');
-          } else if (cell.pile.owner == player2.value) {
+          } else if (cell.pile.owner == match.player2) {
             button.classList.remove('player1');
             button.classList.add('player2');
           } else {
-            console.error("Something went terribly wrong.");
+            console.error("Something went wrong.");
           }
         }
       }
@@ -57,68 +47,22 @@ function updateBoard() {
   }
 }
 
-async function applyMove(movingPlayer: string, x: number, y: number): Promise<void> {
-  moveInProgress.value = true;
-  currentState[x][y].pile.numberOfGrains += 1;
-
-  const collapsingPiles: [x: number, y: number][] = [];
-
-  do {
-    updateBoard();
-    await sleep(moveDelayMillis);
-
-    // Empties array
-    collapsingPiles.length = 0;
-
-    for (let i = 0; i < gridSize; i++) {
-      for (let j = 0; j < gridSize; j++) {
-        if (currentState[i][j].pile != null && currentState[i][j].pile.numberOfGrains >= 4)
-          collapsingPiles.push([i, j]);
-      }
-    }
-
-    collapsingPiles.forEach(([i, j]) => {
-      if (currentState[i][j].pile.numberOfGrains > 4) {
-        currentState[i][j].pile.numberOfGrains = currentState[i][j].pile.numberOfGrains - 4;
-      } else if (currentState[i][j].pile.numberOfGrains == 4) {
-        currentState[i][j].pile = null;
-      }
-
-      [
-        {x: (i-1+gridSize) % gridSize, y: j},
-        {x: (i+1) % gridSize, y: j},
-        {x: i, y: (j-1+gridSize) % gridSize},
-        {x: i, y: (j+1) % gridSize}
-      ].forEach((coord) => {
-        if (currentState[coord.x][coord.y].pile == null) {
-          currentState[coord.x][coord.y].pile = {'owner': movingPlayer, 'numberOfGrains': 1}
-        } else {
-          currentState[coord.x][coord.y].pile.numberOfGrains += 1;
-          currentState[coord.x][coord.y].pile.owner = movingPlayer;
-        }
-      });
-
-    });
-  } while (collapsingPiles.length != 0);
-  moveInProgress.value = false;
-}
-
-socket.on('matchStart', (mId: string) => {
-  matchId = mId;
-  getMatch(mId);
+socket.on('matchStart', (matchId: string) => {
+  match.id = matchId;
+  getMatch(matchId);
 });
 
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
-  await applyMove(movingPlayer, x, y);
+  await match.applyMove(movingPlayer, x, y, updateBoard);
   updateBoard();
 });
 
 function handleButtonClick(x: number, y: number) {
-  if (!moveInProgress.value) {
-    console.log(`Pressed cell ${x}, ${y}. Cell:`, currentState[x][y]);
-    if (document.getElementById(`${x}-${y}`)?.classList.contains(MY_USERNAME.value)) {
-      socket.emit('addMove', matchId, MY_USERNAME.value, x, y);
+  if (!match.moveInProgress) {
+    console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
+    if (document.getElementById(`${x}-${y}`)?.classList.contains(user.username)) {
+      socket.emit('addMove', match.id, user.username, x, y);
     }
   }
 }
@@ -133,13 +77,13 @@ socket.emit('matchmaking');
       <h1>SANDPILES</h1>
     </section>
     <section class="content">
-      <input type="text" v-model="MY_USERNAME"/>
-      <p>{{ player1 }}</p>
+      <input type="text" v-model="user.username"/>
+      <p>{{ match.player1 }}</p>
       <section class="board">
         <div class="grid">
-          <div v-for="x in gridSize" :key="x" class="grid-row">
+          <div v-for="x in GRID_SIZE" :key="x" class="grid-row">
             <button
-              v-for="y in gridSize"
+              v-for="y in GRID_SIZE"
               :key="`${x-1}-${y-1}`"
               :id="`${x-1}-${y-1}`"
               @click="handleButtonClick(x-1, y-1)"
@@ -148,7 +92,7 @@ socket.emit('matchmaking');
           </div>
         </div>
       </section>
-      <p>{{ player2 }}</p>
+      <p>{{ match.player2 }}</p>
     </section>
   </section>
 </template>
@@ -204,10 +148,10 @@ section {
         }
 
         .grid-button {
-          aspect-ratio: 1; // Mantiene il rapporto 1:1
-          width: 100%; // Occupa tutto lo spazio disponibile nel flex
-          max-width: 60px; // Limita la larghezza massima
-          min-width: 60px; // Limita la larghezza minima
+          aspect-ratio: 1;
+          width: 100%;
+          max-width: 60px;
+          min-width: 60px;
           display: flex;
           justify-content: center;
           align-items: center;
