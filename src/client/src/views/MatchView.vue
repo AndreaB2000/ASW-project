@@ -1,10 +1,4 @@
 <script setup lang="ts">
-/* The "PlayerInMatch" import only works if ".." is used instead of "@".
-   Otherwise, it is possible to use "@" if the file name
-   has no uppercase letters in it (e.g. "Player").
-
-  <insert exploding head emoji here>
-*/
 import Icon from '@/components/Icon.vue';
 import PlayerInMatch from '../components/PlayerInMatch.vue';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
@@ -35,20 +29,21 @@ function updateBoard() {
       const button = document.getElementById(`${x}-${y}`);
       if (button) {
         const cell = match.currentState[x][y];
+        button.classList.remove('player1', 'player2', 'inactive');
         if (cell.pile == null) {
           button.innerHTML = '';
-          button.classList.remove('player1');
-          button.classList.remove('player2');
         } else {
           button.innerHTML = cell.pile.numberOfGrains;
           if (cell.pile.owner == match.player1) {
-            button.classList.remove('player2');
             button.classList.add('player1');
           } else if (cell.pile.owner == match.player2) {
-            button.classList.remove('player1');
             button.classList.add('player2');
+          }
+
+          if (cell.pile.owner != match.turn) {
+            button.classList.remove('inactive');
           } else {
-            console.error('Something went wrong.');
+            button.classList.add('inactive');
           }
         }
       }
@@ -64,6 +59,7 @@ socket.on('matchStart', (matchId: string) => {
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
   await match.applyMove(movingPlayer, x, y, updateBoard);
+  await match.changeTurn();
   updateBoard();
 });
 
@@ -117,6 +113,8 @@ socket.emit('matchmaking');
 </template>
 
 <style scoped lang="scss">
+@use 'sass:color';
+
 input {
   width: 20%;
 }
@@ -131,17 +129,24 @@ input {
   transition: background-color 0.3s ease;
   font-size: 0.8rem;
   margin: 2px;
-
-  /*&:hover {
-    background-color: #7e7e7e !important;
-  } */
 }
 
+@mixin player-styles($color) {
+  background-color: $color;
+
+  &.inactive {
+    background-color: color.adjust($color, $lightness: -20%);
+  }
+}
+
+$player1color: #42cc42;
+$player2color: #2e4aff;
+
 .player1 {
-  background-color: green;
+  @include player-styles($player1color);
 }
 
 .player2 {
-  background-color: blue;
+  @include player-styles($player2color);
 }
 </style>
