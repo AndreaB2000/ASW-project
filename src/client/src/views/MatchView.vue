@@ -1,5 +1,12 @@
 <script setup lang="ts">
+/* The "PlayerInMatch" import only works if ".." is used instead of "@".
+   Otherwise, it is possible to use "@" if the file name
+   has no uppercase letters in it (e.g. "Player").
+
+  <insert exploding head emoji here>
+*/
 import Icon from '@/components/Icon.vue';
+import PlayerInMatch from '../components/PlayerInMatch.vue';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { socket } from '@/services/socket';
 import { useUserStore } from '@/stores/userStore';
@@ -81,11 +88,10 @@ socket.emit('matchmaking');
       <MDBCol md="9"></MDBCol>
     </MDBRow>
     <MDBRow center class="my-5">
-      <input type="text" v-model="user.username" />
-    </MDBRow>
-    <MDBRow center class="my-5">
-      <MDBCol md="3">{{ match.player1 }}</MDBCol>
-      <MDBCol md="6" class="d-flex justify-content-center">
+      <MDBCol md="4" class="d-flex justify-content-center align-items-center">
+        <PlayerInMatch :username="match.player1" />
+      </MDBCol>
+      <MDBCol md="4" class="d-flex justify-content-center">
         <div
           class="grid d-grid"
           :style="`grid-template-columns: repeat(${GRID_SIZE}, 1fr);`"
@@ -100,7 +106,12 @@ socket.emit('matchmaking');
           ></button>
         </div>
       </MDBCol>
-      <MDBCol md="3">{{ match.player2 }}</MDBCol>
+      <MDBCol md="4" class="d-flex justify-content-center align-items-center">
+        <PlayerInMatch :username="match.player2" />
+      </MDBCol>
+    </MDBRow>
+    <MDBRow center class="my-5">
+      <input type="text" v-model="user.username" />
     </MDBRow>
   </MDBContainer>
 </template>
