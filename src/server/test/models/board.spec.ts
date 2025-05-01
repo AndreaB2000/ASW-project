@@ -140,6 +140,30 @@ describe('Board', () => {
     });
   });
 
+  it('should have a "toroid" behavior', () => {
+    const Y1 = 3;
+    const Y2 = 6;
+    const board = boardFactory.createCustom(
+      boardFactory.DEFAULT_WIDTH,
+      boardFactory.DEFAULT_HEIGHT,
+      [
+        { x: 0, y: Y1, pile: pileFactory.create(PLAYER1, 3) },
+        { x: boardFactory.DEFAULT_WIDTH - 1, y: Y2, pile: pileFactory.create(PLAYER2, 3) },
+      ],
+    );
+
+    board.applyMove(PLAYER1, moveFactory.create(0, Y1));
+    board.applyMove(PLAYER2, moveFactory.create(boardFactory.DEFAULT_WIDTH - 1, Y2));
+
+    // "Backwards" toroid behavior
+    expect(board.getCell(boardFactory.DEFAULT_WIDTH - 1, Y1).pile).not.toBeNull();
+    expect(board.getCell(boardFactory.DEFAULT_WIDTH - 1, Y1).pile?.numberOfGrains).toBe(1);
+
+    // "Forwards" toroid behavior
+    expect(board.getCell(0, Y2).pile).not.toBeNull();
+    expect(board.getCell(0, Y2).pile?.numberOfGrains).toBe(1);
+  });
+
   it('should behave like expected in a specific scenario', () => {
     const board = boardFactory.createCustom(
       boardFactory.DEFAULT_WIDTH,

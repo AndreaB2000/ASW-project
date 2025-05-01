@@ -87,10 +87,10 @@ class BoardImpl implements Board {
       collapsingPiles.forEach(([i, j]) => {
         this.state[i][j].collapse();
 
-        this.state[(i - 1) % this.width][j].addGrain(movingPlayer);
-        this.state[(i + 1) % this.width][j].addGrain(movingPlayer);
-        this.state[i][(j - 1) % this.height].addGrain(movingPlayer);
-        this.state[i][(j + 1) % this.height].addGrain(movingPlayer);
+        this.state[(i - 1 + this.width) % this.width][j].addGrain(movingPlayer);
+        this.state[(i + 1 + this.width) % this.width][j].addGrain(movingPlayer);
+        this.state[i][(j - 1 + this.height) % this.height].addGrain(movingPlayer);
+        this.state[i][(j + 1 + this.height) % this.height].addGrain(movingPlayer);
       });
     } while (collapsingPiles.length != 0);
   }
