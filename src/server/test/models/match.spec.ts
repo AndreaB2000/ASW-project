@@ -90,4 +90,15 @@ describe('Match', () => {
     expect(matchWithCustomBoard.initialState.getCell(0, 0).pile).not.toBeNull();
     expect(matchWithCustomBoard.initialState.getCell(0, 0).pile?.numberOfGrains).toBe(1);
   });
+
+  describe('winner', () => {
+    it('should be null if the match is not finished', () => {
+      expect(match.winner).toBeNull();
+    });
+
+    it("should be not null and contain the winner's username if the match is finished", () => {
+      expect(matchWithCustomBoard.winner).not.toBeNull();
+      expect(matchWithCustomBoard.winner).toBe(player1);
+    });
+  });
 });

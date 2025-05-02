@@ -1,5 +1,6 @@
 import * as boardFactory from './Board';
 import { Board } from './Board';
+import { Cell } from './Cell';
 import { Move } from './Move';
 
 export interface Match {
@@ -36,6 +37,11 @@ export interface Match {
    * @returns true if the move had effect, false otherwise.
    */
   addMove(newMove: Move): boolean;
+
+  /**
+   * The winner of the match. It is null when the match is not finished.
+   */
+  winner: string | null;
 }
 
 export const createFromObject = (object: any) =>
@@ -69,6 +75,24 @@ class MatchImpl implements Match {
     public readonly initialState: Board,
     public readonly moves: Move[] = [],
   ) {}
+
+  get winner(): string | null {
+    let winner: string | null = null;
+    const currentState: Cell[][] = this.getCurrentState().state;
+
+    for (const row of currentState) {
+      for (const cell of row) {
+        if (cell.pile) {
+          if (winner == null) {
+            winner = cell.pile.owner;
+          } else if (cell.pile.owner != winner) {
+            return null;
+          }
+        }
+      }
+    }
+    return winner;
+  }
 
   addMove(newMove: Move): boolean {
     const currentState: Board = this.getCurrentState();
