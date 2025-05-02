@@ -8,6 +8,7 @@ export const useMatchStore = defineStore('match', () => {
   const currentState = ref<any>({});
   const id = ref('');
   const turn = ref(player1.value);
+  const winner = ref<string | null>(null);
 
   const moveInProgress = ref(false);
 
@@ -74,5 +75,15 @@ export const useMatchStore = defineStore('match', () => {
     }
   }
 
-  return { player1, player2, currentState, id, turn, moveInProgress, applyMove, changeTurn };
+  return {
+    player1,
+    player2,
+    currentState,
+    id,
+    turn,
+    moveInProgress,
+    winner,
+    applyMove,
+    changeTurn,
+  };
 });

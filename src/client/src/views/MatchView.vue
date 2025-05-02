@@ -2,11 +2,24 @@
 import Icon from '@/components/Icon.vue';
 import PlayerInMatch from '../components/PlayerInMatch.vue';
 import Pile from '../components/Pile.vue';
-import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBModal,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
+  MDBBtn,
+} from 'mdb-vue-ui-kit';
+import { ref } from 'vue';
 import { socket } from '@/services/socket';
 import { useUserStore } from '@/stores/userStore';
 import { useMatchStore } from '@/stores/matchStore';
 import { GRID_SIZE } from '@/utils/match';
+
+const winnerModalVisible = ref(false);
 
 const user = useUserStore();
 const match = useMatchStore();
@@ -65,6 +78,8 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
 });
 
 socket.on('ended', (winner: string) => {
+  match.winner = winner;
+  winnerModalVisible.value = true;
   console.log('The winner is', winner, '!');
 });
 
@@ -123,6 +138,24 @@ socket.emit('matchmaking');
       <input type="text" v-model="user.username" />
     </MDBRow>
   </MDBContainer>
+  <MDBModal
+    id="winnerModal"
+    tabindex="-1"
+    labelledby="winnerModalLabel"
+    v-model="winnerModalVisible"
+  >
+    <MDBModalHeader>
+      <MDBModalTitle id="winnerModalLabel">The match is over!</MDBModalTitle>
+    </MDBModalHeader>
+    <MDBModalBody>
+      <p v-if="match.winner == user.username">You won!</p>
+      <p v-else>{{ match.winner }} won</p>
+    </MDBModalBody>
+    <MDBModalFooter>
+      <MDBBtn color="secondary" @click="winnerModalVisible = false">Close</MDBBtn>
+      <MDBBtn color="primary">Save changes</MDBBtn>
+    </MDBModalFooter>
+  </MDBModal>
 </template>
 
 <style scoped lang="scss">
