@@ -64,6 +64,10 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   updateBoard();
 });
 
+socket.on('ended', (winner: string) => {
+  console.log('The winner is', winner, '!');
+});
+
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
     console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);

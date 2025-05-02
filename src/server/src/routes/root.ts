@@ -68,6 +68,10 @@ const match = (socket: Socket) => {
     const success = await matchService.addMove(matchId, movingPlayer, moveFactory.create(x, y));
     if (success) {
       io.to(matchId).emit('move', movingPlayer, x, y);
+      const winner = (await matchService.getMatch(matchId)).winner;
+      if (winner) {
+        io.to(matchId).emit('ended', winner);
+      }
     }
   });
 };
