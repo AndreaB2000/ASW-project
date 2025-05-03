@@ -44,11 +44,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(409).json({ message: 'Invalid email or password' });
       return;
     }
-    const payload = {
-      username: user.username,
-      email: user.email,
-    };
-    const token = jwt.sign(payload, secret, { expiresIn: expiration });
+    const token = jwt.sign(
+      {
+        username: user.username,
+        email: user.email,
+      },
+      secret,
+      { expiresIn: expiration },
+    );
     res
       .cookie('token', token, {
         httpOnly: true,
@@ -57,6 +60,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         maxAge: expiration * 1000,
       })
       .status(201);
+    return;
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
