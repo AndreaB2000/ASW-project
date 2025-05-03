@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
  * POST /login
  * Authenticate a user
  *
- * @returns 200: with the created jwt, 400: missing fields, 409: invalid credentials, 500: internal server error
+ * @returns 201: with the created jwt in the cookie, 400: missing fields, 409: invalid credentials, 500: internal server error
  */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -49,7 +49,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       email: user.email,
     };
     const token = jwt.sign(payload, secret, { expiresIn: expiration });
-    res.status(200).json({ token });
+    res
+      .cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: expiration * 1000,
+      })
+      .status(201);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
