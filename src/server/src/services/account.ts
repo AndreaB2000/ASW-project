@@ -21,7 +21,10 @@ export const registerAccount = async (account: Account): Promise<boolean> => {
  * @param password the password that should match the stored password
  * @returns null if the password doesn't match or the account doesn't exist, the account otherwise
  */
-export const authenticateAccount = async (email: string, password: string): Promise<Account> => {
+export const authenticateAccount = async (
+  email: string,
+  password: string,
+): Promise<Account | null> => {
   const existingAccounts = await repository.readAllAccounts();
   const account = existingAccounts.find(a => a.email === email);
   if (!account || !account.checkPassword(password)) return null;

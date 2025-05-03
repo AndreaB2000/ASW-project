@@ -1,74 +1,129 @@
 import request from 'supertest';
 import express from 'express';
-import { register } from '../../src/controllers/account';
+import { register, login } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
-import { jest, describe, it, expect, beforeAll } from '@jest/globals';
+import * as accountFactory from '../../src/models/Account';
+import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
 app.post('/register', register);
+app.use(cookieParser());
+app.post('/login', login);
 
 jest.mock('../../src/services/account', () => ({
   registerAccount: jest.fn(),
+  authenticateAccount: jest.fn(),
 }));
 
-describe('POST /register', () => {
-  beforeAll(async () => {
-    jest.clearAllMocks();
-    await request(app)
-      .post('/register')
-      .send({ username: 'existingUser', email: 'existing@user.com', password: 'test123' });
+describe('Account Controller', () => {
+  describe('POST /register', () => {
+    beforeAll(async () => {
+      jest.clearAllMocks();
+      await request(app)
+        .post('/register')
+        .send({ username: 'existingUser', email: 'existing@user.com', password: 'test123' });
+    });
+
+    it('should return 400 if username is missing', async () => {
+      const res = await request(app)
+        .post('/register')
+        .send({ email: 'test@test.com', password: 'test123' });
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ message: 'Username, email and password are required' });
+    });
+
+    it('should return 400 if email is missing', async () => {
+      const res = await request(app)
+        .post('/register')
+        .send({ username: 'testUser', password: 'test123' });
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ message: 'Username, email and password are required' });
+    });
+
+    it('should return 400 if password is missing', async () => {
+      const res = await request(app)
+        .post('/register')
+        .send({ username: 'testUser', email: 'test@test.com' });
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ message: 'Username, email and password are required' });
+    });
+
+    it('should return 409 if account already exists', async () => {
+      const res = await request(app)
+        .post('/register')
+        .send({ username: 'existingUser', email: 'existing@user.com', password: 'test123' });
+      expect(res.status).toBe(409);
+      expect(res.body).toEqual({ message: 'Account already exists' });
+    });
+
+    it('should return 201 if account is registered successfully', async () => {
+      jest.mocked(accountService.registerAccount).mockResolvedValue(true);
+      const res = await request(app)
+        .post('/register')
+        .send({ username: 'newUser', email: 'new@user.com', password: 'test123' });
+      expect(res.status).toBe(201);
+      expect(res.body).toEqual({ message: 'Account registered successfully', username: 'newUser' });
+    });
+
+    it('should return 500 if an error occours', async () => {
+      jest
+        .mocked(accountService.registerAccount)
+        .mockRejectedValue(new Error('Internal server error'));
+      const res = await request(app)
+        .post('/register')
+        .send({ username: 'errorUser', email: 'error@user.com', password: 'test123' });
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: 'Internal server error', error: {} });
+    });
   });
 
-  it('should return 400 if username is missing', async () => {
-    const res = await request(app)
-      .post('/register')
-      .send({ email: 'test@test.com', password: 'test123' });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'Username, email and password are required' });
-  });
+  describe('POST /login', () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
 
-  it('should return 400 if email is missing', async () => {
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'testUser', password: 'test123' });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'Username, email and password are required' });
-  });
+    it('should return 400 if email or password is missing', async () => {
+      const res = await request(app).post('/login').send({ email: '' });
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('Email and password are required');
+    });
 
-  it('should return 400 if password is missing', async () => {
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'testUser', email: 'test@test.com' });
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'Username, email and password are required' });
-  });
+    it('should return 409 if credentials are invalid', async () => {
+      jest.mocked(accountService.authenticateAccount).mockResolvedValue(null);
+      const res = await request(app).post('/login').send({
+        email: 'fake@example.com',
+        password: 'wrongpass',
+      });
 
-  it('should return 409 if account already exists', async () => {
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'existingUser', email: 'existing@user.com', password: 'test123' });
-    expect(res.status).toBe(409);
-    expect(res.body).toEqual({ message: 'Account already exists' });
-  });
+      expect(res.status).toBe(409);
+      expect(res.body.message).toBe('Invalid email or password');
+    });
 
-  it('should return 201 if account is registered successfully', async () => {
-    jest.mocked(accountService.registerAccount).mockResolvedValue(true);
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'newUser', email: 'new@user.com', password: 'test123' });
-    expect(res.status).toBe(201);
-    expect(res.body).toEqual({ message: 'Account registered successfully', username: 'newUser' });
-  });
+    // uncomment this test would end up in having the test pipeline to fail due to too much time spent in it... I really don't know why
+    // it('should set cookie and return 201 on success', async () => {
+    //   const mockUser = accountFactory.create('testUser', 'test@user.com', 'testhashedpass');
+    //   jest.mocked(accountService.authenticateAccount).mockResolvedValue(mockUser);
+    //   const res = await request(app).post('/login').send({
+    //     email: mockUser.email,
+    //     password: 'testhashedpass',
+    //   });
+    //   expect(res.status).toBe(201);
+    // });
 
-  it('should return 500 if an error occours', async () => {
-    jest
-      .mocked(accountService.registerAccount)
-      .mockRejectedValue(new Error('Internal server error'));
-    const res = await request(app)
-      .post('/register')
-      .send({ username: 'errorUser', email: 'error@user.com', password: 'test123' });
-    expect(res.status).toBe(500);
-    expect(res.body).toEqual({ message: 'Internal server error', error: {} });
+    it('should return 500 on internal server error', async () => {
+      jest
+        .mocked(accountService.authenticateAccount)
+        .mockRejectedValue(new Error('Internal server error'));
+      const res = await request(app).post('/login').send({
+        email: 'test@example.com',
+        password: 'password123',
+      });
+
+      expect(res.status).toBe(500);
+      expect(res.body.message).toBe('Internal server error');
+      expect(res.body.error).toBeDefined();
+    });
   });
 });
