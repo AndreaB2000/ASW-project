@@ -5,6 +5,8 @@ import * as factory from '../models/Account';
 /**
  * POST /register
  * Register a new user
+ *
+ * @returns 201: registration completed, 409: account already exists, 400: missing fields, 500: internal server error
  */
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -21,3 +23,5 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+export const login = async (req: Request, res: Response): Promise<void> => {};
