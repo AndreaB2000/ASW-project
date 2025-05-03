@@ -9,7 +9,7 @@ import { Account } from '../models/Account';
  */
 export const registerAccount = async (account: Account): Promise<boolean> => {
   const existingAccounts = await repository.readAllAccounts();
-  const accountExists = existingAccounts.some(a => account.username === a.username);
+  const accountExists = existingAccounts.some(a => account.email === a.email);
   if (accountExists) return false;
   await repository.createAccount(account);
   return true;

@@ -9,6 +9,7 @@ account.post(
   '/register',
   [
     body('username').notEmpty().isString().withMessage('Username must be a string'),
+    body('email').notEmpty().isEmail().withMessage('Email must be a valid email address'),
     body('password').notEmpty().isString().withMessage('Password must be a string'),
     validationHandler,
   ],
