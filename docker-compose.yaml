@@ -40,6 +40,8 @@ services:
       DB_IP: ${DB_IP}
       DB_PORT: ${DB_PORT}
       CLIENT_IP: ${CLIENT_IP}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
       NODE_ENV: 'production'
     networks:
       asw_network:

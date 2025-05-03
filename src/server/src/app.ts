@@ -5,7 +5,7 @@ import * as path from 'path';
 import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
-import { connectDB } from './db-connection';
+import { connectDB } from './config/db-connection';
 
 // Routes
 import { account } from './routes/account';
