@@ -71,7 +71,7 @@ export const addMove = async (
     (movingPlayer == match.player2 && match.moves.length % 2 == 1)
   ) {
     ret = match.addMove(newMove);
-    inProgressMatchRepo.updateMatch(matchId, match);
+    await inProgressMatchRepo.updateMatch(matchId, match);
   }
 
   return ret;
