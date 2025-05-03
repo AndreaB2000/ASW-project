@@ -9,6 +9,10 @@ export interface Account {
    */
   get username(): string;
   /**
+   * Email of the user
+   */
+  get email(): string;
+  /**
    * Hashed password of the account
    */
   get hashedPassword(): string;
@@ -22,37 +26,48 @@ export interface Account {
 /**
  * Account factory. Creates a new account with the given username and password. The password will be hashed.
  * @param username the username of the user
+ * @param email the email of the user
  * @param password the password of the user
  * @returns {Account} the account object
  */
-export const createWithHashing = async (username: string, password: string): Promise<Account> => {
+export const createWithHashing = async (
+  username: string,
+  email: string,
+  password: string,
+): Promise<Account> => {
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
-  return new AccountImpl(username, hashedPassword);
+  return new AccountImpl(username, email, hashedPassword);
 };
 
 /**
  * Account factory. Creates a new account with the given username and hashed password.
  * @param username the username of the user
+ * @param email the email of the user
  * @param hashedPassword the hashed password of the user
  * @returns {Account} the account object
  */
-export const create = (username: string, hashedPassword: string): Account =>
-  new AccountImpl(username, hashedPassword);
+export const create = (username: string, email: string, hashedPassword: string): Account =>
+  new AccountImpl(username, email, hashedPassword);
 
 class AccountImpl implements Account {
   private name: string;
+  private mail: string;
   private psw: string;
 
   get username(): string {
     return this.name;
   }
+  get email(): string {
+    return this.mail;
+  }
   get hashedPassword(): string {
     return this.psw;
   }
 
-  constructor(username: string, password: string) {
+  constructor(username: string, email: string, password: string) {
     this.name = username;
+    this.mail = email;
     this.psw = password;
   }
 
