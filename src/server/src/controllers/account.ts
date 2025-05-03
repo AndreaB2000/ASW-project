@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { registerAccount } from '../services/account';
+import { registerAccount, authenticateAccount } from '../services/account';
 import * as factory from '../models/Account';
+import jwt from 'jsonwebtoken';
+import { secret, expiration } from '../config/jwt';
 
 /**
  * POST /register
@@ -24,4 +26,31 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const login = async (req: Request, res: Response): Promise<void> => {};
+/**
+ * POST /login
+ * Authenticate a user
+ *
+ * @returns 200: with the created jwt, 400: missing fields, 409: invalid credentials, 500: internal server error
+ */
+export const login = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      res.status(400).json({ message: 'Email and password are required' });
+      return;
+    }
+    const user = await authenticateAccount(email, password);
+    if (!user) {
+      res.status(409).json({ message: 'Invalid email or password' });
+      return;
+    }
+    const payload = {
+      username: user.username,
+      email: user.email,
+    };
+    const token = jwt.sign(payload, secret, { expiresIn: expiration });
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
