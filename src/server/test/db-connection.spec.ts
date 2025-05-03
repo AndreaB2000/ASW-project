@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { connectDB } from '../src/db-connection';
+import { connectDB } from '../src/config/db-connection';
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { checkCalledWith } from './test_utils/check-called';
 import { mockConsole } from './test_utils/mock-console';
