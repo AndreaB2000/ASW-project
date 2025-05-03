@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue';
-import Match from '@/components/Match.vue';
-import MatchOver from '@/components/MatchOver.vue';
+import Match from '@/components/Match/Match.vue';
+import MatchOver from '@/components/Match/MatchOver.vue';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { computed } from 'vue';
 import { useMatchStore } from '@/stores/matchStore';
