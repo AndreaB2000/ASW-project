@@ -10,8 +10,7 @@ import { secret } from '../config/jwt';
  * @returns {Response} a 401 if the token is not present, a 403 if the token is not correct, the next function result otherwise
  */
 export function authenticateToken(req: Request, res: Response, next: NextFunction): void {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token: string = req.cookies?.token;
   if (!token) {
     res.sendStatus(401);
     return;
