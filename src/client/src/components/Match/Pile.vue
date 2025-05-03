@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { MDBIcon } from 'mdb-vue-ui-kit';
 defineProps(['numberOfGrains']);
 </script>
 

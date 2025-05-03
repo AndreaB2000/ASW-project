@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PlayerInMatch from '../components/PlayerInMatch.vue';
-import Pile from '../components/Pile.vue';
+import PlayerInMatch from '@/components/Match/PlayerInMatch.vue';
+import Pile from '@/components/Match/Pile.vue';
 import { socket } from '@/services/socket';
 import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useUserStore } from '@/stores/userStore';
@@ -19,36 +19,7 @@ function getMatch(matchId: string) {
     match.currentState = matchData.initialState.state;
     match.player1 = matchData.player1;
     match.player2 = matchData.player2;
-    updateBoard();
   });
-}
-
-function updateBoard() {
-  for (let x = 0; x < GRID_SIZE; x++) {
-    for (let y = 0; y < GRID_SIZE; y++) {
-      const button = document.getElementById(`${x}-${y}`);
-      if (button) {
-        const cell = match.currentState[x][y];
-        button.classList.remove('player1', 'player2', 'inactive');
-        if (cell.pile == null) {
-          // button.innerHTML = '';
-        } else {
-          // button.innerHTML = `<Pile :number-of-grains="${cell.pile.numberOfGrains}" />`;
-          if (cell.pile.owner == match.player1) {
-            button.classList.add('player1');
-          } else if (cell.pile.owner == match.player2) {
-            button.classList.add('player2');
-          }
-
-          if (cell.pile.owner != match.turn) {
-            button.classList.remove('inactive');
-          } else {
-            button.classList.add('inactive');
-          }
-        }
-      }
-    }
-  }
 }
 
 socket.on('matchStart', (matchId: string) => {
@@ -58,9 +29,8 @@ socket.on('matchStart', (matchId: string) => {
 
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
-  await match.applyMove(movingPlayer, x, y, updateBoard);
+  await match.applyMove(movingPlayer, x, y);
   await match.changeTurn();
-  updateBoard();
 });
 
 socket.on('over', (winner: string) => {
@@ -75,6 +45,18 @@ function handleButtonClick(x: number, y: number) {
       socket.emit('addMove', match.id, user.username, x, y);
     }
   }
+  console.log(
+    match?.currentState?.[x]?.[y]?.pile?.owner ?? null,
+    '=',
+    match?.player1,
+    '? -> player1',
+  );
+  console.log(
+    match?.currentState?.[x]?.[y]?.pile?.owner ?? null,
+    '=',
+    match?.player2,
+    '? -> player2',
+  );
 }
 
 socket.emit('matchmaking');
@@ -97,6 +79,20 @@ socket.emit('matchmaking');
           :id="`${Math.floor((index - 1) / GRID_SIZE)}-${(index - 1) % GRID_SIZE}`"
           @click="handleButtonClick(Math.floor((index - 1) / GRID_SIZE), (index - 1) % GRID_SIZE)"
           class="grid-button"
+          :class="[
+            (match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[(index - 1) % GRID_SIZE]
+              ?.pile?.owner ?? null) == match?.player1
+              ? 'player1'
+              : (match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[
+                    (index - 1) % GRID_SIZE
+                  ]?.pile?.owner ?? null) == match?.player2
+                ? 'player2'
+                : '',
+            (match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[(index - 1) % GRID_SIZE]
+              ?.pile?.owner ?? null) == match.turn
+              ? 'inactive'
+              : '',
+          ]"
         >
           <Pile
             :number-of-grains="

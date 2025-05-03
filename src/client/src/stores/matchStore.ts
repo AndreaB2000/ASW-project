@@ -12,19 +12,13 @@ export const useMatchStore = defineStore('match', () => {
 
   const moveInProgress = ref(false);
 
-  async function applyMove(
-    movingPlayer: string,
-    x: number,
-    y: number,
-    updateBoardFunction: () => void,
-  ): Promise<void> {
+  async function applyMove(movingPlayer: string, x: number, y: number): Promise<void> {
     moveInProgress.value = true;
     currentState.value[x][y].pile.numberOfGrains += 1;
 
     const collapsingPiles: [x: number, y: number][] = [];
 
     do {
-      updateBoardFunction();
       await sleep(MOVE_DELAY_MILLIS);
 
       // Empties array
