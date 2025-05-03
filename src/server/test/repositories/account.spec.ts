@@ -6,8 +6,9 @@ import { checkCalled } from '../test_utils/check-called';
 
 describe('Account Repository', () => {
   const testUsername = 'testUser';
+  const testEmail = 'test@email.com';
   const testPassword = 'testPassword';
-  const testAccount = accountFactory.createWithHashing(testUsername, testPassword);
+  const testAccount = accountFactory.createWithHashing(testUsername, testEmail, testPassword);
 
   beforeEach(() => {
     jest.clearAllMocks();
