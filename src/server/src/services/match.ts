@@ -18,7 +18,7 @@ export const newMatch = async (
   creationDate: Date,
 ): Promise<string> => {
   const match = matchFactory.createWithDefaultInitialState(player1, player2, creationDate);
-  return inProgressMatchRepo.createMatch(match);
+  return await inProgressMatchRepo.createMatch(match);
 };
 
 /**
@@ -29,7 +29,9 @@ export const newMatch = async (
  * @returns the match corresponding to the provided ID
  */
 export const getMatch = async (matchId: string): Promise<Match | null> => {
-  return inProgressMatchRepo.findMatch(matchId) ?? endedMatchRepo.findMatch(matchId);
+  return (
+    (await inProgressMatchRepo.findMatch(matchId)) ?? (await endedMatchRepo.findMatch(matchId))
+  );
 };
 
 /**
@@ -85,9 +87,9 @@ export const addMove = async (
  * @returns true if the match has been deleted, false otherwise.
  */
 export const deleteMatch = async (matchId: string): Promise<boolean> => {
-  if (inProgressMatchRepo.deleteMatch(matchId)) {
+  if (await inProgressMatchRepo.deleteMatch(matchId)) {
     return true;
   } else {
-    return endedMatchRepo.deleteMatch(matchId);
+    return await endedMatchRepo.deleteMatch(matchId);
   }
 };
