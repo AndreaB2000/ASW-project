@@ -19,7 +19,6 @@ export const useMatchStore = defineStore('match', () => {
     updateBoardFunction: () => void,
   ): Promise<void> {
     moveInProgress.value = true;
-    console.log(currentState.value);
     currentState.value[x][y].pile.numberOfGrains += 1;
 
     const collapsingPiles: [x: number, y: number][] = [];

@@ -77,7 +77,7 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   updateBoard();
 });
 
-socket.on('ended', (winner: string) => {
+socket.on('over', (winner: string) => {
   match.winner = winner;
   winnerModalVisible.value = true;
   console.log('The winner is', winner, '!');
@@ -169,8 +169,9 @@ input {
   aspect-ratio: 1;
   width: 80px;
   font-weight: bold;
-  background-color: #f0f0f0;
+  background-color: #707070;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 0.8rem;

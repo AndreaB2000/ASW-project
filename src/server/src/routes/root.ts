@@ -65,13 +65,17 @@ const match = (socket: Socket) => {
   });
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
-    const success = await matchService.addMove(matchId, movingPlayer, moveFactory.create(x, y));
-    if (success) {
-      io.to(matchId).emit('move', movingPlayer, x, y);
-      const winner = (await matchService.getMatch(matchId)).winner;
-      if (winner) {
-        io.to(matchId).emit('ended', winner);
-      }
-    }
+    await matchService
+      .addMove(matchId, movingPlayer, moveFactory.create(x, y))
+      .then(async success => {
+        if (success) {
+          io.to(matchId).emit('move', movingPlayer, x, y);
+          await matchService.getMatch(matchId).then(match => {
+            if (match.winner) {
+              io.to(matchId).emit('over', match.winner);
+            }
+          });
+        }
+      });
   });
 };
