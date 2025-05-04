@@ -71,7 +71,7 @@ class AccountImpl implements Account {
     this.psw = password;
   }
 
-  checkPassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.psw);
+  async checkPassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.psw);
   }
 }
