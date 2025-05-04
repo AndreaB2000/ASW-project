@@ -68,9 +68,5 @@ services:
       asw_network:
         ipv4_address: ${DB_IP}
 
-secrets:
-  mongo_root_password:
-    file: src/server/secrets/mongo_root_password.txt
-
 volumes:
   mongo_data:
