@@ -20,7 +20,7 @@ export const createAccount = async (account: Account): Promise<void> => {
  * @returns { Account }[] - List of all accounts
  */
 export const readAllAccounts = async (): Promise<Account[]> => {
-  const accounts = await DBAccount.find({}, 'username');
+  const accounts = await DBAccount.find();
   return accounts.map(account =>
     accountFactory.create(account.username, account.email, account.password),
   );
