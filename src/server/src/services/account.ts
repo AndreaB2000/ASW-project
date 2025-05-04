@@ -27,6 +27,6 @@ export const authenticateAccount = async (
 ): Promise<Account | null> => {
   const existingAccounts = await repository.readAllAccounts();
   const account = existingAccounts.find(a => a.email === email);
-  if (!account || !account.checkPassword(password)) return null;
+  if (!account || !(await account.checkPassword(password))) return null;
   return account;
 };
