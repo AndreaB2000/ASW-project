@@ -21,7 +21,8 @@ function test() {
           trigger a chain reaction. Conquer the board — one avalanche at a time.
         </p>
         <section class="buttons">
-          <button @click="$router.push('/match')" style="background-color: #1EC6E0;">Play with BOT</button>
+          <button @click="$router.push('/matchmaking')" style="background-color: #1EC6E0; ">Play PVP</button>
+          <button style="background-color: #1EC6E0;">Play with BOT</button>
           <button @click=test style="background-color: #E0961E;">Login</button>
           <button>Tutorial</button>
           <button @click="$router.push('/registration')">Register</button>
