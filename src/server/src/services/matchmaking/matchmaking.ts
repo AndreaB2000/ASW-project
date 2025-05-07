@@ -13,8 +13,8 @@ export const findSuitableOpponent = async (
 ): Promise<string | undefined> => {
   const today = new Date();
   const queue = await getQueue();
-  const suitableOpponent = await Array.from(queue).findAsync(candidateOpponent =>
-    evaluateOpponentMatch(
+  const suitableOpponent = await Array.from(queue).findAsync(async candidateOpponent =>
+    await evaluateOpponentMatch(
       requestingPlayerUsername,
       today,
       candidateOpponent.username,

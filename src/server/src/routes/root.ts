@@ -87,7 +87,7 @@ const match = (socket: Socket) => {
 const matchmaking = (socket: Socket) => {
   socket.on('requestMatch', async (data) => {
     console.log('Requesting match with data:', data);
-    socket.emit('matchFound', await requestMatch(data.username));
+    await requestMatch(socket, data.username);
   });
 };
 
