@@ -7,6 +7,11 @@ import { useUserStore } from '@/stores/userStore';
 import { useMatchStore } from '@/stores/matchStore';
 import { GRID_SIZE } from '@/utils/match';
 
+// Define the matchId prop
+const props = defineProps<{
+  matchId: string; // Change to number if your matchId is numeric
+}>();
+
 const user = useUserStore();
 const match = useMatchStore();
 
@@ -22,10 +27,10 @@ function getMatch(matchId: string) {
   });
 }
 
-socket.on('matchStart', (matchId: string) => {
-  match.id = matchId;
-  getMatch(matchId);
-});
+// socket.on('matchStart', (matchId: string) => {
+  match.id = props.matchId;
+  getMatch(props.matchId);
+// });
 
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
@@ -59,7 +64,6 @@ function handleButtonClick(x: number, y: number) {
   );
 }
 
-socket.emit('matchmaking');
 </script>
 
 <template>

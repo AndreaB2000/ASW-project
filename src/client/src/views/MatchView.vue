@@ -6,6 +6,11 @@ import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { computed } from 'vue';
 import { useMatchStore } from '@/stores/matchStore';
 
+// Define the matchId prop
+const props = defineProps<{
+  matchId: string; // Change to number if your matchId is numeric
+}>();
+
 const isMatchOver = computed(() => match.winner != null && !match.moveInProgress);
 
 const match = useMatchStore();
@@ -19,7 +24,7 @@ const match = useMatchStore();
       </MDBCol>
       <MDBCol md="9"></MDBCol>
     </MDBRow>
-    <Match v-if="!isMatchOver" />
+    <Match v-if="!isMatchOver" matchId={{ props.matchId }}/>
     <MatchOver v-else />
   </MDBContainer>
 </template>
