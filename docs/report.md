@@ -30,12 +30,8 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
-          - [Simple Case](#simple-case)
-          - [No Opponent Found Case](#no-opponent-found-case)
       - [Match](#match)
         - [API](#api)
-      - [Matchmaking](#matchmaking-1)
-        - [API](#api-1)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -412,7 +408,7 @@ The list of moves can be represented as a list of tuples (i,j) where the tuple r
 
 #### Matchmaking
 
-The matchmaking system is responsible for pairing players with similar Glicko ratings.
+The matchmaking system is responsible for pairing players with similar Elo ratings.
 
 ##### Server side matchmaking class diagram
 
@@ -446,12 +442,6 @@ classDiagram
 
 ##### Matchmaking sequence diagram
 
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
-
 ```mermaid
 sequenceDiagram
    participant Client1
@@ -460,8 +450,6 @@ sequenceDiagram
 
    Client1->>Server: emit('requestMatch', { playerId: playerId1 })
    Note over Server: playerId1 is added to the queue
-   Note over Client1: waits t seconds
-   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
 
    Client2->>Server: emit('requestMatch', { playerId: playerId2 })
 
@@ -470,35 +458,11 @@ sequenceDiagram
    Server-->>Client2: emit('matchFound', { matchId })
 ```
 
-###### No Opponent Found Case
+The server will check if there are other players in the queue with similar Elo ratings. If so, it will create a match and notify both players.
 
-```mermaid
-sequenceDiagram
-   participant Client1
-   participant Server
-   Note over Server: patience is set to 3
+If no players are found, the server will add the player to the queue and wait for other players to join.
 
-   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
-   Note over Server: playerId1 is added to the queue
-   Note over Client1: waits t seconds
-   Note over Client1: waits t seconds
-   Note over Client1: waits t seconds
-   Note over Server: playerId1 max waiting time exceeded
-   Note over Server: playerId1 is removed from the queue
-   Server-->>Client1: emit('matchFound', { matchId: null })
-```
-
-Time t is the time the client waits before sending a new request to the server. <!-- NOT IMPLEMENTED -->
-
-The server will check if there are other players in the queue with similar Glicko ratings. If so, it will create a match and notify both players. <!-- BEING IMPLEMENTED -->
-
-If no players are found, the server will add the player to the queue and wait for other players to join. <!-- BEING IMPLEMENTED -->
-
-The server will notify the player when a match is found. <!-- BEING IMPLEMENTED -->
-
-The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant. <!-- NOT IMPLEMENTED -->
-
-The server will remove a player from the queue if the player has not updated it's request for `t * 2` seconds. <!-- NOT IMPLEMENTED -->
+The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
 
 #### Match
 
@@ -551,48 +515,6 @@ The server will remove a player from the queue if the player has not updated it'
     - 401 Unauthorized - `{}` when the client is not logged in
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
-    - 500 Internal server error - `{}` when a generic error occurs
-
-#### Matchmaking
-
-The matchmaking system is responsible for pairing players with similar Glicko ratings.
-
-```mermaid
----
-  config:
-    class:
-      hideEmptyMembersBox: true
----
-
-classDiagram
-    class MatchmakingAPI
-    class MatchmakingService
-    class Player
-    class Rating
-    class PlayerRepository
-    class MatchQueueRepository
-
-    MatchmakingAPI --> MatchmakingService
-    MatchmakingService --> Player
-    MatchmakingService --> PlayerRepository
-    PlayerRepository --> Player
-    Player --> Rating
-    MatchmakingService --> MatchQueueRepository
-    MatchQueueRepository --> MatchQueue
-    MatchmakingService --> MatchQueue
-```
-
-Server side matchmaking class diagram
-
-##### API
-
-- `POST /matchmaking/new`: requests a new match, returns the matchId
-
-  - Body: `{"player": string}`
-  - Returns:
-    - 200 OK - `{"matchId": <string>}`
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
     - 500 Internal server error - `{}` when a generic error occurs
 
 ## Implementation
