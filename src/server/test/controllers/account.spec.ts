@@ -84,10 +84,10 @@ describe('Account Controller', () => {
       jest.restoreAllMocks();
     });
 
-    it('should return 400 if email or password is missing', async () => {
-      const res = await request(app).post('/login').send({ email: '' });
+    it('should return 400 if username or password are missing', async () => {
+      const res = await request(app).post('/login').send({ username: '' });
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Email and password are required');
+      expect(res.body.message).toBe('Username and password are required');
     });
 
     it('should return 409 if credentials are invalid', async () => {
@@ -101,16 +101,15 @@ describe('Account Controller', () => {
       expect(res.body.message).toBe('Invalid email or password');
     });
 
-    // uncomment this test would end up in having the test pipeline to fail due to too much time spent in it... I really don't know why
-    // it('should set cookie and return 201 on success', async () => {
-    //   const mockUser = accountFactory.create('testUser', 'test@user.com', 'testhashedpass');
-    //   jest.mocked(accountService.authenticateAccount).mockResolvedValue(mockUser);
-    //   const res = await request(app).post('/login').send({
-    //     email: mockUser.email,
-    //     password: 'testhashedpass',
-    //   });
-    //   expect(res.status).toBe(201);
-    // });
+    it('should set cookie and return 200 on success', async () => {
+      const mockUser = accountFactory.create('testUser', 'test@user.com', 'testhashedpass');
+      jest.mocked(accountService.authenticateAccount).mockResolvedValue(mockUser);
+      const res = await request(app).post('/login').send({
+        email: mockUser.email,
+        password: 'testhashedpass',
+      });
+      expect(res.status).toBe(200);
+    });
 
     it('should return 500 on internal server error', async () => {
       jest
