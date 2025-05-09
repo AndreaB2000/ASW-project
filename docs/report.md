@@ -30,6 +30,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
+        - [Matchmaking Algorithm](#matchmaking-algorithm)
       - [Match](#match)
         - [API](#api)
   - [Implementation](#implementation)
@@ -463,6 +464,10 @@ The server will check if there are other players in the queue with similar Elo r
 If no players are found, the server will add the player to the queue and wait for other players to join.
 
 The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
+
+##### Matchmaking Algorithm
+
+The matchmaking algorithm matches players with similar Elo ratings.
 
 #### Match
 
