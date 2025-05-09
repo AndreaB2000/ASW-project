@@ -27,6 +27,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
+      - [Rating System](#rating-system)
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
@@ -406,6 +407,26 @@ The starting board can be represented as a matrix of dimensions dxd where every 
 The list of moves can be represented as a list of tuples (i,j) where the tuple represents the coordinates of the cell where the player has decided to add a grain.
 
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
+
+#### Rating System
+
+The rating system is based on the Elo rating system, which is a method for calculating the relative skill levels of players in two-player games.
+
+Every player has a rating, which is a number that represents their skill level. The higher the rating, the better the player.
+
+The rating is updated after each match based on the outcome of the match and the ratings of the players involved.
+
+The rating is updated using the following formula:
+
+R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
+
+Where:
+
+- R<sub>new</sub> is the new rating
+- R<sub>old</sub> is the old rating
+- K is a constant that determines the maximum possible adjustment per game
+- S is the actual score (1 for a win, 0.5 for a draw, 0 for a loss)
+- E is the expected score, calculated using the following formula:
 
 #### Matchmaking
 
