@@ -15,7 +15,7 @@ describe('Player Repository', () => {
   const testValue = 1500;
   const testDeviation = 200;
   const testVolatility = 0.06;
-  const testRating = RatingFactory.create(testValue, testDeviation, testVolatility);
+  const testRating = RatingFactory.create(testValue);
   const testUsername = 'testUser';
   const testPlayer = PlayerFactory.create(testUsername, testRating);
 
@@ -88,15 +88,13 @@ describe('Player Repository', () => {
 
   describe('updatePlayerRating', () => {
     it('should call findOneAndUpdate with correct parameters', async () => {
-      const newRating = RatingFactory.create(1600, 190, 0.05);
+      const newRating = RatingFactory.create(1600);
       const expectedWith = [
         { username: 'testUser' },
         {
           $set: {
             rating: {
               value: newRating.value,
-              deviation: newRating.deviation,
-              volatility: newRating.volatility,
             },
           },
         },

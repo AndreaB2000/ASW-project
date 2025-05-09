@@ -8,8 +8,6 @@ const startingVolatility: number = 0.06;
 const PLAYER_NAME: string = 'Alice';
 const PLAYER_RATING: Rating = RatingFactory.create(
   startingRating,
-  startingDeviation,
-  startingVolatility,
 );
 
 describe('Player factory', () => {
