@@ -93,19 +93,19 @@ describe('Account Controller', () => {
     it('should return 409 if credentials are invalid', async () => {
       jest.mocked(accountService.authenticateAccount).mockResolvedValue(null);
       const res = await request(app).post('/login').send({
-        email: 'fake@example.com',
+        username: 'fakeUser',
         password: 'wrongpass',
       });
 
       expect(res.status).toBe(409);
-      expect(res.body.message).toBe('Invalid email or password');
+      expect(res.body.message).toBe('Invalid username or password');
     });
 
     it('should set cookie and return 200 on success', async () => {
       const mockUser = accountFactory.create('testUser', 'test@user.com', 'testhashedpass');
       jest.mocked(accountService.authenticateAccount).mockResolvedValue(mockUser);
       const res = await request(app).post('/login').send({
-        email: mockUser.email,
+        username: mockUser.username,
         password: 'testhashedpass',
       });
       expect(res.status).toBe(200);
@@ -116,7 +116,7 @@ describe('Account Controller', () => {
         .mocked(accountService.authenticateAccount)
         .mockRejectedValue(new Error('Internal server error'));
       const res = await request(app).post('/login').send({
-        email: 'test@example.com',
+        username: 'testUser',
         password: 'password123',
       });
 
