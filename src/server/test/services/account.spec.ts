@@ -36,28 +36,22 @@ describe('Account Service', () => {
       jest.restoreAllMocks();
     });
 
-    it('should return null if no account matches the email', async () => {
+    it('should return null if no account matches the username', async () => {
       jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([]);
-      const result = await authenticateAccount('nonexistent@example.com', 'password');
+      const result = await authenticateAccount('nonexistent', 'password');
       expect(result).toBeNull();
     });
 
     it('should return null if password is incorrect', async () => {
-      const mockAccount = accountFactory.create('user', 'user@example.com', 'hashedPassword');
-      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([mockAccount]);
-      const result = await authenticateAccount('user@example.com', 'wrongpassword');
+      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([existingUser]);
+      const result = await authenticateAccount(existingUser.username, 'wrongpassword');
       expect(result).toBeNull();
     });
 
-    it('should return the account if email and password are correct', async () => {
-      const mockAccount = await accountFactory.createWithHashing(
-        'user',
-        'user@example.com',
-        'correctPassword',
-      );
-      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([mockAccount]);
-      const result = await authenticateAccount(mockAccount.email, 'correctPassword');
-      expect(result).toBe(mockAccount);
+    it('should return the account if username and password are correct', async () => {
+      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([existingUser]);
+      const result = await authenticateAccount(existingUser.username, 'hashedPassword');
+      expect(result).toBe(existingUser);
     });
   });
 });
