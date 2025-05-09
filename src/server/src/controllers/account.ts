@@ -28,20 +28,20 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
 /**
  * POST /login
- * Authenticate a user
+ * Authenticate an existing account
  *
  * @returns 201: with the created jwt in the cookie, 400: missing fields, 409: invalid credentials, 500: internal server error
  */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).json({ message: 'Email and password are required' });
+    const { username, password } = req.body;
+    if (!username || !password) {
+      res.status(400).json({ message: 'Username and password are required' });
       return;
     }
-    const user = await authenticateAccount(email, password);
+    const user = await authenticateAccount(username, password);
     if (!user) {
-      res.status(409).json({ message: 'Invalid email or password' });
+      res.status(409).json({ message: 'Invalid username or password' });
       return;
     }
     const token = jwt.sign(
@@ -59,7 +59,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         sameSite: 'lax',
         maxAge: expiration * 1000,
       })
-      .status(201);
+      .status(200)
+      .json({ message: 'Login successful' });
     return;
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
