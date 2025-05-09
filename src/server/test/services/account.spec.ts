@@ -1,9 +1,10 @@
 import { registerAccount, authenticateAccount } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import * as accountFactory from '../../src/models/Account';
-import { jest, describe, it, expect, afterEach } from '@jest/globals';
+import { jest, describe, it, expect, beforeAll } from '@jest/globals';
+import { Account } from '../../src/models/Account';
 
-const existingUser = accountFactory.create('existingUser', 'existing@email.com', 'hashedPassword');
+let existingUser: Account;
 
 jest.mock('../../src/repositories/account', () => ({
   readAllAccounts: jest.fn(() => Promise.resolve([existingUser])),
@@ -11,6 +12,14 @@ jest.mock('../../src/repositories/account', () => ({
 }));
 
 describe('Account Service', () => {
+  beforeAll(async () => {
+    existingUser = await accountFactory.createWithHashing(
+      'existingUser',
+      'existing@email.com',
+      'hashedPassword',
+    );
+  });
+
   describe('registerAccount', () => {
     it('should return false if account already exists in repository', async () => {
       const result = await registerAccount(existingUser);
@@ -32,24 +41,17 @@ describe('Account Service', () => {
   });
 
   describe('authenticateAccount', () => {
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
     it('should return null if no account matches the username', async () => {
-      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([]);
       const result = await authenticateAccount('nonexistent', 'password');
       expect(result).toBeNull();
     });
 
     it('should return null if password is incorrect', async () => {
-      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([existingUser]);
       const result = await authenticateAccount(existingUser.username, 'wrongpassword');
       expect(result).toBeNull();
     });
 
     it('should return the account if username and password are correct', async () => {
-      jest.spyOn(repository, 'readAllAccounts').mockResolvedValue([existingUser]);
       const result = await authenticateAccount(existingUser.username, 'hashedPassword');
       expect(result).toBe(existingUser);
     });
