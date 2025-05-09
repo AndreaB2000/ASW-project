@@ -1,26 +1,15 @@
 export interface Rating {
   /**
-   * Exposes the rating value for comparisons.
-   */
-  valueOf(): number;
-
-  /**
    * The rating value.
    * @returns {number} the rating value
    */
   get value(): number;
 
   /**
-   * The deviation value.
-   * @returns {number} the deviation value
+   * The rating value.
+   * @returns {number} the rating value
    */
-  get deviation(): number;
-
-  /**
-   * The volatility value.
-   * @returns {number} the volatility value
-   */
-  get volatility(): number;
+  valueOf(): number;
 }
 
 export class RatingFactory {
@@ -31,34 +20,24 @@ export class RatingFactory {
    * @param volatility the volatility value.
    * @returns the rating object.
    */
-  public static create = (rating: number, deviation: number, volatility: number): Rating =>
-    new GlickoRating(rating, deviation, volatility);
+  public static create = (rating?: number): Rating =>
+    new EloRating(rating);
 }
 
-class GlickoRating implements Rating {
-  private _value: number;
-  private _deviation: number;
-  private _volatility: number;
+const DEFAULT_RATING = 1500;
 
-  constructor(value: number, deviation: number, volatility: number) {
-    this._value = value;
-    this._deviation = deviation;
-    this._volatility = volatility;
+class EloRating implements Rating {
+  private _value: number;
+
+  constructor(value?: number) {
+    this._value = value ?? DEFAULT_RATING;
   }
 
-  public valueOf(): number {
+  valueOf(): number {
     return this._value;
   }
 
   get value(): number {
     return this._value;
-  }
-
-  get deviation(): number {
-    return this._deviation;
-  }
-
-  get volatility(): number {
-    return this._volatility;
   }
 }

@@ -6,7 +6,7 @@ import { jest, describe, it, expect } from '@jest/globals';
 jest.mock('../../../src/repositories/player', () => ({
   readPlayerByUsername: jest.fn((username: string) => {
     if (username === 'validUsername')
-      return PlayerFactory.create(username, RatingFactory.create(1500, 0, 0));
+      return PlayerFactory.create(username, RatingFactory.create(1500));
     return null;
   }),
 }));

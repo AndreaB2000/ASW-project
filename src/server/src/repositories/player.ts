@@ -10,8 +10,6 @@ export const createPlayer = async (player: Player): Promise<void> => {
     username: player.username,
     rating: {
       value: player.rating.value,
-      deviation: player.rating.deviation,
-      volatility: player.rating.volatility,
     },
   });
   await dbPlayer.save();
@@ -26,7 +24,7 @@ export const readAllPlayers = async (): Promise<Player[]> => {
   return players.map(player =>
     PlayerFactory.create(
       player.username,
-      RatingFactory.create(player.rating.value, player.rating.deviation, player.rating.volatility),
+      RatingFactory.create(player.rating.value),
     ),
   );
 };
@@ -43,8 +41,6 @@ export const readPlayerByUsername = async (username: string): Promise<Player | n
         player.username,
         RatingFactory.create(
           player.rating.value,
-          player.rating.deviation,
-          player.rating.volatility,
         ),
       )
     : null;
@@ -61,7 +57,7 @@ export const updatePlayerRating = async (username: string, rating: Rating): Prom
     { username },
     {
       $set: {
-        rating: { value: rating.value, deviation: rating.deviation, volatility: rating.volatility },
+        rating: { value: rating.value},
       },
     },
     { new: true },
