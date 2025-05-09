@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-import { secret } from '../config/jwt';
+import * as sessionService from '../services/session';
 
 /**
  * Authentication middleware. Those APIs that use this middleware won't receive the request unless the authorization header is properly configured with a valid JWT token.
@@ -9,18 +8,21 @@ import { secret } from '../config/jwt';
  * @param next the next middleware function
  * @returns {Response} a 401 if the token is not present, a 403 if the token is not correct, the next function result otherwise
  */
-export function authenticateToken(req: Request, res: Response, next: NextFunction): void {
+export async function authenticateToken(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
   const token: string = req.cookies?.token;
   if (!token) {
-    res.sendStatus(401);
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
-  jwt.verify(token, secret, (err, user) => {
-    if (err) {
-      res.sendStatus(403);
-      return;
-    }
-    req.body.user = user;
-    next();
-  });
+  const session = await sessionService.getSessionByToken(token);
+  if (!session || !session.isValid()) {
+    res.status(403).json({ message: 'Forbidden' });
+    return;
+  }
+  req.body.account = session.account;
+  next();
 }
