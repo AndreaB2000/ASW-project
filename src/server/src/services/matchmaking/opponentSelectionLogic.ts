@@ -1,11 +1,6 @@
 import { readPlayerByUsername } from '../../repositories/player';
 
-export const evaluateOpponentMatch = async (
-  candidate1: string,
-  requestTime1: Date,
-  candidate2: string,
-  requestTime2: Date,
-): Promise<boolean> => {
+export const isValidMatch = async (candidate1: string, candidate2: string): Promise<boolean> => {
   // TODO : UNCOMMENT THIS CODE WHEN PLAYERS ARE SAVED IN DB
 
   // retrieve candidates' ratings

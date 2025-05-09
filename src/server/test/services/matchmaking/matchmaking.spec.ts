@@ -45,7 +45,7 @@ describe('matchmaking service', () => {
 
     it('should return null if no suitable opponent is present', async () => {
       const requestingPlayerId = 'requestingPlayer';
-      jest.spyOn(opponentSelectionLogic, 'evaluateOpponentMatch').mockResolvedValue(false);
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
 
       const result = await findSuitableOpponent(requestingPlayerId);
       expect(result).toBe(undefined);
@@ -57,7 +57,7 @@ describe('matchmaking service', () => {
       const requestingPlayerId = 'requestingPlayer';
 
       // Mock findSuitableOpponent to return a suitable opponent
-      jest.spyOn(opponentSelectionLogic, 'evaluateOpponentMatch').mockResolvedValue(true);
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(true);
 
       const result = await findMatchOrQueue(requestingPlayerId);
 
@@ -69,7 +69,7 @@ describe('matchmaking service', () => {
       const date = new Date();
 
       // Mock findSuitableOpponent to return no suitable opponent
-      jest.spyOn(opponentSelectionLogic, 'evaluateOpponentMatch').mockResolvedValue(false);
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
 
       // Mock the current date
       jest.spyOn(global, 'Date').mockImplementation(() => date);
