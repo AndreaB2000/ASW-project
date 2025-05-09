@@ -19,7 +19,7 @@ account.post(
 account.post(
   '/login',
   [
-    body('email').notEmpty().isEmail().withMessage('Email must be a valid email address'),
+    body('username').notEmpty().isString().withMessage('Username must be a string'),
     body('password').notEmpty().isString().withMessage('Password must be a string'),
     validationHandler,
   ],

@@ -17,16 +17,16 @@ export const registerAccount = async (account: Account): Promise<boolean> => {
 
 /**
  * Authenticate an already existing user.
- * @param email the email of the user
+ * @param username the username of the account
  * @param password the password that should match the stored password
  * @returns null if the password doesn't match or the account doesn't exist, the account otherwise
  */
 export const authenticateAccount = async (
-  email: string,
+  username: string,
   password: string,
 ): Promise<Account | null> => {
   const existingAccounts = await repository.readAllAccounts();
-  const account = existingAccounts.find(a => a.email === email);
+  const account = existingAccounts.find(a => a.username === username);
   if (!account || !(await account.checkPassword(password))) return null;
   return account;
 };
