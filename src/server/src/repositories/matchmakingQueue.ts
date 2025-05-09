@@ -18,7 +18,7 @@ export const DBMatchmakingCandidate = mongoose.model<MatchmakingCandidate>(
  * Fetches all candidates from the database and constructs a queue
  */
 export async function getQueue(): Promise<MatchmakingQueue> {
-  const candidates = await DBMatchmakingCandidate.find().lean();
+  const candidates = await DBMatchmakingCandidate.find();
   if (candidates.length === 0) {
     return MatchmakingQueueFactory.create();
   }
