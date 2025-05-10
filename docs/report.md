@@ -416,7 +416,7 @@ Every player has a rating, which is a number that represents their skill level. 
 
 The rating is updated after each match based on the outcome of the match and the ratings of the players involved.
 
-The rating is updated using the following formula:
+The rating is updated using the following formula: <!-- NOT IMPLEMENTED YET -->
 
 R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
 
