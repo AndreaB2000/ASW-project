@@ -4,21 +4,21 @@ export interface MatchmakingCandidate {
 }
 
 export class MatchmakingCandidateFactory {
-  public static create = (playerId: string, requestTime: Date): MatchmakingCandidate =>
-    new MatchmakingCandidateImpl(playerId, requestTime);
+  public static create = (username: string, requestTime: Date): MatchmakingCandidate =>
+    new MatchmakingCandidateImpl(username, requestTime);
 }
 
 class MatchmakingCandidateImpl implements MatchmakingCandidate {
-  private _playerId: string;
+  private _username: string;
   private _requestTime: Date;
 
   constructor(playerId: string, requestTime: Date) {
-    this._playerId = playerId;
+    this._username = playerId;
     this._requestTime = requestTime;
   }
 
   get username(): string {
-    return this._playerId;
+    return this._username;
   }
 
   get requestTime(): Date {

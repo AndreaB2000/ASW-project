@@ -3,6 +3,8 @@ import { isValidMatch } from './opponentSelectionLogic';
 import { MatchmakingCandidateFactory } from '../../models/MatchmakingCandidate';
 import '../../utils/array.extensions';
 
+// TODO IMPLEMENT DYNAMIC MAXDIFF
+
 /**
  * Finds a suitable opponent for the requesting player
  * @param requestingPlayerUsername the id of the requesting player
@@ -14,7 +16,7 @@ export const findSuitableOpponent = async (
   const queue = await getQueue();
   const suitableOpponent = await Array.from(queue).findAsync(
     async candidateOpponent =>
-      await isValidMatch(requestingPlayerUsername, candidateOpponent.username),
+      await isValidMatch(requestingPlayerUsername, candidateOpponent.username, 100),
   );
 
   return suitableOpponent?.username;

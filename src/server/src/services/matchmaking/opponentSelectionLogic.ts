@@ -9,5 +9,5 @@ export const isValidMatch = async (candidate1: string, candidate2: string, maxDi
     return false;
   }
 
-  return Math.abs(Number(player1.rating) - Number(player2.rating)) <= maxDiff;
+  return Math.abs(player1.rating.value - player2.rating.value) <= maxDiff;
 };
