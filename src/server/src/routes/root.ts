@@ -4,12 +4,15 @@ import * as matchService from '../services/match';
 import * as moveFactory from '../models/Move';
 import { requestMatch } from '../controllers/matchmaking';
 import { getPlayerSocket } from '../sockets/socket';
+import { authenticateTokenSocket } from '../middlewares/auth';
 
 const QUEUE_ROOM = 'queue';
 
 export const root = (socket: Socket) => {
   // If this is out of the function, io is null
   const io = ioHandler.getIO();
+
+  io.use(authenticateTokenSocket);
 
   console.log('User connected');
 
