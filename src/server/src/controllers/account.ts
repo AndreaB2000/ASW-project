@@ -41,6 +41,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const account = await authenticateAccount(username, password);
+    if (!account) {
+      res.status(409).json({ message: 'Invalid username or password' });
+      return;
+    }
     const token = jwt.sign(
       {
         username: account.username,
