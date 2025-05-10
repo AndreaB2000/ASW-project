@@ -6,7 +6,6 @@ import rateLimit from 'express-rate-limit';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
-import cookieParser from 'cookie-parser';
 import { validationHandler } from './middlewares/validationHandler';
 
 // Routes
@@ -24,7 +23,6 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(validationHandler);
