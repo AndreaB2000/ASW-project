@@ -39,8 +39,8 @@ export const getSession = async (account: Account): Promise<Session | null> => {
 };
 
 export const getSessionByToken = async (token: string): Promise<Session | null> => {
-  const { username, email } = factory.decodeToken(token);
+  const { username, email: _ } = factory.decodeToken(token);
   const account = await accountService.getAccount(username);
   if (!account) return null;
-  return getSession(account);
+  return await getSession(account);
 };

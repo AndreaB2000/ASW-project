@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { registerAccount, authenticateAccount } from '../services/account';
 import * as factory from '../models/Account';
+import { secret } from '../config/jwt';
+import { expiration } from '../config/jwt';
+import jwt from 'jsonwebtoken';
 
 /**
  * POST /register
@@ -37,13 +40,21 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'Username and password are required' });
       return;
     }
-    const session = await authenticateAccount(username, password);
+    const account = await authenticateAccount(username, password);
+    const token = jwt.sign(
+      {
+        username: account.username,
+        email: account.email,
+      },
+      secret,
+      { expiresIn: expiration },
+    );
     res
-      .cookie('token', session.token, {
+      .cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: session.expiration * 1000,
+        maxAge: expiration * 1000,
       })
       .status(200)
       .json({ message: 'Login successful' });
