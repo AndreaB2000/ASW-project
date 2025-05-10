@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import * as sessionService from '../services/session';
 
 /**
  * Authentication middleware. Those APIs that use this middleware won't receive the request unless the authorization header is properly configured with a valid JWT token.
@@ -18,11 +17,5 @@ export async function authenticateToken(
     res.status(401).json({ message: 'Unauthorized' });
     return;
   }
-  const session = await sessionService.getSessionByToken(token);
-  if (!session || !session.isValid()) {
-    res.status(403).json({ message: 'Forbidden' });
-    return;
-  }
-  req.body.account = session.account;
   next();
 }
