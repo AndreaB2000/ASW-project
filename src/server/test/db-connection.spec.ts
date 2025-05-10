@@ -19,11 +19,9 @@ describe('connectDB', () => {
     jest.resetAllMocks();
   });
 
-  it('should call mongoose.connect with values taken from process.env', async () => {
-    const testUri = [ 'testProtocol://testUser:testPassword@testIP:testPort/testDB',  {"serverSelectionTimeoutMS": 6000} ];
-    const mockConnect = jest.spyOn(mongoose, 'connect').mockResolvedValueOnce({} as any);
+  it('should connect using default values in development/test mode', async () => {
     await connectDB();
-    expect(mockConnect).toHaveBeenCalledWith(...testUri);
+    expect(mockConnect).toHaveBeenCalledWith('mongodb://aswuser:password@172.0.0.12:27017/aswdb');
   });
 
   it('should connect using env variables in production mode', async () => {
