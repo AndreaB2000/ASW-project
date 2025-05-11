@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import * as cookie from 'cookie';
 import { secret } from '../config/jwt';
 
 /**
@@ -48,7 +48,7 @@ export const authenticateTokenSocket = (socket: Socket, next: NextFunction): voi
     return;
   }
   try {
-    const userData = jwt.verify(token, process.env.JWT_SECRET) as { username: string; email: string };
+    const userData = jwt.verify(token, secret) as { username: string; email: string };
     socket.handshake.auth.account = userData;
     next();
     return;
