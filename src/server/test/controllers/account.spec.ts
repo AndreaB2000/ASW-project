@@ -4,12 +4,10 @@ import { register, login } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import * as accountFactory from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
-import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
 app.post('/register', register);
-app.use(cookieParser());
 app.post('/login', login);
 
 jest.mock('../../src/services/account', () => ({
