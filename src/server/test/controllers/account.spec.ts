@@ -3,7 +3,7 @@ import express from 'express';
 import { register, login, logout, getMe } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
-import { jest, describe, it, expect, beforeAll, afterEach, afterAll } from '@jest/globals';
+import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
 
 const app = express();
 app.use(express.json());
