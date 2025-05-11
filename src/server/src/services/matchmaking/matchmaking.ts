@@ -1,4 +1,4 @@
-import { getQueue, addCandidate } from '../../repositories/matchmakingQueue';
+import { getQueue, addCandidate, removeCandidate } from '../../repositories/matchmakingQueue';
 import { isValidMatch } from './opponentSelectionLogic';
 import { MatchmakingCandidateFactory } from '../../models/MatchmakingCandidate';
 import '../../utils/array.extensions';
@@ -8,7 +8,7 @@ import '../../utils/array.extensions';
 /**
  * Finds a suitable opponent for the requesting player
  * @param requestingPlayerUsername the id of the requesting player
- * @returns the username of the suitable opponent or null if none is found
+ * @returns the username of the suitable opponent, or undefined if no suitable opponent is found
  */
 export const findSuitableOpponent = async (
   requestingPlayerUsername: string,
@@ -31,10 +31,11 @@ export const findMatchOrQueue = async (username: string): Promise<string | undef
   const suitableOpponent = await findSuitableOpponent(username);
 
   if (suitableOpponent) {
+    removeCandidate(suitableOpponent);
     return suitableOpponent;
   }
 
-  const candidate = MatchmakingCandidateFactory.create(username, new Date());
+  const candidate = MatchmakingCandidateFactory.create(username);
   await addCandidate(candidate);
 
   return undefined;
