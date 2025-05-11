@@ -10,7 +10,8 @@ import { validationHandler } from './middlewares/validationHandler';
 import { startRoutines } from './routines/routine';
 
 // Routes
-import { account } from './routes/account';
+import { router as accountRouter } from './routes/account';
+import { match } from './routes/match';
 
 // Create Express server
 export const app = express();
@@ -31,12 +32,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/account', account);
-app.use('/account', account);
-app.get('/ping', (_, res) => {
-  res.send('pong');
-});
-app.use('/account', account);
+app.use('/account', accountRouter);
+app.use('/match', match);
 app.get('/ping', (_, res) => {
   res.send('pong');
 });
