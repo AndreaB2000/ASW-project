@@ -15,11 +15,7 @@ export async function authenticateToken(
   res: Response,
   next: NextFunction,
 ): Promise<void> {
-  const token: string = req.cookies?.token;
-  if (!token) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
-  }
+  //TODO
   next();
 }
 
@@ -29,14 +25,13 @@ export async function authenticateToken(
  * @param next the next middleware function
  */
 export const authenticateTokenSocket = (socket: Socket, next: NextFunction): void => {
+  console.log('Authenticating socket');
 
-  console.log("Authenticating socket");
-  
   const { cookie: cookieHeader } = socket.handshake.headers;
 
   if (!cookieHeader) {
-    console.log("no cookies sent");
-    next(new Error("No cookies sent"));
+    console.log('no cookies sent');
+    next(new Error('No cookies sent'));
     return;
   }
 
@@ -44,20 +39,20 @@ export const authenticateTokenSocket = (socket: Socket, next: NextFunction): voi
   const token = cookies.token;
 
   if (!token) {
-    console.log("no token found in cookies");
-    next(new Error("No token found in cookies"));
+    console.log('no token found in cookies');
+    next(new Error('No token found in cookies'));
     return;
   }
 
   try {
-    console.log("token found in cookies");
+    console.log('token found in cookies');
     const userData = jwt.verify(token, process.env.JWT_SECRET);
     socket.handshake.auth.user = userData;
     next();
     return;
   } catch (err) {
-    console.log("Invalid token");
-    next(new Error("Invalid token"));
+    console.log('Invalid token');
+    next(new Error('Invalid token'));
     return;
   }
 };
