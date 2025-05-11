@@ -27,8 +27,6 @@ router.post(
   controller.login,
 );
 
-router.post(
-  '/logout',
-  [ authenticateToken ],
-  controller.logout
-);
+router.post('/logout', [ authenticateToken ], controller.logout);
+
+router.get('/me', [ authenticateToken ], controller.getMe);
