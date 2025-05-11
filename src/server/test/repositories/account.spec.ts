@@ -1,14 +1,14 @@
 import { DBAccount } from '../../src/repositories/account';
 import { createAccount, readAllAccounts } from '../../src/repositories/account';
 import { jest, describe, it, beforeEach } from '@jest/globals';
-import * as accountFactory from '../../src/models/Account';
+import { AccountFactory } from '../../src/models/Account';
 import { checkCalled } from '../test_utils/check-called';
 
 describe('Account Repository', () => {
   const testUsername = 'testUser';
   const testEmail = 'test@email.com';
   const testPassword = 'testPassword';
-  const testAccount = accountFactory.createWithHashing(testUsername, testEmail, testPassword);
+  const testAccount = AccountFactory.createWithHashing(testUsername, testEmail, testPassword);
 
   beforeEach(() => {
     jest.clearAllMocks();

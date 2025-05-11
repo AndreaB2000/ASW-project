@@ -1,6 +1,6 @@
 import { registerAccount, authenticateAccount, getAccount } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
-import * as accountFactory from '../../src/models/Account';
+import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll } from '@jest/globals';
 import { Account } from '../../src/models/Account';
 
@@ -13,7 +13,7 @@ jest.mock('../../src/repositories/account', () => ({
 
 describe('Account Service', () => {
   beforeAll(async () => {
-    existingUser = await accountFactory.createWithHashing(
+    existingUser = await AccountFactory.createWithHashing(
       'existingUser',
       'existing@email.com',
       'hashedPassword',
@@ -28,7 +28,7 @@ describe('Account Service', () => {
     });
 
     it('should create and store new account if username is unique', async () => {
-      const newUser = await accountFactory.createWithHashing(
+      const newUser = await AccountFactory.createWithHashing(
         'newUser',
         'new@email.com',
         'hashedPassword',

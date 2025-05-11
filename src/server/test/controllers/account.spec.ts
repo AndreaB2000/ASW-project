@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import { register, login } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
-import * as accountFactory from '../../src/models/Account';
+import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
 
 const app = express();
@@ -100,7 +100,7 @@ describe('Account Controller', () => {
     });
 
     it('should set cookie and return 200 on success', async () => {
-      const mockUser = accountFactory.create('testUser', 'test@user.com', 'testhashedpass');
+      const mockUser = AccountFactory.create('testUser', 'test@user.com', 'testhashedpass');
       jest.mocked(accountService.authenticateAccount).mockResolvedValue(mockUser);
       const res = await request(app).post('/login').send({
         username: mockUser.username,
