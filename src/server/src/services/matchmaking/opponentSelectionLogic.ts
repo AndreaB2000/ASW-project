@@ -27,12 +27,9 @@ export const getMaxDiff = (requestTime: Date): number => {
   const baseDiff = 100;
 
   const currentTime = new Date();
-  console.log('currentTime', currentTime);
-  console.log('requestTime', requestTime);
   const timeDiff = Math.abs(currentTime.getTime() - requestTime.getTime());
   // add 100 to baseDiff for every 10 seconds
   const diffInSeconds = Math.floor(timeDiff / 1000);
-  console.log('diffInSeconds', diffInSeconds);
   const maxDiff = Math.floor(diffInSeconds / 10) * 100 + baseDiff;
   
   return maxDiff;

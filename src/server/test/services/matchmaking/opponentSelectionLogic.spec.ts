@@ -149,8 +149,6 @@ describe('opponentSelectionLogic', () => {
 
     it('should increase maxDiff by 100 for every 10 seconds', () => {
       const time30Seconds = new originalDate(mockNow.getTime() - 30 * 1000); // 30 seconds ago
-      console.log('mockNow', mockNow);
-      console.log('time30Seconds', time30Seconds);
       const maxDiff30 = getMaxDiff(time30Seconds);
       expect(maxDiff30).toBe(400); // baseDiff + (30/10)*100
 
