@@ -1,6 +1,6 @@
 import { Account } from '../models/Account';
 import mongoose from 'mongoose';
-import * as accountFactory from '../models/Account';
+import { AccountFactory } from '../models/Account';
 
 /**
  * Stores user account information.
@@ -22,7 +22,7 @@ export const createAccount = async (account: Account): Promise<void> => {
 export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find();
   return accounts.map(account =>
-    accountFactory.create(account.username, account.email, account.password),
+    AccountFactory.create(account.username, account.email, account.password),
   );
 };
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { registerAccount, authenticateAccount } from '../services/account';
-import * as factory from '../models/Account';
+import { AccountFactory } from '../models/Account';
 import { secret } from '../config/jwt';
 import { expiration } from '../config/jwt';
 import jwt from 'jsonwebtoken';
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'Username, email and password are required' });
       return;
     }
-    const user = await factory.createWithHashing(username, email, password);
+    const user = await AccountFactory.createWithHashing(username, email, password);
     const result = await registerAccount(user);
     if (!result) res.status(409).json({ message: 'Account already exists' });
     else res.status(201).json({ message: 'Account registered successfully', username });
