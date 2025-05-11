@@ -13,8 +13,6 @@ import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 
 describe('Player Repository', () => {
   const testValue = 1500;
-  const testDeviation = 200;
-  const testVolatility = 0.06;
   const testRating = RatingFactory.create(testValue);
   const testUsername = 'testUser';
   const testPlayer = PlayerFactory.create(testUsername, testRating);
@@ -32,8 +30,8 @@ describe('Player Repository', () => {
   describe('readAllPlayers', () => {
     it('should call find with correct parameters', async () => {
       const mockPlayers = [
-        { username: 'user1', rating: { value: 1500, deviation: 200, volatility: 0.06 } },
-        { username: 'user2', rating: { value: 1600, deviation: 190, volatility: 0.05 } },
+        { username: 'user1', rating: { value: 1500 } },
+        { username: 'user2', rating: { value: 1600 } },
       ];
 
       await checkCalledWith(
