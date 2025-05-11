@@ -84,3 +84,14 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
     .status(200)
     .json({ message: 'Logout successful' });
 };
+
+/**
+ * GET /me
+ * Get the current user's account information
+ *
+ * @returns 200: with the user data
+ */
+export const getMe = async (req: Request, res: Response): Promise<void> => {
+  const { username, email } = req.account;
+  res.status(200).json({ username, email });
+}
