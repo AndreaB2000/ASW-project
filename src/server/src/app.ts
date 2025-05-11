@@ -3,6 +3,7 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import * as path from 'path';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
 const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
@@ -29,7 +30,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(validationHandler);
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/account', accountRouter);
