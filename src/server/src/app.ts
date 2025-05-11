@@ -9,7 +9,7 @@ import { connectDB } from './config/db-connection';
 import { validationHandler } from './middlewares/validationHandler';
 
 // Routes
-import { account } from './routes/account';
+import { router as accountRouter } from './routes/account';
 import { match } from './routes/match';
 
 // Create Express server
@@ -28,14 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/account', account);
+app.use('/account', accountRouter);
 app.use('/match', match);
-app.use('/account', account);
-app.get('/ping', (_, res) => {
-  res.send('pong');
-});
-app.use('/match', match);
-app.use('/account', account);
 app.get('/ping', (_, res) => {
   res.send('pong');
 });

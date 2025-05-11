@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { register, login } from '../../src/controllers/account';
+import { register, login, logout } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.post('/register', register);
 app.post('/login', login);
+app.post('/logout', logout);
 
 jest.mock('../../src/services/account', () => ({
   registerAccount: jest.fn(),
@@ -121,6 +122,14 @@ describe('Account Controller', () => {
       expect(res.status).toBe(500);
       expect(res.body.message).toBe('Internal server error');
       expect(res.body.error).toBeDefined();
+    });
+  });
+
+  describe('POST /logout', () => {
+    it('should return 200 and clear the cookie', async () => {
+      const res = await request(app).post('/logout');
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe('Logout successful');
     });
   });
 });
