@@ -7,9 +7,8 @@ import { Account } from '../models/Account';
  * @returns boolean indicating success or failure
  */
 export const registerAccount = async (account: Account): Promise<boolean> => {
-  const existingAccounts = await repository.readAllAccounts();
-  const accountExists = existingAccounts.some(a => account.username === a.username);
-  if (accountExists) return false;
+  const isExistingAccount = await getAccount(account.username);
+  if (isExistingAccount) return false;
   await repository.createAccount(account);
   return true;
 };
@@ -24,8 +23,7 @@ export const authenticateAccount = async (
   username: string,
   password: string,
 ): Promise<Account | null> => {
-  const existingAccounts = await repository.readAllAccounts();
-  const account = existingAccounts.find(a => a.username === username);
+  const account = await getAccount(username);
   if (!account || !(await account.checkPassword(password))) return null;
   return account;
 };
