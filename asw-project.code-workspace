@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": "src/client"
+    },
+    {
+      "path": "src/server"
+    },
+    {
+      "path": ".",
+      "name": "root"
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true
+    },
+    "eslint.workingDirectories": [{ "mode": "auto" }]
+  }
+}
