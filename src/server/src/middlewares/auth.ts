@@ -20,8 +20,8 @@ export async function authenticateToken(
     return;
   }
   try {
-    const decoded = jwt.verify(token, secret);
-    req.body.account = decoded;
+    const decoded = jwt.verify(token, secret) as { username: string; email: string };
+    req.account = decoded;
     next();
   } catch {
     res.status(401).json({ message: 'Invalid token' });
@@ -48,8 +48,8 @@ export const authenticateTokenSocket = (socket: Socket, next: NextFunction): voi
     return;
   }
   try {
-    const userData = jwt.verify(token, process.env.JWT_SECRET);
-    socket.handshake.auth.user = userData;
+    const userData = jwt.verify(token, process.env.JWT_SECRET) as { username: string; email: string };
+    socket.handshake.auth.account = userData;
     next();
     return;
   } catch (err) {

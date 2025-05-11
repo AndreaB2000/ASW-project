@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express from 'express';
-import { register, login, logout } from '../../src/controllers/account';
+import { register, login, logout, getMe } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
-import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
+import { jest, describe, it, expect, beforeAll, afterEach, afterAll } from '@jest/globals';
 
 const app = express();
 app.use(express.json());
@@ -130,6 +130,24 @@ describe('Account Controller', () => {
       const res = await request(app).post('/logout');
       expect(res.status).toBe(200);
       expect(res.body.message).toBe('Logout successful');
+    });
+  });
+
+  describe('GET /me', () => {
+    it('should return data taken from request', async () => {
+      const req = {
+        account: { username: 'testUser', email: "test@email.com" }
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+      await getMe(req as any, res as any);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        username: req.account.username,
+        email: req.account.email,
+      });
     });
   });
 });
