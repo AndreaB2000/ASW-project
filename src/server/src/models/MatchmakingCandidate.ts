@@ -4,8 +4,8 @@ export interface MatchmakingCandidate {
 }
 
 export class MatchmakingCandidateFactory {
-  public static create = (username: string, requestTime: Date): MatchmakingCandidate =>
-    new MatchmakingCandidateImpl(username, requestTime);
+  public static create = (username: string, requestTime?: Date): MatchmakingCandidate =>
+    new MatchmakingCandidateImpl(username, requestTime ?? new Date());
 }
 
 class MatchmakingCandidateImpl implements MatchmakingCandidate {
