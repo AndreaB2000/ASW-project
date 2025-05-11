@@ -51,46 +51,58 @@ describe('matchmaking service', () => {
       expect(result).toEqual(candidate.username);
     });
 
-    // it('should return null if no suitable opponent is present', async () => {
-    //   const requestingPlayerId = 'requestingPlayer';
-    //   jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
+    it('should return undefined if no suitable opponent is present', async () => {
+      const requestingPlayerId = 'requestingPlayer';
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
 
-    //   const result = await findSuitableOpponent(requestingPlayerId);
-    //   expect(result).toEqual(undefined);
-    // });
+      const result = await findSuitableOpponent(requestingPlayerId);
+      expect(result).toEqual(undefined);
+    });
   });
 
-  // describe('findOpponentOrAddToQueue', () => {
-  //   it('should return a suitable opponent if one is found', async () => {
-  //     const requestingPlayerId = 'requestingPlayer';
+  describe('findOpponentOrAddToQueue', () => {
+    it('should return a suitable opponent if one is found', async () => {
+      const requestingPlayerId = 'requestingPlayer';
 
-  //     // Mock findSuitableOpponent to return a suitable opponent
-  //     jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(true);
+      // Mock findSuitableOpponent to return a suitable opponent
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(true);
 
-  //     const result = await findMatchOrQueue(requestingPlayerId);
+      const result = await findMatchOrQueue(requestingPlayerId);
 
-  //     expect(result).toEqual(candidate.username);
-  //   });
+      expect(result).toEqual(candidate.username);
+    });
 
-  //   it('should add the player to the queue if no suitable opponent is found', async () => {
-  //     const requestingPlayerId = 'requestingPlayer';
-  //     const date = new Date();
+    it('should remove the suitable player if it is found', async () => {
+      const requestingPlayerId = 'requestingPlayer';
 
-  //     // Mock findSuitableOpponent to return no suitable opponent
-  //     jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
+      // Mock findSuitableOpponent to return a suitable opponent
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(true);
+      const spiedRemoveCandidate = jest.spyOn(matchmakingQueueRepository, 'removeCandidate');
 
-  //     // Mock the current date
-  //     jest.spyOn(global, 'Date').mockImplementation(() => date);
+      await findMatchOrQueue(requestingPlayerId);
 
-  //     // Spy on addCandidate to ensure it is called
-  //     const addCandidateSpy = jest.spyOn(matchmakingQueueRepository, 'addCandidate');
+      expect(spiedRemoveCandidate).toBeCalledWith(candidate.username);
+    });
 
-  //     const result = await findMatchOrQueue(requestingPlayerId);
+    it('should add the player to the queue if no suitable opponent is found', async () => {
+      const requestingPlayerId = 'requestingPlayer';
+      const mockNow: Date = new Date('2024-10-01T00:00:00Z');
 
-  //     expect(result).toBeUndefined();
-  //     expect(addCandidateSpy).toHaveBeenCalledWith(
-  //       MatchmakingCandidateFactory.create(requestingPlayerId, date),
-  //     );
-    // });
-  // });
+      // Mock findSuitableOpponent to return no suitable opponent
+      jest.spyOn(opponentSelectionLogic, 'isValidMatch').mockResolvedValue(false);
+
+      // Mock the current date
+      jest.spyOn(global, 'Date').mockImplementation(() => mockNow);
+
+      // Spy on addCandidate to ensure it is called
+      const addCandidateSpy = jest.spyOn(matchmakingQueueRepository, 'addCandidate');
+
+      const result = await findMatchOrQueue(requestingPlayerId);
+
+      expect(result).toBeUndefined();
+      expect(addCandidateSpy).toHaveBeenCalledWith(
+        MatchmakingCandidateFactory.create(requestingPlayerId),
+      );
+    });
+  });
 });
