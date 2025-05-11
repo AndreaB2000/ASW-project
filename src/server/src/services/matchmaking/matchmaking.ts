@@ -1,9 +1,8 @@
 import { getQueue, addCandidate, removeCandidate } from '../../repositories/matchmakingQueue';
 import { isValidMatch } from './opponentSelectionLogic';
-import { MatchmakingCandidateFactory } from '../../models/MatchmakingCandidate';
+import { MatchmakingCandidate, MatchmakingCandidateFactory } from '../../models/MatchmakingCandidate';
 import '../../utils/array.extensions';
-
-// TODO IMPLEMENT DYNAMIC MAXDIFF
+import { readPlayerByUsername } from '../../repositories/player';
 
 /**
  * Finds a suitable opponent for the requesting player
@@ -11,12 +10,12 @@ import '../../utils/array.extensions';
  * @returns the username of the suitable opponent, or undefined if no suitable opponent is found
  */
 export const findSuitableOpponent = async (
-  requestingPlayerUsername: string,
+  requestingPlayerUsername: MatchmakingCandidate,
 ): Promise<string | undefined> => {
   const queue = await getQueue();
   const suitableOpponent = await Array.from(queue).findAsync(
     async candidateOpponent =>
-      await isValidMatch(requestingPlayerUsername, candidateOpponent.username, 100),
+      await isValidMatch(requestingPlayerUsername, candidateOpponent),
   );
 
   return suitableOpponent?.username;
@@ -28,15 +27,21 @@ export const findSuitableOpponent = async (
  * @returns The username of the suitable opponent, or undefined if the player was added to the queue.
  */
 export const findMatchOrQueue = async (username: string): Promise<string | undefined> => {
-  const suitableOpponent = await findSuitableOpponent(username);
+  const requestingPlayer = await readPlayerByUsername(username);
+  const requestingCandidate = MatchmakingCandidateFactory.create(
+    username,
+    requestingPlayer.rating,
+    new Date(),
+  );
+
+  const suitableOpponent = await findSuitableOpponent(requestingCandidate);
 
   if (suitableOpponent) {
     removeCandidate(suitableOpponent);
     return suitableOpponent;
   }
 
-  const candidate = MatchmakingCandidateFactory.create(username);
-  await addCandidate(candidate);
+  await addCandidate(requestingCandidate);
 
   return undefined;
 };
