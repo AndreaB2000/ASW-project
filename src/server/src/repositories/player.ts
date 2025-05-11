@@ -78,8 +78,6 @@ const playerSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   rating: {
     value: { type: Number, required: true },
-    deviation: { type: Number, required: true },
-    volatility: { type: Number, required: true },
   },
 });
 

@@ -14,10 +14,8 @@ export interface Rating {
 
 export class RatingFactory {
   /**
-   * Creates a new rating with the given rating, deviation and volatility.
+   * Creates a new rating with the given rating.
    * @param rating the rating value.
-   * @param deviation the deviation value.
-   * @param volatility the volatility value.
    * @returns the rating object.
    */
   public static create = (rating?: number): Rating =>

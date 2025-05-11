@@ -3,8 +3,6 @@ import { Rating, RatingFactory } from '../../src/models/Rating';
 import { describe, it, expect } from '@jest/globals';
 
 const startingRating: number = 1500;
-const startingDeviation: number = 350;
-const startingVolatility: number = 0.06;
 const PLAYER_NAME: string = 'Alice';
 const PLAYER_RATING: Rating = RatingFactory.create(
   startingRating,
