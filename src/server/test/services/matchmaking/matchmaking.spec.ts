@@ -20,6 +20,9 @@ jest.mock('../../../src/repositories/matchmakingQueue', () => ({
   addCandidate: jest.fn(() => {
     return undefined;
   }),
+  removeCandidate: jest.fn(() => {
+    return undefined;
+  }),
 }));
 // Mocking to simulate player in db
 jest.mock('../../../src/repositories/player', () => ({
