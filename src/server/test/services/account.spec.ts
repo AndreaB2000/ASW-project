@@ -1,4 +1,4 @@
-import { registerAccount, authenticateAccount } from '../../src/services/account';
+import { registerAccount, authenticateAccount, getAccount } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import * as accountFactory from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll } from '@jest/globals';
@@ -53,6 +53,18 @@ describe('Account Service', () => {
 
     it('should return the account if username and password are correct', async () => {
       const result = await authenticateAccount(existingUser.username, 'hashedPassword');
+      expect(result).toBe(existingUser);
+    });
+  });
+
+  describe('getAccount', () => {
+    it('should return null if no account matches the username', async () => {
+      const result = await getAccount('nonexistent');
+      expect(result).toBeNull();
+    });
+
+    it('should return the account if username exists', async () => {
+      const result = await getAccount(existingUser.username);
       expect(result).toBe(existingUser);
     });
   });
