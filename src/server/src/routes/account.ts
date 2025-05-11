@@ -2,10 +2,11 @@ import { Router } from 'express';
 import * as controller from '../controllers/account';
 import { body } from 'express-validator';
 import { validationHandler } from '../middlewares/validationHandler';
+import { authenticateToken } from '../middlewares/auth';
 
-export const account = Router();
+export const router = Router();
 
-account.post(
+router.post(
   '/register',
   [
     body('username').notEmpty().isString().withMessage('Username must be a string'),
@@ -16,7 +17,7 @@ account.post(
   controller.register,
 );
 
-account.post(
+router.post(
   '/login',
   [
     body('username').notEmpty().isString().withMessage('Username must be a string'),
@@ -24,4 +25,10 @@ account.post(
     validationHandler,
   ],
   controller.login,
+);
+
+router.post(
+  '/logout',
+  [ authenticateToken ],
+  controller.logout
 );

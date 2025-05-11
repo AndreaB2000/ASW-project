@@ -67,3 +67,20 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+/**
+ * POST /logout
+ * Logout the user
+ *
+ * @returns 200: logout successful, 500: internal server error
+ */
+export const logout = async (req: Request, res: Response): Promise<void> => {
+  res
+    .clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    })
+    .status(200)
+    .json({ message: 'Logout successful' });
+};
