@@ -9,11 +9,14 @@ import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { MatchmakingCandidateFactory } from '../../src/models/MatchmakingCandidate';
 import { MatchmakingQueueFactory } from '../../src/models/MatchmakingQueue';
 import { checkCalled, checkCalledWith } from '../test_utils/check-called';
+import { RatingFactory } from '../../src/models/Rating';
 
 describe('Matchmaking Queue Repository', () => {
   const testUsername = 'testUser';
+  const testRatingValue = 1500;
+  const testRating = RatingFactory.create(testRatingValue);
   const testDate = new Date();
-  const testCandidate = MatchmakingCandidateFactory.create(testUsername, testDate);
+  const testCandidate = MatchmakingCandidateFactory.create(testUsername, testRating, testDate);
 
   beforeEach(() => {
     jest.clearAllMocks();
