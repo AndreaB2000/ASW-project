@@ -21,7 +21,7 @@ describe('matchmaking candidate factory', () => {
 
   it('should create a candidate with request time now if no time is passed', async () => {
     // Mock the Date constructor
-    const mockNow = new Date('2023-10-01T00:00:00Z');
+    const mockNow = new Date('2024-10-01T00:00:00Z');
     global.Date = jest.fn(() => mockNow) as any;
 
     const candidate: MatchmakingCandidate = MatchmakingCandidateFactory.create(playerId);
