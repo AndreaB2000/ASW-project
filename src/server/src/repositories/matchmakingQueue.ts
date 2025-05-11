@@ -5,6 +5,9 @@ import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/Matc
 // Schema for individual matchmaking candidate documents
 const candidateSchema = new mongoose.Schema<MatchmakingCandidate>({
   username: { type: String, required: true, unique: true },
+  rating: {
+    value: { type: Number, required: true },
+  },
   requestTime: { type: Date, required: true },
 });
 
@@ -19,12 +22,14 @@ export const DBMatchmakingCandidate = mongoose.model<MatchmakingCandidate>(
  */
 export async function getQueue(): Promise<MatchmakingQueue> {
   const candidates = await DBMatchmakingCandidate.find();
-  if (candidates.length === 0) {
-    return MatchmakingQueueFactory.create();
-  }
   const queue = MatchmakingQueueFactory.create();
+
+  if (candidates.length === 0) {
+    return queue;
+  }
+
   candidates.map(candidate =>
-    queue.add(MatchmakingCandidateFactory.create(candidate.username, candidate.requestTime)));
+    queue.add(MatchmakingCandidateFactory.create(candidate.username, candidate.rating, candidate.requestTime)));
   return queue;
 }
 
