@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { socket } from '@/services/socket';
+import { socket } from '@/services/server-connections';
 import { ref } from 'vue';
 
 const username = ref<string>('');
