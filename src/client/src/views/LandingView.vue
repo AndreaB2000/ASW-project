@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { socket } from '@/services/socket';
+import { socket } from '@/services/server-connections';
 
 function test() {
   socket.emit('ping', (response: string) => {

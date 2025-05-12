@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PlayerInMatch from '@/components/Match/PlayerInMatch.vue';
 import Pile from '@/components/Match/Pile.vue';
-import { socket } from '@/services/socket';
+import { socket } from '@/services/server-connections';
 import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useUserStore } from '@/stores/userStore';
 import { useMatchStore } from '@/stores/matchStore';
