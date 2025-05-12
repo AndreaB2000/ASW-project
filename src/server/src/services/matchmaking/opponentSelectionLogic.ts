@@ -1,5 +1,4 @@
 import { MatchmakingCandidate } from '../../models/MatchmakingCandidate';
-import { readPlayerByUsername } from '../../repositories/player';
 
 /**
  * Checks if two candidates are a valid match based on their ratings and the time since their requests.
