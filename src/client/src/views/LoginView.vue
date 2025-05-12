@@ -1,44 +1,49 @@
 <script setup lang="ts">
+import { server } from '@/services/server-connections';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
-import axios from 'axios';
+const router = useRouter();
 
-//configure axios to use the base URL of the server
-// const protocol = import.meta.env.VITE_SERVER_PROTOCOL;
-// const ip = import.meta.env.VITE_SERVER_IP;
-// const port = import.meta.env.VITE_SERVER_PORT;
-const baseURL = `http://localhost:3000`;
-axios.defaults.baseURL = baseURL;
-axios.defaults.withCredentials = true;
+const form = reactive({
+  username: '',
+  password: '',
+});
 
-//setting cors
-
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
-
-async function loginFoo() {
-  await axios.post("/account/login", {
-    username: "foo",
-    password: "test",
-  })
-.then(response => {
-  console.log(response.data);
-})
-.catch(error => {
-  console.error(error);
-}); 
+function login(event: Event) {
+  event.preventDefault();
+  console.log('Login data:', form);
+  server.post('/login', { username: form.username, password: form.password })
+    .then(response => {
+      console.log('Login successful:', response.data);
+      router.push('/play')
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
+    });
 }
-
-async function loginBar() {
-  await axios.post("/account/login", {
-    username: "bar",
-    password: "test",
-  }); 
-}
-
 </script>
 
 <template>
-  <main>this is a login page</main>
-  <button @click="loginFoo()">foo</button>
-  <button @click="loginBar()">bar</button>
+  <img src="../assets/landingIcon.svg" alt="Landing Icon" />
+  <section>
+    <img src="../assets/sandpiles-template-img.svg" alt="Sandpiles Template" />
+    <section>
+      <h1>LOGIN</h1>
+      <form @submit="login">
+        <div>
+          <label for="username">Username</label>
+          <input v-model="form.username" type="text" id="username" name="username" required />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input v-model="form.password" type="password" id="password" name="password" required />
+        </div>
+        <button type="submit">Login</button>
+        <p>Don't have an account yet?</p>
+        <button type="button" @click="$router.push('/registration')">Register</button>
+      </form>
+    </section>
+  </section>
 </template>
