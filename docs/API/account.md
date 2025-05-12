@@ -3,22 +3,30 @@
 - `POST /register`: Register a new user account.
   - body:
     - `username`: The desired username for the account.
+    - `email`: The email address associated with the account.
     - `password`: The desired password for the account.
   - response:
     - `201 Created`: Account successfully created.
     - `400 Bad Request`: Invalid input data (e.g., password not complex enough, username already exists).
-    - `409 Conflict`: Username already exists.
+    - `409 Conflict`: Account already exists.
+    - `500 Internal Server Error`: Server error during account creation.
 - `POST /login`: Authenticate a user and obtain an access token.
   - body:
     - `username`: The username of the account.
     - `password`: The password of the account.
   - response:
-    - `200 OK - JWT`: Authentication successful, returns an access token.
-    - `401 Unauthorized`: Invalid username or password.
-    - `403 Forbidden`: Account is locked or inactive.
+    - `200 OK - cookie`: Authentication successful, saves an access token linked to a cookie.
+    - `409 Forbidden`: Invalid username or password.
+    - `500 Internal Server Error`: Server error during authentication.
 - `POST /logout`: Invalidate the user's access token.
-  - Headers:
-    - `Authorization`: Bearer token.
+  - Cookie:
+    - `token`: The access token linked to the cookie.
   - response:
     - `200 OK`: Logout successful.
+    - `401 Unauthorized`: Invalid or expired token.
+- `GET /me`: Retrieve the current user's account information.
+  - Cookie:
+    - `token`: The access token linked to the cookie.
+  - response:
+    - `200 OK`: Returns the user's account information.
     - `401 Unauthorized`: Invalid or expired token.
