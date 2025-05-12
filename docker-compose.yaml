@@ -8,11 +8,17 @@ networks:
 
 services:
   client:
-    image: andreabiagini5/aswclient
+    build:
+      context: ./src/client
+      args:
+        - VITE_SERVER_IP=${SERVER_IP}
+        - VITE_SERVER_PORT=${SERVER_PORT}
+        - VITE_SERVER_PROTOCOL=${SERVER_PROTOCOL}
+        - VITE_DOCKER=true
     container_name: aswclient
     restart: always
     ports:
-      - '80:4173'
+      - '${CLIENT_PORT}:80'
     depends_on:
       - server
     environment:
@@ -21,8 +27,7 @@ services:
       VITE_SERVER_PROTOCOL: ${SERVER_PROTOCOL}
     networks:
       asw_network:
-        ipv4_address: 172.0.0.11
-
+        ipv4_address: ${CLIENT_IP}
   server:
     image: andreabiagini5/aswserver
     container_name: aswserver
