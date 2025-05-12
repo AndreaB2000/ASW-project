@@ -432,6 +432,27 @@ Where:
 
 The matchmaking system is responsible for pairing players with similar Elo ratings.
 
+The server will check if there are other players in the queue with similar Elo ratings. If so, it will create a match and notify both players.
+
+If no players are found, the server will add the player to the queue and wait for other players to join.
+
+Every 3 seconds, the server will check if there are players in the queue with compatible Elo ratings. If so, it will create a match and notify both players.
+
+Every 10 seconds a player spends in the queue, the matchmaking requirements are slackened as by the following formula:
+
+IsValidMatch(baseValue , rating<sub>1</sub> , rating<sub>2</sub> , time<sub>1</sub> , time<sub>2</sub>) =
+
+| rating<sub>1</sub> - rating<sub>2</sub> | <= min( (time<sub>1</sub> / 10), (time<sub>2</sub> / 10) ) * 100 + baseValue
+
+Where:
+
+- IsValidMatch is a function that returns true if the match is valid and false otherwise
+- rating<sub>1</sub> and rating<sub>2</sub> are the Elo ratings of the two players
+- time<sub>1</sub> and time<sub>2</sub> are the times spent in the queue by the two players in seconds
+- baseValue is a constant that represents the minimum difference in ratings that is acceptable for a match
+
+If a player disconnects from the queue, the server will remove them from the queue and notify them. <!-- NOT IMPLEMENTED -->
+
 ##### Server side matchmaking class diagram
 
 ```mermaid
@@ -442,7 +463,8 @@ The matchmaking system is responsible for pairing players with similar Elo ratin
 ---
 
 classDiagram
-    class MatchmakingAPI
+    class MatchmakingRoute
+    class MatchmakingController
     class MatchmakingService
     class Player
     class Rating
@@ -451,7 +473,8 @@ classDiagram
     class MatchmakingQueue
     class MatchmakingCandidate
 
-    MatchmakingAPI --> MatchmakingService
+    MatchmakingRoute --> MatchmakingController
+    MatchmakingController --> MatchmakingService
     MatchmakingService --> Player
     MatchmakingService --> PlayerRepository
     PlayerRepository --> Player
@@ -479,12 +502,6 @@ sequenceDiagram
    Server-->>Client1: emit('matchFound', { matchId })
    Server-->>Client2: emit('matchFound', { matchId })
 ```
-
-The server will check if there are other players in the queue with similar Elo ratings. If so, it will create a match and notify both players.
-
-If no players are found, the server will add the player to the queue and wait for other players to join.
-
-The server will also notify the player if the waiting time exceeds a certain time `T = t * p` where p is a constant.
 
 ##### Matchmaking Algorithm
 
