@@ -8,14 +8,19 @@
     },
     {
       "path": ".",
-      "name": "root"
+      "name": "root-configs"
+    },
+    {
+      "path": "docs"
     }
   ],
   "settings": {
     "editor.tabSize": 2,
     "files.exclude": {
       "**/node_modules": true,
-      "**/dist": true
+      "**/dist": true,
+      "src/**": true,
+      "docs/**": true
     },
     "eslint.workingDirectories": [{ "mode": "auto" }]
   }
