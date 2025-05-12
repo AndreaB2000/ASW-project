@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { server } from '@/services/server-connections';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const form = reactive({
   username: '',
@@ -15,6 +19,17 @@ function register(event: Event) {
     return;
   }
   console.log('Registration data:', form);
+  server.post('/register', {
+    username: form.username,
+    email: form.email,
+    password: form.password
+  }).then((response) => {
+    console.log('Registration successful:', response.data);
+    router.push('/login');
+  }).catch((error) => {
+    console.error('Registration error:', error);
+    alert('Registration failed. Please try again.');
+  })
 }
 </script>
 
