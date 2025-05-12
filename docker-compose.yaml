@@ -39,7 +39,9 @@ services:
       DB_PROTOCOL: ${DB_PROTOCOL}
       DB_IP: ${DB_IP}
       DB_PORT: ${DB_PORT}
+      CLIENT_PROTOCOL: ${CLIENT_PROTOCOL}
       CLIENT_IP: ${CLIENT_IP}
+      CLIENT_PORT: ${CLIENT_PORT}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       NODE_ENV: 'production'

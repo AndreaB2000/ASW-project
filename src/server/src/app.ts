@@ -47,13 +47,13 @@ if (process.env.NODE_ENV === 'production') {
       max: 100,
     }),
   );
+  const protocol = process.env.CLIENT_PROTOCOL;
+  const ip = process.env.CLIENT_IP;
+  const port = process.env.CLIENT_PORT;
+  app.use(cors({ origin: `${protocol}://${ip}:${port}` }));
+} else {
+  app.use(cors({ origin: '*' }));
 }
-
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-  }),
-);
 
 app.use(helmet());
 app.use(errorNotFoundHandler);
