@@ -23,7 +23,7 @@ socket.on('matchFound', (matchId: string) => {
 <template>
   <section>
     <section class="title">
-      <img src="../assets/landingIcon.svg"/>
+      <img src="../assets/landingIcon.svg" />
       <h1>SANDPILES</h1>
     </section>
     <section class="content">
@@ -33,14 +33,14 @@ socket.on('matchFound', (matchId: string) => {
           trigger a chain reaction. Conquer the board — one avalanche at a time.
         </p>
         <section class="buttons">
-          <button @click="playPVP()" style="background-color: #1EC6E0; ">Play PVP</button>
-          <button style="background-color: #1EC6E0;">Play with BOT</button>
-          <button @click=test style="background-color: #E0961E;">Login</button>
+          <button @click="playPVP()" style="background-color: #1ec6e0">Play PVP</button>
+          <button style="background-color: #1ec6e0">Play with BOT</button>
+          <button @click="test" style="background-color: #e0961e">Login</button>
           <button>Tutorial</button>
           <button @click="$router.push('/registration')">Register</button>
         </section>
       </section>
-      <img src="../assets/sandpiles-template-img.svg"/>
+      <img src="../assets/sandpiles-template-img.svg" />
     </section>
   </section>
 </template>
