@@ -4,6 +4,7 @@ import { AccountFactory } from '../models/Account';
 import { secret } from '../config/jwt';
 import { expiration } from '../config/jwt';
 import jwt from 'jsonwebtoken';
+import { AuthenticatedRequest } from 'authenticated-request';
 
 /**
  * POST /register
@@ -74,7 +75,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
  *
  * @returns 200: logout successful, 500: internal server error
  */
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async (_: AuthenticatedRequest, res: Response): Promise<void> => {
   res
     .clearCookie('token', {
       httpOnly: true,
@@ -91,7 +92,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
  *
  * @returns 200: with the user data
  */
-export const getMe = async (req: Request, res: Response): Promise<void> => {
+export const getMe = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const { username, email } = req.account;
   res.status(200).json({ username, email });
 }

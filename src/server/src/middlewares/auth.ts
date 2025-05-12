@@ -3,6 +3,7 @@ import { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import * as cookie from 'cookie';
 import { secret } from '../config/jwt';
+import { AuthenticatedRequest } from 'authenticated-request';
 
 /**
  * Authentication middleware for ReST API. Those APIs that use this middleware won't receive the request unless the authorization header is properly configured
@@ -21,7 +22,7 @@ export async function authenticateToken(
   }
   try {
     const decoded = jwt.verify(token, secret) as { username: string; email: string };
-    req.account = decoded;
+    (req as AuthenticatedRequest).account = decoded;
     next();
   } catch {
     res.status(401).json({ message: 'Invalid token' });
