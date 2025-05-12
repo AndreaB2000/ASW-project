@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('../views/RegistrationView.vue'),
     },
     {
+      path: '/play',
+      name: 'play',
+      component: () => import('../views/PlayView.vue'),
+    },
+    {
       path: '/match',
       name: 'match',
       component: () => import('../views/MatchView.vue'),
