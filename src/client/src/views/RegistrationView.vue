@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { server } from '@/services/server-connections';
+import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -19,16 +20,21 @@ function register(event: Event) {
     return;
   }
   console.log('Registration data:', form);
-  server.post('/register', {
-    username: form.username,
-    email: form.email,
+  server.post('/account/register', {
+    username: form.username.trim(),
+    email: form.email.trim().toLowerCase(),
     password: form.password
   }).then((response) => {
     console.log('Registration successful:', response.data);
     router.push('/login');
   }).catch((error) => {
     console.error('Registration error:', error);
-    alert('Registration failed. Please try again.');
+    // Better error handling
+    let errorMessage = 'Registration failed. Please try again.';
+    if (axios.isAxiosError(error)) {
+      errorMessage = error.response?.data?.message || errorMessage;
+    }
+    alert(errorMessage);
   })
 }
 </script>
