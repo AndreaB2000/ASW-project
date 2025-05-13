@@ -1,5 +1,4 @@
 import {
-  MatchmakingCandidate,
   MatchmakingCandidateFactory,
 } from '../../../src/models/MatchmakingCandidate';
 import { RatingFactory } from '../../../src/models/Rating';
@@ -137,6 +136,26 @@ describe('opponentSelectionLogic', () => {
       // 1900 - 1500 = 400, which is <= 1300, so should match
       const result = await isValidMatch(candidate1, candidate2);
       expect(result).toBe(true);
+    });
+
+    it('should not match a player with itself', async () => {
+      const recentTime = new originalDate(mockNow.getTime() - 10 * 1000); // 10 seconds ago
+
+      const candidate1 = MatchmakingCandidateFactory.create(
+        'player1',
+        RatingFactory.create(1500),
+        recentTime,
+      );
+
+      const candidate2 = MatchmakingCandidateFactory.create(
+        'player1',
+        RatingFactory.create(1500),
+        recentTime,
+      );
+
+      const result = await isValidMatch(candidate1, candidate2);
+      expect(result).toBe(false);
+
     });
   });
 
