@@ -8,6 +8,10 @@ import { MatchmakingCandidate } from '../../models/MatchmakingCandidate';
  * @returns True if the candidates are a valid match, false otherwise.
  */
 export const isValidMatch = async (candidate1: MatchmakingCandidate, candidate2: MatchmakingCandidate): Promise<boolean> => {
+  if (candidate1.equals(candidate2)) {
+    return false; // Players cannot match with themselves
+  }
+
   // setting max difference to the one of the player with the lowest one
   const maxDiff1 = getMaxDiff(candidate1.requestTime);
   const maxDiff2 = getMaxDiff(candidate2.requestTime);
