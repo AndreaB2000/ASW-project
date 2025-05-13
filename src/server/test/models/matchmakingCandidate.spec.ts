@@ -36,4 +36,20 @@ describe('matchmaking candidate factory', () => {
     expect(candidate.rating).toEqual(playerRating);
     expect(candidate.requestTime).toEqual(mockNow);
   });
+
+  it('should compare two candidates correctly', async () => {
+    const candidate1: MatchmakingCandidate = MatchmakingCandidateFactory.create(
+      playerId,
+      playerRating,
+      requestTime,
+    );
+
+    const candidate2: MatchmakingCandidate = MatchmakingCandidateFactory.create(
+      playerId,
+      playerRating,
+      requestTime,
+    );
+
+    expect(candidate1.equals(candidate2)).toBe(true);
+  });
 });
