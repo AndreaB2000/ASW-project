@@ -13,17 +13,17 @@ describe('Matchmaking Controller', () => {
   const testOpponentUsername = 'opponentUser';
   const testMatchId = 'match123';
   
-  // mock a Socket object
-  const mockSocket = new Object() as unknown as Socket;
-  
-  beforeEach(() => {
-    jest.clearAllMocks();
-
-    (registerPlayerSocket as jest.Mock).mockImplementation(() => {});
-    jest.spyOn(matchmakingController, 'notifyNewMatch').mockImplementation(() => {return Promise.resolve();});
-  });
-  
   describe('requestMatch', () => {
+  
+    // mock a Socket object
+    const mockSocket = new Object() as unknown as Socket;
+    
+    beforeEach(() => {
+      jest.clearAllMocks();
+
+      (registerPlayerSocket as jest.Mock).mockImplementation(() => {});
+      jest.spyOn(matchmakingController, 'notifyNewMatch').mockImplementation(() => {return Promise.resolve();});
+    });
     
     it('should register the player socket', async () => {
       (findMatchOrQueue as jest.Mock).mockReturnValue(undefined);
