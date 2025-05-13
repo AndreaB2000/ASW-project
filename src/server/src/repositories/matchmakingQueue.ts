@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
-import { MatchmakingCandidate, MatchmakingCandidateFactory } from '../../src/models/MatchmakingCandidate';
+import {
+  MatchmakingCandidate,
+  MatchmakingCandidateFactory,
+} from '../../src/models/MatchmakingCandidate';
 import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/MatchmakingQueue';
 
 // Schema for individual matchmaking candidate documents
@@ -29,7 +32,14 @@ export async function getQueue(): Promise<MatchmakingQueue> {
   }
 
   candidates.map(candidate =>
-    queue.add(MatchmakingCandidateFactory.create(candidate.username, candidate.rating, candidate.requestTime)));
+    queue.add(
+      MatchmakingCandidateFactory.create(
+        candidate.username,
+        candidate.rating,
+        candidate.requestTime,
+      ),
+    ),
+  );
   return queue;
 }
 
@@ -48,8 +58,8 @@ export async function addCandidate(candidate: MatchmakingCandidate): Promise<voi
 /**
  * Removes a candidate from the matchmaking system
  */
-export async function removeCandidate(username: string): Promise<void> {
-  await DBMatchmakingCandidate.deleteOne({ username });
+export async function removeCandidate(candidate: MatchmakingCandidate): Promise<void> {
+  await DBMatchmakingCandidate.deleteOne({ username: candidate.username });
 }
 
 /**

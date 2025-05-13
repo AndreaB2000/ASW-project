@@ -92,7 +92,7 @@ describe('Matchmaking Queue Repository', () => {
         DBMatchmakingCandidate,
         'deleteOne',
         { acknowledged: true, deletedCount: 1 },
-        [testUsername],
+        [testCandidate],
       );
     });
   });
