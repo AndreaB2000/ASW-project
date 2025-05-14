@@ -1,4 +1,4 @@
-import { findMatchOrQueue } from '../services/matchmaking/matchmaking';
+import { findMatch } from '../services/matchmaking/matchmaking';
 import { emitUsername } from '../routes/root'
 import { getPlayerSocket, registerPlayerSocket } from '../sockets/socket';
 import { Socket } from 'socket.io';
@@ -8,7 +8,7 @@ export const requestMatch = async (playerSocket: Socket, username: string): Prom
 
     registerPlayerSocket(username, playerSocket);
 
-    const result = await findMatchOrQueue(username);
+    const result = await findMatch(username);
 
     if (!result) {
         return undefined;
