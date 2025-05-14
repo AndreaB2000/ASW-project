@@ -2,10 +2,10 @@ import {
   MatchmakingCandidateFactory,
 } from '../../../src/models/MatchmakingCandidate';
 import { RatingFactory } from '../../../src/models/Rating';
-import { isValidMatch, getMaxDiff } from '../../../src/services/matchmaking/opponentSelectionLogic';
+import { isValidMatch, getMaxDiff } from '../../../src/services/matchmaking/logic';
 import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 
-describe('opponentSelectionLogic', () => {
+describe('matchmaking logic', () => {
   const originalDate = global.Date;
   const mockNow = new Date('2023-01-01T12:00:00Z');
 
