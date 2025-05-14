@@ -1,7 +1,7 @@
 import { notifyNewMatch, requestMatch } from '../../src/controllers/matchmaking';
 import * as matchmakingController from '../../src/controllers/matchmaking';
 import { emitUsername } from '../../src/routes/root';
-import { findMatchOrQueue } from '../../src/services/matchmaking/matchmaking';
+import { findMatch } from '../../src/services/matchmaking/matchmaking';
 import { getIO, getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { Socket } from 'socket.io';
@@ -31,7 +31,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should register the player socket', async () => {
-      (findMatchOrQueue as jest.Mock).mockReturnValue(undefined);
+      (findMatch as jest.Mock).mockReturnValue(undefined);
 
       await requestMatch(mockSocket, testUsername);
 
@@ -39,7 +39,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should search for a match', async () => {
-      (findMatchOrQueue as jest.Mock).mockReturnValue([
+      (findMatch as jest.Mock).mockReturnValue([
         testUsername,
         testOpponentUsername,
         testMatchId,
@@ -47,11 +47,11 @@ describe('Matchmaking Controller', () => {
 
       await requestMatch(mockSocket, testUsername);
 
-      expect(findMatchOrQueue).toHaveBeenCalledWith(testUsername);
+      expect(findMatch).toHaveBeenCalledWith(testUsername);
     });
 
     it('should notify the new match if found', async () => {
-      (findMatchOrQueue as jest.Mock).mockReturnValue([
+      (findMatch as jest.Mock).mockReturnValue([
         testUsername,
         testOpponentUsername,
         testMatchId,
@@ -63,7 +63,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should return matchId if an opponent is found', async () => {
-      (findMatchOrQueue as jest.Mock).mockReturnValue([
+      (findMatch as jest.Mock).mockReturnValue([
         testUsername,
         testOpponentUsername,
         testMatchId,
@@ -75,7 +75,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should return undefined when no opponent is found', async () => {
-      (findMatchOrQueue as jest.Mock).mockReturnValue(undefined);
+      (findMatch as jest.Mock).mockReturnValue(undefined);
 
       const result = await requestMatch(mockSocket, testUsername);
 
