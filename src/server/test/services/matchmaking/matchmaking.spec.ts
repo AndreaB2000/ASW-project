@@ -7,7 +7,7 @@ import {
 } from '../../../src/services/matchmaking/matchmaking';
 
 import * as queueRepo from '../../../src/repositories/matchmakingQueue';
-import * as opponentLogic from '../../../src/services/matchmaking/opponentSelectionLogic';
+import * as opponentLogic from '../../../src/services/matchmaking/logic';
 import * as playerRepo from '../../../src/repositories/player';
 import * as matchService from '../../../src/services/match';
 import * as matchmakingService from '../../../src/services/matchmaking/matchmaking';
@@ -19,7 +19,7 @@ import { PlayerFactory } from '../../../src/models/Player';
 jest.mock('../../../src/repositories/matchmakingQueue');
 jest.mock('../../../src/repositories/player');
 jest.mock('../../../src/services/match');
-jest.mock('../../../src/services/matchmaking/opponentSelectionLogic');
+jest.mock('../../../src/services/matchmaking/logic');
 
 beforeEach(() => {
   jest.restoreAllMocks();
@@ -179,7 +179,9 @@ describe('findSuitableOpponent', () => {
 
 describe('findMatch', () => {
   it('calls findMatchAndCreate if no username is provided', async () => {
-    const findMatchAndCreateSpy = jest.spyOn(matchmakingService, 'findMatchAndCreate').mockResolvedValue(undefined);
+    const findMatchAndCreateSpy = jest
+      .spyOn(matchmakingService, 'findMatchAndCreate')
+      .mockResolvedValue(undefined);
 
     await findMatch();
 
@@ -188,7 +190,9 @@ describe('findMatch', () => {
 
   it('calls findMatchOrQueue with the provided username', async () => {
     const testUsername = 'testUser';
-    const findMatchOrQueueSpy = jest.spyOn(matchmakingService, 'findMatchOrQueue').mockResolvedValue(undefined);
+    const findMatchOrQueueSpy = jest
+      .spyOn(matchmakingService, 'findMatchOrQueue')
+      .mockResolvedValue(undefined);
 
     await findMatch(testUsername);
 

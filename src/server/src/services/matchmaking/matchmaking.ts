@@ -1,5 +1,5 @@
 import { getQueue, addCandidate, removeCandidate } from '../../repositories/matchmakingQueue';
-import { isValidMatch } from './opponentSelectionLogic';
+import { isValidMatch } from './logic';
 import {
   MatchmakingCandidate,
   MatchmakingCandidateFactory,
@@ -16,10 +16,10 @@ import { newMatch } from '../match';
  * @returns An object containing the usernames of the matched players and the match ID, or undefined if no match was found.
  */
 export const findMatch = async (
-  requestingUsername?: string
+  requestingUsername?: string,
 ): Promise<[string, string, string] | undefined> => {
   if (!requestingUsername) return await findMatchAndCreate();
-  else return await findMatchOrQueue(requestingUsername); 
+  else return await findMatchOrQueue(requestingUsername);
 };
 
 /**
