@@ -69,7 +69,7 @@ describe('Matchmaking Queue Repository', () => {
     it('should call findOneAndUpdate with correct parameters', async () => {
       const expectedWith = [
         { username: testUsername },
-        { $set: { requestTime: testDate } },
+        { $set: { rating: testRating, requestTime: testDate } },
         { upsert: true },
       ];
 
