@@ -4,13 +4,12 @@ import {
   MatchmakingCandidateFactory,
 } from '../../src/models/MatchmakingCandidate';
 import { MatchmakingQueue, MatchmakingQueueFactory } from '../../src/models/MatchmakingQueue';
+import { RatingFactory } from '../../src/models/Rating';
 
 // Schema for individual matchmaking candidate documents
 const candidateSchema = new mongoose.Schema<MatchmakingCandidate>({
   username: { type: String, required: true, unique: true },
-  rating: {
-    value: { type: Number, required: true },
-  },
+  rating: { type: Number, required: true},
   requestTime: { type: Date, required: true },
 });
 
@@ -31,14 +30,14 @@ export async function getQueue(): Promise<MatchmakingQueue> {
     return queue;
   }
 
-  candidates.map(candidate =>
+  candidates.forEach(candidate => {
     queue.add(
       MatchmakingCandidateFactory.create(
         candidate.username,
-        candidate.rating,
+        RatingFactory.create(candidate.rating.value),
         candidate.requestTime,
       ),
-    ),
+    )}
   );
   return queue;
 }
