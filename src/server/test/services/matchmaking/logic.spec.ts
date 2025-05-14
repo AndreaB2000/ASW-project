@@ -1,6 +1,4 @@
-import {
-  MatchmakingCandidateFactory,
-} from '../../../src/models/MatchmakingCandidate';
+import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { RatingFactory } from '../../../src/models/Rating';
 import { isValidMatch, getMaxDiff } from '../../../src/services/matchmaking/logic';
 import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
@@ -155,7 +153,6 @@ describe('matchmaking logic', () => {
 
       const result = await isValidMatch(candidate1, candidate2);
       expect(result).toBe(false);
-
     });
   });
 

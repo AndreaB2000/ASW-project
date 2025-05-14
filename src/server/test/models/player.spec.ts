@@ -4,9 +4,7 @@ import { describe, it, expect } from '@jest/globals';
 
 const startingRating: number = 1500;
 const PLAYER_NAME: string = 'Alice';
-const PLAYER_RATING: Rating = RatingFactory.create(
-  startingRating,
-);
+const PLAYER_RATING: Rating = RatingFactory.create(startingRating);
 
 describe('Player factory', () => {
   it('should create a new player', async () => {

@@ -22,10 +22,7 @@ export const createPlayer = async (player: Player): Promise<void> => {
 export const readAllPlayers = async (): Promise<Player[]> => {
   const players = await DBPlayer.find({}, 'username rating');
   return players.map(player =>
-    PlayerFactory.create(
-      player.username,
-      RatingFactory.create(player.rating.value),
-    ),
+    PlayerFactory.create(player.username, RatingFactory.create(player.rating.value)),
   );
 };
 
@@ -37,12 +34,7 @@ export const readAllPlayers = async (): Promise<Player[]> => {
 export const readPlayerByUsername = async (username: string): Promise<Player | null> => {
   const player = await DBPlayer.findOne({ username });
   return player
-    ? PlayerFactory.create(
-        player.username,
-        RatingFactory.create(
-          player.rating.value,
-        ),
-      )
+    ? PlayerFactory.create(player.username, RatingFactory.create(player.rating.value))
     : null;
 };
 
@@ -57,7 +49,7 @@ export const updatePlayerRating = async (username: string, rating: Rating): Prom
     { username },
     {
       $set: {
-        rating: { value: rating.value},
+        rating: { value: rating.value },
       },
     },
     { new: true },

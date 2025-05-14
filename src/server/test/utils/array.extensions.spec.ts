@@ -5,7 +5,7 @@ describe('Array.prototype.findAsync', () => {
   it('should return the first matching element', async () => {
     const arr = [1, 2, 3, 4, 5];
 
-    const result = await arr.findAsync(async (num) => {
+    const result = await arr.findAsync(async num => {
       return num % 2 === 0;
     });
 
@@ -15,7 +15,7 @@ describe('Array.prototype.findAsync', () => {
   it('should return undefined if no element matches', async () => {
     const arr = [1, 3, 5];
 
-    const result = await arr.findAsync(async (num) => {
+    const result = await arr.findAsync(async num => {
       return num % 2 === 0;
     });
 
@@ -25,8 +25,8 @@ describe('Array.prototype.findAsync', () => {
   it('should support async delays', async () => {
     const arr = [10, 20, 30];
 
-    const result = await arr.findAsync(async (num) => {
-      await new Promise((res) => setTimeout(res, 10)); // Simulate delay
+    const result = await arr.findAsync(async num => {
+      await new Promise(res => setTimeout(res, 10)); // Simulate delay
       return num === 20;
     });
 

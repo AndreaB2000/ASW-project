@@ -18,8 +18,7 @@ export class RatingFactory {
    * @param rating the rating value.
    * @returns the rating object.
    */
-  public static create = (rating?: number): Rating =>
-    new EloRating(rating);
+  public static create = (rating?: number): Rating => new EloRating(rating);
 }
 
 const DEFAULT_RATING = 1500;

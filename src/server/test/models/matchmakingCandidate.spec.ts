@@ -29,7 +29,10 @@ describe('matchmaking candidate factory', () => {
     const mockNow = new Date('2024-10-01T00:00:00Z');
     global.Date = jest.fn(() => mockNow) as any;
 
-    const candidate: MatchmakingCandidate = MatchmakingCandidateFactory.create(playerId, playerRating);
+    const candidate: MatchmakingCandidate = MatchmakingCandidateFactory.create(
+      playerId,
+      playerRating,
+    );
 
     expect(candidate).not.toBeNull();
     expect(candidate.username).toBe(playerId);
