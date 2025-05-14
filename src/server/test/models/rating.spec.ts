@@ -31,5 +31,4 @@ describe('Rating Model', () => {
 
     expect(rating.value).toBe(value);
   });
-
 });

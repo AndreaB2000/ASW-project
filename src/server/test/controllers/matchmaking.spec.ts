@@ -39,11 +39,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should search for a match', async () => {
-      (findMatch as jest.Mock).mockReturnValue([
-        testUsername,
-        testOpponentUsername,
-        testMatchId,
-      ]);
+      (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
 
       await requestMatch(mockSocket, testUsername);
 
@@ -51,11 +47,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should notify the new match if found', async () => {
-      (findMatch as jest.Mock).mockReturnValue([
-        testUsername,
-        testOpponentUsername,
-        testMatchId,
-      ]);
+      (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
 
       await requestMatch(mockSocket, testUsername);
 
@@ -63,11 +55,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should return matchId if an opponent is found', async () => {
-      (findMatch as jest.Mock).mockReturnValue([
-        testUsername,
-        testOpponentUsername,
-        testMatchId,
-      ]);
+      (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
 
       const result = await requestMatch(mockSocket, testUsername);
 

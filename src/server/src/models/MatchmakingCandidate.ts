@@ -1,4 +1,4 @@
-import { Rating } from "./Rating";
+import { Rating } from './Rating';
 
 export interface MatchmakingCandidate {
   /**
@@ -25,8 +25,11 @@ export interface MatchmakingCandidate {
 }
 
 export class MatchmakingCandidateFactory {
-  public static create = (username: string, rating: Rating, requestTime?: Date): MatchmakingCandidate =>
-    new MatchmakingCandidateImpl(username, rating, requestTime);
+  public static create = (
+    username: string,
+    rating: Rating,
+    requestTime?: Date,
+  ): MatchmakingCandidate => new MatchmakingCandidateImpl(username, rating, requestTime);
 }
 
 class MatchmakingCandidateImpl implements MatchmakingCandidate {

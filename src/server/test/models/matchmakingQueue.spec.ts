@@ -123,11 +123,7 @@ describe('Matchmaking Queue', () => {
 
     const candidates: MatchmakingCandidate[] = [candidate1, candidate2, candidate3];
     const queue: MatchmakingQueue = MatchmakingQueueFactory.create(candidates);
-    const expectedOrder: MatchmakingCandidate[] = [
-      candidate3,
-      candidate1,
-      candidate2,
-    ];
+    const expectedOrder: MatchmakingCandidate[] = [candidate3, candidate1, candidate2];
 
     expect(Array.from(queue)).toEqual(expectedOrder);
   });

@@ -1,4 +1,4 @@
-import { createMatchIfPossible } from "./matchmaking";
+import { createMatchIfPossible } from './matchmaking';
 
 const MATCHMAKING_ROUTINE_INTERVAL = 5000;
 
@@ -6,8 +6,8 @@ const MATCHMAKING_ROUTINE_INTERVAL = 5000;
  * Starts the server routines.
  */
 export const startRoutines = () => {
-    setRoutine(createMatchIfPossible, MATCHMAKING_ROUTINE_INTERVAL);
-}
+  setRoutine(createMatchIfPossible, MATCHMAKING_ROUTINE_INTERVAL);
+};
 
 /**
  * Sets a routine to run at a specified interval.
@@ -15,7 +15,7 @@ export const startRoutines = () => {
  * @param interval The interval in milliseconds.
  */
 export const setRoutine = (task: () => Promise<void>, interval: number) => {
-    setInterval(async () => {
-        await task();
-    }, interval);
+  setInterval(async () => {
+    await task();
+  }, interval);
 };

@@ -7,7 +7,10 @@ import { MatchmakingCandidate } from '../../models/MatchmakingCandidate';
  * @param candidate2 The second candidate.
  * @returns True if the candidates are a valid match, false otherwise.
  */
-export const isValidMatch = async (candidate1: MatchmakingCandidate, candidate2: MatchmakingCandidate): Promise<boolean> => {
+export const isValidMatch = async (
+  candidate1: MatchmakingCandidate,
+  candidate2: MatchmakingCandidate,
+): Promise<boolean> => {
   if (candidate1.equals(candidate2)) {
     return false; // Players cannot match with themselves
   }
@@ -34,6 +37,6 @@ export const getMaxDiff = (requestTime: Date): number => {
   // add 100 to baseDiff for every 10 seconds
   const diffInSeconds = Math.floor(timeDiff / 1000);
   const maxDiff = Math.floor(diffInSeconds / 10) * 100 + baseDiff;
-  
+
   return maxDiff;
 };

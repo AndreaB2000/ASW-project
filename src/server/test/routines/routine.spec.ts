@@ -18,9 +18,9 @@ describe('routines', () => {
 
   describe('setRoutine', () => {
     it('should call the task every interval', () => {
-      const task = jest.fn( async (): Promise<void> => {
+      const task = jest.fn(async (): Promise<void> => {
         // Simulate some asynchronous work
-        return new Promise((resolve) => setTimeout(resolve, 100));
+        return new Promise(resolve => setTimeout(resolve, 100));
       });
       setRoutine(task, 5000);
 
