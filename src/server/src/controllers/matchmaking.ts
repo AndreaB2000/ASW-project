@@ -22,12 +22,8 @@ export const requestMatch = async (playerSocket: Socket, username: string): Prom
 
 // TODO: MOVE THIS TO MATCH CONTROLLER
 export const notifyNewMatch = async (usernameA: string, usernameB: string, matchId: string): Promise<void> => {
-    [usernameA, usernameB].forEach((username) => {
+    [usernameA, usernameB].forEach(username => {
         const socket = getPlayerSocket(username);
-        if (!socket) {
-            console.error(`Socket not found for user: ${username}`);
-            return;
-        }
         socket.join(matchId);
         emitUsername(username, 'matchFound', matchId);
     });
