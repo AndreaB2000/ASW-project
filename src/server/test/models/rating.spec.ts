@@ -9,6 +9,13 @@ describe('Rating factory', () => {
 
     expect(rating).not.toBeNull();
   });
+
+  it('should create a new default rating', async () => {
+    const rating: Rating = RatingFactory.create();
+
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(1500);
+  });
 });
 
 describe('Rating Model', () => {
