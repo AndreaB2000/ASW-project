@@ -12,7 +12,7 @@ export const root = (socket: Socket) => {
   // If this is out of the function, io is null
   const io = ioHandler.getIO();
 
-  io.use(authenticateTokenSocket);
+  // io.use(authenticateTokenSocket);
 
   console.log('User connected');
 
