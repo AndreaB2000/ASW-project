@@ -50,7 +50,7 @@ export async function addCandidate(candidate: MatchmakingCandidate): Promise<voi
   // Use findOneAndUpdate with upsert to handle the case where the user is already in the queue
   await DBMatchmakingCandidate.findOneAndUpdate(
     { username: candidate.username },
-    { $set: { requestTime: candidate.requestTime } },
+    { $set: { rating: candidate.rating, requestTime: candidate.requestTime } },
     { upsert: true },
   );
 }
