@@ -7,6 +7,7 @@ const cors = require('cors');
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
 import { validationHandler } from './middlewares/validationHandler';
+import { startRoutines } from './routines/routine';
 
 // Routes
 import { account } from './routes/account';
@@ -16,6 +17,9 @@ import { match } from './routes/match';
 export const app = express();
 
 connectDB();
+
+// Start background routines
+startRoutines();
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);

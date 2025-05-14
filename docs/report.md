@@ -464,6 +464,7 @@ If a player disconnects from the queue, the server will remove them from the que
 
 classDiagram
     class MatchmakingRoute
+    class MatchmakingRoutine
     class MatchmakingController
     class MatchmakingService
     class Player
@@ -473,6 +474,8 @@ classDiagram
     class MatchmakingQueue
     class MatchmakingCandidate
 
+    MatchmakingRoutine --> MatchmakingController
+    MatchmakingRoutine --> MatchmakingService
     MatchmakingRoute --> MatchmakingController
     MatchmakingController --> MatchmakingService
     MatchmakingService --> Player
