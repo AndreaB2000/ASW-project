@@ -23,12 +23,18 @@ describe('Matchmaking Queue Repository', () => {
   });
 
   describe('getQueue', () => {
-    it('should call find on DBMatchmakingCandidate', async () => {
-      const mockCandidates = [
-        { username: 'user1', requestTime: new Date() },
-        { username: 'user2', requestTime: new Date() },
-      ];
+    const usernameA = 'userA';
+    const usernameB = 'userB';
+    const dateA = new Date('2023-10-01T00:00:00Z');
+    const dateB = new Date('2023-10-01T00:00:00Z');
+    const ratingA = RatingFactory.create(1500);
+    const ratingB = RatingFactory.create(1600);
+    const mockCandidates = [
+      { username: usernameA, rating: ratingA, requestTime: dateA },
+      { username: usernameB, rating: ratingB, requestTime: dateB },
+    ];
 
+    it('should call find on DBMatchmakingCandidate', async () => {
       await checkCalledWith(getQueue, [], DBMatchmakingCandidate, 'find', mockCandidates, []);
     });
 
@@ -40,13 +46,6 @@ describe('Matchmaking Queue Repository', () => {
     });
 
     it('should map DB candidates to queue entries', async () => {
-      const date1 = new Date();
-      const date2 = new Date();
-      const mockCandidates = [
-        { username: 'user1', requestTime: date1 },
-        { username: 'user2', requestTime: date2 },
-      ];
-
       const mockFind = jest.fn().mockReturnValue(mockCandidates);
 
       jest.spyOn(DBMatchmakingCandidate, 'find').mockImplementation(mockFind as any);
@@ -58,10 +57,12 @@ describe('Matchmaking Queue Repository', () => {
       // Convert queue to array since it's an Iterable
       const queueArray = Array.from(queue);
       expect(queue.size).toBe(2);
-      expect(queueArray[0].username).toBe('user1');
-      expect(queueArray[0].requestTime).toEqual(date1);
-      expect(queueArray[1].username).toBe('user2');
-      expect(queueArray[1].requestTime).toEqual(date2);
+      expect(queueArray[0].username).toBe(usernameA);
+      expect(queueArray[0].rating).toEqual(ratingA);
+      expect(queueArray[0].requestTime).toEqual(dateA);
+      expect(queueArray[1].username).toBe(usernameB);
+      expect(queueArray[1].rating).toEqual(ratingB);
+      expect(queueArray[1].requestTime).toEqual(dateB);
     });
   });
 
