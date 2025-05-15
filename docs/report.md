@@ -36,6 +36,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [API](#api)
       - [Game AI](#game-ai)
   - [Implementation](#implementation)
+    - [Game AI](#game-ai-1)
   - [Technologies](#technologies)
   - [Code](#code)
   - [Tests](#tests)
@@ -566,13 +567,15 @@ The matchmaking algorithm matches players with similar Elo ratings.
 
 #### Game AI
 
-The game AI bot is implemented using [Tau Prolog](https://tau-prolog.org/), a Prolog interpreter for JavaScript.
-
 The AI is designed to play the game by selecting the best move based on the current state of the game board.
 
 The best move is determined by evaluating all possible moves and selecting the one that maximizes the number of grains in the AI player's piles.
 
 ## Implementation
+
+### Game AI
+
+The game AI is implemented using [Tau Prolog](https://tau-prolog.org/), a Prolog interpreter for JavaScript.
 
 ## Technologies
 
