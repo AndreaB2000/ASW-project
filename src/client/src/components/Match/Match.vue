@@ -6,11 +6,11 @@ import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useUserStore } from '@/stores/userStore';
 import { useMatchStore } from '@/stores/matchStore';
 import { GRID_SIZE } from '@/utils/match';
+import { useRoute, type LocationQueryValue } from 'vue-router';
 
-// Define the matchId prop
-const props = defineProps<{
-  matchId: string; // Change to number if your matchId is numeric
-}>();
+function unpackQueryString(query: LocationQueryValue | LocationQueryValue[]): string {
+  return Array.isArray(query) ? query[0] || '' : query || '';
+}
 
 const user = useUserStore();
 const match = useMatchStore();
@@ -27,10 +27,9 @@ function getMatch(matchId: string) {
   });
 }
 
-// socket.on('matchStart', (matchId: string) => {
-  match.id = props.matchId;
-  getMatch(props.matchId);
-// });
+const route = useRoute();
+match.id = unpackQueryString(route.query.id); // Restituisce sempre stringa
+getMatch(match.id);
 
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
@@ -46,7 +45,13 @@ socket.on('over', (winner: string) => {
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
     console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
-    if (document.getElementById(`${x}-${y}`)?.classList.contains(user.username)) {
+    console.log(document.getElementById(`${x}-${y}`));
+    console.log(document.getElementById(`${x}-${y}`)?.classList);
+    console.log(user.username);
+    const p: string =
+      user.username == match.player1 ? 'player1' : user.username == match.player2 ? 'player2' : '';
+    if (document.getElementById(`${x}-${y}`)?.classList.contains(p)) {
+      console.log('Emitting move');
       socket.emit('addMove', match.id, user.username, x, y);
     }
   }
@@ -63,7 +68,6 @@ function handleButtonClick(x: number, y: number) {
     '? -> player2',
   );
 }
-
 </script>
 
 <template>
