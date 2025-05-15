@@ -7,14 +7,13 @@ const username = ref<string>('');
 
 // Emit with the username value
 function enterQueue() {
-    console.log('enterQueue', username.value);
-    socket.emit('requestMatch', { username: username.value });
+  console.log('enterQueue', username.value);
+  socket.emit('requestMatch', { username: username.value });
 }
 
 // Listen for match found
-socket.on('matchFound', (data: any) => {
-    console.log(data);
-    router.push({ name: 'match', params: { matchId: data.gameId } });
+socket.on('matchFound', (matchId: any) => {
+  router.push({ path: '/match', query: { id: matchId } });
 });
 </script>
 

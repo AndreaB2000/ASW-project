@@ -2,7 +2,6 @@ import { findMatch } from '../services/matchmaking/matchmaking';
 import { emitUsername } from '../routes/root';
 import { getPlayerSocket, registerPlayerSocket } from '../sockets/socket';
 import { Socket } from 'socket.io';
-import { getIO } from '../sockets/socket';
 
 export const requestMatch = async (
   playerSocket: Socket,
@@ -33,10 +32,4 @@ export const notifyNewMatch = async (
     socket.join(matchId);
     emitUsername(username, 'matchFound', matchId);
   });
-
-  // If this is out of the function, io is null TODO REMOVE THIS SHOULD NOT BE NECESSARY
-  const io = getIO();
-
-  // this will not be necessary TODO REMOVE
-  io.to(matchId).emit('matchStart', matchId);
 };
