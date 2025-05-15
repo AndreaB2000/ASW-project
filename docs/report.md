@@ -34,6 +34,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking Algorithm](#matchmaking-algorithm)
       - [Match](#match)
         - [API](#api)
+      - [Game AI](#game-ai)
   - [Implementation](#implementation)
   - [Technologies](#technologies)
   - [Code](#code)
@@ -562,6 +563,14 @@ The matchmaking algorithm matches players with similar Elo ratings.
     - 403 Forbidden - `{}` when the player can't delete that match
     - 404 Not found - `{}` when the provided match ID does not exist
     - 500 Internal server error - `{}` when a generic error occurs
+
+#### Game AI
+
+The game AI bot is implemented using [Tau Prolog](https://tau-prolog.org/), a Prolog interpreter for JavaScript.
+
+The AI is designed to play the game by selecting the best move based on the current state of the game board.
+
+The best move is determined by evaluating all possible moves and selecting the one that maximizes the number of grains in the AI player's piles.
 
 ## Implementation
 
