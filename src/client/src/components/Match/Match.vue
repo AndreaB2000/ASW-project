@@ -45,9 +45,6 @@ socket.on('over', (winner: string) => {
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
     console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
-    console.log(document.getElementById(`${x}-${y}`));
-    console.log(document.getElementById(`${x}-${y}`)?.classList);
-    console.log(user.username);
     const p: string =
       user.username == match.player1 ? 'player1' : user.username == match.player2 ? 'player2' : '';
     if (document.getElementById(`${x}-${y}`)?.classList.contains(p)) {
