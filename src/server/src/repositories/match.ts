@@ -17,7 +17,7 @@ export class MatchRepository {
   }
 
   async findMatch(matchId: string): Promise<Match | null> {
-    const match = await DBMatch.findById(new mongoose.Types.ObjectId(matchId));
+    const match = await DBMatch.findById(matchId);
     if (match) {
       return matchFactory.createFromObject(match);
     } else {

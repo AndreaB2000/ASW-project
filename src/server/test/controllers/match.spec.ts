@@ -1,238 +1,90 @@
-import { jest, describe, it, expect, beforeEach } from '@jest/globals';
-import request from 'supertest';
-import express from 'express';
-import { addMove, deleteMatch, getMatch, getMatchesByPlayer } from '../../src/controllers/match';
-import * as matchService from '../../src/services/match';
+import { describe, it, expect, jest } from '@jest/globals';
+import { beforeEach } from 'node:test';
 import * as moveFactory from '../../src/models/Move';
+import { Move } from '../../src/models/Move';
+import { addMove } from '../../src/controllers/match';
+import * as matchService from '../../src/services/match';
+import * as root from '../../src/routes/root';
+import { Match } from '../../src/models/Match';
 import * as matchFactory from '../../src/models/Match';
+import * as boardFactory from '../../src/models/Board';
+import * as pileFactory from '../../src/models/Pile';
 
-const app = express();
-app.use(express.json());
-app.put('/match/:id/move', addMove);
-app.get('/match/:id', getMatch);
-app.get('/match/byplayer/:player', getMatchesByPlayer);
-app.delete('/match/:id/delete', deleteMatch);
-
-jest.mock('../../src/services/match', () => ({
-  addMove: jest.fn(),
-  getMatch: jest.fn(),
-  getMatchesByPlayer: jest.fn(),
-  deleteMatch: jest.fn(),
-}));
-
-const MATCH_ID = 'testid';
-const OTHER_ID = 'testid';
-const PLAYER_IN_TURN = 'player1';
-const PLAYER_NOT_IN_TURN = 'player2';
-
-describe('PUT /match/:id/move', () => {
-  const ROUTE = `/match/${MATCH_ID}/move`;
-  const IN_TURN_BODY = { movingPlayer: PLAYER_IN_TURN, x: 1, y: 2 };
-  const NOT_IN_TURN_BODY = { movingPlayer: PLAYER_NOT_IN_TURN, x: 1, y: 2 };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should return 400 if movingPlayer is missing', async () => {
-    const res = await request(app).put(ROUTE).send({ x: 1, y: 2 });
-
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
-    expect(matchService.addMove).not.toHaveBeenCalled();
-  });
-
-  it('should return 400 if x coordinate is missing', async () => {
-    const res = await request(app).put(ROUTE).send({ movingPlayer: PLAYER_IN_TURN, y: 2 });
-
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
-    expect(matchService.addMove).not.toHaveBeenCalled();
-  });
-
-  it('should return 400 if y coordinate is missing', async () => {
-    const res = await request(app).put(ROUTE).send({ movingPlayer: PLAYER_IN_TURN, x: 1 });
-
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: 'A player and some coordinates are required' });
-    expect(matchService.addMove).not.toHaveBeenCalled();
-  });
-
-  it("should return 400 if the moving player can't make a move", async () => {
-    jest.mocked(matchService.addMove).mockResolvedValue(false);
-
-    const res = await request(app).put(ROUTE).send(NOT_IN_TURN_BODY);
-
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ message: "This player can't make a move" });
-    expect(matchService.addMove).toHaveBeenCalled();
-  });
-
-  it('should return 500 if an error occurs', async () => {
-    jest.mocked(matchService.addMove).mockRejectedValue(new Error('Generic error'));
-
-    const res = await request(app).put(ROUTE).send(IN_TURN_BODY);
-
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
-    expect(res.body.error).toBeDefined();
-  });
-
-  it('should call service.addMove with correct parameters', async () => {
-    jest.mocked(matchService.addMove).mockResolvedValue(true);
-
-    await request(app).put(ROUTE).send(IN_TURN_BODY);
-
-    expect(matchService.addMove).toHaveBeenCalledWith(
-      MATCH_ID,
-      PLAYER_IN_TURN,
-      moveFactory.create(1, 2),
+describe('Match controller', () => {
+  describe('addMove', () => {
+    const testId: string = '507f1f77bcf86cd799439011';
+    const player1: string = 'Alice';
+    const player2: string = 'Bob';
+    const now = new Date();
+    const move: Move = moveFactory.create(1, 2);
+    const mockMatch: Match = matchFactory.createWithDefaultInitialState(player1, player2, now);
+    const mockMatchWithWinner: Match = matchFactory.createWithCustomInitialState(
+      player1,
+      player2,
+      now,
+      boardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: pileFactory.create(player1, 1) }]),
     );
-  });
 
-  it('should return 200 if move is added successfully', async () => {
-    jest.mocked(matchService.addMove).mockResolvedValue(true);
-
-    const res = await request(app).put(ROUTE).send(IN_TURN_BODY);
-
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual({ message: 'Move added successfully' });
-  });
-});
-
-describe('getMatch', () => {
-  const ROUTE = `/match/${MATCH_ID}`;
-  const DATE = new Date();
-  const TEST_MATCH = matchFactory.createWithDefaultInitialState(
-    PLAYER_IN_TURN,
-    PLAYER_NOT_IN_TURN,
-    DATE,
-  );
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should return 404 if the given ID does not exist', async () => {
-    jest.mocked(matchService.getMatch).mockResolvedValue(null);
-
-    const res = await request(app).get(ROUTE);
-
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ message: 'This match does not exist' });
-    expect(matchService.getMatch).toHaveBeenCalled();
-  });
-
-  it('should return 500 if an error occurs', async () => {
-    jest.mocked(matchService.getMatch).mockRejectedValue(new Error('Generic error'));
-
-    const res = await request(app).get(ROUTE);
-
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
-    expect(res.body.error).toBeDefined();
-  });
-
-  it('should call matchService.getMatch with correct parameters', async () => {
-    jest.mocked(matchService.getMatch).mockResolvedValue(TEST_MATCH);
-
-    await request(app).get(ROUTE);
-
-    expect(matchService.getMatch).toHaveBeenCalledWith(MATCH_ID);
-  });
-
-  it('should return 200 and the match if it exists', async () => {
-    jest.mocked(matchService.getMatch).mockResolvedValue(TEST_MATCH);
-
-    const res = await request(app).get(ROUTE);
-
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual({
-      id: MATCH_ID,
-      ...TEST_MATCH,
-      // Object must be converted in strings to make the tests pass
-      creationDate: TEST_MATCH.creationDate.toISOString(),
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
-  });
-});
 
-describe('getMatchesByPlayer', () => {
-  const ROUTE = `/match/byplayer/${PLAYER_IN_TURN}`;
-  const LIST_OF_IDS = [MATCH_ID, OTHER_ID];
+    it("should call addMove and emit 'move' message if it is player1's turn", async () => {
+      const spyAddMove = jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
+      const spyGetMatch = jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatch);
+      const spyEmitToRoom = jest.spyOn(root, 'emitToRoom').mockImplementation(() => {});
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+      await addMove(testId, player1, move);
 
-  it('should return 500 if an error occurs', async () => {
-    jest.mocked(matchService.getMatchesByPlayer).mockRejectedValue(new Error('Generic error'));
+      expect(spyAddMove).toHaveBeenCalledWith(testId, player1, move);
+      expect(spyGetMatch).toHaveBeenCalledWith(testId);
+      expect(spyEmitToRoom).toHaveBeenCalledWith(testId, 'move', player1, move.x, move.y);
+    });
 
-    const res = await request(app).get(ROUTE);
+    it('should call emitToRoom twice if there is a winner', async () => {
+      jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
+      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
+      const spyEmitToRoom = jest
+        .spyOn(root, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
 
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
-    expect(res.body.error).toBeDefined();
-  });
+      await addMove(testId, player1, move);
 
-  it('should call matchService.getMatchesByPlayer with correct parameters', async () => {
-    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(LIST_OF_IDS);
+      expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
+      expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player1, move.x, move.y);
+      expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player1);
+    });
 
-    await request(app).get(ROUTE);
+    it('should call emitToRoom only once if there is no winner', async () => {
+      jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
+      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatch);
+      const spyEmitToRoom = jest
+        .spyOn(root, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
 
-    expect(matchService.getMatchesByPlayer).toHaveBeenCalledWith(PLAYER_IN_TURN);
-  });
+      await addMove(testId, player1, move);
 
-  it('should return 200 and a list of matchIDs relative to the given player', async () => {
-    jest.mocked(matchService.getMatchesByPlayer).mockResolvedValue(LIST_OF_IDS);
+      expect(spyEmitToRoom).toHaveBeenCalledTimes(1);
+      expect(spyEmitToRoom).toHaveBeenCalledWith(testId, 'move', player1, move.x, move.y);
+    });
 
-    const res = await request(app).get(ROUTE);
+    it('should not call emitToRoom or getMatch if the move was invalid', async () => {
+      jest.spyOn(matchService, 'addMove').mockResolvedValue(false);
+      const spyGetMatch = jest
+        .spyOn(matchService, 'getMatch')
+        .mockResolvedValue(mockMatch)
+        .mockClear();
+      const spyEmitToRoom = jest
+        .spyOn(root, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
 
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual({ player: PLAYER_IN_TURN, matchIDs: LIST_OF_IDS });
-  });
-});
+      await addMove(testId, player1, move);
 
-describe('deleteMatch', () => {
-  const ROUTE = `/match/${MATCH_ID}/delete`;
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should return 404 if the given ID does not exist', async () => {
-    jest.mocked(matchService.deleteMatch).mockResolvedValue(false);
-
-    const res = await request(app).delete(ROUTE);
-
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ message: 'This match does not exist' });
-    expect(matchService.deleteMatch).toHaveBeenCalled();
-  });
-
-  it('should return 500 if an error occurs', async () => {
-    jest.mocked(matchService.deleteMatch).mockRejectedValue(new Error('Generic error'));
-
-    const res = await request(app).delete(ROUTE);
-
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('Internal server error');
-    expect(res.body.error).toBeDefined();
-  });
-
-  it('should call matchService.deleteMatch with correct parameters', async () => {
-    jest.mocked(matchService.deleteMatch).mockResolvedValue(true);
-
-    await request(app).delete(ROUTE);
-
-    expect(matchService.deleteMatch).toHaveBeenCalledWith(MATCH_ID);
-  });
-
-  it('should return 200 and the match if it exists', async () => {
-    jest.mocked(matchService.deleteMatch).mockResolvedValue(true);
-
-    const res = await request(app).delete(ROUTE);
-
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual({ message: 'The match has been successfully deleted' });
+      expect(spyGetMatch).not.toHaveBeenCalled();
+      expect(spyEmitToRoom).not.toHaveBeenCalled();
+    });
   });
 });
