@@ -31,7 +31,8 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
-        - [Matchmaking Algorithm](#matchmaking-algorithm)
+        - [Bot Matchmaking](#bot-matchmaking)
+          - [Bot Matchmaking sequence diagram](#bot-matchmaking-sequence-diagram)
       - [Match](#match)
         - [API](#api)
       - [Game AI](#game-ai)
@@ -494,23 +495,38 @@ classDiagram
 
 ```mermaid
 sequenceDiagram
-   participant Client1
+   participant ClientA
    participant Server
-   participant Client2
+   participant ClientB
 
-   Client1->>Server: emit('requestMatch', { playerId: playerId1 })
+   ClientB->>Server: emit('requestMatch', { username: usernameA })
    Note over Server: playerId1 is added to the queue
 
-   Client2->>Server: emit('requestMatch', { playerId: playerId2 })
+   ClientB->>Server: emit('requestMatch', { username: usernameB })
 
    Note over Server: playerId1 is removed from the queue
-   Server-->>Client1: emit('matchFound', { matchId })
-   Server-->>Client2: emit('matchFound', { matchId })
+   Server-->>ClientA: emit('matchFound', { matchId })
+   Server-->>ClientB: emit('matchFound', { matchId })
 ```
 
-##### Matchmaking Algorithm
+##### Bot Matchmaking
 
-The matchmaking algorithm matches players with similar Elo ratings.
+The matchmaking system will also allow players to play against a bot.
+
+This operation is a lot simpler than the matchmaking between players.
+
+###### Bot Matchmaking sequence diagram
+
+```mermaid
+sequenceDiagram
+   participant Client
+   participant Server
+
+   Client->>Server: emit('requestMatchWithBot', { username: username })
+
+   Note over Server: creates a match with the bot
+   Server-->>Client: emit('matchFound', { matchId })
+```
 
 #### Match
 
