@@ -1,5 +1,4 @@
 import { findMatch } from '../services/matchmaking/matchmaking';
-import { emitUsername } from '../routes/root';
 import { getPlayerSocket, registerPlayerSocket } from '../sockets/socket';
 import { Socket } from 'socket.io';
 import { newMatch } from '../services/match';
