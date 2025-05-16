@@ -1,14 +1,16 @@
-import { notifyNewMatch, requestMatch } from '../../src/controllers/matchmaking';
+import { notifyNewMatch, requestMatch, requestMatchWithBot } from '../../src/controllers/matchmaking';
 import * as matchmakingController from '../../src/controllers/matchmaking';
 import { emitUsername } from '../../src/routes/root';
 import { findMatch } from '../../src/services/matchmaking/matchmaking';
 import { getIO, getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { Socket } from 'socket.io';
+import { newMatch } from '../../src/services/match';
 
 jest.mock('../../src/sockets/socket');
 jest.mock('../../src/services/matchmaking/matchmaking');
 jest.mock('../../src/routes/root');
+jest.mock('../../src/services/match');
 
 beforeEach(() => {
   jest.restoreAllMocks();
@@ -53,36 +55,82 @@ describe('Matchmaking Controller', () => {
 
       expect(notifyNewMatch).toHaveBeenCalledWith(testUsername, testOpponentUsername, testMatchId);
     });
+  });
+  
+  describe('requestMatchWithBot', () => {
+    // mock a Socket object
+    const mockSocket = new Object() as unknown as Socket;
+    const mockEmit = jest.fn();
+    const mockJoin = jest.fn();
+    const testUsername = 'testUser';
+    const testMatchId = 'botMatch123';
+    
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (registerPlayerSocket as jest.Mock).mockImplementation(() => {});
+      (newMatch as jest.Mock).mockReturnValue(testMatchId);
+      (getPlayerSocket as jest.Mock).mockReturnValue({ 
+        join: mockJoin, 
+        emit: mockEmit 
+      });
+      
+      const mockIO = { to: jest.fn().mockReturnThis(), emit: mockEmit };
+      (getIO as jest.Mock).mockReturnValue(mockIO);
+    });
 
-    it('should return matchId if an opponent is found', async () => {
-      (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
+    it('should register the player socket', async () => {
+      await requestMatchWithBot(mockSocket, testUsername);
+      
+      expect(registerPlayerSocket).toHaveBeenCalledWith(testUsername, mockSocket);
+    });
 
-      const result = await requestMatch(mockSocket, testUsername);
+    it('should create a new match with the bot', async () => {
+      await requestMatchWithBot(mockSocket, testUsername);
+      
+      expect(newMatch).toHaveBeenCalledWith(testUsername, 'bot', expect.any(Date));
+    });
 
+    it('should notify the player about the match', async () => {
+      await requestMatchWithBot(mockSocket, testUsername);
+      
+      expect(getPlayerSocket).toHaveBeenCalledWith(testUsername);
+      expect(mockJoin).toHaveBeenCalledWith(testMatchId);
+      expect(mockEmit).toHaveBeenCalledWith('matchFound', testMatchId);
+    });
+
+    it('should notify about match start', async () => {
+      const mockIO = { to: jest.fn().mockReturnThis(), emit: mockEmit };
+      (getIO as jest.Mock).mockReturnValue(mockIO);
+      
+      await requestMatchWithBot(mockSocket, testUsername);
+      
+      expect(getIO).toHaveBeenCalled();
+      expect(mockIO.to).toHaveBeenCalledWith(testMatchId);
+      expect(mockEmit).toHaveBeenCalledWith('matchStart', testMatchId);
+    });
+
+    it('should return the match ID', async () => {
+      const result = await requestMatchWithBot(mockSocket, testUsername);
+      
       expect(result).toBe(testMatchId);
     });
-
-    it('should return undefined when no opponent is found', async () => {
-      (findMatch as jest.Mock).mockReturnValue(undefined);
-
-      const result = await requestMatch(mockSocket, testUsername);
-
-      expect(result).toBeUndefined();
-    });
   });
+
 
   describe('notifyNewMatch', () => {
     const mockEmit = jest.fn();
     const mockJoinA = jest.fn();
     const mockJoinB = jest.fn();
+    const mockEmitA = jest.fn();
+    const mockEmitB = jest.fn();
     const playerAUsername = 'playerA';
     const playerBUsername = 'playerB';
     const matchId = 'match123';
 
     it('should join both users to the match and emit matchFound and matchStart', async () => {
       (getPlayerSocket as jest.Mock).mockImplementation(username => {
-        if (username === playerAUsername) return { join: mockJoinA };
-        if (username === playerBUsername) return { join: mockJoinB };
+        if (username === playerAUsername) return { join: mockJoinA, emit: mockEmitA };
+        if (username === playerBUsername) return { join: mockJoinB, emit: mockEmitB };
         return null;
       });
 
@@ -96,8 +144,8 @@ describe('Matchmaking Controller', () => {
 
       expect(mockJoinA).toHaveBeenCalledWith(matchId);
       expect(mockJoinB).toHaveBeenCalledWith(matchId);
-      expect(emitUsername).toHaveBeenCalledWith(playerAUsername, 'matchFound', matchId);
-      expect(emitUsername).toHaveBeenCalledWith(playerBUsername, 'matchFound', matchId);
+      expect(mockEmitA).toHaveBeenCalledWith('matchFound', matchId);
+      expect(mockEmitB).toHaveBeenCalledWith('matchFound', matchId);
 
       expect(getIO).toHaveBeenCalled();
       expect(mockIO.to).toHaveBeenCalledWith(matchId);
