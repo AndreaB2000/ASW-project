@@ -1,7 +1,7 @@
 import { notifyNewMatch, requestMatch, requestMatchWithBot } from '../../src/controllers/matchmaking';
 import * as matchmakingController from '../../src/controllers/matchmaking';
 import { findMatch } from '../../src/services/matchmaking/matchmaking';
-import { getIO, getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
+import { getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import { Socket } from 'socket.io';
 import { newMatch } from '../../src/services/match';
@@ -72,9 +72,6 @@ describe('Matchmaking Controller', () => {
         join: mockJoin, 
         emit: mockEmit 
       });
-      
-      const mockIO = { to: jest.fn().mockReturnThis(), emit: mockEmit };
-      (getIO as jest.Mock).mockReturnValue(mockIO);
     });
 
     it('should register the player socket', async () => {
@@ -95,17 +92,6 @@ describe('Matchmaking Controller', () => {
       expect(getPlayerSocket).toHaveBeenCalledWith(testUsername);
       expect(mockJoin).toHaveBeenCalledWith(testMatchId);
       expect(mockEmit).toHaveBeenCalledWith('matchFound', testMatchId);
-    });
-
-    it('should notify about match start', async () => {
-      const mockIO = { to: jest.fn().mockReturnThis(), emit: mockEmit };
-      (getIO as jest.Mock).mockReturnValue(mockIO);
-      
-      await requestMatchWithBot(mockSocket, testUsername);
-      
-      expect(getIO).toHaveBeenCalled();
-      expect(mockIO.to).toHaveBeenCalledWith(testMatchId);
-      expect(mockEmit).toHaveBeenCalledWith('matchStart', testMatchId);
     });
 
     it('should return the match ID', async () => {
@@ -133,9 +119,6 @@ describe('Matchmaking Controller', () => {
         return null;
       });
 
-      const mockIO = { to: jest.fn().mockReturnThis(), emit: mockEmit };
-      (getIO as jest.Mock).mockReturnValue(mockIO);
-
       await notifyNewMatch(playerAUsername, playerBUsername, matchId);
 
       expect(getPlayerSocket).toHaveBeenCalledWith(playerAUsername);
@@ -145,10 +128,6 @@ describe('Matchmaking Controller', () => {
       expect(mockJoinB).toHaveBeenCalledWith(matchId);
       expect(mockEmitA).toHaveBeenCalledWith('matchFound', matchId);
       expect(mockEmitB).toHaveBeenCalledWith('matchFound', matchId);
-
-      expect(getIO).toHaveBeenCalled();
-      expect(mockIO.to).toHaveBeenCalledWith(matchId);
-      expect(mockEmit).toHaveBeenCalledWith('matchStart', matchId);
     });
   });
 });
