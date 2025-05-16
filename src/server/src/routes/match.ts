@@ -1,9 +1,19 @@
-import { Router } from 'express';
-import * as controller from '../controllers/match';
+import { Socket } from 'socket.io/dist';
+import * as matchController from '../controllers/match';
+import * as matchService from '../services/match';
+import * as moveFactory from '../models/Move';
 
-export const match = Router();
+export const match = (socket: Socket) => {
+  socket.on('getMatch', async (matchId, callback) => {
+    try {
+      const match = await matchService.getMatch(matchId);
+      callback(null, match);
+    } catch (error) {
+      callback(error, null);
+    }
+  });
 
-match.get('/:id', controller.getMatch);
-match.get('/byplayer/:player', controller.getMatchesByPlayer);
-match.put('/:id/move', controller.addMove);
-match.delete('/:id/delete', controller.deleteMatch);
+  socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
+    await matchController.addMove(matchId, movingPlayer, moveFactory.create(x, y));
+  });
+};

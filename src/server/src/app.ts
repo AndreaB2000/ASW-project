@@ -11,7 +11,6 @@ import { startRoutines } from './routines/routine';
 
 // Routes
 import { account } from './routes/account';
-import { match } from './routes/match';
 
 // Create Express server
 export const app = express();
@@ -33,12 +32,10 @@ app.use(validationHandler);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/account', account);
-app.use('/match', match);
 app.use('/account', account);
 app.get('/ping', (_, res) => {
   res.send('pong');
 });
-app.use('/match', match);
 app.use('/account', account);
 app.get('/ping', (_, res) => {
   res.send('pong');
