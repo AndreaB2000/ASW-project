@@ -1,9 +1,6 @@
 import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
-import * as matchService from '../services/match';
-import * as moveFactory from '../models/Move';
 import { requestMatch, requestMatchWithBot } from '../controllers/matchmaking';
-import { getPlayerSocket } from '../sockets/socket';
 import { match } from './match';
 
 export const root = (socket: Socket) => {
@@ -29,14 +26,10 @@ const matchmaking = (socket: Socket) => {
     await requestMatch(socket, data.username);
   });
 
-  socket.on('requestMatchWithBot', async (data) => {
+  socket.on('requestMatchWithBot', async data => {
     console.log('Requesting match with bot with data:', data);
     await requestMatchWithBot(socket, data.username);
   });
-};
-
-export const emitUsername = (username: string, event: string, data: any) => {
-  getPlayerSocket(username)?.emit(event, data);
 };
 
 export const emitToRoom = (room: string, event: string, ...data: any[]) => {
