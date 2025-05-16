@@ -1,6 +1,5 @@
 import { notifyNewMatch, requestMatch, requestMatchWithBot } from '../../src/controllers/matchmaking';
 import * as matchmakingController from '../../src/controllers/matchmaking';
-import { emitUsername } from '../../src/routes/root';
 import { findMatch } from '../../src/services/matchmaking/matchmaking';
 import { getIO, getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
