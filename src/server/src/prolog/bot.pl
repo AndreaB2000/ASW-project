@@ -33,14 +33,14 @@ legal_move(Board, Player, cell(X,Y)) :-
 % Example:
 %   ?- update_cell([cell(1,1,me,2)], 1,1, opponent, 3, B).
 %   B = [cell(1,1,opponent,3)].
-% update_cell(Board0, X, Y, Owner, Count, Board1) :-
-%     % Remove any existing cell at X-Y
-%     (   select(cell(X, Y, _, _), Board0, Rest)
-%     ->  true
-%     ;   Rest = Board0
-%     ),
-%     % Insert the new cell
-%     Board1 = [cell(X, Y, Owner, Count) | Rest].
+update_cell(Board0, X, Y, Owner, Count, Board1) :-
+    % Remove any existing cell at X-Y
+    (   select(cell(X, Y, _, _), Board0, Rest)
+    ->  true
+    ;   Rest = Board0
+    ),
+    % Insert the new cell
+    Board1 = [cell(X, Y, Owner, Count) | Rest].
 
 
 % distribute_grains(+Coords, +Player, +Board0, -BoardF)
