@@ -61,20 +61,20 @@ update_cell(Board0, X, Y, Owner, Count, Board1) :-
 %   ?- distribute_grains([1-1,2-2], me, [cell(1,1,opponent,2)], B).
 %   % (1,1) flips to me and becomes 3; (2,2) is inserted with 1
 %   B = [cell(2,2,me,1), cell(1,1,me,3)].
-% distribute_grains([], _Player, Board, Board).
-% distribute_grains([X-Y | Rest], Player, Board0, BoardF) :-
-%     % Determine current cell state
-%     (   select(cell(X, Y, Owner0, C0), Board0, TempBoard)
-%     ->  % If it belonged to opponent, flip ownership
-%         (Owner0 \= Player -> Owner1 = Player ; Owner1 = Owner0),
-%         C1 is C0 + 1
-%     ;   % No existing cell: start fresh
-%         Owner1 = Player,
-%         C1 = 1,
-%         TempBoard = Board0
-%     ),
-%     update_cell(TempBoard, X, Y, Owner1, C1, Board1),
-%     distribute_grains(Rest, Player, Board1, BoardF).
+distribute_grains([], _Player, Board, Board).
+distribute_grains([X-Y | Rest], Player, Board0, BoardF) :-
+    % Determine current cell state
+    (   select(cell(X, Y, Owner0, C0), Board0, TempBoard)
+    ->  % If it belonged to opponent, flip ownership
+        (Owner0 \= Player -> Owner1 = Player ; Owner1 = Owner0),
+        C1 is C0 + 1
+    ;   % No existing cell: start fresh
+        Owner1 = Player,
+        C1 = 1,
+        TempBoard = Board0
+    ),
+    update_cell(TempBoard, X, Y, Owner1, C1, Board1),
+    distribute_grains(Rest, Player, Board1, BoardF).
 
 % neighbors(+X, +Y, -Neighbors)
 % True when Neighbors is a list of valid coordinate pairs X2-Y2 adjacent
