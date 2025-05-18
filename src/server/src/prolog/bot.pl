@@ -10,10 +10,13 @@
 % A board is just a list of such `cell/4` terms.
 % example
 % [ cell(1,1,me,2),    cell(1,2,opponent,3), cell(2,1,me,1),    cell(2,2,opponent,0) ]
+%
+% TODO MAYBE REPLACE THE MaxX AND MaxY PARAMS POSITION ADDING THEM TO THE BOARD DEFINITION
 
 % legal_move(+Board, +Player, +cell(X,Y))
+%
 % Generate all legal_moves for player Player
-% use prolog builtin backtracking to enumerate all (X,Y) pairs
+% Tip: use prolog builtin backtracking to enumerate all (X,Y) pairs
 legal_move(Board, Player, cell(X,Y)) :-
     member(cell(X,Y,Player,_), Board).
 
@@ -76,35 +79,34 @@ distribute_grains([X-Y | Rest], Player, Board0, BoardF) :-
     update_cell(TempBoard, X, Y, Owner1, C1, Board1),
     distribute_grains(Rest, Player, Board1, BoardF).
 
-% neighbors(+X, +Y, -Neighbors)
-% True when Neighbors is a list of valid coordinate pairs X2-Y2 adjacent
-% (up, down, left, right) to the cell at X-Y. Coordinates that would fall
-% outside the board grid are omitted.  Assumes grid limits are defined by
-% grid_size(MaxX, MaxY) facts.
+% neighbors(+X, +Y, +MaxX, +MaxY, -Neighbors)
 %
-% @param X        X-coordinate of the cell
-% @param Y        Y-coordinate of the cell
-% @param Neighbors List of X2-Y2 pairs for each valid neighbor
+% True when Neighbors is a list of exactly four coordinate pairs X2-Y2
+% adjacent (left, right, up, down) to the cell at X-Y in a toroidal grid
+% of size MaxX×MaxY. Edges wrap around (Pacman effect).
 %
-% Example:
-%   grid_size(3,3).
-%   ?- neighbors(1,1, Ns).
-%   Ns = [2-1,1-2].
-% neighbors(X, Y, Neighbors) :-
-%     findall(X2-Y2,
-%         (   direction(DX,DY),
-%             X2 is X + DX, Y2 is Y + DY,
-%             grid_size(MaxX, MaxY),
-%             between(1, MaxX, X2),
-%             between(1, MaxY, Y2)
-%         ),
-%         Neighbors).
-
-% directions for adjacency
-% direction(1,0).
-% direction(-1,0).
-% direction(0,1).
-% direction(0,-1).
+% @param X         X-coordinate of the cell (1..MaxX)
+% @param Y         Y-coordinate of the cell (1..MaxY)
+% @param MaxX      Number of columns in the grid
+% @param MaxY      Number of rows in the grid
+% @param Neighbors List of four X2-Y2 neighbor pairs
+%
+% Example (MaxX=3, MaxY=3):
+%   ?- neighbors(1,1,3,3,Ns).
+%   Ns = [3-1, 2-1, 1-3, 1-2].
+neighbors(X, Y, MaxX, MaxY, [Left, Right, Up, Down]) :-
+    % Left: X-1 wraps to MaxX if X=1
+    Xl is ((X - 2) mod MaxX) + 1,
+    Left  = Xl-Y,
+    % Right: X+1 wraps to 1 if X=MaxX
+    Xr is (X mod MaxX) + 1,
+    Right = Xr-Y,
+    % Up: Y-1 wraps to MaxY if Y=1
+    Yu is ((Y - 2) mod MaxY) + 1,
+    Up    = X-Yu,
+    % Down: Y+1 wraps to 1 if Y=MaxY
+    Yd is (Y mod MaxY) + 1,
+    Down  = X-Yd.
 
 % topple_once(+Board0, +cell(X,Y,Owner,Count), -Board1)
 % If Count >= 4, replace that cell by Count-4,
