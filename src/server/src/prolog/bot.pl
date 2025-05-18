@@ -139,12 +139,12 @@ topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
  *   ?- stabilize(board(2,2,[cell(1,1,me,5)]), Stable).
  *   Stable = board(2,2,[cell(1,1,me,1),cell(2,1,me,1),cell(1,2,me,1),cell(2,2,me,1)])
  */
-% stabilize(Board0, Stable) :-
-%   ( Board0 = board(_,_,Cells),
-%     member(cell(X,Y,Own,C), Cells), C>=4
-%   -> topple_once(Board0, cell(X,Y,Own,C), B1),
-%      stabilize(B1, Stable)
-%   ; Stable = Board0 ).
+stabilize(Board0, Stable) :-
+  ( Board0 = board(_,_,Cells),
+    member(cell(X,Y,Own,C), Cells), C>=4
+  -> topple_once(Board0, cell(X,Y,Own,C), B1),
+     stabilize(B1, Stable)
+  ; Stable = Board0 ).
 
 /**
  * @pred count_my_grains(+Board, -Count)
@@ -156,8 +156,8 @@ topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
  *   ?- count_my_grains(board(2,2,[cell(1,1,me,2),cell(1,2,opponent,1)]), Count).
  *   Count = 2
  */
-% count_my_grains(board(_,_,Cells), Count) :-
-%   findall(C, member(cell(_,_,me,C), Cells), Cs), sum_list(Cs, Count).
+count_my_grains(board(_,_,Cells), Count) :-
+  findall(C, member(cell(_,_,me,C), Cells), Cs), sum_list(Cs, Count).
 
 /**
  * @pred apply_move(+Player, +cell(X,Y), +Board0, -Board1)
@@ -171,11 +171,11 @@ topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
  *   ?- apply_move(me, cell(2,2), board(2,2,[cell(2,2,me,2)]), Board1).
  *   Board1 = board(2,2,[cell(2,2,me,3)])
  */
-% apply_move(Player, cell(X,Y), Board0, Board1) :-
-%   Board0 = board(Mx,My,Cells),
-%   ( select(cell(X,Y,Own,C0), Cells, Rest)
-%   -> NewCount is C0+1, NewOwner=Player, update_cell(board(Mx,My,Rest), X,Y,NewOwner,NewCount,Board1)
-%   ; update_cell(Board0, X,Y,Player,1,Board1) ).
+apply_move(Player, cell(X,Y), Board0, Board1) :-
+  Board0 = board(Mx,My,Cells),
+  ( select(cell(X,Y,Own,C0), Cells, Rest)
+  -> NewCount is C0+1, NewOwner=Player, update_cell(board(Mx,My,Rest), X,Y,NewOwner,NewCount,Board1)
+  ; update_cell(Board0, X,Y,Player,1,Board1) ).
 
 /**
  * @pred best_move(+Board, -BestMove)
@@ -187,8 +187,8 @@ topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
  *   ?- best_move(board(2,2,[cell(1,1,me,3),cell(2,2,me,2)]), Best).
  *   Best = cell(1, 1)
  */
-% best_move(Board, BestMove) :-
-%   findall(Score-Move,
-%     ( legal_move(Board,me,Move), apply_move(me,Move,Board,B1),
-%       stabilize(B1,Final), count_my_grains(Final,Score) ), Pairs),
-%   keysort(Pairs,Sorted), reverse(Sorted,[ _-BestMove | _ ]).
+best_move(Board, BestMove) :-
+  findall(Score-Move,
+    ( legal_move(Board,me,Move), apply_move(me,Move,Board,B1),
+      stabilize(B1,Final), count_my_grains(Final,Score) ), Pairs),
+  keysort(Pairs,Sorted), reverse(Sorted,[ _-BestMove | _ ]).
