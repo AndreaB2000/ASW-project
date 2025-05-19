@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import * as path from 'path';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
-const cors = require('cors');
+import cors from 'cors';
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
 import { validationHandler } from './middlewares/validationHandler';
@@ -32,13 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, '../public')));
-app.use('/account', accountRouter);
-app.use('/match', match);
-app.get('/ping', (_, res) => {
-  res.send('pong');
-});
-
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); //TODO: check if this is needed
   app.use(
@@ -50,10 +43,20 @@ if (process.env.NODE_ENV === 'production') {
   const protocol = process.env.CLIENT_PROTOCOL;
   const ip = process.env.CLIENT_IP;
   const port = process.env.CLIENT_PORT;
-  app.use(cors({ origin: `${protocol}://${ip}:${port}` }));
+  app.use(cors({ origin: `${protocol}://${ip}:${port}`, credentials: true }));
 } else {
-  app.use(cors({ origin: '*' }));
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  }));
 }
+
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/account', accountRouter);
+app.use('/match', match);
+app.get('/ping', (_, res) => {
+  res.send('pong');
+});
 
 app.use(helmet());
 app.use(errorNotFoundHandler);

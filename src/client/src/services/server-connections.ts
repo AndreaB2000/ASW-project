@@ -24,21 +24,4 @@ export const socket = io(url);
 /**
  * Axios instance for making HTTP requests to the server.
  */
-export const server = axios.create({ baseURL: url, timeout: 10000, headers: { 'Content-Type': 'application/json' } });
-server.interceptors.response.use(
-  (response) => {
-    // Handle successful response
-    return response;
-  },
-  (error) => {
-    // Handle error response
-    if (error.response) {
-      console.error('Error response:', error.response);
-    } else if (error.request) {
-      console.error('Error request:', error.request);
-    } else {
-      console.error('Error message:', error.message);
-    }
-    return Promise.reject(error);
-  }
-);
+export const server = axios.create({ baseURL: url, timeout: 10000, withCredentials: true });
