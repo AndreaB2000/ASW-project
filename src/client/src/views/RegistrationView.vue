@@ -19,7 +19,6 @@ function register(event: Event) {
     alert('Passwords do not match');
     return;
   }
-  console.log('Registration data:', form);
   server.post('/account/register', {
     username: form.username.trim(),
     email: form.email.trim().toLowerCase(),
@@ -35,7 +34,7 @@ function register(event: Event) {
       errorMessage = error.response?.data?.message || errorMessage;
     }
     alert(errorMessage);
-  })
+  });
 }
 </script>
 
