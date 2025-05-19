@@ -15,8 +15,8 @@
 
 /**
  * @struct cell/4
- * @param X X-coordinate (1-based)
- * @param Y Y-coordinate (1-based)
+ * @param X X-coordinate (0-based)
+ * @param Y Y-coordinate (0-based)
  * @param Owner Either 'me' or 'opponent'
  * @param Count Number of grains (normally 0–3; 4+ is unstable)
  */
@@ -28,9 +28,9 @@
  * @param Cells List of cell(X,Y,Owner,Count)
  * 
  * @example
- *   ?- B = board(2,2, [cell(1,1,me,2), cell(1,2,opponent,3),
- *                      cell(2,1,me,1), cell(2,2,opponent,0)]).
- *   B = board(2,2,[cell(1,1,me,2),cell(1,2,opponent,3),cell(2,1,me,1),cell(2,2,opponent,0)])
+ *   ?- B = board(2,2, [cell(0,0,me,2), cell(0,1,opponent,3),
+ *                      cell(1,0,me,1), cell(1,1,opponent,0)]).
+ *   B = board(2,2,[cell(0,0,me,2),cell(0,1,opponent,3),cell(1,0,me,1),cell(1,1,opponent,0)])
  */
 
 /**
@@ -41,8 +41,8 @@ t * @param Player The player ('me' or 'opponent')
  * @param cell(X,Y) Output cell where the player can make a move
  * 
  * @example
- *   ?- legal_move(board(2,2,[cell(1,1,me,2)]), me, Move).
- *   Move = cell(1, 1)
+ *   ?- legal_move(board(2,2,[cell(0,0,me,2)]), me, Move).
+ *   Move = cell(0, 0)
  */
 legal_move(board(_MaxX,_MaxY,Cells), Player, cell(X,Y)) :-
     member(cell(X,Y,Player,_), Cells).
@@ -58,8 +58,8 @@ legal_move(board(_MaxX,_MaxY,Cells), Player, cell(X,Y)) :-
  * @param Board1 Updated board
  * 
  * @example
- *   ?- update_cell(board(2,2,[cell(1,1,me,2)]), 1,1,me,3, B).
- *   B = board(2,2,[cell(1,1,me,3)])
+ *   ?- update_cell(board(2,2,[cell(0,0,me,2)]), 0,0,me,3, B).
+ *   B = board(2,2,[cell(0,0,me,3)])
  */
 update_cell(board(MaxX,MaxY,Cells0), X, Y, Owner, Count,
             board(MaxX,MaxY,Cells1)) :-
@@ -78,8 +78,8 @@ update_cell(board(MaxX,MaxY,Cells0), X, Y, Owner, Count,
  * @param BoardF Final board after grain distribution
  * 
  * @example
- *   ?- distribute_grains([1-1, 2-2], me, board(2,2,[cell(1,1,me,2),cell(2,2,opponent,3)]), BoardF).
- *   BoardF = board(2,2,[cell(1,1,me,3),cell(2,2,me,4)])
+ *   ?- distribute_grains([0-0, 1-1], me, board(2,2,[cell(0,0,me,2),cell(1,1,opponent,3)]), BoardF).
+ *   BoardF = board(2,2,[cell(0,0,me,3),cell(1,1,me,4)])
  */
 distribute_grains([], _Player, Board, Board).
 distribute_grains([X-Y|Rest], Player, Board0, BoardF) :-
@@ -102,14 +102,14 @@ distribute_grains([X-Y|Rest], Player, Board0, BoardF) :-
  * @param Neighbors List of neighboring coordinates as X-Y terms
  * 
  * @example
- *   ?- neighbors(board(3,3,[]), 1,1, Ns).
- *   Ns = [3-1, 2-1, 1-3, 1-2]
+ *   ?- neighbors(board(3,3,[]), 0,0, Ns).
+ *   Ns = [2-0, 1-0, 0-2, 0-1]
  */
 neighbors(board(MaxX,MaxY,_), X, Y, [Left,Right,Up,Down]) :-
-    Xl is ((X-2) mod MaxX) + 1, Left  = Xl-Y,
-    Xr is (X mod MaxX) + 1,   Right = Xr-Y,
-    Yu is ((Y-2) mod MaxY) + 1, Up    = X-Yu,
-    Yd is (Y mod MaxY) + 1,    Down  = X-Yd.
+    Xl is ((X-1) mod MaxX),     Left  = Xl-Y,
+    Xr is ((X+1) mod MaxX),     Right = Xr-Y,
+    Yu is ((Y-1) mod MaxY),     Up    = X-Yu,
+    Yd is ((Y+1) mod MaxY),     Down  = X-Yd.
 
 /**
  * @pred topple_once(+Board0, +cell(X,Y,Owner,Count), -Board1)
@@ -119,8 +119,8 @@ neighbors(board(MaxX,MaxY,_), X, Y, [Left,Right,Up,Down]) :-
  * @param Board1 Resulting board after toppling
  * 
  * @example
- *   ?- topple_once(board(2,2,[cell(1,1,me,4),cell(2,1,opponent,1)]), cell(1,1,me,4), Board1).
- *   Board1 = board(2,2,[cell(1,1,me,0),cell(2,1,me,2),cell(1,2,me,1),cell(2,2,me,1)])
+ *   ?- topple_once(board(2,2,[cell(0,0,me,4),cell(1,0,opponent,1)]), cell(0,0,me,4), Board1).
+ *   Board1 = board(2,2,[cell(0,0,me,0),cell(1,0,me,2),cell(0,1,me,1),cell(1,1,me,1)])
  */
 topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
     C0 >= 4,
@@ -136,8 +136,8 @@ topple_once(Board0, cell(X,Y,Owner,C0), Board1) :-
  * @param Stable Final stable board
  * 
  * @example
- *   ?- stabilize(board(2,2,[cell(1,1,me,5)]), Stable).
- *   Stable = board(2,2,[cell(1,1,me,1),cell(2,1,me,1),cell(1,2,me,1),cell(2,2,me,1)])
+ *   ?- stabilize(board(2,2,[cell(0,0,me,5)]), Stable).
+ *   Stable = board(2,2,[cell(0,0,me,1),cell(1,0,me,1),cell(0,1,me,1),cell(1,1,me,1)])
  */
 stabilize(Board0, Stable) :-
   ( Board0 = board(_,_,Cells),
@@ -153,7 +153,7 @@ stabilize(Board0, Stable) :-
  * @param Count Total number of grains owned by 'me'
  * 
  * @example
- *   ?- count_my_grains(board(2,2,[cell(1,1,me,2),cell(1,2,opponent,1)]), Count).
+ *   ?- count_my_grains(board(2,2,[cell(0,0,me,2),cell(0,1,opponent,1)]), Count).
  *   Count = 2
  */
 count_my_grains(board(_,_,Cells), Count) :-
@@ -168,8 +168,8 @@ count_my_grains(board(_,_,Cells), Count) :-
  * @param Board1 Board after the move
  * 
  * @example
- *   ?- apply_move(me, cell(2,2), board(2,2,[cell(2,2,me,2)]), Board1).
- *   Board1 = board(2,2,[cell(2,2,me,3)])
+ *   ?- apply_move(me, cell(1,1), board(2,2,[cell(1,1,me,2)]), Board1).
+ *   Board1 = board(2,2,[cell(1,1,me,3)])
  */
 apply_move(Player, cell(X,Y), Board0, Board1) :-
   Board0 = board(Mx,My,Cells),
@@ -184,8 +184,8 @@ apply_move(Player, cell(X,Y), Board0, Board1) :-
  * @param BestMove The optimal move for player 'me'
  * 
  * @example
- *   ?- best_move(board(2,2,[cell(1,1,me,3),cell(2,2,me,2)]), Best).
- *   Best = cell(1, 1)
+ *   ?- best_move(board(2,2,[cell(0,0,me,3),cell(1,1,me,2)]), Best).
+ *   Best = cell(0, 0)
  */
 best_move(Board, BestMove) :-
   findall(Score-Move,
