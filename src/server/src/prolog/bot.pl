@@ -13,6 +13,28 @@
 % DATA STRUCTURES
 % ------------------------------------------------------------------------------
 
+% Define member/2
+member(X, [X|_]).
+member(X, [_|T]) :- member(X, T).
+
+% Define select/3
+select(X, [X|Tail], Tail).
+select(X, [Y|Tail], [Y|NewTail]) :- select(X, Tail, NewTail).
+
+% Define sum_list/2
+sum_list([], 0).
+sum_list([H|T], Sum) :-
+    sum_list(T, Rest),
+    Sum is H + Rest.
+
+% Define reverse/2
+reverse(List, Reversed) :-
+    reverse(List, [], Reversed).
+
+reverse([], Acc, Acc).
+reverse([H|T], Acc, Reversed) :-
+    reverse(T, [H|Acc], Reversed).
+
 /**
  * @struct cell/4
  * @param X X-coordinate (0-based)
