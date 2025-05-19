@@ -1,5 +1,4 @@
 const pl = require('tau-prolog');
-require('tau-prolog/modules/js');
 import fs from 'fs';
 import path from 'path';
 
