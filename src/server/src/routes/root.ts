@@ -2,6 +2,7 @@ import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
 import { match } from './match';
 import { guestMatchmaking } from './matchmaking';
+import { getTopPlayers } from '../controllers/leaderboard';
 
 export const root = (socket: Socket) => {
   console.log('User connected');
@@ -22,3 +23,10 @@ export const emitToRoom = (room: string, event: string, ...data: any[]) => {
   const io = ioHandler.getIO();
   io.to(room).emit(event, ...data);
 };
+
+const leaderboard = (socket: Socket) => {
+  socket.on('getTopPlayers', async () => {
+    const players = await getTopPlayers();
+    socket.emit('topPlayers', JSON.stringify(players));
+  });
+}
