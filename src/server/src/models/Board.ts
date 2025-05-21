@@ -57,8 +57,14 @@ type BoardEntry = { x: number; y: number; pile: Pile };
 export const DEFAULT_WIDTH = 9;
 export const DEFAULT_HEIGHT = 9;
 const INITIAL_STATE = (player1: string, player2: string): BoardEntry[] => [
-  { x: 2, y: 2, pile: pileFactory.create(player1, 3) },
-  { x: DEFAULT_WIDTH - 3, y: DEFAULT_HEIGHT - 3, pile: pileFactory.create(player2, 3) },
+  { x: 1, y: 2, pile: pileFactory.create(player1, 1) },
+  { x: 3, y: 2, pile: pileFactory.create(player1, 1) },
+  { x: 2, y: 1, pile: pileFactory.create(player1, 1) },
+  { x: 2, y: 3, pile: pileFactory.create(player1, 1) },
+  { x: DEFAULT_WIDTH - 4, y: DEFAULT_HEIGHT - 3, pile: pileFactory.create(player2, 1) },
+  { x: DEFAULT_WIDTH - 2, y: DEFAULT_HEIGHT - 3, pile: pileFactory.create(player2, 1) },
+  { x: DEFAULT_WIDTH - 3, y: DEFAULT_HEIGHT - 4, pile: pileFactory.create(player2, 1) },
+  { x: DEFAULT_WIDTH - 3, y: DEFAULT_HEIGHT - 2, pile: pileFactory.create(player2, 1) },
 ];
 
 class BoardImpl implements Board {
