@@ -1,35 +1,29 @@
 <script setup lang="ts">
 import { socket } from '@/services/socket';
+import type { Player } from '../../../shared/Player';
 
-function test() {
-  socket.emit('ping', (response: string) => {
-    console.log(response);
+  var players: Player[] = [];
+  socket.emit('getTopPlayers', (response: string) => {
+    const data = JSON.parse(response);
+    console.log(data);
+    players.push(data);
   });
-}
+
+  console.log(players);
 </script>
 
 <template>
   <section>
-    <section class="title">
-      <img src="../assets/landingIcon.svg"></img>
-      <h1>SANDPILES</h1>
-    </section>
     <section class="content">
-      <section class="description">
-        <p>
-          Place your grains. Tip the balance. In this world of unstable equilibrium, every move can
-          trigger a chain reaction. Conquer the board — one avalanche at a time.
-        </p>
-        <section class="buttons">
-          <button @click="$router.push('/matchmaking')" style="background-color: #1EC6E0; ">Play PVP</button>
-          <button style="background-color: #1EC6E0;">Play with BOT</button>
-          <button @click="$router.push('/leaderboard')" style="background-color: #E0961E;">Leaderboard</button>
-          <button @click=test style="background-color: #E0961E;">Login</button>
-          <button>Tutorial</button>
-          <button @click="$router.push('/registration')">Register</button>
+        <section class="description">
+            <h1>Leaderboard</h1>
+            <!-- list the top players taken from players array variable -->
+            <ul>
+                <li v-for="(player, index) in players" :key="index">
+                    <p>{{ player.username }}: {{ player.rating }}</p>
+                </li>
+            </ul>
         </section>
-      </section>
-      <img src="../assets/sandpiles-template-img.svg"></img>
     </section>
   </section>
 </template>

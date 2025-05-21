@@ -2,6 +2,7 @@ import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
 import { requestMatch, requestMatchWithBot } from '../controllers/matchmaking';
 import { match } from './match';
+import { getTopPlayers } from '../controllers/leaderboard';
 
 export const root = (socket: Socket) => {
   // io.use(authenticateTokenSocket);
@@ -36,3 +37,10 @@ export const emitToRoom = (room: string, event: string, ...data: any[]) => {
   const io = ioHandler.getIO();
   io.to(room).emit(event, ...data);
 };
+
+const leaderboard = (socket: Socket) => {
+  socket.on('getTopPlayers', async () => {
+    const players = await getTopPlayers();
+    socket.emit('topPlayers', JSON.stringify(players));
+  });
+}
