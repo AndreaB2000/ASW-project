@@ -6,11 +6,6 @@ import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useUserStore } from '@/stores/userStore';
 import { useMatchStore } from '@/stores/matchStore';
 import { GRID_SIZE } from '@/utils/match';
-import { useRoute, type LocationQueryValue } from 'vue-router';
-
-function unpackQueryString(query: LocationQueryValue | LocationQueryValue[]): string {
-  return Array.isArray(query) ? query[0] || '' : query || '';
-}
 
 const user = useUserStore();
 const match = useMatchStore();
@@ -24,11 +19,11 @@ function getMatch(matchId: string) {
     match.currentState = matchData.initialState.state;
     match.player1 = matchData.player1;
     match.player2 = matchData.player2;
+    match.turn = match.player1;
   });
 }
 
-const route = useRoute();
-match.id = unpackQueryString(route.query.id); // Restituisce sempre stringa
+console.log('match.id in Match component', match.id);
 getMatch(match.id);
 
 socket.on('move', async (movingPlayer: string, x: number, y: number) => {
@@ -45,6 +40,9 @@ socket.on('over', (winner: string) => {
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
     console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
+    console.log(document.getElementById(`${x}-${y}`));
+    console.log(document.getElementById(`${x}-${y}`)?.classList);
+    console.log(user.username);
     const p: string =
       user.username == match.player1 ? 'player1' : user.username == match.player2 ? 'player2' : '';
     if (document.getElementById(`${x}-${y}`)?.classList.contains(p)) {
