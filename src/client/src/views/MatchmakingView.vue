@@ -2,6 +2,7 @@
 import router from '@/router';
 import { useMatchStore } from '@/stores/matchStore';
 import { socket } from '@/services/server-connections';
+import { useMatchStore } from '@/stores/matchStore';
 import { ref } from 'vue';
 
 const username = ref<string>('');
@@ -14,7 +15,7 @@ function enterQueue() {
 }
 
 // Listen for match found
-socket.on('matchFound', (matchId: any) => {
+socket.on('matchFound', (matchId: string) => {
   match.id = matchId;
   router.push('/match');
 });
