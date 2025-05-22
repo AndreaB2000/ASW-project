@@ -2,8 +2,10 @@
 import { server } from '@/services/server-connections';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const form = reactive({
   username: '',
@@ -12,16 +14,12 @@ const form = reactive({
 
 function login(event: Event) {
   event.preventDefault();
-  console.log('Login data:', form);
   server.post('/account/login', { username: form.username, password: form.password })
-    .then(response => {
-      console.log('Login successful:', response.data);
+    .then(() => {
+      userStore.setUsername(form.username);
       router.push('/play');
     })
-    .catch(error => {
-      console.error('Login error:', error);
-      alert('Login failed. Please try again.');
-    });
+    .catch(alert);
 }
 </script>
 
