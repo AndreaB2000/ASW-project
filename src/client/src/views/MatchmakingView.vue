@@ -12,7 +12,7 @@ function enterQueue() {
 }
 
 // Listen for match found
-socket.on('matchFound', (matchId: any) => {
+socket.on('matchFound', (matchId: string) => {
   router.push({ path: '/match', query: { id: matchId } });
 });
 </script>

@@ -8,7 +8,9 @@ import { newMatch } from '../services/match';
  * @param playerSocket the socket of the player requesting the match
  * @param username the username of the player requesting the match
  */
-export const requestMatch = async (playerSocket: Socket, username: string): Promise<void> => {
+export const requestMatch = async (playerSocket: Socket): Promise<void> => {
+  console.log("auth", playerSocket.handshake.auth);
+  const username = playerSocket.handshake.auth.account.username;
   registerPlayerSocket(username, playerSocket);
 
   const result = await findMatch(username);

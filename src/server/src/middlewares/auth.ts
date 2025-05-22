@@ -37,6 +37,7 @@ export async function authenticateToken(
  * @param next the next middleware function
  */
 export const authenticateTokenSocket = (socket: Socket, next: NextFunction): void => {
+  console.log("benvenuto nel middleware");
   const { cookie: cookieHeader } = socket.handshake.headers;
   if (!cookieHeader) {
     next(new Error('No cookies sent'));

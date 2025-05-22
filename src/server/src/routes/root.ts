@@ -4,8 +4,6 @@ import { requestMatch, requestMatchWithBot } from '../controllers/matchmaking';
 import { match } from './match';
 
 export const root = (socket: Socket) => {
-  // io.use(authenticateTokenSocket);
-
   console.log('User connected');
 
   socket.on('disconnect', () => {
@@ -22,12 +20,12 @@ export const root = (socket: Socket) => {
 
 const matchmaking = (socket: Socket) => {
   socket.on('requestMatch', async data => {
-    console.log('Requesting match with data:', data);
-    await requestMatch(socket, data.username);
+    console.log('Requesting match');
+    await requestMatch(socket);
   });
 
   socket.on('requestMatchWithBot', async data => {
-    console.log('Requesting match with bot with data:', data);
+    console.log('Requesting match with bot');
     await requestMatchWithBot(socket, data.username);
   });
 };
