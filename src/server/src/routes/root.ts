@@ -19,7 +19,7 @@ export const root = (socket: Socket) => {
 };
 
 const matchmaking = (socket: Socket) => {
-  socket.on('requestMatch', async data => {
+  socket.on('requestMatch', async () => {
     console.log('Requesting match');
     await requestMatch(socket);
   });
