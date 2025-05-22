@@ -13,7 +13,7 @@ const form = reactive({
 function login(event: Event) {
   event.preventDefault();
   console.log('Login data:', form);
-  server.post('/login', { username: form.username, password: form.password })
+  server.post('/account/login', { username: form.username, password: form.password })
     .then(response => {
       console.log('Login successful:', response.data);
       router.push('/play')
