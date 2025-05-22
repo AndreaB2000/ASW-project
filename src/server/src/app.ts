@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { errorHandler, errorNotFoundHandler } from './middlewares/errorHandler';
 import { connectDB } from './config/db-connection';
-import { validationHandler } from './middlewares/validationHandler';
 import { startRoutines } from './routines/routine';
 
 // Routes
