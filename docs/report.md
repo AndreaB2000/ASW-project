@@ -151,7 +151,7 @@ flowchart TD
     Match -->|game over| GameEnd("Game End (stats)")
     GameEnd -->|play again| Match
     GameEnd --> Play
-    Play --> Leaderboard
+    Play --> Leaderboard(Leaderboard)
     GameEnd --> Profile
     Leaderboard <--> Landing
     Profile <--> MatchHistory(Match History)
