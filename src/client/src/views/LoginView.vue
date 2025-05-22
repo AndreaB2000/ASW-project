@@ -16,7 +16,7 @@ function login(event: Event) {
   server.post('/account/login', { username: form.username, password: form.password })
     .then(response => {
       console.log('Login successful:', response.data);
-      router.push('/')
+      router.push('/play');
     })
     .catch(error => {
       console.error('Login error:', error);
