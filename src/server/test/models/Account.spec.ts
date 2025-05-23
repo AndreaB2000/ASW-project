@@ -17,7 +17,6 @@ describe('Account', () => {
 
   it('should create an account with a hashed password using createWithHashing', async () => {
     const account = await AccountFactory.createWithHashing(username, email, plainPassword);
-
     expect(account.username).toBe(username);
     expect(account.hashedPassword).toBe(await bcrypt.hash(plainPassword, await bcrypt.genSalt()));
   });
@@ -28,17 +27,22 @@ describe('Account', () => {
     expect(bcrypt.compare).toBeCalledTimes(1);
   });
 
+  it('should not accept an invalid email', async () => {
+    const invalidEmail = 'invalidEmail';
+    await expect(AccountFactory.createWithHashing(username, invalidEmail, plainPassword)).rejects.toThrow(
+      'Invalid email',
+    );
+  });
+
   it('should create an account with a provided hashed password using create', async () => {
     const hashedPassword = await bcrypt.hash(plainPassword, await bcrypt.genSalt());
     const account = AccountFactory.create(username, email, hashedPassword);
-
     expect(account.username).toBe(username);
     expect(account.hashedPassword).toBe(hashedPassword);
   });
 
   it('should create an account with a default rating using create', async () => {
     const account = AccountFactory.create(username, email, 'hashedPassword');
-
     expect(account.username).toBe(username);
     expect(account.email).toBe(email);
     expect(account.hashedPassword).toBe('hashedPassword');
