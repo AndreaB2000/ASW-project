@@ -87,6 +87,7 @@ class AccountImpl implements Account {
     this._username = username;
     this._email = email;
     this._hashedPassword = password;
+    console.log('account: ', username, '     ', 'password: ', password);
     this._rating = rating ?? RatingFactory.create();
   }
 
