@@ -24,9 +24,9 @@ describe('Match Service', () => {
   let matchWithAMove: Match;
   let matchWith2Moves: Match;
   let matchWith3Moves: Match;
-  const testMove = moveFactory.create(2, 2);
+  const testMove = moveFactory.create(1, 2);
   const testMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 3,
+    boardFactory.DEFAULT_WIDTH - 4,
     boardFactory.DEFAULT_HEIGHT - 3,
   );
   const testMove3 = moveFactory.create(3, 2);

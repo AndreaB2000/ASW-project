@@ -16,13 +16,13 @@ describe('Board', () => {
     expect(board.height).toBe(boardFactory.DEFAULT_HEIGHT);
 
     // Checking initial state
-    expect(board.state[2][2].pile).not.toBeNull();
-    expect(board.state[2][2].pile?.owner).toBe(PLAYER1);
+    expect(board.state[3][2].pile).not.toBeNull();
+    expect(board.state[3][2].pile?.owner).toBe(PLAYER1);
     expect(
-      board.state[boardFactory.DEFAULT_WIDTH - 3][boardFactory.DEFAULT_WIDTH - 3].pile,
+      board.state[boardFactory.DEFAULT_WIDTH - 4][boardFactory.DEFAULT_WIDTH - 3].pile,
     ).not.toBeNull();
     expect(
-      board.state[boardFactory.DEFAULT_WIDTH - 3][boardFactory.DEFAULT_WIDTH - 3].pile?.owner,
+      board.state[boardFactory.DEFAULT_WIDTH - 4][boardFactory.DEFAULT_WIDTH - 3].pile?.owner,
     ).toBe(PLAYER2);
   });
 
@@ -58,9 +58,9 @@ describe('Board', () => {
   it('should correctly get the requested cell', () => {
     const board = boardFactory.createDefault(PLAYER1, PLAYER2);
 
-    expect(board.getCell(2, 2).pile).not.toBeNull();
-    expect(board.getCell(2, 2).pile?.owner).toBe(PLAYER1);
-    expect(board.getCell(2, 2).pile?.numberOfGrains).toBe(3);
+    expect(board.getCell(3, 2).pile).not.toBeNull();
+    expect(board.getCell(3, 2).pile?.owner).toBe(PLAYER1);
+    expect(board.getCell(3, 2).pile?.numberOfGrains).toBe(1);
   });
 
   it('should correctly set a cell to a new state', () => {
@@ -118,10 +118,9 @@ describe('Board', () => {
   it('should make a pile collapse', () => {
     const board = boardFactory.createDefault(PLAYER1, PLAYER2);
     const X = 3;
-    const Y = 3;
+    const Y = 2;
     const move = moveFactory.create(X, Y);
 
-    board.applyMove(PLAYER1, move);
     board.applyMove(PLAYER1, move);
     board.applyMove(PLAYER1, move);
     board.applyMove(PLAYER1, move);
