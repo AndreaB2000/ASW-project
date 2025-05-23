@@ -37,7 +37,7 @@ describe('Account', () => {
   });
 
   it('should create an account with a default rating using create', async () => {
-    const account = create(username, email, 'hashedPassword');
+    const account = AccountFactory.create(username, email, 'hashedPassword');
 
     expect(account.username).toBe(username);
     expect(account.email).toBe(email);

@@ -1,6 +1,6 @@
 import { Account } from '../models/Account';
 import mongoose from 'mongoose';
-import * as accountFactory from '../models/Account';
+import { AccountFactory } from '../models/Account';
 import { RatingFactory } from '../models/Rating';
 
 /**
@@ -26,7 +26,7 @@ export const createAccount = async (account: Account): Promise<void> => {
 export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find();
   return accounts.map(account => 
-    accountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value))
+    AccountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value))
   );
 };
 
@@ -38,7 +38,7 @@ export const readAllAccounts = async (): Promise<Account[]> => {
 export const readAccountByUsername = async (username: string): Promise<Account | null> => {
   const account = await DBAccount.findOne({ username });
   if (!account) return null;
-  return accountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value));
+  return AccountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value));
 };
 
 /**

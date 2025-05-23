@@ -1,4 +1,5 @@
 import { notifyNewMatch, requestMatch, requestMatchWithBot } from '../../src/controllers/matchmaking';
+import { readAccountByUsername } from '../../src/repositories/account';
 import * as matchmakingController from '../../src/controllers/matchmaking';
 import { findMatch } from '../../src/services/matchmaking/matchmaking';
 import { getPlayerSocket, registerPlayerSocket } from '../../src/sockets/socket';
@@ -10,6 +11,7 @@ jest.mock('../../src/sockets/socket');
 jest.mock('../../src/services/matchmaking/matchmaking');
 jest.mock('../../src/routes/root');
 jest.mock('../../src/services/match');
+jest.mock('../../src/repositories/account');
 
 beforeEach(() => {
   jest.restoreAllMocks();
@@ -21,8 +23,7 @@ describe('Matchmaking Controller', () => {
   const testMatchId = 'match123';
 
   describe('requestMatch', () => {
-    // mock a Socket object
-    const mockSocket = new Object() as unknown as Socket;
+    const mockSocket = { handshake: { auth: { account:  { username: testUsername }}}} as unknown as Socket;
 
     beforeEach(() => {
       (registerPlayerSocket as jest.Mock).mockImplementation(() => {});
@@ -33,24 +34,27 @@ describe('Matchmaking Controller', () => {
 
     it('should register the player socket', async () => {
       (findMatch as jest.Mock).mockReturnValue(undefined);
+      (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket, testUsername);
+      await requestMatch(mockSocket);
 
       expect(registerPlayerSocket).toHaveBeenCalledWith(testUsername, mockSocket);
     });
 
     it('should search for a match', async () => {
       (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
+      (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket, testUsername);
+      await requestMatch(mockSocket);
 
       expect(findMatch).toHaveBeenCalledWith(testUsername);
     });
 
     it('should notify the new match if found', async () => {
       (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
+      (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket, testUsername);
+      await requestMatch(mockSocket);
 
       expect(notifyNewMatch).toHaveBeenCalledWith(testUsername, testOpponentUsername, testMatchId);
     });

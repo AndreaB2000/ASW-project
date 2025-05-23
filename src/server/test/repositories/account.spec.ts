@@ -1,8 +1,13 @@
-import { DBAccount } from '../../src/repositories/account';
+import {
+  DBAccount,
+  deleteAccount,
+  readAccountByUsername,
+  updateAccount,
+} from '../../src/repositories/account';
 import { createAccount, readAllAccounts } from '../../src/repositories/account';
-import { jest, describe, it, beforeEach } from '@jest/globals';
+import { jest, describe, it, beforeEach, expect } from '@jest/globals';
 import { AccountFactory } from '../../src/models/Account';
-import { checkCalled } from '../test_utils/check-called';
+import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 import { RatingFactory } from '../../src/models/Rating';
 
 describe('Account Repository', () => {
@@ -82,7 +87,7 @@ describe('Account Repository', () => {
   describe('updateAccount', () => {
     it('should call updateOne with correct parameters', async () => {
       const testRating = RatingFactory.create();
-      const testAccount = accountFactory.create(testUsername, testEmail, testPassword, testRating);
+      const testAccount = AccountFactory.create(testUsername, testEmail, testPassword, testRating);
       const expectedResult = { modifiedCount: 1 };
 
       await checkCalledWith(
@@ -104,7 +109,7 @@ describe('Account Repository', () => {
 
     it('should return false when no account was updated', async () => {
       const testRating = RatingFactory.create();
-      const testAccount = accountFactory.create(testUsername, testEmail, testPassword, testRating);
+      const testAccount = AccountFactory.create(testUsername, testEmail, testPassword, testRating);
       const expectedResult = { modifiedCount: 0 };
 
       const result = await checkCalledWith(
