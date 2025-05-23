@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { Rating, RatingFactory } from './Rating';
 
 /**
- * Value object representing an account.
+ * Entity representing an account.
  */
 export interface Account {
   /**
@@ -28,6 +28,9 @@ export interface Account {
   checkPassword(password: string): Promise<boolean>;
 }
 
+/**
+ * Factory for creating accounts.
+ */
 export class AccountFactory {
   /**
    * Account factory. Creates a new account with the given username and password. The password will be hashed.
@@ -84,6 +87,7 @@ class AccountImpl implements Account {
   }
 
   constructor(username: string, email: string, password: string, rating?: Rating) {
+    if (!this.isValidEmail(email)) throw new Error('Invalid email');
     this._username = username;
     this._email = email;
     this._hashedPassword = password;
@@ -92,5 +96,10 @@ class AccountImpl implements Account {
 
   async checkPassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this._hashedPassword);
+  }
+
+  private isValidEmail(email: string): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()\[\]\\.,;:\s@"]+\.)+[^<>()\[\]\\.,;:\s@"]{2,})$/;
+    return re.test(email);
   }
 }
