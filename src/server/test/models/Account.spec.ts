@@ -34,6 +34,13 @@ describe('Account', () => {
     );
   });
 
+  it('should not accept an invalid username', async () => {
+    const invalidUsername = 'tooLongUsernameThatExceedsTheLimit';
+    await expect(AccountFactory.createWithHashing(invalidUsername, email, plainPassword)).rejects.toThrow(
+      'Invalid username',
+    );
+  });
+
   it('should create an account with a provided hashed password using create', async () => {
     const hashedPassword = await bcrypt.hash(plainPassword, await bcrypt.genSalt());
     const account = AccountFactory.create(username, email, hashedPassword);
