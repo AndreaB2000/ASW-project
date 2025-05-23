@@ -13,7 +13,7 @@ function changeProfile() {
 }
 
 function saveProfile() {
-  socket.emit('updateEmail', email.value, () => {
+  socket.emit('changeEmail', email.value, () => {
     userStore.setEmail(email.value);
     isEditing.value = false;
   });
