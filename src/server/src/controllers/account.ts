@@ -104,6 +104,7 @@ export const getMe = async (req: AuthenticatedRequest, res: Response): Promise<v
  * @param newEmail the new email of the user
  */
 export const changeEmail = async (oldAccount: Account, newEmail: string): Promise<void> => {
-  const newAccount = AccountFactory.create(oldAccount.username, newEmail, oldAccount.hashedPassword);
-  await service.updateAccount(oldAccount, newAccount);
+  if (!await service.updateEmail(oldAccount, newEmail)) {
+    throw new Error('Email already exists');
+  }
 };

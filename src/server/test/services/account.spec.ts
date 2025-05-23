@@ -1,4 +1,4 @@
-import { registerAccount, authenticateAccount, getAccount } from '../../src/services/account';
+import { registerAccount, authenticateAccount, getAccount, updateEmail } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll } from '@jest/globals';
@@ -9,6 +9,7 @@ let existingUser: Account;
 jest.mock('../../src/repositories/account', () => ({
   readAllAccounts: jest.fn(() => Promise.resolve([existingUser])),
   createAccount: jest.fn(),
+  updateAccount: jest.fn()
 }));
 
 describe('Account Service', () => {
@@ -66,6 +67,28 @@ describe('Account Service', () => {
     it('should return the account if username exists', async () => {
       const result = await getAccount(existingUser.username);
       expect(result).toBe(existingUser);
+    });
+  });
+
+  describe('updateEmail', () => {
+    it('should return false if email is already taken', async () => {
+      const newEmail = existingUser.email;
+      const result = await updateEmail(existingUser, newEmail);
+      expect(result).toBe(false);
+      expect(repository.readAllAccounts).toHaveBeenCalled();
+    });
+
+    it('should return false if email is invalid', async () => {
+      const invalidEmail = 'invalid-email';
+      const result = await updateEmail(existingUser, invalidEmail);
+      expect(result).toBe(false);
+      expect(repository.updateAccount).not.toHaveBeenCalled();
+    });
+
+    it('should update the email if valid and unique', async () => {
+      const newEmail = 'new@email.com';
+      const result = await updateEmail(existingUser, newEmail);
+      expect(result).toBe(true);
     });
   });
 });
