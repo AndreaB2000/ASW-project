@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { registerAccount, authenticateAccount } from '../services/account';
-import { AccountFactory } from '../models/Account';
+import * as service from '../services/account';
+import { Account, AccountFactory } from '../models/Account';
 import { secret } from '../config/jwt';
 import { expiration } from '../config/jwt';
 import jwt from 'jsonwebtoken';
@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const user = await AccountFactory.createWithHashing(username, email, password);
-    const result = await registerAccount(user);
+    const result = await service.registerAccount(user);
     if (!result) res.status(409).json({ message: 'Account already exists' });
     else res.status(201).json({ message: 'Account registered successfully', username });
   } catch (error) {
@@ -41,7 +41,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'Username and password are required' });
       return;
     }
-    const account = await authenticateAccount(username, password);
+    const account = await service.authenticateAccount(username, password);
     if (!account) {
       res.status(409).json({ message: 'Invalid username or password' });
       return;
@@ -96,3 +96,14 @@ export const getMe = async (req: AuthenticatedRequest, res: Response): Promise<v
   const { username, email } = req.account;
   res.status(200).json({ username, email });
 }
+
+/*********************************** SOCKET ********************************/
+
+/**
+ * Change the email of the user
+ * @param newEmail the new email of the user
+ */
+export const changeEmail = async (oldAccount: Account, newEmail: string): Promise<void> => {
+  const newAccount = AccountFactory.create(oldAccount.username, newEmail, oldAccount.hashedPassword);
+  await service.updateAccount(oldAccount, newAccount);
+};
