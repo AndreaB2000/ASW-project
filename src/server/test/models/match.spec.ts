@@ -12,12 +12,12 @@ describe('Match', () => {
   const player1 = 'Alice';
   const player2 = 'Bob';
   const NOW = new Date();
-  const validMove1 = moveFactory.create(2, 2);
+  const validMove1 = moveFactory.create(1, 2);
   const validMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 3,
+    boardFactory.DEFAULT_WIDTH - 4,
     boardFactory.DEFAULT_HEIGHT - 3,
   );
-  const invalidMove = moveFactory.create(2, 3);
+  const invalidMove = moveFactory.create(2, 5);
   const customWidth = 6;
   const customHeight = 6;
   const customBoardEntry = { x: 0, y: 0, pile: pileFactory.create(player1, 1) };
