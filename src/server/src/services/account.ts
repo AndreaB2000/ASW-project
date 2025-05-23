@@ -39,3 +39,13 @@ export const getAccount = async (username: string): Promise<Account | null> => {
   if (!account) return null;
   return account;
 };
+
+/**
+ * Updates the account with the new information.
+ * @param oldAccount the account to update
+ * @param newAccount the new account information
+ */
+export const updateAccount = async (oldAccount: Account, newAccount: Account): Promise<void> => {
+  if (getAccount(oldAccount.username) === null) throw new Error('Account not found');
+  //TODO await repository.updateAccount(oldAccount, newAccount);
+};

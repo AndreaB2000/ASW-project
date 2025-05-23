@@ -3,6 +3,7 @@ import * as controller from '../controllers/account';
 import { body } from 'express-validator';
 import { validationHandler } from '../middlewares/validationHandler';
 import { authenticateToken } from '../middlewares/auth';
+import { Socket } from 'socket.io';
 
 export const router = Router();
 
@@ -30,3 +31,17 @@ router.post(
 router.post('/logout', [ authenticateToken ], controller.logout);
 
 router.get('/me', [ authenticateToken ], controller.getMe);
+
+/*********************************** SOCKET ********************************/
+
+export const account = (socket: Socket) => {
+  socket.on('changeEmail', async (newEmail: string, callback) => {
+    try {
+      await controller.changeEmail(socket.handshake.auth.account, newEmail);
+      callback({ success: true });
+    } catch (error) {
+      console.error('Error changing email:', error);
+      callback({ success: false, message: 'Error changing email' });
+    }
+  });
+};
