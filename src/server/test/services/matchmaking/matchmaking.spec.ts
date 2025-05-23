@@ -14,7 +14,7 @@ import * as matchmakingService from '../../../src/services/matchmaking/matchmaki
 import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { RatingFactory } from '../../../src/models/Rating';
 import { MatchmakingQueueFactory } from '../../../src/models/MatchmakingQueue';
-import * as AccountFactory from '../../../src/models/Account';
+import { AccountFactory } from '../../../src/models/Account';
 
 jest.mock('../../../src/repositories/matchmakingQueue');
 jest.mock('../../../src/repositories/account');

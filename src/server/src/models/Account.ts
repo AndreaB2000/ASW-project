@@ -28,36 +28,41 @@ export interface Account {
   checkPassword(password: string): Promise<boolean>;
 }
 
-/**
- * Account factory. Creates a new account with the given username and password. The password will be hashed.
- * @param username the username of the user
- * @param email the email of the user
- * @param password the password of the user
- * @param rating the rating of the user
- * @returns {Account} the account object
- */
-export const createWithHashing = async (
-  username: string,
-  email: string,
-  password: string,
-  rating?: Rating,
-): Promise<Account> => {
-  const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return new AccountImpl(username, email, hashedPassword, rating);
-};
+export class AccountFactory {
+  /**
+   * Account factory. Creates a new account with the given username and password. The password will be hashed.
+   * @param username the username of the user
+   * @param email the email of the user
+   * @param password the password of the user
+   * @param rating the rating of the user
+   * @returns {Account} the account object
+   */
+  public static createWithHashing = async (
+    username: string,
+    email: string,
+    password: string,
+    rating?: Rating,
+  ): Promise<Account> => {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return new AccountImpl(username, email, hashedPassword, rating);
+  };
 
-/**
- * Account factory. Creates a new account with the given username and hashed password.
- * @param username the username of the user
- * @param email the email of the user
- * @param hashedPassword the hashed password of the user
- * @param rating the rating of the user
- * @returns {Account} the account object
- */
-export const create = (username: string, email: string, hashedPassword: string, rating?: Rating): Account =>
-  new AccountImpl(username, email, hashedPassword, rating);
-
+  /**
+   * Account factory. Creates a new account with the given username and hashed password.
+   * @param username the username of the user
+   * @param email the email of the user
+   * @param hashedPassword the hashed password of the user
+   * @param rating the rating of the user
+   * @returns {Account} the account object
+   */
+  public static create = (
+    username: string,
+    email: string,
+    hashedPassword: string,
+    rating?: Rating,
+  ): Account => new AccountImpl(username, email, hashedPassword, rating);
+}
 class AccountImpl implements Account {
   private _username: string;
   private _email: string;
