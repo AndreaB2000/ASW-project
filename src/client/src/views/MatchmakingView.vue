@@ -2,7 +2,6 @@
 import router from '@/router';
 import { useMatchStore } from '@/stores/matchStore';
 import { socket } from '@/services/server-connections';
-import { useMatchStore } from '@/stores/matchStore';
 import { ref } from 'vue';
 
 const username = ref<string>('');
