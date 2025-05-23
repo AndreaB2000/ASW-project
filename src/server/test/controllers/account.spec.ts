@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { register, login, logout, getMe } from '../../src/controllers/account';
+import { register, login, logout, getMe, changeEmail } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
@@ -14,6 +14,7 @@ app.post('/logout', logout);
 jest.mock('../../src/services/account', () => ({
   registerAccount: jest.fn(),
   authenticateAccount: jest.fn(),
+  updateEmail: jest.fn().mockReturnValue(true)
 }));
 
 describe('Account Controller', () => {
@@ -148,6 +149,26 @@ describe('Account Controller', () => {
         username: req.account.username,
         email: req.account.email,
       });
+    });
+  });
+
+  describe('Socket changeEmail', () => {
+
+    const oldAccount = AccountFactory.create('testUser', 'test@mail.com', 'testpass');
+    const newEmail = 'new@mail.com';
+
+    it('should call updateEmail with the correct parameters', async () => {
+      await changeEmail(oldAccount, newEmail);
+      expect(accountService.updateEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          username: oldAccount.username,
+          email: oldAccount.email,
+        }), newEmail);
+    });
+
+    it('should throw if updateEmail fails', async () => {
+      jest.mocked(accountService.updateEmail).mockReturnValue(Promise.resolve(false));
+      await expect(changeEmail(oldAccount, newEmail)).rejects.toThrow('Email already exists');
     });
   });
 });

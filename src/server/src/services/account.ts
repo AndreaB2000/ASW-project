@@ -41,11 +41,18 @@ export const getAccount = async (username: string): Promise<Account | null> => {
 };
 
 /**
- * Updates the account with the new information.
- * @param oldAccount the account to update
- * @param newAccount the new account information
+ * Updates the email of the account associated with the given username.
+ * @param account the account to update
+ * @param newEmail the new email to set
+ * @returns {boolean} true if the email was updated successfully, false otherwise
+ * @throws {Error} if the account is not found
  */
-export const updateAccount = async (oldAccount: Account, newAccount: Account): Promise<void> => {
-  if (getAccount(oldAccount.username) === null) throw new Error('Account not found');
-  //TODO await repository.updateAccount(oldAccount, newAccount);
+export const updateEmail = async (account: Account, newEmail: string): Promise<boolean> => {
+  const existingAccounts = await repository.readAllAccounts();
+  const isExistingAccount = existingAccounts.find(a => a.email === newEmail);
+  if (isExistingAccount) return false;
+  const validEmail = account.changeEmail(newEmail);
+  if (!validEmail) return false;
+  await repository.updateAccount(account);
+  return true;
 };

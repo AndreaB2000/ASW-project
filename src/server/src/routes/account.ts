@@ -34,6 +34,10 @@ router.get('/me', [ authenticateToken ], controller.getMe);
 
 /*********************************** SOCKET ********************************/
 
+/**
+ * Socket events for account management
+ * @param socket - The socket instance
+ */
 export const account = (socket: Socket) => {
   socket.on('changeEmail', async (newEmail: string, callback) => {
     try {
