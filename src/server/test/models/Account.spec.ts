@@ -2,6 +2,7 @@ import { describe, it, expect } from '@jest/globals';
 import { AccountFactory } from '../../src/models/Account';
 import bcrypt from 'bcrypt';
 import { jest } from '@jest/globals';
+import { RatingFactory } from '../../src/models/Rating';
 
 jest.mock('bcrypt', () => ({
   genSalt: jest.fn(() => Promise.resolve('salt')),
@@ -33,5 +34,14 @@ describe('Account', () => {
 
     expect(account.username).toBe(username);
     expect(account.hashedPassword).toBe(hashedPassword);
+  });
+
+  it('should create an account with a default rating using create', async () => {
+    const account = create(username, email, 'hashedPassword');
+
+    expect(account.username).toBe(username);
+    expect(account.email).toBe(email);
+    expect(account.hashedPassword).toBe('hashedPassword');
+    expect(account.rating).toStrictEqual(RatingFactory.create());
   });
 });

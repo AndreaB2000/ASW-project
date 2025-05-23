@@ -8,16 +8,16 @@ import {
 
 import * as queueRepo from '../../../src/repositories/matchmakingQueue';
 import * as opponentLogic from '../../../src/services/matchmaking/logic';
-import * as playerRepo from '../../../src/repositories/player';
+import * as accountRepository from '../../../src/repositories/account';
 import * as matchService from '../../../src/services/match';
 import * as matchmakingService from '../../../src/services/matchmaking/matchmaking';
 import { MatchmakingCandidateFactory } from '../../../src/models/MatchmakingCandidate';
 import { RatingFactory } from '../../../src/models/Rating';
 import { MatchmakingQueueFactory } from '../../../src/models/MatchmakingQueue';
-import { PlayerFactory } from '../../../src/models/Player';
+import * as AccountFactory from '../../../src/models/Account';
 
 jest.mock('../../../src/repositories/matchmakingQueue');
-jest.mock('../../../src/repositories/player');
+jest.mock('../../../src/repositories/account');
 jest.mock('../../../src/services/match');
 jest.mock('../../../src/services/matchmaking/logic');
 
@@ -29,6 +29,8 @@ const testRating = RatingFactory.create();
 const testDate = new Date('2023-01-01T00:00:00Z');
 const playerAUsername = 'playerA';
 const playerBUsername = 'playerB';
+const mockEmail = 'test@test.com';
+const mockPassword = 'password123';
 
 describe('findMatchOrQueue', () => {
   const opponentCandidate = MatchmakingCandidateFactory.create(
@@ -36,13 +38,13 @@ describe('findMatchOrQueue', () => {
     testRating,
     testDate,
   );
-  const requestingPlayer = PlayerFactory.create(playerAUsername, testRating);
+  const requestingAccount = AccountFactory.createWithHashing(playerAUsername, mockEmail, mockPassword, testRating);
   const matchId = 'match123';
 
   it('returns match data if suitable opponent is found', async () => {
     const testQueue = MatchmakingQueueFactory.create([opponentCandidate]);
 
-    jest.spyOn(playerRepo, 'readPlayerByUsername').mockResolvedValue(requestingPlayer);
+    jest.spyOn(accountRepository, 'readAccountByUsername').mockReturnValue(requestingAccount);
     jest.spyOn(queueRepo, 'getQueue').mockResolvedValue(testQueue);
     jest.spyOn(opponentLogic, 'isValidMatch').mockResolvedValue(true);
     jest.spyOn(queueRepo, 'removeCandidate').mockResolvedValue(undefined);
@@ -57,7 +59,7 @@ describe('findMatchOrQueue', () => {
   it('adds candidate to queue if no match is found', async () => {
     const testQueue = MatchmakingQueueFactory.create();
 
-    jest.spyOn(playerRepo, 'readPlayerByUsername').mockResolvedValue(requestingPlayer);
+    jest.spyOn(accountRepository, 'readAccountByUsername').mockReturnValue(requestingAccount);
     jest.spyOn(queueRepo, 'getQueue').mockResolvedValue(testQueue);
     jest.spyOn(opponentLogic, 'isValidMatch').mockResolvedValue(false);
     const addSpy = jest.spyOn(queueRepo, 'addCandidate').mockResolvedValue(undefined);

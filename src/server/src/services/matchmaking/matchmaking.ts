@@ -5,9 +5,8 @@ import {
   MatchmakingCandidateFactory,
 } from '../../models/MatchmakingCandidate';
 import '../../utils/array.extensions';
-import { readPlayerByUsername } from '../../repositories/player';
 import { newMatch } from '../match';
-import { RatingFactory } from '../../../src/models/Rating'; // TODO REMOVE THIS WHEN LOGIN IS IMPLEMENTED
+import { readAccountByUsername } from '../../repositories/account';
 
 /**
  * Creates a new match if possible for the given player.
@@ -31,10 +30,10 @@ export const findMatch = async (
 export const findMatchOrQueue = async (
   requestingUsername: string,
 ): Promise<[string, string, string] | undefined> => {
-  // const requestingPlayer = await readPlayerByUsername(requestingUsername);
+  const requestingPlayer = await readAccountByUsername(requestingUsername);
   const requestingCandidate = MatchmakingCandidateFactory.create(
     requestingUsername,
-    RatingFactory.create(1500),
+    requestingPlayer.rating,
   );
 
   const suitableOpponent = await findSuitableOpponent(requestingCandidate);
