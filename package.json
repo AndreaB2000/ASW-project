@@ -75,7 +75,7 @@
     "url": "git+https://github.com/AndreaB2000/ASW-project.git"
   },
   "engines": {
-    "node": ">=20.0.0 <=22.15.1"
+    "node": ">=20.0.0 <=22.16.0"
   },
   "os": [
     "linux",
