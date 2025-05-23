@@ -28,8 +28,8 @@ export const requestMatch = async (playerSocket: Socket): Promise<void> => {
  */
 export const requestMatchWithBot = async (
   playerSocket: Socket,
-  username: string,
 ): Promise<string> => {
+  const username = playerSocket.handshake.auth.account.username;
   registerPlayerSocket(username, playerSocket);
   const matchId = await newMatch(username, 'bot', new Date());
   notifyPlayer(username, matchId);
