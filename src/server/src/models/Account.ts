@@ -88,6 +88,7 @@ class AccountImpl implements Account {
 
   constructor(username: string, email: string, password: string, rating?: Rating) {
     if (!this.isValidEmail(email)) throw new Error('Invalid email');
+    if (!this.isValidUsername(username)) throw new Error('Invalid username');
     this._username = username;
     this._email = email;
     this._hashedPassword = password;
@@ -101,5 +102,10 @@ class AccountImpl implements Account {
   private isValidEmail(email: string): boolean {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()\[\]\\.,;:\s@"]+\.)+[^<>()\[\]\\.,;:\s@"]{2,})$/;
     return re.test(email);
+  }
+
+  private isValidUsername(username: string): boolean {
+    const re = /^[a-zA-Z0-9_]{3,20}$/;
+    return re.test(username);
   }
 }
