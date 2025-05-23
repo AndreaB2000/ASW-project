@@ -26,6 +26,11 @@ export interface Account {
    * @param password the password to check
    */
   checkPassword(password: string): Promise<boolean>;
+  /**
+   * Changes the email of the account.
+   * @param newEmail the new email to set
+   */
+  changeEmail(newEmail: string): boolean;
 }
 
 /**
@@ -97,6 +102,12 @@ class AccountImpl implements Account {
 
   async checkPassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this._hashedPassword);
+  }
+
+  changeEmail(newEmail: string): boolean {
+    if (!this.isValidEmail(newEmail)) return false;
+    this._email = newEmail;
+    return true;
   }
 
   private isValidEmail(email: string): boolean {

@@ -55,4 +55,17 @@ describe('Account', () => {
     expect(account.hashedPassword).toBe('hashedPassword');
     expect(account.rating).toStrictEqual(RatingFactory.create());
   });
+
+  it('should not accept an invalid email when changing it', async () => {
+    const account = await AccountFactory.createWithHashing(username, email, plainPassword);
+    const invalidEmail = 'invalidEmail';
+    expect(account.changeEmail(invalidEmail)).toBe(false);
+  });
+
+  it('should change the email of the account', async () => {
+    const account = await AccountFactory.createWithHashing(username, email, plainPassword);
+    const newEmail = 'newEmail@mail.it';
+    account.changeEmail(newEmail);
+    expect(account.email).toBe(newEmail);
+  });
 });
