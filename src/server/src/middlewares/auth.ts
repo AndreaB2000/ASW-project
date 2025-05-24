@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import * as cookie from 'cookie';
 import { secret } from '../config/jwt';
 import { AuthenticatedRequest } from 'authenticated-request';
+import { StrategyFactory } from '../services/matchmaking/strategy';
+import { registerPlayerSocket } from '../sockets/socket';
 
 /**
  * Authentication middleware for ReST API. Those APIs that use this middleware won't receive the request unless the authorization header is properly configured
@@ -36,26 +38,38 @@ export async function authenticateToken(
  * @param socket the socket object
  * @param next the next middleware function
  */
-export const authenticateTokenSocket = (socket: Socket, next: NextFunction): void => {
-  console.log("benvenuto nel middleware");
+export const authenticateTokenSocket = (socket: Socket, next: (err?: Error) => void): void => {
+  console.log('benvenuto nel middleware');
   const { cookie: cookieHeader } = socket.handshake.headers;
   if (!cookieHeader) {
-    next(new Error('No cookies sent'));
+    console.log('No cookie found, registering as guest');
+    guestAuthentication(socket);
+    next();
     return;
   }
   const cookies = cookie.parse(cookieHeader);
   const token = cookies.token;
   if (!token) {
-    next(new Error('No token found in cookies'));
+    console.log('No token found, registering as guest');
+    guestAuthentication(socket);
+    next();
     return;
   }
   try {
     const userData = jwt.verify(token, secret) as { username: string; email: string };
     socket.handshake.auth.account = userData;
+    registerPlayerSocket(userData.username, socket);
+    socket.data.strategy = StrategyFactory.createAuthenticatedStrategy();
     next();
     return;
   } catch (err) {
-    next(new Error('Invalid token'));
+    next(new Error('Authentication error: ' + err));
     return;
   }
+};
+
+const guestAuthentication = (socket: Socket): void => {
+  // TODO IMPLEMENT UNIQUE GUEST USERNAME GENERATION
+  registerPlayerSocket('guest', socket);
+  socket.data.strategy = StrategyFactory.createGuestStrategy();
 };

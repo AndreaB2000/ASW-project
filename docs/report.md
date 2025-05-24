@@ -27,6 +27,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
       - [Backend](#backend)
     - [Detailed Design](#detailed-design)
       - [Game State Data Representation](#game-state-data-representation)
+      - [Authentication](#authentication)
       - [Rating System](#rating-system)
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
@@ -411,6 +412,40 @@ The list of moves can be represented as a list of tuples (i,j) where the tuple r
 
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
 
+#### Authentication
+
+<!-- TODO IMPROVE THIS BY MAKING THE GUEST HAVE A NUMBER ASSOCIATED (guest_123) MAKING HIM UNIQUE SO THAT WE CAN HAVE MORE THAN ONE GUEST PLAYING AT THE SAME TIME -->
+
+The authentication system is responsible for managing user accounts and sessions.
+
+It allows users to register, login, and logout from the application.
+
+The authentication system uses JWT (JSON Web Tokens) to manage user sessions. <!-- TODO COMPLETE THIS SECTION -->
+
+To correctly route the user to the correct beheviour, depending on whether they are logged in or not, the server will check if the user is authenticated by checking if the JWT token is present in the request headers.
+
+If the token is present, the server will verify it and extract the user information from it. If the token is not present or is invalid, the server will treat the user as a generic guest user.
+
+The routing system uses the strategy pattern to handle the different user types (authenticated and guest) and route them to the correct behaviour for the given socket event.
+
+This is used in the matchmaking system API, so that the user simply emits the same event regardless of whether they are logged in or not, and the server will handle the routing to the correct behaviour.
+
+```mermaid
+sequenceDiagram
+   participant Client
+   participant Server
+
+   Client->>Server: emit('requestMatch')
+
+   Note over Server: checks if the user is authenticated
+   alt User is authenticated
+      Note over Server: Extracts user information from the JWT token and adds the user to the matchmaking queue
+   else User is not authenticated
+      Note over Server: Adds the user to the matchmaking queue as a guest user
+      Server-->>Client: emit('matchFound', { matchId })
+   end
+```
+
 #### Rating System
 
 The rating system is based on the Elo rating system, which is a method for calculating the relative skill levels of players in two-player games.
@@ -419,7 +454,7 @@ Every player has a rating, which is a number that represents their skill level. 
 
 The rating is updated after each match based on the outcome of the match and the ratings of the players involved.
 
-The rating is updated using the following formula: <!-- NOT IMPLEMENTED YET -->
+The rating is updated using the following formula:
 
 R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
 

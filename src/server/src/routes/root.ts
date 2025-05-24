@@ -1,10 +1,15 @@
 import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
-import { requestMatch, requestMatchWithBot } from '../controllers/matchmaking';
 import { match } from './match';
+import { matchmaking } from './matchmaking';
+import { authenticateTokenSocket } from '../middlewares/auth';
 
 export const root = (socket: Socket) => {
   console.log('User connected');
+
+  socket.use((_, next) => {
+    authenticateTokenSocket(socket, next);
+  });
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
@@ -16,18 +21,6 @@ export const root = (socket: Socket) => {
 
   match(socket);
   matchmaking(socket);
-};
-
-const matchmaking = (socket: Socket) => {
-  socket.on('requestMatch', async data => {
-    console.log('Requesting match');
-    await requestMatch(socket);
-  });
-
-  socket.on('requestMatchWithBot', async data => {
-    console.log('Requesting match with bot');
-    await requestMatchWithBot(socket, data.username);
-  });
 };
 
 export const emitToRoom = (room: string, event: string, ...data: any[]) => {

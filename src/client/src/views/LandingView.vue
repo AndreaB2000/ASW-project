@@ -11,7 +11,7 @@ function test() {
 }
 
 function playPVP() {
-  console.log('enterQueue');
+  console.log('emitting requestMatch');
   socket.emit('requestMatch');
 }
 

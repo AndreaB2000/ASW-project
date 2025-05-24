@@ -1,36 +1,25 @@
 import { findMatch } from '../services/matchmaking/matchmaking';
-import { getPlayerSocket, registerPlayerSocket } from '../sockets/socket';
-import { Socket } from 'socket.io';
+import { getPlayerSocket } from '../sockets/socket';
 import { newMatch } from '../services/match';
 
 /**
  * Requests a match and notifies the player if a match has been found, adds them to the queue otherwise.
- * @param playerSocket the socket of the player requesting the match
  * @param username the username of the player requesting the match
  */
-export const requestMatch = async (playerSocket: Socket): Promise<void> => {
-  const username = playerSocket.handshake.auth.account.username;
-  registerPlayerSocket(username, playerSocket);
-
+export const requestMatch = async (username: string): Promise<void> => {
   const result = await findMatch(username);
-
   if (!result) return;
-
   const [usernameA, usernameB, matchId] = result;
-
   notifyNewMatch(usernameA, usernameB, matchId);
 };
 
 /**
  * Requests a match with a bot and notifies the player that a match has been found.
- * @param playerSocket the socket of the player requesting the match
  * @param username the username of the player requesting the match
  */
 export const requestMatchWithBot = async (
-  playerSocket: Socket,
+  username: string,
 ): Promise<string> => {
-  const username = playerSocket.handshake.auth.account.username;
-  registerPlayerSocket(username, playerSocket);
   const matchId = await newMatch(username, 'bot', new Date());
   notifyPlayer(username, matchId);
 
