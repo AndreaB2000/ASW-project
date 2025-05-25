@@ -22,6 +22,15 @@ console.log(`[API URL]: ${url}/`);
 export const socket = io(url);
 
 /**
+ * Socket connection to the server with authentication
+ */
+export const socketAuth = io(`${url}/auth`, {
+  autoConnect: false,
+  withCredentials: true,
+  forceNew: true
+});
+
+/**
  * Axios instance for making HTTP requests to the server.
  */
 export const server = axios.create({ baseURL: url, timeout: 10000, withCredentials: true });
