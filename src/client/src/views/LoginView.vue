@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { server, socket, socketAuth } from '@/services/server-connections';
+import { server, tryAuth } from '@/services/server-connections';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -13,18 +13,18 @@ const form = reactive({
 const changeSocketNamespace = (namespace: string) => {
   // This function should change the socket namespace, implementation depends on your socket setup
   console.log(`Changing socket namespace to: ${namespace}`);
-  socket.disconnect();
-  socketAuth.connect();
+  tryAuth();
 };
 
 function login(event: Event) {
   event.preventDefault();
   console.log('Login data:', form);
-  server.post('/account/login', { username: form.username, password: form.password })
+  server
+    .post('/account/login', { username: form.username, password: form.password })
     .then(response => {
       console.log('Login successful:', response.data);
       changeSocketNamespace('/auth');
-      router.push('/')
+      router.push('/');
     })
     .catch(error => {
       console.error('Login error:', error);

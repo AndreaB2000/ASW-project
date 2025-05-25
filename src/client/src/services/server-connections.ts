@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 let protocol = 'http';
 let ip = 'localhost';
@@ -17,18 +17,27 @@ const url = `${protocol}://${ip}:${port}`;
 console.log(`[API URL]: ${url}/`);
 
 /**
- * Socket connection to the server
- */
-export const socket = io(url);
-
-/**
  * Socket connection to the server with authentication
  */
-export const socketAuth = io(`${url}/auth`, {
-  autoConnect: false,
+export let socket = io(`${url}/auth`, {
   withCredentials: true,
-  forceNew: true
+  forceNew: true,
 });
+
+socket.on('connect_error', () => {
+  console.warn('Auth connection failed, falling back to unauthenticated namespace');
+
+  // Fallback to unauthenticated root namespace
+  socket = io(url);
+});
+
+export const tryAuth = () => {
+  socket.disconnect();
+  socket = io(`${url}/auth`, {
+    withCredentials: true,
+    forceNew: true,
+  });
+};
 
 /**
  * Axios instance for making HTTP requests to the server.
