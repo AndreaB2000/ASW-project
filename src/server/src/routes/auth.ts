@@ -1,21 +1,17 @@
 import { Socket } from 'socket.io';
 import * as ioHandler from '../sockets/socket';
 import { match } from './match';
-import { guestMatchmaking } from './matchmaking';
+import { authMatchmaking } from './matchmaking';
 
-export const root = (socket: Socket) => {
-  console.log('User connected');
+export const auth = (socket: Socket) => {
+  console.log('User connected to auth');
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-
-  socket.on('ping', callback => {
-    callback('pong from root');
+    console.log('User disconnected to auth');
   });
 
   match(socket);
-  guestMatchmaking(socket);
+  authMatchmaking(socket);
 };
 
 export const emitToRoom = (room: string, event: string, ...data: any[]) => {

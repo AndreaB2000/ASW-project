@@ -6,9 +6,11 @@ let io: Server;
 
 export function initializeIO(server: http.Server) {
   io = new Server(server, {
-    cors: { origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_IP : '*' },
+    cors: { 
+      origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_IP : 'http://localhost:5173',
+      credentials: true,
+    },
   });
-  io.use(authenticateTokenSocket);
 }
 
 export function getIO(): Server {
