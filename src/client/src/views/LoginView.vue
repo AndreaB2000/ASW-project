@@ -25,8 +25,9 @@ function login(event: Event) {
     .post('/account/login', { username: form.username, password: form.password })
     .then(response => {
       console.log('Login successful:', response.data);
+      userStore.setUsername(form.username);
       changeSocketNamespace('/auth');
-      router.push('/');
+      router.push('/play');
     })
     .catch(alert);
 }
