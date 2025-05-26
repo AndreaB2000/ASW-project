@@ -1,9 +1,9 @@
 {
   "name": "server",
   "scripts": {
-    "start": "cd src/ && ts-node server.ts",
+    "start": "cd src/ && NODE_ENV=production ts-node server.ts",
     "build": "npm run build-ts",
-    "serve": "nodemon",
+    "serve": "NODE_ENV=development nodemon",
     "test": "jest",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon dist/server.js",

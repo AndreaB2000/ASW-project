@@ -39,9 +39,14 @@ if (process.env.NODE_ENV === 'production') {
       max: 100,
     }),
   );
-  const protocol = process.env.CLIENT_PROTOCOL;
-  const ip = process.env.CLIENT_IP;
-  const port = process.env.CLIENT_PORT;
+  let protocol = 'http';
+  let ip = 'localhost';
+  let port = '4173';
+  if (process.env.DOCKER) {
+    protocol = process.env.CLIENT_PROTOCOL;
+    ip = process.env.CLIENT_IP;
+    port = process.env.CLIENT_PORT;
+  }
   app.use(cors({ origin: `${protocol}://${ip}:${port}`, credentials: true }));
 } else {
   app.use(cors({
