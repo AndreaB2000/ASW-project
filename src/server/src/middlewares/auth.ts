@@ -37,12 +37,8 @@ export async function authenticateToken(
  * @param next the next middleware function
  */
 export const authenticateTokenSocket = (socket: Socket, next: NextFunction): void => {
-  console.log("benvenuto nel middleware");
-  console.log(socket.handshake.headers);
-  console.log(socket.nsp.name)
   const cookieHeader = socket.handshake.headers.cookie;
   if (!cookieHeader) {
-    console.log('No cookies sent');
     next(new Error('No cookies sent'));
     return;
   }
@@ -54,7 +50,7 @@ export const authenticateTokenSocket = (socket: Socket, next: NextFunction): voi
   }
   try {
     const userData = jwt.verify(token, secret) as { username: string; email: string };
-    socket.handshake.auth.account = userData;
+    socket.data = userData;
     next();
     return;
   } catch (err) {

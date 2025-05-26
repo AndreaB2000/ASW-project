@@ -6,7 +6,6 @@ import { queryPrologEngine } from '../prolog/tau-prolog';
 export const getMove = async (board: Board): Promise<Move | undefined> => {
   const parsedBoard = parseBoard(board);
   const goal = `best_move(${parsedBoard}, Best).`;
-  console.log('Prolog goal:', goal);
 
   let result;
   try {

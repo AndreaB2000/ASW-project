@@ -23,7 +23,7 @@ describe('Matchmaking Controller', () => {
   const testMatchId = 'match123';
 
   describe('requestMatch', () => {
-    const mockSocket = { handshake: { auth: { account:  { username: testUsername }}}} as unknown as Socket;
+    const mockSocket = {} as unknown as Socket;
 
     beforeEach(() => {
       (registerPlayerSocket as jest.Mock).mockImplementation(() => {});
@@ -36,7 +36,7 @@ describe('Matchmaking Controller', () => {
       (findMatch as jest.Mock).mockReturnValue(undefined);
       (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket);
+      await requestMatch(mockSocket, testUsername);
 
       expect(registerPlayerSocket).toHaveBeenCalledWith(testUsername, mockSocket);
     });
@@ -45,7 +45,7 @@ describe('Matchmaking Controller', () => {
       (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
       (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket);
+      await requestMatch(mockSocket, testUsername);
 
       expect(findMatch).toHaveBeenCalledWith(testUsername);
     });
@@ -54,7 +54,7 @@ describe('Matchmaking Controller', () => {
       (findMatch as jest.Mock).mockReturnValue([testUsername, testOpponentUsername, testMatchId]);
       (readAccountByUsername as jest.Mock).mockReturnValue({ username: testUsername });
 
-      await requestMatch(mockSocket);
+      await requestMatch(mockSocket, testUsername);
 
       expect(notifyNewMatch).toHaveBeenCalledWith(testUsername, testOpponentUsername, testMatchId);
     });
@@ -62,7 +62,7 @@ describe('Matchmaking Controller', () => {
   
   describe('requestMatchWithBot', () => {
     // mock a Socket object
-    const mockSocket = { handshake: { auth: { account:  { username: testUsername }}}} as unknown as Socket;
+    const mockSocket = {} as unknown as Socket;
     const mockEmit = jest.fn();
     const mockJoin = jest.fn();
     const testMatchId = 'botMatch123';
@@ -78,19 +78,19 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should register the player socket', async () => {
-      await requestMatchWithBot(mockSocket);
+      await requestMatchWithBot(mockSocket, testUsername);
       
       expect(registerPlayerSocket).toHaveBeenCalledWith(testUsername, mockSocket);
     });
 
     it('should create a new match with the bot', async () => {
-      await requestMatchWithBot(mockSocket);
+      await requestMatchWithBot(mockSocket, testUsername);
       
       expect(newMatch).toHaveBeenCalledWith(testUsername, 'bot', expect.any(Date));
     });
 
     it('should notify the player about the match', async () => {
-      await requestMatchWithBot(mockSocket);
+      await requestMatchWithBot(mockSocket, testUsername);
       
       expect(getPlayerSocket).toHaveBeenCalledWith(testUsername);
       expect(mockJoin).toHaveBeenCalledWith(testMatchId);
@@ -98,7 +98,7 @@ describe('Matchmaking Controller', () => {
     });
 
     it('should return the match ID', async () => {
-      const result = await requestMatchWithBot(mockSocket);
+      const result = await requestMatchWithBot(mockSocket, testUsername);
       
       expect(result).toBe(testMatchId);
     });

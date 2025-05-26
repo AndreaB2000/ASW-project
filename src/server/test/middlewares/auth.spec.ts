@@ -123,12 +123,12 @@ describe('authenticateToken middleware using cookies', () => {
           headers: {
             cookie: `token=${validToken}`,
           },
-          auth: {},
         },
+        data: {},
       };
       authenticateTokenSocket(socketWithValidToken as any, mockNext);
       expect(mockNext).toHaveBeenCalledWith(); // called with no error
-      expect((socketWithValidToken.handshake.auth as any).account).toEqual(testAccount);
+      expect((socketWithValidToken.data as any)).toEqual(testAccount);
     });
 
   });

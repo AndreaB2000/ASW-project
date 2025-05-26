@@ -3,24 +3,22 @@ import { requestMatch, requestMatchWithBot } from '../controllers/matchmaking';
 
 export const authMatchmaking = (socket: Socket) => {
   socket.on('requestMatch', async data => {
-    console.log('Requesting match');
-    await requestMatch(socket);
+    await requestMatch(socket, socket.data.username);
   });
 
   socket.on('requestMatchWithBot', async data => {
-    console.log('Requesting match with bot');
-    await requestMatchWithBot(socket);
+    await requestMatchWithBot(socket, socket.data.username);
   });
 };
 
 export const guestMatchmaking = (socket: Socket) => {
   socket.on('requestMatch', async data => {
-    console.log('Requesting match as guest');
-    await requestMatch(socket);
+    await requestMatch(socket, guestUsername);
   });
 
   socket.on('requestMatchWithBot', async data => {
-    console.log('Requesting match with bot as guest');
-    await requestMatchWithBot(socket);
+    await requestMatchWithBot(socket, guestUsername);
   });
+
+  const guestUsername = `guest`;
 };
