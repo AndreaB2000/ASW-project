@@ -6,6 +6,17 @@ db.createUser({
   roles: [{ role: 'readWrite', db: process.env.DB_NAME }],
 });
 
+// TODO REMOVE THIS
+// Insert guest account for temp guest access
+db.account.insertOne({
+  username: 'guest',
+  email: 'guest@guest.com',
+  password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW', // hashed version of "test"
+  rating: {
+    value: 1500,
+  },
+});
+
 // Insert test accounts with pre-hashed passwords
 // TODO ADD CORRECT HASHES
 db.Account.insertMany([
@@ -19,12 +30,12 @@ db.Account.insertMany([
     },
   },
   {
-    username: 'admin',
-    email: 'admin@example.com',
+    username: 'user',
+    email: 'user@example.com',
     // hashed version of "test" hashes do not work couse duh
     password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW',
     rating: {
-      value: 2000,
+      value: 1500,
     },
   },
   {
