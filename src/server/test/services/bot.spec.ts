@@ -5,7 +5,7 @@ import { getMove } from '../../src/services/bot';
 import { query } from '../../src/prolog/prolog';
 
 // Mock dependencies
-jest.mock('../../src/prolog/tau-prolog');
+jest.mock('../../src/prolog/prolog');
 jest.mock('../../src/models/Move');
 
 describe('Bot Service', () => {
