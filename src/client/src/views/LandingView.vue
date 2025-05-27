@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { socket } from '@/services/server-connections';
 import { useRouter } from 'vue-router';
+import { useMatchStore } from '@/stores/matchStore';
 
 const router = useRouter();
+const match = useMatchStore();
 
 function playPVP() {
   console.log('enterQueue');
   socket.emit('requestMatch');
 }
 
-socket.on('matchFound', (matchId: string) => {
-  router.push({ path: '/match', query: { id: matchId } });
+socket.on('matchFound', (matchId: string, whichPlayerAmI: number) => {
+  match.id = matchId;
+  match.whichPlayerAmI = whichPlayerAmI;
+  router.push('/match');
 });
 </script>
 

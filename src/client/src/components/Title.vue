@@ -18,17 +18,12 @@ import Icon from '@/components/Icon.vue';
   justify-content: center;
   align-items: center;
   gap: 2vw;
-  max-height: 20vh;
   margin-top: 4vh;
   margin-bottom: 4vh;
 
   h1 {
     font-size: 5rem;
     letter-spacing: 40%;
-  }
-
-  img {
-    height: 10vh;
   }
 }
 </style>
