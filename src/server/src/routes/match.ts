@@ -14,6 +14,8 @@ export const match = (socket: Socket) => {
   });
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
-    await matchController.addMove(matchId, movingPlayer, moveFactory.create(x, y));
+    if (socket.rooms.has(matchId)) {
+      await matchController.addMove(matchId, movingPlayer, moveFactory.create(x, y));
+    }
   });
 };

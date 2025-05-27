@@ -9,6 +9,8 @@ import { Match } from '../../src/models/Match';
 import * as matchFactory from '../../src/models/Match';
 import * as boardFactory from '../../src/models/Board';
 import * as pileFactory from '../../src/models/Pile';
+import * as ioHandler from '../../src/sockets/socket';
+import { Server } from 'socket.io';
 
 describe('Match controller', () => {
   describe('addMove', () => {
@@ -26,6 +28,7 @@ describe('Match controller', () => {
     );
 
     beforeEach(() => {
+      jest.restoreAllMocks();
       jest.clearAllMocks();
     });
 
@@ -42,6 +45,11 @@ describe('Match controller', () => {
     });
 
     it('should call emitToRoom twice if there is a winner', async () => {
+      const mockIO = {
+        socketsLeave: jest.fn(),
+      };
+
+      jest.spyOn(ioHandler, 'getIO').mockReturnValue(mockIO as unknown as Server);
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
       const spyEmitToRoom = jest
@@ -54,6 +62,7 @@ describe('Match controller', () => {
       expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player1, move.x, move.y);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player1);
+      expect(mockIO.socketsLeave).toHaveBeenCalled();
     });
 
     it('should call emitToRoom only once if there is no winner', async () => {
