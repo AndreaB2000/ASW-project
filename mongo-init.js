@@ -8,23 +8,21 @@ db.createUser({
 
 // TODO REMOVE THIS
 // Insert guest account for temp guest access
-db.account.insertOne({
+db.accounts.insertOne({
   username: 'guest',
   email: 'guest@guest.com',
-  password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW', // hashed version of "test"
+  password: '$2b$10$iMJk4DNZpa4iN0ZLUmmcaeTE4lz2YK8HjSCm9nR4zi9I2KbvgSSfC', // hashed version of "test"
   rating: {
     value: 1500,
   },
 });
 
 // Insert test accounts with pre-hashed passwords
-// TODO ADD CORRECT HASHES
-db.Account.insertMany([
+db.accounts.insertMany([
   {
     username: 'test',
     email: 'test1@example.com',
-    // hashed version of "test" hashes do not work couse duh
-    password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW',
+    password: '$2b$10$iMJk4DNZpa4iN0ZLUmmcaeTE4lz2YK8HjSCm9nR4zi9I2KbvgSSfC', // hashed version of "test"
     rating: {
       value: 1500,
     },
@@ -32,8 +30,7 @@ db.Account.insertMany([
   {
     username: 'user',
     email: 'user@example.com',
-    // hashed version of "test" hashes do not work couse duh
-    password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW',
+    password: '$2b$10$iMJk4DNZpa4iN0ZLUmmcaeTE4lz2YK8HjSCm9nR4zi9I2KbvgSSfC', // hashed version of "test"
     rating: {
       value: 1500,
     },
@@ -41,8 +38,7 @@ db.Account.insertMany([
   {
     username: 'beginner',
     email: 'beginner@example.com',
-    // hashed version of "test" hashes do not work couse duh
-    password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW',
+    password: '$2b$10$iMJk4DNZpa4iN0ZLUmmcaeTE4lz2YK8HjSCm9nR4zi9I2KbvgSSfC', // hashed version of "test"
     rating: {
       value: 1200,
     },
@@ -50,8 +46,7 @@ db.Account.insertMany([
   {
     username: 'expert',
     email: 'expert@example.com',
-    // hashed version of "test" hashes do not work couse duh
-    password: '$2b$10$Hvp.5Kj.YZp1mBa1agY7WuvcM8I4X.GUKFrNg6SkPJzXJMZFLuETW',
+    password: '$2b$10$iMJk4DNZpa4iN0ZLUmmcaeTE4lz2YK8HjSCm9nR4zi9I2KbvgSSfC', // hashed version of "test"
     rating: {
       value: 1800,
     },
@@ -61,7 +56,7 @@ db.Account.insertMany([
 print('Populated database with accounts');
 
 // Insert test matches between existing accounts
-db.Match.insertMany([
+db.matches.insertMany([
   {
     // A completed match where expert won against beginner
     player1: 'expert',
@@ -94,9 +89,9 @@ db.Match.insertMany([
     ],
   },
   {
-    // An ongoing match between test and admin
+    // An ongoing match between test and user
     player1: 'test',
-    player2: 'admin',
+    player2: 'user',
     creationDate: new Date('2025-05-20T09:15:00Z'),
     initialState: {
       height: 9,
@@ -111,14 +106,14 @@ db.Match.insertMany([
                 row === 2 && col === 2
                   ? { owner: 'test', numberOfGrains: 3 }
                   : row === 6 && col === 6
-                  ? { owner: 'admin', numberOfGrains: 3 }
+                  ? { owner: 'user', numberOfGrains: 3 }
                   : null,
             }))
         ),
     },
     moves: [
       { x: 2, y: 2 }, // test moves
-      { x: 6, y: 6 }, // admin moves
+      { x: 6, y: 6 }, // user moves
       { x: 3, y: 2 }, // test moves - match is still in progress
     ],
   },
