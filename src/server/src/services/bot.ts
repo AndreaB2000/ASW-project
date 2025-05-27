@@ -1,7 +1,7 @@
 import { Move } from '../models/Move';
 import * as MoveFactory from '../models/Move';
 import { Board } from '../models/Board';
-import { queryPrologEngine } from '../prolog/tau-prolog';
+import { query } from '../prolog/prolog';
 
 export const getMove = async (board: Board): Promise<Move | undefined> => {
   const parsedBoard = parseBoard(board);
@@ -9,7 +9,7 @@ export const getMove = async (board: Board): Promise<Move | undefined> => {
 
   let result;
   try {
-    result = await queryPrologEngine(goal);
+    result = await query(goal);
   } catch (error) {
     console.error('Error in Prolog engine:', error);
     return undefined;
