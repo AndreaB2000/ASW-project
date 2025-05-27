@@ -2,7 +2,7 @@ import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals
 import * as BoardFactory from '../../src/models/Board';
 import * as MoveFactory from '../../src/models/Move';
 import { getMove } from '../../src/services/bot';
-import { queryPrologEngine } from '../../src/prolog/tau-prolog';
+import { query } from '../../src/prolog/prolog';
 
 // Mock dependencies
 jest.mock('../../src/prolog/tau-prolog');
@@ -20,7 +20,7 @@ describe('Bot Service', () => {
 
   describe('getMove', () => {
     it('should return something', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue(['Best = cell(2,2)']);
       (MoveFactory.create as jest.Mock).mockImplementation((x, y) => ({ x, y }));
 
@@ -32,7 +32,7 @@ describe('Bot Service', () => {
     });
 
     it('should return prolog answer', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue(['Best = cell(2,2)']);
       (MoveFactory.create as jest.Mock).mockImplementation((x, y) => ({ x, y }));
 
@@ -45,7 +45,7 @@ describe('Bot Service', () => {
     });
 
     it('should return undefined when no results from Prolog', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue([]);
 
       const playerA = 'bot';
@@ -56,7 +56,7 @@ describe('Bot Service', () => {
     });
 
     it('should return undefined when Prolog query throws an error', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockRejectedValue(new Error('Prolog error'));
 
       const playerA = 'bot';
@@ -67,7 +67,7 @@ describe('Bot Service', () => {
     });
 
     it('should throw an error when Prolog returns invalid move format', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue(['Invalid format']);
 
       const playerA = 'bot';
@@ -78,7 +78,7 @@ describe('Bot Service', () => {
     });
 
     it('should throw an error when Prolog returns non-numeric coordinates', async () => {
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue(['Best = cell(x,y)']);
 
       const playerA = 'bot';
@@ -107,7 +107,7 @@ describe('Bot Service', () => {
       };
 
       // Mock Prolog query to return our expected result
-      const mockQueryProlog = queryPrologEngine as jest.MockedFunction<typeof queryPrologEngine>;
+      const mockQueryProlog = query as jest.MockedFunction<typeof query>;
       mockQueryProlog.mockResolvedValue(['Best = cell(1,1)']);
       (MoveFactory.create as jest.Mock).mockImplementation((x, y) => ({ x, y }));
 

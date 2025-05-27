@@ -8,13 +8,12 @@ const session = pl.create(1000);
  * Initializes the Prolog engine by loading the Prolog file.
  * @returns true if Prolog is ready, false otherwise.
  */
-const initProlog = async (): Promise<void> => {
+const init = async (): Promise<void> => {
   try {
     const prologFilePath = path.resolve(__dirname, './bot.pl');
 
     const program = fs.readFileSync(prologFilePath, 'utf8');
 
-    // Return a promise for the consultation
     return new Promise((resolve, reject) => {
       session.consult(program, {
         success: function () {
@@ -32,10 +31,13 @@ const initProlog = async (): Promise<void> => {
   }
 };
 
-// ask prolog for an answer
-export const queryPrologEngine = async (goal: string): Promise<string[]> => {
-  // Make sure Prolog is initialized before querying
-  await initProlog();
+/**
+ * Queries the Prolog engine with a given goal.
+ * @param goal the Prolog goal to query.
+ * @returns the results of the query as an array of strings.
+ */
+export const query = async (goal: string): Promise<string[]> => {
+  await init();
 
   return new Promise((resolve, reject) => {
     session.query(goal, {
