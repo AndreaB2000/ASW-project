@@ -5,10 +5,12 @@ import { MDBBtn } from 'mdb-vue-ui-kit';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useMatchStore } from '@/stores/matchStore';
 
 const dialogVisible = ref(false);
 
 const router = useRouter();
+const match = useMatchStore();
 
 socket.on('connect', () => {
   router.push('/play');
@@ -17,8 +19,10 @@ socket.on('connect', () => {
 
 <template>
   <section class="text-center container py-5">
-    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 mb-5 text-center text-md-start">
-      <img src="@/assets/landingIcon.svg" class="img-fluid" style="height: 10vh;" />
+    <div
+      class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 mb-5 text-center text-md-start"
+    >
+      <img src="@/assets/landingIcon.svg" class="img-fluid" style="height: 10vh" />
       <h1 class="display-3 fw-bold m-0">SANDPILES</h1>
     </div>
     <div class="row justify-content-center align-items-center g-4">
@@ -29,16 +33,27 @@ socket.on('connect', () => {
         </p>
         <div class="row mt-4 g-3">
           <div class="col-12 col-md-6">
-            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible=true">Play with BOT</MDBBtn>
+            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible = true"
+              >Play with BOT</MDBBtn
+            >
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn color="primary" class="w-100 py-3" @click="$router.push('/login')">Login</MDBBtn>
+            <MDBBtn color="primary" class="w-100 py-3" @click="$router.push('/login')"
+              >Login</MDBBtn
+            >
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible=true">Tutorial</MDBBtn>
+            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible = true"
+              >Tutorial</MDBBtn
+            >
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn color="secondary" class="std-btn w-100 py-3" @click="$router.push('/registration')">Register</MDBBtn>
+            <MDBBtn
+              color="secondary"
+              class="std-btn w-100 py-3"
+              @click="$router.push('/registration')"
+              >Register</MDBBtn
+            >
           </div>
         </div>
       </div>
@@ -46,7 +61,11 @@ socket.on('connect', () => {
         <img src="@/assets/sandpiles-template-img.svg" class="img-fluid" />
       </div>
     </div>
-    <DialogModal v-model="dialogVisible" text="This button is not binded yet" @close="dialogVisible = false" />
+    <DialogModal
+      v-model="dialogVisible"
+      text="This button is not binded yet"
+      @close="dialogVisible = false"
+    />
   </section>
 </template>
 
