@@ -12,13 +12,13 @@ const match = useMatchStore();
 
 <template>
   <MDBContainer fluid>
-    <MDBRow center class="my-5">
+    <MDBRow center class="logo-header">
       <MDBCol md="3">
         <Icon />
       </MDBCol>
       <MDBCol md="9"></MDBCol>
     </MDBRow>
-    <Match v-if="!isMatchOver" :matchId="match.id" />
+    <Match v-if="!isMatchOver" />
     <MatchOver v-else />
   </MDBContainer>
 </template>

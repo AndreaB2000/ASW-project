@@ -16,16 +16,14 @@ defineProps(['username']);
 </script>
 
 <template>
-  <div style="width: 50%">
+  <div>
     <MDBCard text="center">
       <MDBCardTitle>{{ username }}</MDBCardTitle>
       <MDBCardImg :src="userPlaceholder" top alt="..." />
       <MDBCardBody>
-        <MDBCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's
-          content.
-        </MDBCardText>
-        <MDBBtn tag="a" href="#!" color="primary">Button</MDBBtn>
+        <MDBCardText>Rank: 1000</MDBCardText>
+        <MDBCardText>+400 -150</MDBCardText>
+        <MDBBtn tag="a" href="#!" color="primary">Profile</MDBBtn>
       </MDBCardBody>
     </MDBCard>
   </div>
