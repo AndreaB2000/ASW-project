@@ -1,14 +1,18 @@
-import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, it, expect, beforeAll, beforeEach, afterEach } from '@jest/globals';
 import * as BoardFactory from '../../src/models/Board';
 import * as MoveFactory from '../../src/models/Move';
 import { getMove } from '../../src/services/bot';
 import { query } from '../../src/prolog/prolog';
+import { mockConsole } from '../test_utils/mock-console';
 
 // Mock dependencies
 jest.mock('../../src/prolog/prolog');
 jest.mock('../../src/models/Move');
 
 describe('Bot Service', () => {
+
+  beforeAll(mockConsole);
+
   // Ensure mocks are reset between tests
   beforeEach(() => {
     jest.clearAllMocks();

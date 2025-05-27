@@ -1,5 +1,6 @@
-import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, it, expect, beforeEach, afterEach, beforeAll } from '@jest/globals';
 import { query } from '../../src/prolog/prolog';
+import { mockConsole } from '../test_utils/mock-console';
 const pl = require('tau-prolog');
 const fs = require('fs');
 
@@ -27,6 +28,8 @@ jest.mock('path', () => ({
 
 describe('Prolog Module', () => {
   const mockSession = pl.create();
+
+  beforeAll(mockConsole);
 
   beforeEach(() => {
     jest.clearAllMocks();
