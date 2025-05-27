@@ -4,6 +4,9 @@
 
 <style scoped>
   img {
-    height: 10vh;
+    height: 9vw;
+    max-height: 60px;
+    margin-top: 2vw;
+    margin-bottom: 1vw;
   }
 </style>

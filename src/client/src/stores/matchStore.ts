@@ -5,6 +5,7 @@ import { ref } from 'vue';
 export const useMatchStore = defineStore('match', () => {
   const player1 = ref('');
   const player2 = ref('');
+  const whichPlayerAmI = ref(0);
   const currentState = ref<any>({});
   const id = ref('');
   const turn = ref(player1.value);
@@ -71,6 +72,7 @@ export const useMatchStore = defineStore('match', () => {
   return {
     player1,
     player2,
+    whichPlayerAmI,
     currentState,
     id,
     turn,
