@@ -1,0 +1,14 @@
+[data-mdb-theme='dark-gray'] {
+  --mdb-body-color: var(--mdb-white);
+  --mdb-body-bg: var(--mdb-gray-900);
+
+  .card {
+    --mdb-card-color: var(--mdb-body-color);
+    --mdb-card-bg: var(--mdb-body-bg);
+  }
+
+  .modal-content {
+    --mdb-modal-color: var(--mdb-body-color);
+    --mdb-modal-bg: var(--mdb-body-bg);
+  }
+}
