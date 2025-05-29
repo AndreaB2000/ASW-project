@@ -5,14 +5,13 @@ import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { ref } from 'vue';
 
 const dialogVisible = ref(false);
-
 </script>
 
 <template>
   <section class="text-center container py-5">
-    <div class="d-flex justify-content-center align-items-center mb-5">
-      <img src="@/assets/landingIcon.svg" class="me-4" style="height: 10vh;" />
-      <h1 class="display-3 fw-bold">SANDPILES</h1>
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 mb-5 text-center text-md-start">
+      <img src="@/assets/landingIcon.svg" class="img-fluid" style="height: 10vh;" />
+      <h1 class="display-3 fw-bold m-0">SANDPILES</h1>
     </div>
     <div class="row justify-content-center align-items-center g-4">
       <div class="col-md-6">
@@ -20,11 +19,19 @@ const dialogVisible = ref(false);
           Place your grains. Tip the balance. In this world of unstable equilibrium, every move can
           trigger a chain reaction. Conquer the board — one avalanche at a time.
         </p>
-        <div class="d-grid gap-3 mt-4">
-          <MDBBtn class="special-btn" @click="dialogVisible = true">Play with BOT</MDBBtn>
-          <MDBBtn class="main-btn" @click="$router.push('/login')">Login</MDBBtn>
-          <MDBBtn class="std-btn" @click="dialogVisible = true">Tutorial</MDBBtn>
-          <MDBBtn class="std-btn" @click="$router.push('/registration')">Register</MDBBtn>
+        <div class="row mt-4 g-3">
+          <div class="col-12 col-md-6">
+            <MDBBtn class="special-btn w-100 py-3" @click="dialogVisible">Play with BOT</MDBBtn>
+          </div>
+          <div class="col-12 col-md-6">
+            <MDBBtn class="main-btn w-100 py-3" @click="$router.push('/login')">Login</MDBBtn>
+          </div>
+          <div class="col-12 col-md-6">
+            <MDBBtn class="std-btn w-100 py-3" @click="dialogVisible">Tutorial</MDBBtn>
+          </div>
+          <div class="col-12 col-md-6">
+            <MDBBtn class="std-btn w-100 py-3" @click="$router.push('/registration')">Register</MDBBtn>
+          </div>
         </div>
       </div>
       <div class="col-md-6 text-center main-img">
