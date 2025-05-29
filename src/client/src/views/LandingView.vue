@@ -1,102 +1,44 @@
 <script setup lang="ts">
-import { socket } from '@/services/server-connections';
-import { useRouter } from 'vue-router';
+import DialogModal from '@/components/DialogModal.vue';
+import { MDBBtn } from 'mdb-vue-ui-kit';
+import 'mdb-vue-ui-kit/css/mdb.min.css';
+import { ref } from 'vue';
 
-const router = useRouter();
+const dialogVisible = ref(false);
 
-function playPVP() {
-  console.log('enterQueue');
-  socket.emit('requestMatch');
-}
-
-socket.on('matchFound', (matchId: string) => {
-  router.push({ path: '/match', query: { id: matchId } });
-});
 </script>
 
 <template>
-  <section>
-    <section class="title">
-      <img src="../assets/landingIcon.svg" />
-      <h1>SANDPILES</h1>
-    </section>
-    <section class="content">
-      <section class="description">
-        <p>
+  <section class="text-center container py-5">
+    <div class="d-flex justify-content-center align-items-center mb-5">
+      <img src="@/assets/landingIcon.svg" class="me-4" style="height: 10vh;" />
+      <h1 class="display-3 fw-bold">SANDPILES</h1>
+    </div>
+    <div class="row justify-content-center align-items-center g-4">
+      <div class="col-md-6">
+        <p class="lead">
           Place your grains. Tip the balance. In this world of unstable equilibrium, every move can
           trigger a chain reaction. Conquer the board — one avalanche at a time.
         </p>
-        <section class="buttons">
-          <button @click="playPVP()" style="background-color: #1EC6E0; ">Play PVP</button>
-          <button style="background-color: #1EC6E0;">Play with BOT</button>
-          <button @click="$router.push('/login')" style="background-color: #E0961E;">Login</button>
-          <button>Tutorial</button>
-          <button @click="$router.push('/registration')">Register</button>
-        </section>
-      </section>
-      <img src="../assets/sandpiles-template-img.svg" />
-    </section>
+        <div class="d-grid gap-3 mt-4">
+          <MDBBtn color="info" @click="dialogVisible = true">Play with BOT</MDBBtn>
+          <MDBBtn color="warning" @click="$router.push('/login')">Login</MDBBtn>
+          <MDBBtn color="light" @click="dialogVisible = true">Tutorial</MDBBtn>
+          <MDBBtn color="light" @click="$router.push('/registration')">Register</MDBBtn>
+        </div>
+      </div>
+      <div class="col-md-6 text-center main-img">
+        <img src="@/assets/sandpiles-template-img.svg" class="img-fluid" />
+      </div>
+    </div>
+    <DialogModal v-model="dialogVisible" text="This button is not binded yet" @close="dialogVisible = false" />
   </section>
 </template>
 
 <style scoped lang="scss">
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 2vw;
-    max-height: 20vh;
-    h1 {
-      font-size: 5rem;
-      letter-spacing: 40%;
-    }
-    img {
-      height: 10vh;
-    }
-  }
-  .content {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 2vw;
-    flex-wrap: wrap;
-    .description {
-      width: 35%;
-      min-width: 300px;
-      .buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1vw;
-        margin-top: 7vh;
-        button {
-          font-weight: bold;
-          background-color: #f0f0f0;
-          border: none;
-          border-radius: 20px;
-          padding: 3vh 2vw;
-          font-size: 2rem;
-          min-width: 276px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-          &:hover {
-            background-color: #7e7e7e !important;
-          }
-        }
-      }
-    }
-    img {
-      width: 35%;
-      min-width: 300px;
-    }
+.main-img {
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 </style>
