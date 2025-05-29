@@ -21,10 +21,10 @@ const dialogVisible = ref(false);
           trigger a chain reaction. Conquer the board — one avalanche at a time.
         </p>
         <div class="d-grid gap-3 mt-4">
-          <MDBBtn color="info" @click="dialogVisible = true">Play with BOT</MDBBtn>
-          <MDBBtn color="warning" @click="$router.push('/login')">Login</MDBBtn>
-          <MDBBtn color="light" @click="dialogVisible = true">Tutorial</MDBBtn>
-          <MDBBtn color="light" @click="$router.push('/registration')">Register</MDBBtn>
+          <MDBBtn class="special-btn" @click="dialogVisible = true">Play with BOT</MDBBtn>
+          <MDBBtn class="main-btn" @click="$router.push('/login')">Login</MDBBtn>
+          <MDBBtn class="std-btn" @click="dialogVisible = true">Tutorial</MDBBtn>
+          <MDBBtn class="std-btn" @click="$router.push('/registration')">Register</MDBBtn>
         </div>
       </div>
       <div class="col-md-6 text-center main-img">
