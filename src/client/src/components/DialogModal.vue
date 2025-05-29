@@ -5,7 +5,7 @@
   <MDBModal v-model="visible" staticBackdrop centered>
     <MDBModalBody class="text-center">
       <p class="mb-3">{{ text }}</p>
-      <MDBBtn class="std-btn" @click="visible = false; emit('close')">Close</MDBBtn>
+      <MDBBtn color="primary" @click="visible = false; emit('close')">Close</MDBBtn>
     </MDBModalBody>
   </MDBModal>
 </template>

@@ -3,6 +3,7 @@ import { server, tryAuth } from '@/services/server-connections';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
+import { MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdb-vue-ui-kit';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -17,6 +18,15 @@ const changeSocketNamespace = (namespace: string) => {
   console.log(`Changing socket namespace to: ${namespace}`);
   tryAuth();
 };
+
+function checkForm(event: Event) {
+  const target = event.target as HTMLElement | null;
+  if (form.username.length > 3) target?.classList.add('was-validated');
+  else {
+    target?.classList.remove('was-validated');
+    return;
+  }
+}
 
 function login(event: Event) {
   event.preventDefault();
@@ -34,24 +44,47 @@ function login(event: Event) {
 </script>
 
 <template>
-  <img src="../assets/landingIcon.svg" alt="Landing Icon" />
-  <section>
-    <img src="../assets/sandpiles-template-img.svg" alt="Sandpiles Template" />
-    <section>
-      <h1>LOGIN</h1>
-      <form @submit="login">
-        <div>
-          <label for="username">Username</label>
-          <input v-model="form.username" type="text" id="username" name="username" required />
+  <img
+    src="../assets/landingIcon.svg"
+    alt="Landing Icon"
+    class="position-absolute top-0 start-0 m-3"
+    style="height: 40px;
+    z-index: 100;
+    cursor: pointer;"
+    @click="$router.push('/')"
+  />
+  <MDBContainer class="vh-100 d-flex justify-content-center align-items-center">
+    <MDBRow class="w-100">
+      <MDBCol class="md-6 d-none d-md-flex justify-content-center align-items-center">
+        <img src="../assets/sandpiles-template-img.svg" alt="Sandpiles Template" class="img-fluid" style="max-height: 60vh;" />
+      </MDBCol>
+      <MDBCol class="md-6 d-flex justify-content-center align-items-center">
+        <div class="w-100" style="max-width: 400px;">
+          <h1 class="text-center mb-4 fw-bold">LOGIN</h1>
+          <MDBRow tag="form" class="g-3 needs-validation" novalidate @submit.prevent="checkForm">
+            <MDBInput
+              type="text"
+              label="Username"
+              id="username"
+              v-model="form.username"
+              invalidFeedback="Username length must be greater than 3 characters."
+              white
+            />
+            <MDBInput
+              type="password"
+              label="Password"
+              id="password"
+              v-model="form.password"
+              wrapperClass="mb-4"
+              white
+            />
+            <MDBBtn color="primary" block type="submit"> Login </MDBBtn>
+          </MDBRow>
+          <p class="text-center mt-3">Don't have an account yet?</p>
+          <MDBBtn color="secondary" block @click="$router.push('/registration')">Register</MDBBtn>
         </div>
-        <div>
-          <label for="password">Password</label>
-          <input v-model="form.password" type="password" id="password" name="password" required />
-        </div>
-        <button type="submit">Login</button>
-        <p>Don't have an account yet?</p>
-        <button type="button" @click="$router.push('/registration')">Register</button>
-      </form>
-    </section>
-  </section>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
 </template>
+
