@@ -5,18 +5,16 @@ import { socket, server } from '@/services/server-connections'
 
 const userStore = useUserStore();
 
-if (userStore.username === '' || userStore.email === '') {
+if (!userStore.username || !userStore.email) {
   server.get('/account/me').then(response => {
     userStore.setUsername(response.data.username);
     userStore.setEmail(response.data.email);
   }).catch((error: Error) => {
     console.error('Failed to fetch user data:', error);
-    // Optionally redirect to login or show an error message
+    alert('Failed to fetch user data. Please try again later.');
   });
 }
-
 const reactiveEmail = ref(userStore.email);
-
 const isEditing = ref(false);
 
 function changeProfile() {
@@ -24,9 +22,11 @@ function changeProfile() {
 }
 
 function saveProfile() {
-  console.log('Saving profile with email:', reactiveEmail.value);
-  socket.emit('change email', reactiveEmail.value, () => {
-    console.log('Email change request sent');
+  socket.emit('change email', reactiveEmail.value, (result: { success: boolean, message: string }) => {
+    if (!result.success) {
+      alert('Failed to change email:' + result.message);
+      return;
+    }
     userStore.setEmail(reactiveEmail.value);
     isEditing.value = false;
   });
