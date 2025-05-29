@@ -41,7 +41,7 @@ router.get('/me', [ authenticateToken ], controller.getMe);
 export const account = (socket: Socket) => {
   socket.on('change email', async (newEmail: string, callback) => {
     try {
-      await controller.changeEmail(socket.data, newEmail);
+      await controller.changeEmail(socket.data.username, newEmail);
       callback({ success: true });
     } catch (error) {
       console.error('Error changing email:', error);

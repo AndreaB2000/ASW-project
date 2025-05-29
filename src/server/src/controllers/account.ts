@@ -103,8 +103,8 @@ export const getMe = async (req: AuthenticatedRequest, res: Response): Promise<v
  * Change the email of the user
  * @param newEmail the new email of the user
  */
-export const changeEmail = async (oldAccount: Account, newEmail: string): Promise<void> => {
-  if (!await service.updateEmail(oldAccount, newEmail)) {
-    throw new Error('Email already exists');
-  }
+export const changeEmail = async (oldAccountUsername: string, newEmail: string): Promise<void> => {
+  const oldAccount = await service.getAccount(oldAccountUsername);
+  if (!oldAccount) throw new Error('Account not found');
+  if (!await service.updateEmail(oldAccount, newEmail)) throw new Error('Email already exists');
 };
