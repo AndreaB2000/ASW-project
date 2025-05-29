@@ -21,16 +21,16 @@ const dialogVisible = ref(false);
         </p>
         <div class="row mt-4 g-3">
           <div class="col-12 col-md-6">
-            <MDBBtn class="special-btn w-100 py-3" @click="dialogVisible">Play with BOT</MDBBtn>
+            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible=true">Play with BOT</MDBBtn>
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn class="main-btn w-100 py-3" @click="$router.push('/login')">Login</MDBBtn>
+            <MDBBtn color="primary" class="w-100 py-3" @click="$router.push('/login')">Login</MDBBtn>
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn class="std-btn w-100 py-3" @click="dialogVisible">Tutorial</MDBBtn>
+            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible=true">Tutorial</MDBBtn>
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn class="std-btn w-100 py-3" @click="$router.push('/registration')">Register</MDBBtn>
+            <MDBBtn color="secondary" class="std-btn w-100 py-3" @click="$router.push('/registration')">Register</MDBBtn>
           </div>
         </div>
       </div>
