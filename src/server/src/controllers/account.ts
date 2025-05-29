@@ -93,7 +93,13 @@ export const logout = async (_: AuthenticatedRequest, res: Response): Promise<vo
  * @returns 200: with the user data
  */
 export const getMe = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-  const { username, email } = req.account;
+  const { username, _ } = req.account;
+  const account = await service.getAccount(username);
+  if (!account) {
+    res.status(404).json({ message: 'Account not found' });
+    return;
+  }
+  const { email } = account;
   res.status(200).json({ username, email });
 }
 

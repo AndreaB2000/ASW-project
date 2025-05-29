@@ -25,7 +25,7 @@ export const createAccount = async (account: Account): Promise<void> => {
  */
 export const readAllAccounts = async (): Promise<Account[]> => {
   const accounts = await DBAccount.find();
-  return accounts.map(account => 
+  return accounts.map(account =>
     AccountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value))
   );
 };
@@ -48,10 +48,9 @@ export const readAccountByUsername = async (username: string): Promise<Account |
  */
 export const updateAccount = async (account: Account): Promise<boolean> => {
   const { username, email, hashedPassword, rating } = account;
-  
   const result = await DBAccount.updateOne(
     { username },
-    { 
+    {
       email,
       password: hashedPassword,
       rating: {
@@ -59,7 +58,7 @@ export const updateAccount = async (account: Account): Promise<boolean> => {
       }
     }
   );
-  
+
   return result.modifiedCount > 0;
 };
 
