@@ -11,4 +11,27 @@
     --mdb-modal-color: var(--mdb-body-color);
     --mdb-modal-bg: var(--mdb-body-bg);
   }
+
+  button {
+    color: black;
+    border: none;
+  }
+  button.std-btn {
+    background-color: var(--mdb-white);
+    &:hover {
+      background-color: var(--mdb-gray-500);
+    }
+  }
+  button.main-btn {
+    background-color: var(--mdb-orange);
+    &:hover {
+      background-color: #ce7100;
+    }
+  }
+  button.special-btn {
+    background-color: var(--mdb-blue);
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
 }
