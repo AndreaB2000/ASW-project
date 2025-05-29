@@ -3,7 +3,7 @@ import express from 'express';
 import { register, login, logout, getMe, changeEmail } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
-import { jest, describe, it, expect, beforeAll, afterEach } from '@jest/globals';
+import { jest, describe, it, expect, beforeAll, beforeEach, afterEach } from '@jest/globals';
 
 const app = express();
 app.use(express.json());
@@ -14,7 +14,9 @@ app.post('/logout', logout);
 jest.mock('../../src/services/account', () => ({
   registerAccount: jest.fn(),
   authenticateAccount: jest.fn(),
-  updateEmail: jest.fn().mockReturnValue(true)
+  updateEmail: jest.fn().mockReturnValue(true),
+  getAccount: jest.fn().mockReturnValue({ username: 'testUser', email: 'test@test.com' }),
+  changeEmail: jest.fn()
 }));
 
 describe('Account Controller', () => {
@@ -135,40 +137,77 @@ describe('Account Controller', () => {
   });
 
   describe('GET /me', () => {
-    it('should return data taken from request', async () => {
-      const req = {
-        account: { username: 'testUser', email: "test@email.com" }
+    const mockGetAccount = accountService.getAccount as jest.Mock;
+    let req: any;
+    let res: any;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      req = {
+        account: {
+          username: 'john_doe',
+          email: 'old@example.com'
+        }
       };
-      const res = {
+      res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
+        json: jest.fn()
       };
-      await getMe(req as any, res as any);
+    });
+
+    it('should return 200 with username and email if account is found', async () => {
+      mockGetAccount.mockReturnValue({
+        username: 'john_doe',
+        email: 'john@example.com'
+      });
+      await getMe(req, res);
+      expect(mockGetAccount).toHaveBeenCalledWith('john_doe');
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
-        username: req.account.username,
-        email: req.account.email,
+        username: 'john_doe',
+        email: 'john@example.com'
       });
+    });
+
+    it('should return 404 if account is not found', async () => {
+      mockGetAccount.mockReturnValue(null);
+      await getMe(req, res);
+      expect(mockGetAccount).toHaveBeenCalledWith('john_doe');
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Account not found' });
     });
   });
 
   describe('Socket changeEmail', () => {
+    const mockGetAccount = accountService.getAccount as jest.Mock;
+    const mockUpdateEmail = accountService.updateEmail as jest.Mock;
 
-    const oldAccount = AccountFactory.create('testUser', 'test@mail.com', 'testpass');
-    const newEmail = 'new@mail.com';
-
-    it('should call updateEmail with the correct parameters', async () => {
-      await changeEmail(oldAccount, newEmail);
-      expect(accountService.updateEmail).toHaveBeenCalledWith(
-        expect.objectContaining({
-          username: oldAccount.username,
-          email: oldAccount.email,
-        }), newEmail);
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
 
-    it('should throw if updateEmail fails', async () => {
-      jest.mocked(accountService.updateEmail).mockReturnValue(Promise.resolve(false));
-      await expect(changeEmail(oldAccount, newEmail)).rejects.toThrow('Email already exists');
+    it('should update email successfully', async () => {
+      mockGetAccount.mockReturnValue({ username: 'john_doe' });
+      mockUpdateEmail.mockReturnValue(true);
+      await expect(changeEmail('john_doe', 'new@example.com')).resolves.toBeUndefined();
+      expect(mockGetAccount).toHaveBeenCalledWith('john_doe');
+      expect(mockUpdateEmail).toHaveBeenCalledWith({ username: 'john_doe' }, 'new@example.com');
     });
+
+    it('should throw if account is not found', async () => {
+      mockGetAccount.mockReturnValue(null);
+      await expect(changeEmail('missing_user', 'new@example.com')).rejects.toThrow('Account not found');
+      expect(mockGetAccount).toHaveBeenCalledWith('missing_user');
+      expect(mockUpdateEmail).not.toHaveBeenCalled();
+    });
+
+    it('should throw if email already exists', async () => {
+      mockGetAccount.mockReturnValue({ username: 'john_doe' });
+      mockUpdateEmail.mockReturnValue(false);
+      await expect(changeEmail('john_doe', 'taken@example.com')).rejects.toThrow('Email already exists');
+      expect(mockGetAccount).toHaveBeenCalledWith('john_doe');
+      expect(mockUpdateEmail).toHaveBeenCalledWith({ username: 'john_doe' }, 'taken@example.com');
+  });
+
   });
 });
