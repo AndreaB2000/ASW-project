@@ -3,7 +3,15 @@ export interface Move {
   y: number;
 }
 
-export const create = (x: number, y: number) => new MoveImpl(x, y);
+export class MoveFactory {
+  /**
+   * Move factory. Returns a move relative to the given coordinates.
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @returns a move relative to the given coordinates
+   */
+  public static create = (x: number, y: number) => new MoveImpl(x, y);
+}
 
 class MoveImpl implements Move {
   constructor(

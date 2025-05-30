@@ -1,14 +1,12 @@
 import { describe, it, expect, jest } from '@jest/globals';
 import { beforeEach } from 'node:test';
-import * as moveFactory from '../../src/models/Move';
-import { Move } from '../../src/models/Move';
+import { Move, MoveFactory } from '../../src/models/Move';
 import { addMove } from '../../src/controllers/match';
 import * as matchService from '../../src/services/match';
 import * as root from '../../src/routes/root';
-import { Match } from '../../src/models/Match';
-import * as matchFactory from '../../src/models/Match';
-import * as boardFactory from '../../src/models/Board';
-import * as pileFactory from '../../src/models/Pile';
+import { Match, MatchFactory } from '../../src/models/Match';
+import { BoardFactory } from '../../src/models/Board';
+import { PileFactory } from '../../src/models/Pile';
 import * as ioHandler from '../../src/sockets/socket';
 import { Server } from 'socket.io';
 
@@ -18,13 +16,13 @@ describe('Match controller', () => {
     const player1: string = 'Alice';
     const player2: string = 'Bob';
     const now = new Date();
-    const move: Move = moveFactory.create(1, 2);
-    const mockMatch: Match = matchFactory.createWithDefaultInitialState(player1, player2, now);
-    const mockMatchWithWinner: Match = matchFactory.createWithCustomInitialState(
+    const move: Move = MoveFactory.create(1, 2);
+    const mockMatch: Match = MatchFactory.createWithDefaultInitialState(player1, player2, now);
+    const mockMatchWithWinner: Match = MatchFactory.createWithCustomInitialState(
       player1,
       player2,
       now,
-      boardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: pileFactory.create(player1, 1) }]),
+      BoardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: PileFactory.create(player1, 1) }]),
     );
 
     beforeEach(() => {
