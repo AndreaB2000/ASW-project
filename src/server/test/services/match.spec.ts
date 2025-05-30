@@ -9,10 +9,9 @@ import {
 } from '../../src/services/match';
 import * as inProgressMatchRepo from '../../src/repositories/inProgressMatch';
 import * as endedMatchRepo from '../../src/repositories/endedMatch';
-import * as matchFactory from '../../src/models/Match';
-import * as moveFactory from '../../src/models/Move';
-import * as boardFactory from '../../src/models/Board';
-import { Match } from '../../src/models/Match';
+import { Match, MatchFactory } from '../../src/models/Match';
+import { MoveFactory } from '../../src/models/Move';
+import { BoardFactory } from '../../src/models/Board';
 
 describe('Match Service', () => {
   const player1 = 'player1';
@@ -24,21 +23,21 @@ describe('Match Service', () => {
   let matchWithAMove: Match;
   let matchWith2Moves: Match;
   let matchWith3Moves: Match;
-  const testMove = moveFactory.create(1, 2);
-  const testMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 4,
-    boardFactory.DEFAULT_HEIGHT - 3,
+  const testMove = MoveFactory.create(1, 2);
+  const testMove2 = MoveFactory.create(
+    BoardFactory.DEFAULT_WIDTH - 4,
+    BoardFactory.DEFAULT_HEIGHT - 3,
   );
-  const testMove3 = moveFactory.create(3, 2);
+  const testMove3 = MoveFactory.create(3, 2);
 
   function initializeMatches() {
-    expectedMatch = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
-    matchWithAMove = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    expectedMatch = MatchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWithAMove = MatchFactory.createWithDefaultInitialState(player1, player2, DATE);
     matchWithAMove.addMove(testMove);
-    matchWith2Moves = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWith2Moves = MatchFactory.createWithDefaultInitialState(player1, player2, DATE);
     matchWith2Moves.addMove(testMove);
     matchWith2Moves.addMove(testMove2);
-    matchWith3Moves = matchFactory.createWithDefaultInitialState(player1, player2, DATE);
+    matchWith3Moves = MatchFactory.createWithDefaultInitialState(player1, player2, DATE);
     matchWith3Moves.addMove(testMove);
     matchWith3Moves.addMove(testMove2);
     matchWith3Moves.addMove(testMove3);

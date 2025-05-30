@@ -1,5 +1,4 @@
-import { Move } from '../models/Move';
-import * as MoveFactory from '../models/Move';
+import { Move, MoveFactory } from '../models/Move';
 import { Board } from '../models/Board';
 import { query } from '../prolog/prolog';
 
