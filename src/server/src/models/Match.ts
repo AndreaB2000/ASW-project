@@ -1,5 +1,4 @@
-import * as boardFactory from './Board';
-import { Board } from './Board';
+import { Board, BoardFactory } from './Board';
 import { Cell } from './Cell';
 import { Move } from './Move';
 
@@ -44,29 +43,30 @@ export interface Match {
   winner: string | null;
 }
 
-export const createFromObject = (object: any) =>
-  new MatchImpl(
-    object.player1,
-    object.player2,
-    object.creationDate,
-    boardFactory.createFromObject(object.initialState),
-    object.moves,
-  );
+export class MatchFactory {
+  public static createFromObject = (object: any) =>
+    new MatchImpl(
+      object.player1,
+      object.player2,
+      object.creationDate,
+      BoardFactory.createFromObject(object.initialState),
+      object.moves,
+    );
 
-export const createWithDefaultInitialState = (
-  player1: string,
-  player2: string,
-  creationDate: Date,
-): Match =>
-  new MatchImpl(player1, player2, creationDate, boardFactory.createDefault(player1, player2));
+  public static createWithDefaultInitialState = (
+    player1: string,
+    player2: string,
+    creationDate: Date,
+  ): Match =>
+    new MatchImpl(player1, player2, creationDate, BoardFactory.createDefault(player1, player2));
 
-export const createWithCustomInitialState = (
-  player1: string,
-  player2: string,
-  creationDate: Date,
-  initialState: Board,
-): Match => new MatchImpl(player1, player2, creationDate, initialState);
-
+  public static createWithCustomInitialState = (
+    player1: string,
+    player2: string,
+    creationDate: Date,
+    initialState: Board,
+  ): Match => new MatchImpl(player1, player2, creationDate, initialState);
+}
 class MatchImpl implements Match {
   constructor(
     public readonly player1: string,

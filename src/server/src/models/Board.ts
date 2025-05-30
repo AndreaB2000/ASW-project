@@ -1,7 +1,6 @@
-import * as cellFactory from './Cell';
-import { Cell } from './Cell';
+import { Cell, CellFactory } from './Cell';
 import { Move } from './Move';
-import * as pileFactory from './Pile';
+import { PileFactory } from './Pile';
 import { Pile } from './Pile';
 
 export interface Board {
@@ -53,19 +52,95 @@ export interface Board {
 
 type BoardEntry = { x: number; y: number; pile: Pile };
 
-// Based on the default initial piles positioning, width and height must be greater than 5
-export const DEFAULT_WIDTH = 9;
-export const DEFAULT_HEIGHT = 9;
-const INITIAL_STATE = (player1: string, player2: string): BoardEntry[] => [
-  { x: 1, y: 2, pile: pileFactory.create(player1, 1) },
-  { x: 3, y: 2, pile: pileFactory.create(player1, 1) },
-  { x: 2, y: 1, pile: pileFactory.create(player1, 1) },
-  { x: 2, y: 3, pile: pileFactory.create(player1, 1) },
-  { x: DEFAULT_WIDTH - 4, y: DEFAULT_HEIGHT - 3, pile: pileFactory.create(player2, 1) },
-  { x: DEFAULT_WIDTH - 2, y: DEFAULT_HEIGHT - 3, pile: pileFactory.create(player2, 1) },
-  { x: DEFAULT_WIDTH - 3, y: DEFAULT_HEIGHT - 4, pile: pileFactory.create(player2, 1) },
-  { x: DEFAULT_WIDTH - 3, y: DEFAULT_HEIGHT - 2, pile: pileFactory.create(player2, 1) },
-];
+export class BoardFactory {
+  // Based on the default initial piles positioning, width and height must be greater than 5
+  public static DEFAULT_WIDTH = 9;
+  public static DEFAULT_HEIGHT = 9;
+  private static INITIAL_STATE = (player1: string, player2: string): BoardEntry[] => [
+    { x: 1, y: 2, pile: PileFactory.create(player1, 1) },
+    { x: 3, y: 2, pile: PileFactory.create(player1, 1) },
+    { x: 2, y: 1, pile: PileFactory.create(player1, 1) },
+    { x: 2, y: 3, pile: PileFactory.create(player1, 1) },
+    {
+      x: BoardFactory.DEFAULT_WIDTH - 4,
+      y: BoardFactory.DEFAULT_HEIGHT - 3,
+      pile: PileFactory.create(player2, 1),
+    },
+    {
+      x: BoardFactory.DEFAULT_WIDTH - 2,
+      y: BoardFactory.DEFAULT_HEIGHT - 3,
+      pile: PileFactory.create(player2, 1),
+    },
+    {
+      x: BoardFactory.DEFAULT_WIDTH - 3,
+      y: BoardFactory.DEFAULT_HEIGHT - 4,
+      pile: PileFactory.create(player2, 1),
+    },
+    {
+      x: BoardFactory.DEFAULT_WIDTH - 3,
+      y: BoardFactory.DEFAULT_HEIGHT - 2,
+      pile: PileFactory.create(player2, 1),
+    },
+  ];
+
+  /**
+   * Board factory. Takes as input an object containing all board properties,
+   * and returns an object of type `Board` with the given properties.
+   * @param object an object containing the board properties
+   * @returns a board with the provided properties
+   */
+  public static createFromObject = (object: any): Board =>
+    new BoardImpl(object.width, object.height, object.state);
+
+  /**
+   * Board factory. Returns a board with the default initial state.
+   * @param player1 the username of player1
+   * @param player2 the username of player2
+   * @returns a board with the default initial state
+   */
+  public static createDefault = (player1: string, player2: string): Board =>
+    this.createCustom(
+      BoardFactory.DEFAULT_WIDTH,
+      BoardFactory.DEFAULT_HEIGHT,
+      BoardFactory.INITIAL_STATE(player1, player2),
+    );
+
+  /**
+   * Board factory. Returns a board with the provided dimensions and the
+   * given piles specified as `BoardEntry`s.
+   * @param width the custom board width
+   * @param height the custom board height
+   * @param piles a list of piles tobe included in the board
+   * @returns a board with the given dimensions and the given piles
+   */
+  public static createCustom = (width: number, height: number, piles: Array<BoardEntry>): Board => {
+    if (width > 5 && height > 5) {
+      return new BoardImpl(
+        width,
+        height,
+        Array(height)
+          .fill(null)
+          .map((_, row) =>
+            Array(width)
+              .fill(null)
+              .map((_, col) => {
+                var ret = CellFactory.createEmpty();
+                piles.forEach(p => {
+                  if (row === p.x && col === p.y) {
+                    ret = CellFactory.create(
+                      PileFactory.create(p.pile.owner, p.pile.numberOfGrains),
+                    );
+                  }
+                });
+                return ret;
+              }),
+          ),
+      );
+    } else {
+      throw new Error('Board width and heignt must be greater than 5');
+    }
+  };
+}
 
 class BoardImpl implements Board {
   constructor(
@@ -120,44 +195,12 @@ class BoardImpl implements Board {
           existingPiles.push({
             x,
             y,
-            pile: pileFactory.create(cell.pile.owner, cell.pile.numberOfGrains),
+            pile: PileFactory.create(cell.pile.owner, cell.pile.numberOfGrains),
           });
         }
       }
     }
 
-    return createCustom(this.width, this.height, existingPiles);
+    return BoardFactory.createCustom(this.width, this.height, existingPiles);
   }
 }
-
-export const createFromObject = (object: any): Board =>
-  new BoardImpl(object.width, object.height, object.state);
-
-export const createDefault = (player1: string, player2: string): Board =>
-  createCustom(DEFAULT_WIDTH, DEFAULT_HEIGHT, INITIAL_STATE(player1, player2));
-
-export const createCustom = (width: number, height: number, piles: Array<BoardEntry>): Board => {
-  if (width > 5 && height > 5) {
-    return new BoardImpl(
-      width,
-      height,
-      Array(height)
-        .fill(null)
-        .map((_, row) =>
-          Array(width)
-            .fill(null)
-            .map((_, col) => {
-              var ret = cellFactory.createEmpty();
-              piles.forEach(p => {
-                if (row === p.x && col === p.y) {
-                  ret = cellFactory.create(pileFactory.create(p.pile.owner, p.pile.numberOfGrains));
-                }
-              });
-              return ret;
-            }),
-        ),
-    );
-  } else {
-    throw new Error('Board width and heignt must be greater than 5');
-  }
-};
