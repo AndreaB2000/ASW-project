@@ -7,8 +7,7 @@ import {
   findMatchesByPlayer,
   updateMatch,
 } from '../../src/repositories/endedMatch';
-import * as matchFactory from '../../src/models/Match';
-import { Match } from '../../src/models/Match';
+import { Match, MatchFactory } from '../../src/models/Match';
 import { checkCalledWith } from '../test_utils/check-called';
 
 describe('Match Repository', () => {
@@ -17,8 +16,8 @@ describe('Match Repository', () => {
   const player3 = 'Carl';
   const NOW = new Date();
   const testId = '507f1f77bcf86cd799439011';
-  const mockMatch: Match = matchFactory.createWithDefaultInitialState(player1, player2, NOW);
-  const mockUpdatedMatch: Match = matchFactory.createWithDefaultInitialState(player3, player2, NOW);
+  const mockMatch: Match = MatchFactory.createWithDefaultInitialState(player1, player2, NOW);
+  const mockUpdatedMatch: Match = MatchFactory.createWithDefaultInitialState(player3, player2, NOW);
   let matchRepository: MatchRepository = new MatchRepository();
 
   beforeEach(() => {

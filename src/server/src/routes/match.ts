@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io/dist';
 import * as matchController from '../controllers/match';
 import * as matchService from '../services/match';
-import * as moveFactory from '../models/Move';
+import { MoveFactory } from '../models/Move';
 
 export const match = (socket: Socket) => {
   socket.on('getMatch', async (matchId, callback) => {
@@ -15,7 +15,7 @@ export const match = (socket: Socket) => {
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
     if (socket.rooms.has(matchId)) {
-      await matchController.addMove(matchId, movingPlayer, moveFactory.create(x, y));
+      await matchController.addMove(matchId, movingPlayer, MoveFactory.create(x, y));
     }
   });
 };

@@ -1,5 +1,5 @@
 import { Pile } from './Pile';
-import * as pileFactory from './Pile';
+import { PileFactory } from './Pile';
 
 export interface Cell {
   /**
@@ -22,13 +22,28 @@ export interface Cell {
   collapse(): void;
 }
 
+export class CellFactory {
+  /**
+   * Cell factory. Returns a cell with the provided pile inside it.
+   * @param pile the pile to be put inside the cell
+   * @returns a cell with the provided pile inside
+   */
+  public static create = (pile: Pile) => new CellImpl(pile);
+
+  /**
+   * Cell factory. Returns a cell with no pile inside it.
+   * @returns a cell with no pile inside
+   */
+  public static createEmpty = () => CellFactory.create(null);
+}
+
 class CellImpl implements Cell {
   constructor(public pile: Pile) {}
 
   addGrain(player: string): void {
     if (this.pile == null) {
       // If the pile does not exist, it creates it
-      this.pile = pileFactory.create(player, 1);
+      this.pile = PileFactory.create(player, 1);
     } else {
       // Else, the number of grains is incremented
       this.pile.numberOfGrains++;
@@ -46,6 +61,3 @@ class CellImpl implements Cell {
     }
   }
 }
-
-export const createEmpty = () => create(null);
-export const create = (pile: Pile) => new CellImpl(pile);

@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { Match } from '../models/Match';
-import * as matchFactory from '../models/Match';
+import { Match, MatchFactory } from '../models/Match';
 
 export class MatchRepository {
   constructor() {}
@@ -19,7 +18,7 @@ export class MatchRepository {
   async findMatch(matchId: string): Promise<Match | null> {
     const match = await DBMatch.findById(matchId);
     if (match) {
-      return matchFactory.createFromObject(match);
+      return MatchFactory.createFromObject(match);
     } else {
       return null;
     }

@@ -1,9 +1,7 @@
-import * as matchFactory from '../../src/models/Match';
-import { Match } from '../../src/models/Match';
-import * as moveFactory from '../../src/models/Move';
-import { Move } from '../../src/models/Move';
-import * as pileFactory from '../../src/models/Pile';
-import * as boardFactory from '../../src/models/Board';
+import { Match, MatchFactory } from '../../src/models/Match';
+import { Move, MoveFactory } from '../../src/models/Move';
+import { PileFactory } from '../../src/models/Pile';
+import { BoardFactory } from '../../src/models/Board';
 import { describe, it, expect, beforeEach } from '@jest/globals';
 
 describe('Match', () => {
@@ -12,23 +10,23 @@ describe('Match', () => {
   const player1 = 'Alice';
   const player2 = 'Bob';
   const NOW = new Date();
-  const validMove1 = moveFactory.create(1, 2);
-  const validMove2 = moveFactory.create(
-    boardFactory.DEFAULT_WIDTH - 4,
-    boardFactory.DEFAULT_HEIGHT - 3,
+  const validMove1 = MoveFactory.create(1, 2);
+  const validMove2 = MoveFactory.create(
+    BoardFactory.DEFAULT_WIDTH - 4,
+    BoardFactory.DEFAULT_HEIGHT - 3,
   );
-  const invalidMove = moveFactory.create(2, 5);
+  const invalidMove = MoveFactory.create(2, 5);
   const customWidth = 6;
   const customHeight = 6;
-  const customBoardEntry = { x: 0, y: 0, pile: pileFactory.create(player1, 1) };
+  const customBoardEntry = { x: 0, y: 0, pile: PileFactory.create(player1, 1) };
 
   beforeEach(() => {
-    match = matchFactory.createWithDefaultInitialState(player1, player2, NOW);
-    matchWithCustomBoard = matchFactory.createWithCustomInitialState(
+    match = MatchFactory.createWithDefaultInitialState(player1, player2, NOW);
+    matchWithCustomBoard = MatchFactory.createWithCustomInitialState(
       player1,
       player2,
       NOW,
-      boardFactory.createCustom(customWidth, customHeight, [customBoardEntry]),
+      BoardFactory.createCustom(customWidth, customHeight, [customBoardEntry]),
     );
   });
 
@@ -80,7 +78,7 @@ describe('Match', () => {
       match.addMove(validMove1);
       match.addMove(validMove2);
 
-      expect(match.initialState).toStrictEqual(boardFactory.createDefault(player1, player2));
+      expect(match.initialState).toStrictEqual(BoardFactory.createDefault(player1, player2));
     });
   });
 
