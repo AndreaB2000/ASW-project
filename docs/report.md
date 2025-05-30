@@ -43,6 +43,7 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
   - [Tests](#tests)
   - [Deployment](#deployment)
   - [Conclusions](#conclusions)
+    - [Future Work](#future-work)
 
 ## Introduction
 
@@ -128,7 +129,7 @@ The user can:
 
 ## Design
 
-The following design has been developed starting from the user stories specified [here](user-stories.md). From the user stories we also have derived the domain model (which established an ubiquitous jargon) and the pages flow diagram as shown below.
+The following design has been developed starting from the [user stories](user-stories.md). From the user stories we also have derived the domain model (which established an ubiquitous jargon) and the pages flow diagram as shown below.
 
 ```mermaid
 flowchart TD
@@ -217,7 +218,7 @@ _Conquer_: the event of a cell where:
 
 _Clock_: time counter that tracks how many seconds each player has left to play to game
 
-_Glicko rating system_: method used to calculate and update player ratings in competitive games and sports ([link](https://en.wikipedia.org/wiki/Glicko_rating_system)).
+_Glicko rating system_: method used to calculate and update player ratings in competitive games and sports ([wikipedia](https://en.wikipedia.org/wiki/Glicko_rating_system)).
 
 _Glicko Ranking_: ranking rappresenting the strenght of a given player.
 
@@ -618,5 +619,7 @@ parameters for server and database execution. The `.env` file must be in the
 root project directory and must contain the following parameters:
 
 ## Conclusions
+
+### Future Work
 
 Conclusions
