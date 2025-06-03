@@ -1,19 +1,26 @@
 [data-mdb-theme='dark-gray'] {
   --mdb-body-color: var(--mdb-white);
   --mdb-body-bg: var(--mdb-gray-900);
+}
 
-  .card {
-    --mdb-card-color: var(--mdb-body-color);
-    --mdb-card-bg: var(--mdb-body-bg);
-  }
+.card {
+  --mdb-card-color: var(--mdb-body-color);
+  --mdb-card-bg: var(--mdb-body-bg);
+}
 
-  .modal-content {
-    --mdb-modal-color: var(--mdb-body-color);
-    --mdb-modal-bg: var(--mdb-body-bg);
-  }
+.modal-content {
+  --mdb-modal-color: var(--mdb-body-color);
+  --mdb-modal-bg: var(--mdb-body-bg);
+}
 
-  .form-control.is-invalid,
-  .form-control.is-valid {
-    margin-bottom: 0;
-  }
+.form-control.is-invalid,
+.form-control.is-valid {
+  margin-bottom: 0;
+}
+
+input:-webkit-autofill,
+input:-moz-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--mdb-body-bg) inset;
+  -webkit-text-fill-color: var(--mdb-body-color);
+  -moz-text-fill-color: var(--mdb-body-color);
 }
