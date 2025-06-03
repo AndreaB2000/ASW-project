@@ -11,4 +11,9 @@
     --mdb-modal-color: var(--mdb-body-color);
     --mdb-modal-bg: var(--mdb-body-bg);
   }
+
+  .form-control.is-invalid,
+  .form-control.is-valid {
+    margin-bottom: 0;
+  }
 }
