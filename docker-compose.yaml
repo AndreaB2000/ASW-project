@@ -8,6 +8,7 @@ networks:
 
 services:
   client:
+    image: andreabiagini5/aswclient
     build:
       context: ./src/client
       args:
@@ -18,7 +19,7 @@ services:
     container_name: aswclient
     restart: always
     ports:
-      - '${CLIENT_PORT}:80'
+      - '${CLIENT_PORT}:4173'
     depends_on:
       - server
     environment:
@@ -53,7 +54,6 @@ services:
     networks:
       asw_network:
         ipv4_address: ${SERVER_IP}
-
   database:
     image: mongo
     container_name: mongodb

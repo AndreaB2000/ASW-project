@@ -3,7 +3,7 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "start": "vite preview --host",
+    "start": "vite preview",
     "serve": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "test": "run-s test:unit",
