@@ -10,7 +10,6 @@ import zxcvbn from "zxcvbn";
  * @returns {boolean} - Returns true if the password is strong, false otherwise.
  */
 export const isPasswordStrong = (password: string): boolean => {
-  if (window.location.href.includes('localhost')) return true; // Skip validation in development
   const basicFormat = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; // home-brew check
   return basicFormat.test(password) && zxcvbn(password).score >= 3;
 };
