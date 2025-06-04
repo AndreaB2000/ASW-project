@@ -19,7 +19,7 @@ services:
     container_name: aswclient
     restart: always
     ports:
-      - '${CLIENT_PORT}:4173'
+      - '${CLIENT_PORT}:80'
     depends_on:
       - server
     environment:

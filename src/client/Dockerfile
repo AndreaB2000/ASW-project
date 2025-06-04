@@ -3,8 +3,6 @@ FROM node:slim AS build
 WORKDIR /var/app
 COPY . .
 
-RUN if [ -d node_modules ]; then echo 'node_modules present, aborting' && exit; fi
-
 RUN npm install
 
 RUN npm run build
