@@ -4,8 +4,8 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdb-vue-ui-kit';
-import zxcvbn from 'zxcvbn';
 import DialogModal from '@/components/DialogModal.vue';
+import { isPasswordStrong, isUsernameStrong } from '@/services/strength-validator';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -31,20 +31,9 @@ const changeSocketNamespace = (namespace: string) => {
   tryAuth();
 };
 
-function isStrongPassword(password: string): boolean {
-  const basicFormat = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; // home-brew check
-  return basicFormat.test(password) && zxcvbn(password).score >= 3; // library-based check - score: 0 (weak) to 4 (strong)
-}
-
-function checkForm(): boolean {
-  validation.username = form.username.length > 3;
-  validation.password = import.meta.env.VITE_DOCKER ? isStrongPassword(form.password) : true;
-  return validation.username && validation.password;
-}
-
 function login(event: Event) {
   event.preventDefault();
-  if (!checkForm()) return;
+  if (!isPasswordStrong(form.password) || !isUsernameStrong(form.username)) return;
   server
     .post('/account/login', { username: form.username, password: form.password })
     .then(response => {
