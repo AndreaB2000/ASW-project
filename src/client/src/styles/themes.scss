@@ -13,11 +13,6 @@
   --mdb-modal-bg: var(--mdb-body-bg);
 }
 
-.form-control.is-invalid,
-.form-control.is-valid {
-  margin-bottom: 0;
-}
-
 input:-webkit-autofill,
 input:-moz-autofill {
   -webkit-box-shadow: 0 0 0px 1000px var(--mdb-body-bg) inset;
