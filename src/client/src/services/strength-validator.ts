@@ -21,7 +21,6 @@ export const isPasswordStrong = (password: string): boolean => {
  * @returns {boolean} - Returns true if the username is strong, false otherwise.
  */
 export const isUsernameStrong = (username: string): boolean => {
-  if (window.location.href.includes('localhost')) return true; // Skip validation in development
   const basicFormat = /^[a-zA-Z0-9._-]{3,}$/;
   return basicFormat.test(username);
 }
