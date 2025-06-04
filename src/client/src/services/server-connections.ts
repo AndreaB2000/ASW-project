@@ -13,8 +13,12 @@ if (import.meta.env.VITE_DOCKER) {
 }
 
 const url = `${protocol}://${ip}:${port}`;
-
 console.log(`[API URL]: ${url}/`);
+
+/**
+ * Axios instance for making HTTP requests to the server.
+ */
+export const server = axios.create({ baseURL: url, timeout: 10000, withCredentials: true });
 
 /**
  * Socket connection to the server with authentication
@@ -26,11 +30,13 @@ export let socket = io(`${url}/auth`, {
 
 socket.on('connect_error', () => {
   console.warn('Auth connection failed, falling back to unauthenticated namespace');
-
   // Fallback to unauthenticated root namespace
   socket = io(url);
 });
 
+/**
+ * Attempts to connect to the authentication namespace.
+ */
 export const tryAuth = () => {
   socket.disconnect();
   socket = io(`${url}/auth`, {
@@ -38,8 +44,3 @@ export const tryAuth = () => {
     forceNew: true,
   });
 };
-
-/**
- * Axios instance for making HTTP requests to the server.
- */
-export const server = axios.create({ baseURL: url, timeout: 10000, withCredentials: true });

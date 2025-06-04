@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import DialogModal from '@/components/DialogModal.vue';
+import { socket } from '@/services/server-connections';
 import { MDBBtn } from 'mdb-vue-ui-kit';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const dialogVisible = ref(false);
+
+const router = useRouter();
+
+socket.on('connect', () => {
+  router.push('/play');
+});
 </script>
 
 <template>
