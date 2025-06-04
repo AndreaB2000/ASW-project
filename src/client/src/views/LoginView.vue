@@ -2,14 +2,11 @@
 import { server, tryAuth } from '@/services/server-connections';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBInput } from 'mdb-vue-ui-kit';
 import DialogModal from '@/components/DialogModal.vue';
-import { isPasswordStrong, isUsernameStrong } from '@/services/strength-validator';
 import AuthScreen from '@/components/AuthScreen.vue';
 
 const router = useRouter();
-const userStore = useUserStore();
 
 const form = reactive({
   username: '',
@@ -26,23 +23,12 @@ const dialog = reactive({
   text: ''
 });
 
-function changeSocketNamespace(namespace: string) {
-  // This function should change the socket namespace, implementation depends on your socket setup
-  console.log(`Changing socket namespace to: ${namespace}`);
-  tryAuth();
-};
-
 function login(event: Event) {
   event.preventDefault();
-  validation.username = isUsernameStrong(form.username);
-  validation.password = isPasswordStrong(form.password);
-  if (!validation.username || !validation.password) return;
   server
     .post('/account/login', { username: form.username, password: form.password })
-    .then(response => {
-      console.log('Login successful:', response.data);
-      userStore.setUsername(form.username);
-      changeSocketNamespace('/auth');
+    .then(() => {
+      tryAuth();
       router.push('/play');
     })
     .catch((error) => {
