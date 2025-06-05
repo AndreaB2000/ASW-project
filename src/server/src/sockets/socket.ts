@@ -4,9 +4,17 @@ import * as http from 'http';
 let io: Server;
 
 export function initializeIO(server: http.Server) {
+  let protocol = 'http';
+  let ip = 'localhost';
+  let port = '4173';
+  if (process.env.DOCKER) {
+    protocol = process.env.CLIENT_PROTOCOL;
+    ip = process.env.CLIENT_IP;
+    port = process.env.CLIENT_PORT;
+  }
   io = new Server(server, {
-    cors: { 
-      origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_IP : 'http://localhost:5173',
+    cors: {
+      origin: process.env.NODE_ENV === 'production' ? `${protocol}://${ip}:${port}` : 'http://localhost:5173',
       credentials: true,
     },
   });
