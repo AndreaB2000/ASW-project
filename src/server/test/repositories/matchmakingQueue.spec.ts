@@ -110,4 +110,35 @@ describe('Matchmaking Queue Repository', () => {
       );
     });
   });
+
+  describe('getCandidate', () => {
+    it('should call find with correct username and return the candidate if found', async () => {
+      const mockFind = jest
+        .fn()
+        .mockReturnValue([
+          { username: testUsername, rating: { value: testRatingValue }, requestTime: testDate },
+        ]);
+      jest.spyOn(DBMatchmakingCandidate, 'find').mockImplementation(mockFind as any);
+
+      const { getCandidate } = await import('../../src/repositories/matchmakingQueue');
+      const candidate = await getCandidate(testUsername);
+
+      expect(mockFind).toHaveBeenCalledWith({ username: testUsername });
+      expect(candidate).not.toBeNull();
+      expect(candidate?.username).toBe(testUsername);
+      expect(candidate?.rating.value).toBe(testRatingValue);
+      expect(candidate?.requestTime).toEqual(testDate);
+    });
+
+    it('should return null if candidate is not found', async () => {
+      const mockFind = jest.fn().mockReturnValue([]);
+      jest.spyOn(DBMatchmakingCandidate, 'find').mockImplementation(mockFind as any);
+
+      const { getCandidate } = await import('../../src/repositories/matchmakingQueue');
+      const candidate = await getCandidate('nonexistentUser');
+
+      expect(mockFind).toHaveBeenCalledWith({ username: 'nonexistentUser' });
+      expect(candidate).toBeNull();
+    });
+  });
 });
