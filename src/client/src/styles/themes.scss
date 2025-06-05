@@ -1,6 +1,8 @@
 [data-mdb-theme='dark-gray'] {
-  --mdb-body-color: var(--mdb-gray-300);
+  --mdb-body-color: var(--mdb-gray-400);
   --mdb-body-bg: var(--mdb-gray-900);
+  --mdb-body-color-hover: var(--mdb-gray-100);
+  --mdb-body-bg-hover: var(--mdb-gray-700);
 }
 
 .card {
@@ -15,4 +17,20 @@
 
 .navbar-toggler {
   color: var(--mdb-body-color);
+}
+
+.dropdown-menu {
+  background-color: var(--mdb-body-bg);
+  border-color: var(--mdb-body-color);
+}
+
+.dropdown-item {
+  background-color: var(--mdb-body-bg);
+  color: var(--mdb-body-color);
+  border-color: var(--mdb-body-color);
+}
+
+.dropdown-item:hover {
+  background-color: var(--mdb-body-bg-hover);
+  color: var(--mdb-body-color-hover);
 }
