@@ -7,7 +7,7 @@ export const root = (socket: Socket) => {
   console.log('User connected');
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    console.log('Guest disconnected');
   });
 
   socket.on('ping', callback => {
