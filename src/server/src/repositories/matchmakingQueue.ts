@@ -67,3 +67,20 @@ export async function removeCandidate(candidate: MatchmakingCandidate): Promise<
 export async function clearQueue(): Promise<void> {
   await DBMatchmakingCandidate.deleteMany({});
 }
+
+/**
+ * Retrieves a candidate by username
+ * @param username the username of the candidate to retrieve
+ * @returns the MatchmakingCandidate if found, otherwise null
+ */
+export async function getCandidate(username: string): Promise<MatchmakingCandidate | null> {
+  const candidate = await DBMatchmakingCandidate.find({ username });
+  if (candidate.length === 0) {
+    return null;
+  }
+  return MatchmakingCandidateFactory.create(
+    candidate[0].username,
+    RatingFactory.create(candidate[0].rating.value),
+    candidate[0].requestTime,
+  );
+}
