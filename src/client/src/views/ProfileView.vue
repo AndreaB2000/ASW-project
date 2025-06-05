@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { socket, server } from '@/services/server-connections'
+import NavBar from '@/components/NavBar.vue';
 
 const userStore = useUserStore();
 
@@ -34,6 +35,7 @@ function saveProfile() {
 </script>
 
 <template>
+  <NavBar/>
   <p style="font-size: large">profile</p>
   <section>
     <img alt="profile image"/>
