@@ -3,12 +3,13 @@ import * as ioHandler from '../sockets/socket';
 import { match } from './match';
 import { authMatchmaking } from './matchmaking';
 import { account } from './account';
+import { disconnect } from '../sockets/disconnect';
 
-export const auth = (socket: Socket) => {
+export const auth = async (socket: Socket) => {
   console.log('User connected to auth');
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected to auth');
+  socket.on('disconnect', async () => {
+    await disconnect(socket);
   });
 
   match(socket);
