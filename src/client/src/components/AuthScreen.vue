@@ -12,9 +12,10 @@ const props = defineProps<{
     src="../assets/landingIcon.svg"
     alt="Landing Icon"
     class="position-absolute top-0 start-0 m-3"
-    style="height: 40px;
-    z-index: 100;
-    cursor: pointer;"
+    style="
+      height: 40px;
+      z-index: 100;
+      cursor: pointer;"
     @click="$router.push('/')"
   />
   <MDBContainer class="vh-100 d-flex justify-content-center align-items-center">
