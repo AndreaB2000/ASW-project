@@ -1,5 +1,5 @@
 [data-mdb-theme='dark-gray'] {
-  --mdb-body-color: var(--mdb-white);
+  --mdb-body-color: var(--mdb-gray-300);
   --mdb-body-bg: var(--mdb-gray-900);
 }
 
@@ -13,9 +13,6 @@
   --mdb-modal-bg: var(--mdb-body-bg);
 }
 
-input:-webkit-autofill,
-input:-moz-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px var(--mdb-body-bg) inset;
-  -webkit-text-fill-color: var(--mdb-body-color);
-  -moz-text-fill-color: var(--mdb-body-color);
+.navbar-toggler {
+  color: var(--mdb-body-color);
 }
