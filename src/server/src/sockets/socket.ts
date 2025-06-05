@@ -16,16 +16,16 @@ export function getIO(): Server {
   return io;
 }
 
-const playerSockets = new Map<string, Socket>(); // playerId -> socketId
+const playerSockets = new Map<string, Socket>();
 
-export function registerPlayerSocket(playerId: string, socketId: Socket) {
-  playerSockets.set(playerId, socketId);
+export function registerPlayerSocket(username: string, socket: Socket) {
+  playerSockets.set(username, socket);
 }
 
-export function getPlayerSocket(playerId: string): Socket | undefined {
-  return playerSockets.get(playerId);
+export function getPlayerSocket(username: string): Socket | undefined {
+  return playerSockets.get(username);
 }
 
-export function removePlayerSocket(playerId: string) {
-  playerSockets.delete(playerId);
+export function removePlayerSocket(username: string) {
+  playerSockets.delete(username);
 }
