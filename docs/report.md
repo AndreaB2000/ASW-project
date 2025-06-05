@@ -625,3 +625,4 @@ root project directory and must contain the following parameters:
 - Chance to change the username -> the username is not unique anymore
 - Timer during a match
 - Replay a match
+- Improve disconnection handling, right now players are not notified when the opponent disconnects
