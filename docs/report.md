@@ -622,4 +622,6 @@ root project directory and must contain the following parameters:
 
 ### Future Work
 
-Conclusions
+- Chance to change the username -> the username is not unique anymore
+- Timer during a match
+- Replay a match
