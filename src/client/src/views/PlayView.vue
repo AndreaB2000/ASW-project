@@ -13,20 +13,40 @@
     MDBDropdownItem
   } from 'mdb-vue-ui-kit';
   import { ref } from "vue";
-  import { socket } from '@/services/server-connections';
+  import { server, socket } from '@/services/server-connections';
   import { useRouter } from 'vue-router';
+import DialogModal from '@/components/DialogModal.vue';
 
   const router = useRouter();
+  const toggler = ref(false);
+  const profileToggler = ref(false);
+  const dialog = ref({
+    visible: false,
+    text: ''
+  });
+
   function playPVP() {
     console.log('enterQueue');
     socket.emit('requestMatch');
   }
+  function logout() {
+    server.post('/account/logout').then(() => {
+      console.log('Logged out successfully');
+      router.push('/');
+    }).catch((error) => {
+      console.error('Logout failed:', error);
+      dialog.value.text = error.response?.data?.message || 'Logout failed. Please try again.';
+      dialog.value.visible = true;
+    });
+  }
+  function buttonNotBinded() {
+    dialog.value.text = 'This button is not binded yet';
+    dialog.value.visible = true;
+  }
+
   socket.on('matchFound', (matchId: string) => {
     router.push({ path: '/match', query: { id: matchId } });
   });
-
-  const toggler = ref(false);
-  const profileToggler = ref(false);
 </script>
 
 <template>
@@ -37,6 +57,8 @@
         src="../assets/landingIcon.svg"
         alt="Landing Icon"
         loading="lazy"
+        style="cursor: pointer;"
+        @click="$router.push('/play')"
       />
     </MDBNavbarBrand>
     <MDBNavbarToggler
@@ -45,11 +67,23 @@
     ></MDBNavbarToggler>
     <MDBCollapse v-model="toggler" id="navbarSupportedContent">
       <MDBNavbarNav class="mb-2 mb-lg-0">
-        <MDBNavbarItem href="#dashboard" linkClass="link-secondary" @click="playPVP"><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem>
-        <MDBNavbarItem href="#tutorial" linkClass="link-secondary"><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
-        <MDBNavbarItem href="#leaderboard" linkClass="link-secondary"><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
-        <MDBNavbarItem href="#profile" linkClass="link-secondary" class="d-block d-lg-none"><MDBIcon icon="user" class="fas"></MDBIcon> Profile</MDBNavbarItem>
-        <MDBNavbarItem href="#logout" linkClass="link-secondary" class="d-block d-lg-none"><MDBIcon icon="sign-out-alt" class="fas"></MDBIcon> Logout</MDBNavbarItem>
+        <MDBNavbarItem href="#" linkClass="link-secondary" @click="playPVP"><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem>
+        <MDBNavbarItem href="#" linkClass="link-secondary" @click="buttonNotBinded"><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
+        <MDBNavbarItem href="#" linkClass="link-secondary" @click="buttonNotBinded"><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
+        <MDBNavbarItem
+          href="#"
+          linkClass="link-secondary"
+          class="d-block d-lg-none"
+          @click="$router.push('/profile')"
+          ><MDBIcon icon="user" class="fas"></MDBIcon> Profile
+        </MDBNavbarItem>
+        <MDBNavbarItem
+          href="#"
+          linkClass="link-secondary"
+          class="d-block d-lg-none"
+          @click="logout"
+          ><MDBIcon icon="sign-out-alt" class="fas"></MDBIcon> Logout
+        </MDBNavbarItem>
       </MDBNavbarNav>
 
       <div class="d-none d-lg-block">
@@ -65,12 +99,13 @@
             />
           </MDBDropdownToggle>
           <MDBDropdownMenu>
-            <MDBDropdownItem href="#">Profile</MDBDropdownItem>
-            <MDBDropdownItem href="#">Logout</MDBDropdownItem>
+            <MDBDropdownItem href="#" @click="$router.push('/profile')">Profile</MDBDropdownItem>
+            <MDBDropdownItem href="#" @click="logout">Logout</MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
       </MDBNavbarItem>
       </div>
     </MDBCollapse>
   </MDBNavbar>
+  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false" />
 </template>
