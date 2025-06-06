@@ -7,7 +7,8 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
   state: () => ({
     username: '',
-    email: ''
+    email: '',
+    rank: -1
   }),
   actions: {
     setUsername(username: string) {
@@ -16,5 +17,8 @@ export const useUserStore = defineStore('user', {
     setEmail(email: string) {
       this.email = email;
     },
+    setRank(rank: number) {
+      this.rank = rank;
+    }
   },
 });

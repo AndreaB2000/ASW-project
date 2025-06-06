@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import { socket } from '@/services/server-connections';
+import { server, socket } from '@/services/server-connections';
+import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } from 'mdb-vue-ui-kit';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const ranking = ref('Unranked');
 const eloPoint = ref(0);
 const lastOpponentUsername: Ref<string | null> = ref("Unknown");
 const lastOpponentEloPoints = ref(0);
 const lastMatchEnding = ref("Won");
+const userStore = useUserStore();
 
 function playRanked() {
   console.log('enterQueue');
@@ -19,6 +20,18 @@ function playRanked() {
 
 socket.on('matchFound', (matchId: string) => {
   router.push({ path: '/match', query: { id: matchId } });
+});
+
+onMounted(async () => {
+  if (userStore.rank === -1) {
+    try {
+      const rankRes = await server.get('/account/ranking');
+      userStore.rank = rankRes.data.rank;
+      eloPoint.value = rankRes.data.elo;
+    } catch (error) {
+      console.error('Error fetching last match:', error);
+    }
+  }
 });
 </script>
 
@@ -41,7 +54,7 @@ socket.on('matchFound', (matchId: string) => {
       <div class="divider d-none d-md-block"></div>
       <MDBBtn class="text-uppercase" color="primary">Bot</MDBBtn>
     </div>
-    <p class="text-uppercase mt-5 fs-3">current ranking: {{ ranking }}</p>
+    <p class="text-uppercase mt-5 fs-3">current ranking: {{ userStore.rank }}</p>
     <p class="text-uppercase fs-3">current elo: {{ eloPoint }}</p>
   </div>
 
