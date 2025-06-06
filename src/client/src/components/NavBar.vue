@@ -59,20 +59,30 @@ function buttonNotBinded() {
     ></MDBNavbarToggler>
     <MDBCollapse v-model="toggler" id="navbarSupportedContent">
       <MDBNavbarNav class="mb-2 mb-lg-0">
-        <MDBNavbarItem href="#" linkClass="link-secondary" @click="$router.push('/play')"><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem>
-        <MDBNavbarItem href="#" linkClass="link-secondary" @click="buttonNotBinded"><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
-        <MDBNavbarItem href="#" linkClass="link-secondary" @click="buttonNotBinded"><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
         <MDBNavbarItem
-          href="#"
-          linkClass="link-secondary"
-          class="d-block d-lg-none"
+          class="mx-2 my-1"
+          style="cursor: pointer;"
+          @click="$router.push('/play')"
+        ><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem>
+        <MDBNavbarItem
+          class="mx-2 my-1"
+          style="cursor: pointer;"
+          @click="buttonNotBinded"
+        ><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
+        <MDBNavbarItem
+          class="mx-2 my-1"
+          style="cursor: pointer;"
+          @click="buttonNotBinded"
+        ><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
+        <MDBNavbarItem
+          style="cursor: pointer;"
+          class="d-block d-lg-none mx-2 my-1"
           @click="$router.push('/profile')"
-          ><MDBIcon icon="user" class="fas"></MDBIcon> Profile
+        ><MDBIcon icon="user" class="fas"></MDBIcon> Profile
         </MDBNavbarItem>
         <MDBNavbarItem
-          href="#"
-          linkClass="link-secondary"
-          class="d-block d-lg-none"
+          style="cursor: pointer;"
+          class="d-block d-lg-none mx-2 my-1"
           @click="logout"
           ><MDBIcon icon="sign-out-alt" class="fas"></MDBIcon> Logout
         </MDBNavbarItem>
