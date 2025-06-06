@@ -3,11 +3,13 @@
   --mdb-body-bg: var(--mdb-gray-900);
   --mdb-body-color-hover: var(--mdb-gray-100);
   --mdb-body-bg-hover: var(--mdb-gray-700);
+  --mdb-body-card-color: var(--mdb-gray-300);
+  --mdb-body-card-bg: var(--mdb-gray-800);
 }
 
 .card {
-  --mdb-card-color: var(--mdb-body-color);
-  --mdb-card-bg: var(--mdb-body-bg);
+  --mdb-card-color: var(--mdb-body-card-color);
+  --mdb-card-bg: var(--mdb-body-card-bg);
 }
 
 .modal-content {
