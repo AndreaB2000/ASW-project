@@ -1,5 +1,5 @@
 <template>
-  <img src="../assets/landingIcon.svg"></img>
+  <img src="../assets/landingIcon.svg"/>
 </template>
 
 <style scoped>
