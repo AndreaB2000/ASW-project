@@ -9,9 +9,7 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
       await matchService.getMatch(matchId).then(match => {
         if (match.winner) {
           ioHandler.emitToRoom(matchId, 'over', match.winner);
-          console.log('before socketsLeave', ioHandler.getIO().of('/auth').adapter.rooms.keys());
           ioHandler.socketsLeave(matchId);
-          console.log('after socketsLeave', ioHandler.getIO().of('/auth').adapter.rooms.keys());
         }
       });
     }
