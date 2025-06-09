@@ -11,26 +11,21 @@ defineProps(['numberOfGrains']);
 <style scoped lang="scss">
 .grains-container {
   --grain-offset: 100%;
-  --grain-size: 16px;
+  --grain-size: 1%;
 
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
-  min-height: 80px;
+  aspect-ratio: 1;
 
   .grain {
     width: var(--grain-size);
-    height: var(--grain-size);
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: #000;
     position: absolute;
     margin: 0;
-
-    &[data-count='1'] {
-      position: relative;
-    }
 
     &[data-count='2'] {
       &:nth-child(1) {
