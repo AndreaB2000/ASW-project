@@ -4,14 +4,13 @@ import Grid from '@/components/Match/Grid.vue';
 import { socket } from '@/services/server-connections';
 import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useMatchStore } from '@/stores/matchStore';
-import { useViewport } from '@/utils/viewport';
+import { ref, toRef } from 'vue';
 
-const { isMobile, isSmallWindow } = useViewport();
 const match = useMatchStore();
-const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
+const myUsername = ref('');
 
 function getMatch(matchId: string) {
-  socket.emit('getMatch', matchId, (error: any, matchData: any) => {
+  socket.emit('getMatch', matchId, (error: any, matchData: any, whichPlayerAmI: number) => {
     if (error) {
       console.error('Error getting match', error);
       return;
@@ -20,6 +19,8 @@ function getMatch(matchId: string) {
     match.player1 = matchData.player1;
     match.player2 = matchData.player2;
     match.turn = match.player1;
+    match.whichPlayerAmI = whichPlayerAmI;
+    match.myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
   });
 }
 
@@ -33,7 +34,7 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
 
 socket.on('over', (winner: string) => {
   match.winner = winner;
-  console.log('The winner is', winner, '!');
+  console.log(`The winner is ${winner}!`);
 });
 </script>
 
