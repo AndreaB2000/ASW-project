@@ -60,8 +60,6 @@ export const notifyNewMatch = async (
  */
 const notifyPlayer = async (username: string, matchId: string): Promise<void> => {
   const socket = ioHandler.getPlayerSocket(username);
-  console.log('socket', socket);
-  console.log('adding socket to room', matchId);
   if (socket) {
     await socket.join(matchId);
     socket.emit('matchFound', matchId);
