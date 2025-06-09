@@ -3,7 +3,6 @@ import { beforeEach } from 'node:test';
 import { Move, MoveFactory } from '../../src/models/Move';
 import { addMove } from '../../src/controllers/match';
 import * as matchService from '../../src/services/match';
-import * as root from '../../src/routes/root';
 import { Match, MatchFactory } from '../../src/models/Match';
 import { BoardFactory } from '../../src/models/Board';
 import { PileFactory } from '../../src/models/Pile';
@@ -33,7 +32,7 @@ describe('Match controller', () => {
     it("should call addMove and emit 'move' message if it is player1's turn", async () => {
       const spyAddMove = jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       const spyGetMatch = jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatch);
-      const spyEmitToRoom = jest.spyOn(root, 'emitToRoom').mockImplementation(() => {});
+      const spyEmitToRoom = jest.spyOn(ioHandler, 'emitToRoom').mockImplementation(() => {});
 
       await addMove(testId, player1, move);
 
@@ -51,7 +50,7 @@ describe('Match controller', () => {
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
       const spyEmitToRoom = jest
-        .spyOn(root, 'emitToRoom')
+        .spyOn(ioHandler, 'emitToRoom')
         .mockImplementation(() => {})
         .mockClear();
 
@@ -67,7 +66,7 @@ describe('Match controller', () => {
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatch);
       const spyEmitToRoom = jest
-        .spyOn(root, 'emitToRoom')
+        .spyOn(ioHandler, 'emitToRoom')
         .mockImplementation(() => {})
         .mockClear();
 
@@ -84,7 +83,7 @@ describe('Match controller', () => {
         .mockResolvedValue(mockMatch)
         .mockClear();
       const spyEmitToRoom = jest
-        .spyOn(root, 'emitToRoom')
+        .spyOn(ioHandler, 'emitToRoom')
         .mockImplementation(() => {})
         .mockClear();
 
