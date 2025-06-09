@@ -2,14 +2,16 @@ import { Socket } from 'socket.io/dist';
 import * as matchController from '../controllers/match';
 import * as matchService from '../services/match';
 import { MoveFactory } from '../models/Move';
+import * as ioHandler from '../sockets/socket';
 
 export const match = (socket: Socket) => {
   socket.on('getMatch', async (matchId, callback) => {
     try {
       const match = await matchService.getMatch(matchId);
-      callback(null, match);
+      const socketUsername = ioHandler.getSocketUsername(socket);
+      callback(null, match, match.player1 == socketUsername ? 1 : 2);
     } catch (error) {
-      callback(error, null);
+      callback(error, null, null);
     }
   });
 

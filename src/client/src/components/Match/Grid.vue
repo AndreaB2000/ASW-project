@@ -1,36 +1,25 @@
 <script setup lang="ts">
+import Pile from '@/components/Match/Pile.vue';
 import { socket } from '@/services/server-connections';
 import { GRID_SIZE } from '@/utils/match';
 import { useMatchStore } from '@/stores/matchStore';
 
 const match = useMatchStore();
-const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
 
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
-    // console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
-    // console.log(document.getElementById(`${x}-${y}`));
-    // console.log(document.getElementById(`${x}-${y}`)?.classList);
-    // console.log(myUsername);
+    console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
     const p: string =
-      myUsername == match.player1 ? 'player1' : myUsername == match.player2 ? 'player2' : '';
+      match.myUsername == match.player1
+        ? 'player1'
+        : match.myUsername == match.player2
+          ? 'player2'
+          : '';
     if (document.getElementById(`${x}-${y}`)?.classList.contains(p)) {
       console.log('Emitting move');
-      socket.emit('addMove', match.id, myUsername, x, y);
+      socket.emit('addMove', match.id, match.myUsername, x, y);
     }
   }
-  console.log(
-    match?.currentState?.[x]?.[y]?.pile?.owner ?? null,
-    '=',
-    match?.player1,
-    '? -> player1',
-  );
-  console.log(
-    match?.currentState?.[x]?.[y]?.pile?.owner ?? null,
-    '=',
-    match?.player2,
-    '? -> player2',
-  );
 }
 </script>
 

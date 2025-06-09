@@ -1,5 +1,4 @@
 import { Socket } from 'socket.io';
-import * as ioHandler from '../sockets/socket';
 import { match } from './match';
 import { guestMatchmaking } from './matchmaking';
 
@@ -16,9 +15,4 @@ export const root = (socket: Socket) => {
 
   match(socket);
   guestMatchmaking(socket);
-};
-
-export const emitToRoom = (room: string, event: string, ...data: any[]) => {
-  const io = ioHandler.getIO();
-  io.to(room).emit(event, ...data);
 };
