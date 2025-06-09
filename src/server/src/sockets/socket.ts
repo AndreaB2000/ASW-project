@@ -37,6 +37,14 @@ export function emitToRoom(room: string, event: string, ...data: any[]) {
   }
 }
 
+export function socketsLeave(room: string) {
+  if (io.sockets.adapter.rooms.get(room) != undefined) {
+    io.socketsLeave(room);
+  } else {
+    io.of('/auth').socketsLeave(room);
+  }
+}
+
 const playerSockets = new Map<string, Socket>();
 
 export function getPlayerSockets(): Map<string, Socket> {

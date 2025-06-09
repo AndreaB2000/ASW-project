@@ -42,15 +42,14 @@ describe('Match controller', () => {
     });
 
     it('should call emitToRoom twice if there is a winner', async () => {
-      const mockIO = {
-        socketsLeave: jest.fn(),
-      };
-
-      jest.spyOn(ioHandler, 'getIO').mockReturnValue(mockIO as unknown as Server);
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
       const spyEmitToRoom = jest
         .spyOn(ioHandler, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
+      const spySocketsLeave = jest
+        .spyOn(ioHandler, 'socketsLeave')
         .mockImplementation(() => {})
         .mockClear();
 
@@ -59,7 +58,7 @@ describe('Match controller', () => {
       expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player1, move.x, move.y);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player1);
-      expect(mockIO.socketsLeave).toHaveBeenCalled();
+      expect(spySocketsLeave).toHaveBeenCalled();
     });
 
     it('should call emitToRoom only once if there is no winner', async () => {
