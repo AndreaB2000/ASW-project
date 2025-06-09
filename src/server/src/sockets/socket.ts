@@ -14,7 +14,10 @@ export function initializeIO(server: http.Server) {
   }
   io = new Server(server, {
     cors: {
-      origin: process.env.NODE_ENV === 'production' ? `${protocol}://${ip}:${port}` : 'http://localhost:5173',
+      origin:
+        process.env.NODE_ENV === 'production'
+          ? `${protocol}://${ip}:${port}`
+          : 'http://localhost:5173',
       credentials: true,
     },
   });
@@ -22,6 +25,16 @@ export function initializeIO(server: http.Server) {
 
 export function getIO(): Server {
   return io;
+}
+
+export function emitToRoom(room: string, event: string, ...data: any[]) {
+  if (io.sockets.adapter.rooms.get(room) != undefined) {
+    io.to(room).emit(event, ...data);
+  } else {
+    io.of('/auth')
+      .to(room)
+      .emit(event, ...data);
+  }
 }
 
 const playerSockets = new Map<string, Socket>();
@@ -36,6 +49,16 @@ export function registerPlayerSocket(username: string, socket: Socket) {
 
 export function getPlayerSocket(username: string): Socket | undefined {
   return playerSockets.get(username);
+}
+
+export function getSocketUsername(socket: Socket): string | undefined {
+  let ret: string | undefined = undefined;
+  playerSockets.forEach((sock, username) => {
+    if (socket == sock) {
+      ret = username;
+    }
+  });
+  return ret;
 }
 
 export function removePlayerSocket(username: string) {

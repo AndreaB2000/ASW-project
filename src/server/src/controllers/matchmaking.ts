@@ -1,7 +1,7 @@
 import { findMatch } from '../services/matchmaking/matchmaking';
-import { getPlayerSocket, registerPlayerSocket } from '../sockets/socket';
 import { Socket } from 'socket.io';
 import { newMatch } from '../services/match';
+import * as ioHandler from '../sockets/socket';
 
 /**
  * Requests a match and notifies the player if a match has been found, adds them to the queue otherwise.
@@ -9,7 +9,7 @@ import { newMatch } from '../services/match';
  * @param username the username of the player requesting the match
  */
 export const requestMatch = async (playerSocket: Socket, username: string): Promise<void> => {
-  registerPlayerSocket(username, playerSocket);
+  ioHandler.registerPlayerSocket(username, playerSocket);
 
   const result = await findMatch(username);
 
@@ -29,7 +29,7 @@ export const requestMatchWithBot = async (
   playerSocket: Socket,
   username: string,
 ): Promise<string> => {
-  registerPlayerSocket(username, playerSocket);
+  ioHandler.registerPlayerSocket(username, playerSocket);
   const matchId = await newMatch(username, 'bot', new Date());
   notifyPlayer(username, matchId);
 
@@ -59,9 +59,11 @@ export const notifyNewMatch = async (
  * @param matchId the id of the match
  */
 const notifyPlayer = async (username: string, matchId: string): Promise<void> => {
-  const socket = getPlayerSocket(username);
+  const socket = ioHandler.getPlayerSocket(username);
+  console.log('socket', socket);
+  console.log('adding socket to room', matchId);
   if (socket) {
-    socket.join(matchId);
+    await socket.join(matchId);
     socket.emit('matchFound', matchId);
   }
 };
