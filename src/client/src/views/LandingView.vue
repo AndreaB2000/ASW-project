@@ -5,12 +5,10 @@ import { MDBBtn } from 'mdb-vue-ui-kit';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useMatchStore } from '@/stores/matchStore';
 
 const dialogVisible = ref(false);
 
 const router = useRouter();
-const match = useMatchStore();
 
 socket.on('connect', () => {
   router.push('/play');

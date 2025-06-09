@@ -37,6 +37,8 @@ export interface Match {
    */
   addMove(newMove: Move): boolean;
 
+  computeCurrentState(): Board;
+
   /**
    * The winner of the match. It is null when the match is not finished.
    */
@@ -78,7 +80,7 @@ class MatchImpl implements Match {
 
   get winner(): string | null {
     let winner: string | null = null;
-    const currentState: Cell[][] = this.getCurrentState().state;
+    const currentState: Cell[][] = this.computeCurrentState().state;
 
     for (const row of currentState) {
       for (const cell of row) {
@@ -95,7 +97,7 @@ class MatchImpl implements Match {
   }
 
   addMove(newMove: Move): boolean {
-    const currentState: Board = this.getCurrentState();
+    const currentState: Board = this.computeCurrentState();
     const movingPlayer = this.moves.length % 2 == 0 ? this.player1 : this.player2;
     if (
       currentState.getCell(newMove.x, newMove.y).pile != null &&
@@ -107,7 +109,7 @@ class MatchImpl implements Match {
     return false;
   }
 
-  private getCurrentState(): Board {
+  computeCurrentState(): Board {
     const ret = this.initialState.copy();
 
     for (let i = 0; i < this.moves.length; i++) {

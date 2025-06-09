@@ -18,6 +18,12 @@ function playPVP() {
   console.log('enterQueue');
   socket.emit('requestMatch');
 }
+
+function playWithBot() {
+  console.log('match with bot requested');
+  socket.emit('requestMatchWithBot');
+}
+
 socket.on('matchFound', (matchId: string) => {
   router.push({ path: '/match', query: { id: matchId } });
 });
@@ -34,8 +40,11 @@ socket.on('matchFound', (matchId: string) => {
     ></MDBNavbarToggler>
     <MDBCollapse v-model="collapse1" id="navbarSupportedContent">
       <MDBNavbarNav class="mb-2 mb-lg-0">
-        <MDBNavbarItem href="#dashboard" linkClass="link-secondary" @click="playPVP"
-          ><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem
+        <MDBNavbarItem href="#playpvp" linkClass="link-secondary" @click="playPVP"
+          ><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play PVP</MDBNavbarItem
+        >
+        <MDBNavbarItem href="#playbot" linkClass="link-secondary" @click="playWithBot"
+          ><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play against bot</MDBNavbarItem
         >
         <MDBNavbarItem href="#tutorial" linkClass="link-secondary"
           ><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem
