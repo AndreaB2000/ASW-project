@@ -1,10 +1,17 @@
 import { Socket } from 'socket.io/dist';
 import * as matchController from '../controllers/match';
 import * as matchService from '../services/match';
-import { MoveFactory } from '../models/Move';
+import { Move, MoveFactory } from '../models/Move';
 import * as ioHandler from '../sockets/socket';
+import * as botService from '../services/bot';
 
 export const match = (socket: Socket) => {
+  async function addMove(matchId: string, movingPlayer: string, x: number, y: number) {
+    if (socket.rooms.has(matchId)) {
+      await matchController.addMove(matchId, movingPlayer, MoveFactory.create(x, y));
+    }
+  }
+
   socket.on('getMatch', async (matchId, callback) => {
     try {
       const match = await matchService.getMatch(matchId);
@@ -16,8 +23,14 @@ export const match = (socket: Socket) => {
   });
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
-    if (socket.rooms.has(matchId)) {
-      await matchController.addMove(matchId, movingPlayer, MoveFactory.create(x, y));
-    }
+    addMove(matchId, movingPlayer, x, y);
+  });
+
+  socket.on('requestBotMove', async (matchId: string) => {
+    const match = await matchService.getMatch(matchId);
+    console.log(match?.computeCurrentState());
+    const botMove: Move = await botService.getMove(match?.computeCurrentState());
+    console.log('bot has computed this move:', botMove);
+    addMove(matchId, 'bot', botMove.x, botMove.y);
   });
 };

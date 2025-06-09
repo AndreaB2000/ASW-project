@@ -4,10 +4,8 @@ import Grid from '@/components/Match/Grid.vue';
 import { socket } from '@/services/server-connections';
 import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useMatchStore } from '@/stores/matchStore';
-import { ref, toRef } from 'vue';
 
 const match = useMatchStore();
-const myUsername = ref('');
 
 function getMatch(matchId: string) {
   socket.emit('getMatch', matchId, (error: any, matchData: any, whichPlayerAmI: number) => {
@@ -30,6 +28,9 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
   await match.applyMove(movingPlayer, x, y);
   await match.changeTurn();
+  if (match.player2 == 'bot') {
+    socket.emit('requestBotMove', match.id);
+  }
 });
 
 socket.on('over', (winner: string) => {
