@@ -44,7 +44,7 @@ function handleButtonClick(x: number, y: number) {
             ? 'player2'
             : '',
         (match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[(index - 1) % GRID_SIZE]?.pile
-          ?.owner ?? null) == match.turn
+          ?.owner ?? null) != match.turn
           ? 'inactive'
           : '',
       ]"
