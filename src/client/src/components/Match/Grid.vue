@@ -34,7 +34,7 @@ function handleButtonClick(x: number, y: number) {
       :key="index"
       :id="`${Math.floor((index - 1) / GRID_SIZE)}-${(index - 1) % GRID_SIZE}`"
       @click="handleButtonClick(Math.floor((index - 1) / GRID_SIZE), (index - 1) % GRID_SIZE)"
-      class="grid-button"
+      class="grid-button d-flex justify-content-center align-items-center"
       :class="[
         (match?.currentState?.[Math.floor((index - 1) / GRID_SIZE)]?.[(index - 1) % GRID_SIZE]?.pile
           ?.owner ?? null) == match?.player1
