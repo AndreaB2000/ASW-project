@@ -11,14 +11,13 @@ const match = useMatchStore();
 </script>
 
 <template>
-  <MDBContainer fluid>
-    <MDBRow center class="logo-header">
-      <MDBCol md="3">
-        <Icon />
-      </MDBCol>
-      <MDBCol md="9"></MDBCol>
-    </MDBRow>
-    <Match v-if="!isMatchOver" />
-    <MatchOver v-else />
-  </MDBContainer>
+  <MDBRow style="min-height: 10vh">
+    <Icon />
+  </MDBRow>
+  <MDBRow>
+    <MDBCol>
+      <Match v-if="!isMatchOver" />
+      <MatchOver v-else />
+    </MDBCol>
+  </MDBRow>
 </template>
