@@ -1,4 +1,4 @@
-import { Account } from '../models/Account';
+import { Account as accountRepository } from '../models/Account';
 import mongoose from 'mongoose';
 import { AccountFactory } from '../models/Account';
 import { RatingFactory } from '../models/Rating';
@@ -6,7 +6,7 @@ import { RatingFactory } from '../models/Rating';
 /**
  * Stores user account information.
  */
-export const createAccount = async (account: Account): Promise<void> => {
+export const createAccount = async (account: accountRepository): Promise<void> => {
   const { username, email, hashedPassword, rating } = account;
   const user = new DBAccount({
     username: username,
@@ -21,24 +21,36 @@ export const createAccount = async (account: Account): Promise<void> => {
 
 /**
  * Reads all accounts from the database.
- * @returns { Account }[] - List of all accounts
+ * @returns { accountRepository }[] - List of all accounts
  */
-export const readAllAccounts = async (): Promise<Account[]> => {
+export const readAllAccounts = async (): Promise<accountRepository[]> => {
   const accounts = await DBAccount.find();
   return accounts.map(account =>
-    AccountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value))
+    AccountFactory.create(
+      account.username,
+      account.email,
+      account.password,
+      RatingFactory.create(account.rating.value),
+    ),
   );
 };
 
 /**
  * Reads an account by username from the database.
  * @param username - The username to search for
- * @returns { Account | null } - The account if found, null otherwise
+ * @returns { accountRepository | null } - The account if found, null otherwise
  */
-export const readAccountByUsername = async (username: string): Promise<Account | null> => {
+export const readAccountByUsername = async (
+  username: string,
+): Promise<accountRepository | null> => {
   const account = await DBAccount.findOne({ username });
   if (!account) return null;
-  return AccountFactory.create(account.username, account.email, account.password, RatingFactory.create(account.rating.value));
+  return AccountFactory.create(
+    account.username,
+    account.email,
+    account.password,
+    RatingFactory.create(account.rating.value),
+  );
 };
 
 /**
@@ -46,7 +58,7 @@ export const readAccountByUsername = async (username: string): Promise<Account |
  * @param account - The account with updated information
  * @returns {boolean} - True if account was updated, false if account not found
  */
-export const updateAccount = async (account: Account): Promise<boolean> => {
+export const updateAccount = async (account: accountRepository): Promise<boolean> => {
   const { username, email, hashedPassword, rating } = account;
   const result = await DBAccount.updateOne(
     { username },
@@ -55,8 +67,8 @@ export const updateAccount = async (account: Account): Promise<boolean> => {
       password: hashedPassword,
       rating: {
         value: rating.value,
-      }
-    }
+      },
+    },
   );
 
   return result.modifiedCount > 0;
