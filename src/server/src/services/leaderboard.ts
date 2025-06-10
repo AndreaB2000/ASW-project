@@ -1,15 +1,15 @@
-import { readAllAccounts } from "../repositories/account";
+import { readAllAccounts } from '../repositories/account';
 
 /**
  * Get the leaderboard of the top 5 accounts sorted by rating and name.
  * @returns the sorted leaderboard of accounts.
  */
-export const getTop5 = async () => {
-    const leaderboard = await getLeaderboard();
-    return leaderboard.slice(0, 5).map(account => ({
-        username: account.username,
-        rating: account.rating,
-    }));
+export const getTopAccounts = async (count: number) => {
+  const leaderboard = await getLeaderboard();
+  return leaderboard.slice(0, count).map(account => ({
+    username: account.username,
+    rating: account.rating,
+  }));
 };
 
 /**
@@ -18,8 +18,8 @@ export const getTop5 = async () => {
  * @returns the ranking of the account in the leaderboard.
  */
 export const getAccountRanking = async (username: string): Promise<number> => {
-    const leaderboard = await getLeaderboard();
-    return leaderboard.findIndex(account => account.username === username);
+  const leaderboard = await getLeaderboard();
+  return leaderboard.findIndex(account => account.username === username);
 };
 
 /**
@@ -37,4 +37,4 @@ const getLeaderboard = async () => {
     if (a.username > b.username) return 1;
     return 0;
   });
-}
+};
