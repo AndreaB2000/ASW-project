@@ -8,7 +8,7 @@ export const getTopAccounts = async (count: number) => {
   const leaderboard = await getLeaderboard();
   return leaderboard.slice(0, count).map(account => ({
     username: account.username,
-    rating: account.rating,
+    rating: account.rating.value,
   }));
 };
 
