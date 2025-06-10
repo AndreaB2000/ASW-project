@@ -39,6 +39,11 @@ const router = createRouter({
       name: 'matchmaking',
       component: () => import('../views/MatchmakingView.vue'),
     },
+    {
+      path: '/leaderboard',
+      name: 'leaderboard',
+      component: () => import('../views/LeaderboardView.vue'),
+    },
   ],
 });
 
