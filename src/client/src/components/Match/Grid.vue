@@ -26,8 +26,16 @@ function handleButtonClick(x: number, y: number) {
 <template>
   <div
     class="grid d-grid"
-    :style="`grid-template-columns: repeat(${GRID_SIZE}, 1fr);`"
-    style="aspect-ratio: 1; height: 80%; box-sizing: unset"
+    :style="[
+      `grid-template-columns: repeat(${GRID_SIZE}, 1fr);`,
+      'border: 0.8vw solid',
+      'border-radius: 20px',
+      match.turn == match.myUsername ? 'border-color: green' : 'border-color: gray',
+      'padding: 4%',
+      'aspect-ratio: 1',
+      'height: 80%',
+      'box-sizing: unset',
+    ]"
   >
     <button
       v-for="index in GRID_SIZE * GRID_SIZE"
