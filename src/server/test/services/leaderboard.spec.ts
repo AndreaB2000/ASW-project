@@ -1,5 +1,5 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
-import { getTop5, getAccountRanking } from '../../src/services/leaderboard';
+import { getTopAccounts, getAccountRanking } from '../../src/services/leaderboard';
 import * as accountRepository from '../../src/repositories/account';
 
 jest.mock('../../src/repositories/account');
@@ -9,8 +9,9 @@ describe('Leaderboard Service', () => {
     jest.resetAllMocks();
   });
 
-  describe('getTop5', () => {
-    it('should return top 5 accounts sorted by rating and username', async () => {
+  describe('getTopPlayers', () => {
+    it('should return top N accounts sorted by rating and username', async () => {
+      const count = 5;
       const mockAccounts = [
         { username: 'account5', rating: 1000 },
         { username: 'account3', rating: 1500 },
@@ -23,7 +24,7 @@ describe('Leaderboard Service', () => {
 
       (accountRepository.readAllAccounts as jest.Mock).mockReturnValue(mockAccounts);
 
-      const result = await getTop5();
+      const result = await getTopAccounts(count);
 
       expect(result).toHaveLength(5);
       expect(result[0].username).toBe('account1');
@@ -34,7 +35,8 @@ describe('Leaderboard Service', () => {
       expect(accountRepository.readAllAccounts).toHaveBeenCalledTimes(1);
     });
 
-    it('should return all accounts when there are fewer than 5', async () => {
+    it('should return all accounts when there are fewer than given count', async () => {
+      const count = 5;
       const mockAccounts = [
         { username: 'account1', rating: 2000 },
         { username: 'account2', rating: 1500 },
@@ -43,7 +45,7 @@ describe('Leaderboard Service', () => {
 
       (accountRepository.readAllAccounts as jest.Mock).mockReturnValue(mockAccounts);
 
-      const result = await getTop5();
+      const result = await getTopAccounts(count);
 
       expect(result).toHaveLength(3);
       expect(result[0].username).toBe('account1');
@@ -54,8 +56,9 @@ describe('Leaderboard Service', () => {
 
     it('should return an empty array when there are no accounts', async () => {
       (accountRepository.readAllAccounts as jest.Mock).mockReturnValue([]);
+      const count = 5;
 
-      const result = await getTop5();
+      const result = await getTopAccounts(count);
 
       expect(result).toHaveLength(0);
       expect(result).toEqual([]);
