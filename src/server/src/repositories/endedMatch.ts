@@ -9,7 +9,8 @@ const repo = new MatchRepository();
  * @param match the match object to be saved.
  * @returns the ID of the saved match.
  */
-export const createMatch = async (match: Match): Promise<string> => await repo.createMatch(match);
+export const createMatch = async (match: Match, matchId?: string): Promise<string> =>
+  await repo.createMatch(match, matchId);
 
 /**
  * Returns the match corresponding to the provided ID, if it exists.

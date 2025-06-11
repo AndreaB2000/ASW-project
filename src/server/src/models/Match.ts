@@ -85,10 +85,12 @@ class MatchImpl implements Match {
     for (const row of currentState) {
       for (const cell of row) {
         if (cell.pile) {
-          if (winner == null) {
-            winner = cell.pile.owner;
-          } else if (cell.pile.owner != winner) {
-            return null;
+          if (JSON.stringify(cell.pile) != '{}') {
+            if (winner == null) {
+              winner = cell.pile.owner;
+            } else if (cell.pile.owner != winner) {
+              return null;
+            }
           }
         }
       }

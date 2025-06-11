@@ -71,6 +71,46 @@ db.matches.insertMany([
           Array(9)
             .fill()
             .map((_, col) => ({
+              pile: row === 2 && col === 2 ? { owner: 'beginner', numberOfGrains: 3 } : {},
+            }))
+        ),
+    },
+    moves: [],
+  },
+  {
+    // A completed match where expert won against beginner
+    player1: 'expert',
+    player2: 'beginner',
+    creationDate: new Date('2025-05-11T14:30:00Z'),
+    initialState: {
+      height: 9,
+      width: 9,
+      state: Array(9)
+        .fill()
+        .map((_, row) =>
+          Array(9)
+            .fill()
+            .map((_, col) => ({
+              pile: row === 2 && col === 2 ? { owner: 'expert', numberOfGrains: 3 } : {},
+            }))
+        ),
+    },
+    moves: [],
+  },
+  {
+    // A completed match where expert won against beginner
+    player1: 'expert',
+    player2: 'beginner',
+    creationDate: new Date('2025-05-12T14:30:00Z'),
+    initialState: {
+      height: 9,
+      width: 9,
+      state: Array(9)
+        .fill()
+        .map((_, row) =>
+          Array(9)
+            .fill()
+            .map((_, col) => ({
               pile:
                 row === 2 && col === 2
                   ? { owner: 'expert', numberOfGrains: 3 }

@@ -7,7 +7,7 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
     if (success) {
       ioHandler.emitToRoom(matchId, 'move', movingPlayer, move.x, move.y);
       await matchService.getMatch(matchId).then(match => {
-        if (match.winner) {
+        if (match.winner != null) {
           ioHandler.emitToRoom(matchId, 'over', match.winner);
           ioHandler.socketsLeave(matchId);
         }
