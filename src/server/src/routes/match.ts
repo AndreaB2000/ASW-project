@@ -4,6 +4,7 @@ import * as matchService from '../services/match';
 import { Move, MoveFactory } from '../models/Move';
 import * as ioHandler from '../sockets/socket';
 import * as botService from '../services/bot';
+import { MatchFactory } from '../models/Match';
 
 export const match = (socket: Socket) => {
   async function addMove(matchId: string, movingPlayer: string, x: number, y: number) {
@@ -16,7 +17,7 @@ export const match = (socket: Socket) => {
     try {
       const match = await matchService.getMatch(matchId);
       const socketUsername = ioHandler.getSocketUsername(socket);
-      callback(null, match, match.player1 == socketUsername ? 1 : 2);
+      callback(null, { ...match, winner: match.winner }, match.player1 == socketUsername ? 1 : 2);
     } catch (error) {
       callback(error, null, null);
     }
@@ -28,9 +29,12 @@ export const match = (socket: Socket) => {
 
   socket.on('requestBotMove', async (matchId: string) => {
     const match = await matchService.getMatch(matchId);
-    console.log(match?.computeCurrentState());
     const botMove: Move = await botService.getMove(match?.computeCurrentState());
-    console.log('bot has computed this move:', botMove);
     addMove(matchId, 'bot', botMove.x, botMove.y);
+  });
+
+  socket.on('matchHistory', async (username: string, callback) => {
+    const matchIds: string[] = await matchService.getEndedMatchesByPlayer(username);
+    callback(matchIds);
   });
 };

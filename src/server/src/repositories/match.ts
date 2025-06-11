@@ -4,8 +4,9 @@ import { Match, MatchFactory } from '../models/Match';
 export class MatchRepository {
   constructor() {}
 
-  async createMatch(match: Match): Promise<string> {
+  async createMatch(match: Match, matchId?: string): Promise<string> {
     const dbmatch = new DBMatch({
+      _id: matchId,
       player1: match.player1,
       player2: match.player2,
       creationDate: match.creationDate,
@@ -36,7 +37,9 @@ export class MatchRepository {
   }
 
   async deleteMatch(matchId: string): Promise<boolean> {
-    return (await DBMatch.deleteOne({ matchId })).deletedCount > 0;
+    return (
+      (await DBMatch.deleteOne({ _id: new mongoose.Types.ObjectId(matchId) })).deletedCount > 0
+    );
   }
 }
 

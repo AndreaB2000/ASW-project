@@ -1,3 +1,5 @@
+import { PileFactory } from '../models/Pile';
+import { BoardFactory } from '../models/Board';
 import { Match, MatchFactory } from '../models/Match';
 import { Move } from '../models/Move';
 import * as endedMatchRepo from '../repositories/endedMatch';
@@ -16,7 +18,16 @@ export const newMatch = async (
   player2: string,
   creationDate: Date,
 ): Promise<string> => {
-  const match = MatchFactory.createWithDefaultInitialState(player1, player2, creationDate);
+  // const match = MatchFactory.createWithDefaultInitialState(player1, player2, creationDate);
+  const match = MatchFactory.createWithCustomInitialState(
+    player1,
+    player2,
+    creationDate,
+    BoardFactory.createCustom(9, 9, [
+      { x: 1, y: 1, pile: PileFactory.create(player1, 3) },
+      { x: 1, y: 2, pile: PileFactory.create(player2, 3) },
+    ]),
+  );
   return await inProgressMatchRepo.createMatch(match);
 };
 
@@ -28,9 +39,13 @@ export const newMatch = async (
  * @returns the match corresponding to the provided ID
  */
 export const getMatch = async (matchId: string): Promise<Match | null> => {
-  return (
-    (await inProgressMatchRepo.findMatch(matchId)) ?? (await endedMatchRepo.findMatch(matchId))
-  );
+  let m =
+    (await inProgressMatchRepo.findMatch(matchId)) ?? (await endedMatchRepo.findMatch(matchId));
+  if (m == null) {
+    return null;
+  }
+  let match: Match = MatchFactory.createFromObject(m);
+  return match;
 };
 
 /**
@@ -40,11 +55,8 @@ export const getMatch = async (matchId: string): Promise<Match | null> => {
  * @param player the player by which the matches are played.
  * @returns a list of matches played by the provided player.
  */
-export const getMatchesByPlayer = async (player: string): Promise<string[]> => {
-  return [
-    ...(await inProgressMatchRepo.findMatchesByPlayer(player)),
-    ...(await endedMatchRepo.findMatchesByPlayer(player)),
-  ];
+export const getEndedMatchesByPlayer = async (player: string): Promise<string[]> => {
+  return await endedMatchRepo.findMatchesByPlayer(player);
 };
 
 /**
@@ -76,6 +88,12 @@ export const addMove = async (
   }
 
   return ret;
+};
+
+export const saveMatch = async (matchId: string): Promise<string> => {
+  const match = await inProgressMatchRepo.findMatch(matchId);
+  await inProgressMatchRepo.deleteMatch(matchId);
+  return await endedMatchRepo.createMatch(match, matchId);
 };
 
 /**
