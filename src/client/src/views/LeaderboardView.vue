@@ -14,7 +14,11 @@ import {
 } from 'mdb-vue-ui-kit';
 import noProfileImage from '@/assets/noProfileImage.webp';
 
-const accounts = ref<Object[]>([]);
+interface Player {
+  username: string;
+  rating: string;
+}
+const accounts = ref<Player[]>([]);
 
 onMounted(() => {
   socket.emit('getTopPlayers', (response: string) => {
