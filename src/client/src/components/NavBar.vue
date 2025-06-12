@@ -13,7 +13,7 @@ import {
   MDBDropdownItem
 } from 'mdb-vue-ui-kit';
 import { ref } from "vue";
-import { server } from '@/services/server-connections';
+import { server, socket } from '@/services/server-connections';
 import { useRouter } from 'vue-router';
 import DialogModal from '@/components/DialogModal.vue';
 
@@ -30,6 +30,7 @@ function logout() {
     console.log('Logged out successfully');
     router.push('/');
   }).catch((error) => {
+    if (error.response?.status === 401) router.push('/');
     console.error('Logout failed:', error);
     dialog.value.text = error.response?.data?.message || 'Logout failed. Please try again.';
     dialog.value.visible = true;
@@ -38,6 +39,17 @@ function logout() {
 function buttonNotBinded() {
   dialog.value.text = 'This button is not binded yet';
   dialog.value.visible = true;
+}
+function deleteAccount() {
+  socket.emit('delete account', (response: { success: boolean, message: string }) => {
+    if (response.success || response.message === 'Unauthorized') {
+      router.push('/');
+    } else {
+      console.error('Account deletion failed:', response.message);
+      dialog.value.text = response.message || 'Account deletion failed. Please try again.';
+      dialog.value.visible = true;
+    }
+  });
 }
 </script>
 
@@ -86,6 +98,12 @@ function buttonNotBinded() {
           @click="logout"
           ><MDBIcon icon="sign-out-alt" class="fas"></MDBIcon> Logout
         </MDBNavbarItem>
+        <MDBNavbarItem
+          style="cursor: pointer;"
+          class="d-block d-lg-none mx-2 my-1"
+          @click="deleteAccount"
+          ><MDBIcon icon="trash-alt" class="fas"></MDBIcon> Delete Account
+        </MDBNavbarItem>
       </MDBNavbarNav>
 
       <div class="d-none d-lg-block">
@@ -103,11 +121,12 @@ function buttonNotBinded() {
           <MDBDropdownMenu>
             <MDBDropdownItem href="#" @click="$router.push('/profile')">Profile</MDBDropdownItem>
             <MDBDropdownItem href="#" @click="logout">Logout</MDBDropdownItem>
+            <MDBDropdownItem href="#" @click="deleteAccount">Delete Account</MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
       </MDBNavbarItem>
       </div>
     </MDBCollapse>
   </MDBNavbar>
-  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false" />
+  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false; $router.push('/')" />
 </template>
