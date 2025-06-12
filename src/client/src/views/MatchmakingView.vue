@@ -21,13 +21,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 80vh">
-    <div v-if="loading">
-      <span class="material-icons mb-3" style="font-size: 48px; color: #0d6efd">hourglass_top</span>
-      <div class="spinner-border text-primary" role="status">
+  <div class="w-100 min-vh-100 text-white d-flex align-items-center justify-content-center">
+    <div v-if="loading" class="d-flex flex-column align-items-center">
+      <div class="spinner-border text-light" role="status">
         <span class="visually-hidden">Matching...</span>
       </div>
-      <div class="mt-3">Looking for a match...</div>
+      <div class="mt-3">Searching for opponent...</div>
     </div>
   </div>
 </template>
