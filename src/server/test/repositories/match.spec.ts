@@ -10,7 +10,7 @@ describe('Match Repository', () => {
   const PLAYER2 = 'Bob';
   const PLAYER3 = 'Carl';
   const OTHER_PLAYER = 'otherplayer';
-  const OTHER_ID = 'otherid';
+  const OTHER_ID = '507f1f77bcf86cd79943901a';
   const NOW = new Date();
   const TEST_ID = '507f1f77bcf86cd799439011';
   const mockMatch: Match = MatchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, NOW);
@@ -30,6 +30,17 @@ describe('Match Repository', () => {
         'save',
         { ...mockMatch, _id: TEST_ID },
         [mockMatch],
+      );
+      expect(newMatchId).toBe(TEST_ID);
+    });
+
+    it('should save a match in the database with the given match ID if it is passed', async () => {
+      const newMatchId = await checkCalled(
+        matchRepository.createMatch,
+        DBMatch.prototype,
+        'save',
+        { ...mockMatch, _id: TEST_ID },
+        [mockMatch, TEST_ID],
       );
       expect(newMatchId).toBe(TEST_ID);
     });
@@ -107,7 +118,7 @@ describe('Match Repository', () => {
     it('should call the model delete function with the correct parameters', async () => {
       await checkCalledWith(
         matchRepository.deleteMatch,
-        [{ matchId: TEST_ID }],
+        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }],
         DBMatch,
         'deleteOne',
         {
@@ -121,7 +132,7 @@ describe('Match Repository', () => {
     it('should return true if the given ID exists', async () => {
       const deleted = await checkCalledWith(
         matchRepository.deleteMatch,
-        [{ matchId: TEST_ID }],
+        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }],
         DBMatch,
         'deleteOne',
         {
@@ -136,7 +147,7 @@ describe('Match Repository', () => {
     it('should return false if the given ID does not exist', async () => {
       const deleted = await checkCalledWith(
         matchRepository.deleteMatch,
-        [{ matchId: OTHER_ID }],
+        [{ _id: new mongoose.Types.ObjectId(OTHER_ID) }],
         DBMatch,
         'deleteOne',
         {
