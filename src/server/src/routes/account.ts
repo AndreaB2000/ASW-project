@@ -48,4 +48,9 @@ export const account = (socket: Socket) => {
       callback({ success: false, message: 'Error changing email' });
     }
   });
+
+  socket.on('delete account', async (callback) => {
+    console.log('Delete account request received');
+    callback({ success: true, message: 'Not implemented yet' });
+  });
 };
