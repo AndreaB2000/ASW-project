@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { register, login, logout, getMe, changeEmail } from '../../src/controllers/account';
+import { register, login, logout, getMe, changeEmail, deleteAccount } from '../../src/controllers/account';
 import * as accountService from '../../src/services/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll, beforeEach, afterEach } from '@jest/globals';
@@ -16,7 +16,8 @@ jest.mock('../../src/services/account', () => ({
   authenticateAccount: jest.fn(),
   updateEmail: jest.fn().mockReturnValue(true),
   getAccount: jest.fn().mockReturnValue({ username: 'testUser', email: 'test@test.com' }),
-  changeEmail: jest.fn()
+  changeEmail: jest.fn(),
+  deleteAccount: jest.fn().mockReturnValue(true),
 }));
 
 describe('Account Controller', () => {
@@ -207,7 +208,34 @@ describe('Account Controller', () => {
       await expect(changeEmail('john_doe', 'taken@example.com')).rejects.toThrow('Email already exists');
       expect(mockGetAccount).toHaveBeenCalledWith('john_doe');
       expect(mockUpdateEmail).toHaveBeenCalledWith({ username: 'john_doe' }, 'taken@example.com');
+    });
   });
 
+  describe('deleteAccount', () => {
+    const mockDeleteAccount = accountService.deleteAccount as jest.Mock<any>;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should call service.deleteAccount with the username and return true', async () => {
+      mockDeleteAccount.mockReturnValueOnce(true);
+      const result = await deleteAccount('john_doe');
+      expect(mockDeleteAccount).toHaveBeenCalledWith('john_doe');
+      expect(result).toBe(true);
+    });
+
+    it('should call service.deleteAccount with the username and return false', async () => {
+      mockDeleteAccount.mockReturnValueOnce(false);
+      const result = await deleteAccount('john_doe');
+      expect(mockDeleteAccount).toHaveBeenCalledWith('john_doe');
+      expect(result).toBe(false);
+    });
+
+    it('should throw if service.deleteAccount throws', async () => {
+      mockDeleteAccount.mockRejectedValueOnce(new Error('Account not found'));
+      await expect(deleteAccount('missing_user')).rejects.toThrow('Account not found');
+      expect(mockDeleteAccount).toHaveBeenCalledWith('missing_user');
+    });
   });
 });
