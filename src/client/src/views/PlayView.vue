@@ -92,10 +92,4 @@ onMounted(async () => {
   background-color: var(--mdb-body-color);
   margin: 0 0.5rem;
 }
-.divider {
-  width: 1px;
-  height: 40px;
-  background-color: var(--mdb-body-color);
-  margin: 0 0.5rem;
-}
 </style>
