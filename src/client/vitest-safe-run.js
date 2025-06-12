@@ -1,6 +1,9 @@
 import { spawn } from 'node:child_process';
 
-const child = spawn('npx', ['vitest', '--run', '--coverage'], { stdio: 'inherit' });
+const child = spawn('npx', ['vitest', '--run', '--coverage'], {
+  stdio: 'inherit',
+  shell: true,
+});
 
 child.on('close', (code) => {
   if (code === 1) {
