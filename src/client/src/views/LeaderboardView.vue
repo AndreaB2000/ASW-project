@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { socket } from '@/services/server-connections';
+import NavBar from '@/components/NavBar.vue';
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardImg,
+  MDBCardText,
+  MDBCardTitle,
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+} from 'mdb-vue-ui-kit';
+import noProfileImage from '@/assets/noProfileImage.webp';
 
 const accounts = ref<Object[]>([]);
 
@@ -22,94 +34,67 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="leaderboard-container">
-    <div class="leaderboard-card">
-      <h1 class="leaderboard-title">Leaderboard</h1>
-      <ul class="leaderboard-list">
-        <li v-for="(player, index) in accounts" :key="index" class="leaderboard-item">
-          <span class="rank">#{{ index + 1 }}</span>
-          <span class="username">{{ player.username }}</span>
-          <span class="rating">{{ player.rating}}</span>
-        </li>
-      </ul>
-      <div v-if="accounts.length === 0" class="empty-message">No players found.</div>
+  <NavBar />
+  <div
+    class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center px-3 mt-md-3"
+  >
+    <div class="d-flex flex-column flex-md-row align-items-center mt-4 mt-md-0">
+      <h1 class="display-3 fw-bold text-uppercase mt-2 mt-md-0 ms-md-3 mb-4">leaderboard</h1>
     </div>
-  </section>
+  </div>
+  <MDBContainer>
+    <MDBRow class="d-grid d-md-flex">
+      <MDBCol class="text-center justify-content-center align-items-center">
+        <p class="text-uppercase fw-bold mb-0 fs-1">You</p>
+        <figure class="profile-image figure mb-0">
+          <img
+            src="../assets/noProfileImage.webp"
+            class="figure-img img-fluid rounded shadow-3 darker-bg"
+            alt="Profile"
+            style="max-width: 50%"
+          />
+        </figure>
+        <p class="text-uppercase fw-bold mb-0 fs-3 secondary-text">rating: 1500</p>
+        <p class="text-uppercase fw-bold mb-0 fs-1">N° 1111</p>
+      </MDBCol>
+      <MDBCol class="text-center align-items-center d-md-none justify-content-center">
+        <div class="divider my-4 d-block d-md-none"></div>
+      </MDBCol>
+      <MDBCol class="text-center justify-content-center align-items-center">
+        <MDBCard
+          v-for="(player, index) in accounts"
+          :key="index"
+          class="mb-3 img-fluid"
+          style="max-width: 540px"
+        >
+          <MDBRow class="g-0">
+            <MDBCol md="4" class="ms-0">
+              <MDBCardImg
+                class="bg-dark m-4"
+                :src="noProfileImage"
+                alt="Profile"
+                style="max-width: 50%"
+              />
+            </MDBCol>
+            <MDBCol md="8">
+              <MDBCardBody>
+                <MDBCardTitle>N° {{ index + 1 }}</MDBCardTitle>
+                <MDBCardText> {{ player.username }} - {{ player.rating }}</MDBCardText>
+              </MDBCardBody>
+            </MDBCol>
+          </MDBRow>
+        </MDBCard>
+      </MDBCol>
+    </MDBRow>
+  </MDBContainer>
 </template>
 
-<style scoped lang="scss">
-.leaderboard-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 60vh;
-  background: transparent;
-  padding: 2rem 0;
-}
-
-.leaderboard-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-  padding: 2rem 2.5rem;
-  min-width: 340px;
-  max-width: 400px;
-  width: 100%;
-}
-
-.leaderboard-title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-}
-
-.leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.leaderboard-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #444;
-  transition: background 0.2s;
-}
-
-.leaderboard-item:last-child {
-  border-bottom: none;
-}
-
-.rank {
-  font-weight: bold;
-  color: #6c63ff;
-  margin-right: 1rem;
-  min-width: 2.5rem;
-  text-align: right;
-}
-
-.username {
-  flex: 1;
-  margin-left: 0.5rem;
-}
-
-.rating {
-  font-family: monospace;
-  color: #888;
-  margin-left: 1rem;
-}
-
-.empty-message {
-  text-align: center;
-  color: #aaa;
-  margin-top: 2rem;
-  font-size: 1.1rem;
+<style scoped>
+.divider {
+  width: 80vw;
+  height: 1px;
+  background-color: var(--mdb-body-color);
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

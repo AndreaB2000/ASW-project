@@ -5,6 +5,7 @@
   --mdb-body-bg-hover: var(--mdb-gray-700);
   --mdb-body-card-color: var(--mdb-gray-300);
   --mdb-body-card-bg: var(--mdb-gray-800);
+  --mdb-secondary-text-color: var(--mdb-orange);
 }
 
 .card {
@@ -39,4 +40,8 @@
 .dropdown-item:hover {
   background-color: var(--mdb-body-bg-hover);
   color: var(--mdb-body-color-hover);
+}
+
+.secondary-text {
+  color: var(--mdb-secondary-text-color);
 }
