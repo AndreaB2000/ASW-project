@@ -104,7 +104,7 @@ function deleteAccount() {
         <MDBNavbarItem
           class="mx-2 my-1"
           style="cursor: pointer;"
-          @click="buttonNotBinded"
+          @click="$router.push('/leaderboard')"
         ><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
         <MDBNavbarItem
           style="cursor: pointer;"
