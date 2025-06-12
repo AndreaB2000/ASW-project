@@ -1,31 +1,24 @@
 <script setup lang="ts">
-  import {
-    MDBNavbar,
-    MDBNavbarItem,
-    MDBNavbarBrand,
-    MDBNavbarNav,
-    MDBNavbarToggler,
-    MDBIcon,
-    MDBCollapse
-  } from 'mdb-vue-ui-kit';
-  import { ref } from "vue";
-  import { useRouter } from 'vue-router';
+import {
+  MDBNavbar,
+  MDBNavbarItem,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavbarToggler,
+  MDBIcon,
+  MDBCollapse,
+} from 'mdb-vue-ui-kit';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-  const collapse1 = ref(false);
-  const router = useRouter();
-
+const collapse1 = ref(false);
+const router = useRouter();
 </script>
 
 <template>
-  <NavBar />
-  <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center px-3">
-    <div class="d-flex flex-column flex-md-row align-items-center mt-4 mt-md-0">
-      <img
-        class="landing-icon"
-        src="../assets/landingIcon.svg"
-        alt="Landing Icon"
-        loading="lazy"
-      />
+  <MDBNavbar expand="lg" bg="transparent" container>
+    <MDBNavbarBrand>
+      <img height="30" src="../assets/landingIcon.svg" alt="Landing Icon" loading="lazy" />
     </MDBNavbarBrand>
     <MDBNavbarToggler
       @click="collapse1 = !collapse1"
@@ -33,10 +26,20 @@
     ></MDBNavbarToggler>
     <MDBCollapse v-model="collapse1" id="navbarSupportedContent">
       <MDBNavbarNav class="mb-2 mb-lg-0">
-        <MDBNavbarItem href="#dashboard" linkClass="link-secondary" @click="router.push('/matchmaking')"><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem>
-        <MDBNavbarItem href="#tutorial" linkClass="link-secondary"><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
-        <MDBNavbarItem href="#leaderboard" linkClass="link-secondary"><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem>
-        <MDBNavbarItem href="#profile" linkClass="link-secondary" class="d-block d-lg-none"><MDBIcon icon="user" class="fas"></MDBIcon> Profile</MDBNavbarItem>
+        <MDBNavbarItem
+          href="#matchmaking"
+          linkClass="link-secondary"
+          ><MDBIcon icon="gamepad" class="fas"></MDBIcon> Play</MDBNavbarItem
+        >
+        <MDBNavbarItem href="#tutorial" linkClass="link-secondary"
+          ><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem
+        >
+        <MDBNavbarItem href="#leaderboard" linkClass="link-secondary"
+          ><MDBIcon icon="poll" class="fas"></MDBIcon> Leaderboard</MDBNavbarItem
+        >
+        <MDBNavbarItem href="#profile" linkClass="link-secondary" class="d-block d-lg-none"
+          ><MDBIcon icon="user" class="fas"></MDBIcon> Profile</MDBNavbarItem
+        >
       </MDBNavbarNav>
 
   <MDBFooter class="fixed-bottom align-items-center d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0) !important;">
