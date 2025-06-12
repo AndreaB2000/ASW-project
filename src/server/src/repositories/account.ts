@@ -64,11 +64,11 @@ export const updateAccount = async (account: Account): Promise<boolean> => {
 
 /**
  * Deletes an account by username.
- * @param username - The username of the account to delete.
+ * @param account - The account to delete
  * @returns {Promise<boolean>} - True if deleted, false otherwise.
  */
-export const deleteAccount = async (username: string): Promise<boolean> => {
-  const result = await DBAccount.deleteOne({ username });
+export const deleteAccount = async (account: Account): Promise<boolean> => {
+  const result = await DBAccount.deleteOne({ username: account.username });
   return result.deletedCount > 0;
 };
 

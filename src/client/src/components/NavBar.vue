@@ -41,14 +41,20 @@ function buttonNotBinded() {
   dialog.value.visible = true;
 }
 function deleteAccount() {
-  socket.emit('delete account', (response: { success: boolean, message: string }) => {
-    if (response.success || response.message === 'Unauthorized') {
-      router.push('/');
-    } else {
-      console.error('Account deletion failed:', response.message);
-      dialog.value.text = response.message || 'Account deletion failed. Please try again.';
-      dialog.value.visible = true;
-    }
+  server.post('/account/logout').then(() => {
+    socket.emit('delete account', (response: { success: boolean, message: string }) => {
+      if (response.success || response.message === 'Unauthorized') {
+        router.push('/');
+      } else {
+        console.error('Account deletion failed:', response.message);
+        dialog.value.text = response.message || 'Account deletion failed. Please try again.';
+        dialog.value.visible = true;
+      }
+    });
+  }).catch((error) => {
+    console.error('Logout failed:', error);
+    dialog.value.text = error.response?.data?.message || 'Logout failed. Please try again.';
+    dialog.value.visible = true;
   });
 }
 </script>

@@ -50,7 +50,11 @@ export const account = (socket: Socket) => {
   });
 
   socket.on('delete account', async (callback) => {
-    console.log('Delete account request received');
-    callback({ success: true, message: 'Not implemented yet' });
+    try {
+      if (await controller.deleteAccount(socket.data.username)) callback({ success: true });
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      callback({ success: false, message: 'Error deleting account' });
+    }
   });
 };
