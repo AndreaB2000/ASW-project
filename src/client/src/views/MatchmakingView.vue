@@ -1,26 +1,33 @@
 <script setup lang="ts">
+import { ref, onUnmounted } from 'vue';
 import router from '@/router';
-import { useMatchStore } from '@/stores/matchStore';
 import { socket } from '@/services/server-connections';
-import { ref } from 'vue';
 
-const username = ref<string>('');
-const match = useMatchStore();
+const loading = ref(true);
 
-// Emit with the username value
-function enterQueue() {
-  console.log('enterQueue', username.value);
-  socket.emit('requestMatch', { username: username.value });
-}
+console.log('entering queue');
+socket.emit('requestMatch');
 
-// Listen for match found
-socket.on('matchFound', (matchId: string) => {
-  match.id = matchId;
-  router.push('/match');
+const onMatchFound = (matchId: string) => {
+  loading.value = false;
+  router.push({ path: '/match', query: { id: matchId } });
+};
+
+socket.on('matchFound', onMatchFound);
+
+onUnmounted(() => {
+  socket.off('matchFound', onMatchFound);
 });
 </script>
 
 <template>
-  <input type="text" placeholder="Enter your username" v-model="username" />
-  <button @click="enterQueue" style="background-color: #1ec6e0">Play PVP</button>
+  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 80vh">
+    <div v-if="loading">
+      <span class="material-icons mb-3" style="font-size: 48px; color: #0d6efd">hourglass_top</span>
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Matching...</span>
+      </div>
+      <div class="mt-3">Looking for a match...</div>
+    </div>
+  </div>
 </template>
