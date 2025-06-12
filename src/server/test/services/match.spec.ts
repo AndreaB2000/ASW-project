@@ -3,9 +3,10 @@ import { checkCalled, checkCalledWith } from '../test_utils/check-called';
 import {
   newMatch,
   getMatch,
-  getMatchesByPlayer,
+  getEndedMatchesByPlayer,
   addMove,
   deleteMatch,
+  saveMatch,
 } from '../../src/services/match';
 import * as inProgressMatchRepo from '../../src/repositories/inProgressMatch';
 import * as endedMatchRepo from '../../src/repositories/endedMatch';
@@ -126,7 +127,7 @@ describe('Match Service', () => {
       const mockFun2 = jest.fn().mockReturnValue([]);
       jest.spyOn(inProgressMatchRepo, 'findMatchesByPlayer').mockImplementation(mockFun2 as any);
 
-      const result = await getMatchesByPlayer(player2);
+      const result = await getEndedMatchesByPlayer(player2);
 
       expect(mockFun).toHaveBeenCalledWith(player2);
       expect(result).toStrictEqual([matchID, otherID]);
@@ -183,6 +184,34 @@ describe('Match Service', () => {
       expect(mockFindMatch).toHaveBeenCalledWith(otherID);
       expect(mockUpdateMatch).not.toHaveBeenCalled();
       expect(result).toBe(false);
+    });
+  });
+
+  describe('saveMatch', () => {
+    it('should save an in-progress match to ended matches', async () => {
+      jest.spyOn(inProgressMatchRepo, 'findMatch').mockResolvedValue(expectedMatch);
+      jest.spyOn(inProgressMatchRepo, 'deleteMatch').mockResolvedValue(true);
+      jest.spyOn(endedMatchRepo, 'createMatch').mockResolvedValue(otherID);
+
+      const result = await saveMatch(matchID);
+
+      expect(inProgressMatchRepo.findMatch).toHaveBeenCalledWith(matchID);
+      expect(inProgressMatchRepo.deleteMatch).toHaveBeenCalledWith(matchID);
+      expect(endedMatchRepo.createMatch).toHaveBeenCalledWith(expectedMatch, matchID);
+      expect(result).toBe(otherID);
+    });
+
+    it('should return null if match does not exist', async () => {
+      jest.spyOn(inProgressMatchRepo, 'findMatch').mockResolvedValue(null);
+      jest.spyOn(inProgressMatchRepo, 'deleteMatch');
+      jest.spyOn(endedMatchRepo, 'createMatch');
+
+      const result = await saveMatch(matchID);
+
+      expect(inProgressMatchRepo.findMatch).toHaveBeenCalledWith(matchID);
+      expect(inProgressMatchRepo.deleteMatch).not.toHaveBeenCalled();
+      expect(endedMatchRepo.createMatch).not.toHaveBeenCalled();
+      expect(result).toBeNull();
     });
   });
 

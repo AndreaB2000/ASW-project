@@ -18,16 +18,17 @@ export const newMatch = async (
   player2: string,
   creationDate: Date,
 ): Promise<string> => {
-  // const match = MatchFactory.createWithDefaultInitialState(player1, player2, creationDate);
-  const match = MatchFactory.createWithCustomInitialState(
-    player1,
-    player2,
-    creationDate,
-    BoardFactory.createCustom(9, 9, [
-      { x: 1, y: 1, pile: PileFactory.create(player1, 3) },
-      { x: 1, y: 2, pile: PileFactory.create(player2, 3) },
-    ]),
-  );
+  const match = MatchFactory.createWithDefaultInitialState(player1, player2, creationDate);
+  // These lines are For debug purposes only. They create a match ready to be ended.
+  // const match = MatchFactory.createWithCustomInitialState(
+  //   player1,
+  //   player2,
+  //   creationDate,
+  //   BoardFactory.createCustom(9, 9, [
+  //     { x: 1, y: 1, pile: PileFactory.create(player1, 3) },
+  //     { x: 1, y: 2, pile: PileFactory.create(player2, 3) },
+  //   ]),
+  // );
   return await inProgressMatchRepo.createMatch(match);
 };
 
@@ -39,12 +40,8 @@ export const newMatch = async (
  * @returns the match corresponding to the provided ID
  */
 export const getMatch = async (matchId: string): Promise<Match | null> => {
-  let m =
+  let match =
     (await inProgressMatchRepo.findMatch(matchId)) ?? (await endedMatchRepo.findMatch(matchId));
-  if (m == null) {
-    return null;
-  }
-  let match: Match = MatchFactory.createFromObject(m);
   return match;
 };
 
@@ -92,6 +89,9 @@ export const addMove = async (
 
 export const saveMatch = async (matchId: string): Promise<string> => {
   const match = await inProgressMatchRepo.findMatch(matchId);
+  if (match == null) {
+    return null;
+  }
   await inProgressMatchRepo.deleteMatch(matchId);
   return await endedMatchRepo.createMatch(match, matchId);
 };
