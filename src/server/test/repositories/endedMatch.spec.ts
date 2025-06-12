@@ -29,7 +29,7 @@ describe('Match Repository', () => {
     it('should call MatchRepository.createMatch()', async () => {
       await checkCalledWith(
         createMatch,
-        [mockMatch],
+        [mockMatch, undefined],
         MatchRepository.prototype,
         'createMatch',
         testId,
