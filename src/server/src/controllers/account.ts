@@ -114,3 +114,10 @@ export const changeEmail = async (oldAccountUsername: string, newEmail: string):
   if (!oldAccount) throw new Error('Account not found');
   if (!await service.updateEmail(oldAccount, newEmail)) throw new Error('Email already exists');
 };
+
+/**
+ * Deletes the account associated with the given username.
+ * @param username the username of the account to delete
+ * @returns {Promise<boolean>} resolves when the account is deleted
+ */
+export const deleteAccount = async (username: string): Promise<boolean> => await service.deleteAccount(username);

@@ -56,3 +56,15 @@ export const updateEmail = async (account: Account, newEmail: string): Promise<b
   await repository.updateAccount(account);
   return true;
 };
+
+/**
+ * Deletes the account associated with the given account object.
+ * @param username the username of the account to delete
+ * @returns {Promise<boolean>} true if the account was deleted successfully, false otherwise
+ * @throws {Error} if the account is not found
+ */
+export const deleteAccount = async (username: string): Promise<boolean> => {
+  const existingAccount = await getAccount(username);
+  if (!existingAccount) throw new Error('Account not found');
+  return repository.deleteAccount(existingAccount);
+};
