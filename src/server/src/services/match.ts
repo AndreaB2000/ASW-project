@@ -87,6 +87,15 @@ export const addMove = async (
   return ret;
 };
 
+/**
+ * Permanently saves a match in the ended match repository.
+ *
+ * Note: considering the current implementation of the two repositories,
+ * the ID does not change.
+ *
+ * @param matchId the ID of the match to be saved permanently.
+ * @returns the new ID of the permanently saved match.
+ */
 export const saveMatch = async (matchId: string): Promise<string> => {
   const match = await inProgressMatchRepo.findMatch(matchId);
   if (match == null) {

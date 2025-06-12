@@ -188,7 +188,7 @@ describe('Match Service', () => {
   });
 
   describe('saveMatch', () => {
-    it('should save an in-progress match to ended matches', async () => {
+    it('should save an in progress match to ended matches', async () => {
       jest.spyOn(inProgressMatchRepo, 'findMatch').mockResolvedValue(expectedMatch);
       jest.spyOn(inProgressMatchRepo, 'deleteMatch').mockResolvedValue(true);
       jest.spyOn(endedMatchRepo, 'createMatch').mockResolvedValue(otherID);
