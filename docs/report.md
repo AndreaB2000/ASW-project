@@ -142,12 +142,12 @@ flowchart TD
     Register -->|registration completed| Login
     Login --> Play
     Play <--> Tutorial(Tutorial)
-    Play <-->|play ranked| MatchMaking(Match Making)
+    Play <-->|play ranked| Matchmaking(Matchmaking)
     Play -->|play bot| Match
     Play <--> Profile(Profile)
-    Tutorial -->|play ranked| MatchMaking
+    Tutorial -->|play ranked| Matchmaking
     Tutorial -->|play bot| Match
-    MatchMaking -->|opponent found| Match(Match)
+    Matchmaking -->|opponent found| Match(Match)
     Match -->|quit| Play
     Match -->|game over| GameEnd("Game End (stats)")
     GameEnd -->|play again| Match
