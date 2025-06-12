@@ -93,7 +93,7 @@ function buttonNotBinded() {
         <MDBDropdown v-model="profileToggler">
           <MDBDropdownToggle tag="a" class="nav-link" @click="profileToggler = !profileToggler">
             <img
-              src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg"
+              src="../assets/noProfileImage.webp"
               class="rounded-circle me-2"
               height="22"
               alt="profile image"

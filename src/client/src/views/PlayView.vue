@@ -7,11 +7,12 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const eloPoint = ref(0);
+const userStore = useUserStore();
+
+// TODO | BASO: fill these values with real data from the server
 const lastOpponentUsername: Ref<string | null> = ref("Unknown");
 const lastOpponentEloPoints = ref(0);
 const lastMatchEnding = ref("Won");
-const userStore = useUserStore();
 
 function playRanked() {
   console.log('enterQueue');
@@ -22,12 +23,13 @@ socket.on('matchFound', (matchId: string) => {
   router.push({ path: '/match', query: { id: matchId } });
 });
 
+// TODO | BASO: fill these values with real data from the server
 onMounted(async () => {
   if (userStore.rank === -1) {
     try {
       const rankRes = await server.get('/account/ranking');
       userStore.rank = rankRes.data.rank;
-      eloPoint.value = rankRes.data.elo;
+      userStore.eloPoints = rankRes.data.elo;
     } catch (error) {
       console.error('Error fetching last match:', error);
     }
@@ -55,7 +57,7 @@ onMounted(async () => {
       <MDBBtn class="text-uppercase" color="primary">Bot</MDBBtn>
     </div>
     <p class="text-uppercase mt-5 fs-3">current ranking: {{ userStore.rank }}</p>
-    <p class="text-uppercase fs-3">current elo: {{ eloPoint }}</p>
+    <p class="text-uppercase fs-3">current elo: {{ userStore.eloPoints }}</p>
   </div>
 
   <MDBFooter class="fixed-bottom align-items-center d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0) !important;">

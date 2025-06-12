@@ -8,7 +8,8 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     username: '',
     email: '',
-    rank: -1
+    rank: -1,
+    eloPoints: 0
   }),
   actions: {
     setUsername(username: string) {
@@ -19,6 +20,9 @@ export const useUserStore = defineStore('user', {
     },
     setRank(rank: number) {
       this.rank = rank;
+    },
+    setEloPoints(eloPoints: number) {
+      this.eloPoints = eloPoints;
     }
   },
 });
