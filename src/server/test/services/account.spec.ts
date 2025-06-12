@@ -1,4 +1,4 @@
-import { registerAccount, authenticateAccount, getAccount, updateEmail } from '../../src/services/account';
+import { registerAccount, authenticateAccount, getAccount, updateEmail, deleteAccount } from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll } from '@jest/globals';
@@ -9,7 +9,8 @@ let existingUser: Account;
 jest.mock('../../src/repositories/account', () => ({
   readAllAccounts: jest.fn(() => Promise.resolve([existingUser])),
   createAccount: jest.fn(),
-  updateAccount: jest.fn()
+  updateAccount: jest.fn(),
+  deleteAccount: jest.fn(),
 }));
 
 describe('Account Service', () => {
@@ -89,6 +90,31 @@ describe('Account Service', () => {
       const newEmail = 'new@email.com';
       const result = await updateEmail(existingUser, newEmail);
       expect(result).toBe(true);
+    });
+  });
+
+  describe('deleteAccount', () => {
+    it('should throw an error if account does not exist', async () => {
+      jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(null);
+      await expect(deleteAccount('nonexistent')).rejects.toThrow('Account not found');
+    });
+
+    it('should call repository.deleteAccount with the found account', async () => {
+      const mockAccount = existingUser;
+      jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(mockAccount);
+      (repository.deleteAccount as jest.Mock).mockReturnValueOnce(true);
+      const result = await deleteAccount(mockAccount.username);
+      expect(repository.deleteAccount).toHaveBeenCalledWith(mockAccount);
+      expect(result).toBe(true);
+    });
+
+    it('should return false if repository.deleteAccount returns false', async () => {
+      const mockAccount = existingUser;
+      jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(mockAccount);
+      (repository.deleteAccount as jest.Mock).mockReturnValueOnce(false);
+      const result = await deleteAccount(mockAccount.username);
+      expect(repository.deleteAccount).toHaveBeenCalledWith(mockAccount);
+      expect(result).toBe(false);
     });
   });
 });

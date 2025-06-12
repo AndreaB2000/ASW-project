@@ -133,16 +133,17 @@ describe('Account Repository', () => {
   });
 
   describe('deleteAccount', () => {
+    const testAccount = AccountFactory.create(testUsername, testEmail, testPassword);
     it('should call deleteOne with correct parameters', async () => {
       const expectedResult = { deletedCount: 1 };
 
       await checkCalledWith(
         deleteAccount,
-        [{ username: testUsername }],
+        [{ username: testAccount.username }],
         DBAccount,
         'deleteOne',
         expectedResult,
-        [testUsername],
+        [testAccount], // Pass the Account object
       );
     });
 
@@ -151,11 +152,11 @@ describe('Account Repository', () => {
 
       const result = await checkCalledWith(
         deleteAccount,
-        [{ username: testUsername }],
+        [{ username: testAccount.username }],
         DBAccount,
         'deleteOne',
         expectedResult,
-        [testUsername],
+        [testAccount], // Pass the Account object
       );
 
       expect(result).toBe(false);
