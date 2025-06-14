@@ -45,7 +45,7 @@ export const account = (socket: Socket) => {
       callback({ success: true });
     } catch (error) {
       console.error('Error changing email:', error);
-      callback({ success: false, message: 'Error changing email' });
+      callback({ success: false, message: error.message || 'Error changing email' });
     }
   });
 

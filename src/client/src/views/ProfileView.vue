@@ -4,8 +4,13 @@ import { useUserStore } from '@/stores/userStore'
 import { socket, server } from '@/services/server-connections'
 import NavBar from '@/components/NavBar.vue';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdb-vue-ui-kit';
+import DialogModal from '@/components/DialogModal.vue';
 
 const userStore = useUserStore();
+const dialog = ref({
+  visible: false,
+  text: ''
+});
 
 if (!userStore.username || !userStore.email) {
   server.get('/account/me').then(response => {
@@ -13,7 +18,8 @@ if (!userStore.username || !userStore.email) {
     userStore.setEmail(response.data.email);
   }).catch((error: Error) => {
     console.error('Failed to fetch user data:', error);
-    alert('Failed to fetch user data. Please try again later.');
+    dialog.value.text = 'Failed to fetch user data. Refresh the page.';
+    dialog.value.visible = true;
   });
 }
 const reactiveEmail = ref(userStore.email);
@@ -26,11 +32,14 @@ function changeProfile() {
 function saveProfile() {
   socket.emit('change email', reactiveEmail.value, (result: { success: boolean, message: string }) => {
     if (!result.success) {
-      alert('Failed to change email:' + result.message);
+      console.error('Failed to change email:', result.message);
+      dialog.value.text = result.message || 'Failed to change email. Please try again.';
+      dialog.value.visible = true;
+      reactiveEmail.value = userStore.email; // Reset to original email
       return;
     }
-    userStore.setEmail(reactiveEmail.value);
     isEditing.value = false;
+    userStore.setEmail(reactiveEmail.value);
   });
 }
 
@@ -100,6 +109,7 @@ function exitChange() {
       </MDBCard>
     </MDBRow>
   </MDBContainer>
+  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false;" />
 </template>
 
 <style scoped>
