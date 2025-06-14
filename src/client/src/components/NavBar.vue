@@ -17,9 +17,19 @@ import { server, socket } from '@/services/server-connections';
 import { useRouter } from 'vue-router';
 import DialogModal from '@/components/DialogModal.vue';
 
+const closeDialogAndQuit = () => {
+  closeDialog();
+  router.push('/');
+}
+
+const closeDialog = () => {
+  dialog.value.visible = false;
+}
+
 const router = useRouter();
 const toggler = ref(false);
 const profileToggler = ref(false);
+let closingLogic = closeDialog;
 const dialog = ref({
   visible: false,
   text: ''
@@ -34,11 +44,13 @@ function logout() {
     console.error('Logout failed:', error);
     dialog.value.text = error.response?.data?.message || 'Logout failed. Please try again.';
     dialog.value.visible = true;
+    closingLogic = closeDialogAndQuit;
   });
 }
 function buttonNotBinded() {
   dialog.value.text = 'This button is not binded yet';
   dialog.value.visible = true;
+  closingLogic = closeDialog;
 }
 function deleteAccount() {
   server.post('/account/logout').then(() => {
@@ -49,12 +61,14 @@ function deleteAccount() {
         console.error('Account deletion failed:', response.message);
         dialog.value.text = response.message || 'Account deletion failed. Please try again.';
         dialog.value.visible = true;
+        closingLogic = closeDialogAndQuit;
       }
     });
   }).catch((error) => {
     console.error('Logout failed:', error);
     dialog.value.text = error.response?.data?.message || 'Logout failed. Please try again.';
     dialog.value.visible = true;
+    closingLogic = closeDialogAndQuit;
   });
 }
 </script>
@@ -134,5 +148,5 @@ function deleteAccount() {
       </div>
     </MDBCollapse>
   </MDBNavbar>
-  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false; $router.push('/')" />
+  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false; closingLogic();" />
 </template>
