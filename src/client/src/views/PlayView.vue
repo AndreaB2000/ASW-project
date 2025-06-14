@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import { server, socket } from '@/services/server-connections';
+import { server } from '@/services/server-connections';
 import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } from 'mdb-vue-ui-kit';
 import { onMounted, ref, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-const router = useRouter();
 const userStore = useUserStore();
 
 // TODO | BASO: fill these values with real data from the server
