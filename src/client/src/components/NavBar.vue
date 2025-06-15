@@ -99,7 +99,7 @@ function deleteAccount() {
         <MDBNavbarItem
           class="mx-2 my-1"
           style="cursor: pointer;"
-          @click="buttonNotBinded"
+          @click="$router.push('/tutorial')"
         ><MDBIcon icon="graduation-cap" class="fas"></MDBIcon> Tutorial</MDBNavbarItem>
         <MDBNavbarItem
           class="mx-2 my-1"

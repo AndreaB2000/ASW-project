@@ -44,6 +44,11 @@ const router = createRouter({
       name: 'leaderboard',
       component: () => import('../views/LeaderboardView.vue'),
     },
+    {
+      path: '/tutorial',
+      name: 'tutorial',
+      component: () => import('../views/TutorialView.vue'),
+    },
   ],
 });
 
