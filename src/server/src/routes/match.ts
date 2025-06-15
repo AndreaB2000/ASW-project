@@ -4,7 +4,6 @@ import * as matchService from '../services/match';
 import { Move, MoveFactory } from '../models/Move';
 import * as ioHandler from '../sockets/socket';
 import * as botService from '../services/bot';
-import { MatchFactory } from '../models/Match';
 
 export const match = (socket: Socket) => {
   async function addMove(matchId: string, movingPlayer: string, x: number, y: number) {

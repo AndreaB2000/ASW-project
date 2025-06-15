@@ -59,6 +59,7 @@ export const useMatchStore = defineStore('match', () => {
         });
       });
     } while (collapsingPiles.length != 0);
+    changeTurn();
     moveInProgress.value = false;
   }
 
@@ -81,6 +82,5 @@ export const useMatchStore = defineStore('match', () => {
     moveInProgress,
     winner,
     applyMove,
-    changeTurn,
   };
 });
