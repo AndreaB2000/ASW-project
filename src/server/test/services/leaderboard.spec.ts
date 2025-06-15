@@ -38,9 +38,9 @@ describe('Leaderboard Service', () => {
     it('should return all accounts when there are fewer than given count', async () => {
       const count = 5;
       const mockAccounts = [
-        { username: 'account1', rating: 2000 },
-        { username: 'account2', rating: 1500 },
-        { username: 'account3', rating: 1000 },
+        { username: 'account1', rating: { value: 2000 } },
+        { username: 'account2', rating: { value: 1500 } },
+        { username: 'account3', rating: { value: 1000 } },
       ];
 
       (accountRepository.readAllAccounts as jest.Mock).mockReturnValue(mockAccounts);
