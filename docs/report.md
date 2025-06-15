@@ -420,7 +420,7 @@ Every player has a rating, which is a number that represents their skill level. 
 
 The rating is updated after each match based on the outcome of the match and the ratings of the players involved.
 
-The rating is updated using the following formula: <!-- NOT IMPLEMENTED YET -->
+The rating is updated using the following formula:
 
 R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
 
@@ -455,7 +455,7 @@ Where:
 - time<sub>1</sub> and time<sub>2</sub> are the times spent in the queue by the two players in seconds
 - baseValue is a constant that represents the minimum difference in ratings that is acceptable for a match
 
-If a player disconnects from the queue, the server will remove them from the queue and notify them. <!-- NOT IMPLEMENTED -->
+If a player disconnects from the queue, the server will remove them from the queue and notify them.
 
 ##### Server side matchmaking class diagram
 
@@ -609,6 +609,7 @@ Solo aspetti rilevanti.
 jest and stuff
 
 <!-- TODO specificare come runnare i test, coverage, decisioni ecc-->
+<!-- TODO cosa non e' compreso nei test-->
 
 ## Deployment
 
@@ -626,3 +627,5 @@ root project directory and must contain the following parameters:
 - Timer during a match
 - Replay a match
 - Improve disconnection handling, right now players are not notified when the opponent disconnects
+- Add a chat system to the match
+- Profile image upload
