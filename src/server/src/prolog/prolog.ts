@@ -2,7 +2,7 @@ const pl = require('tau-prolog');
 import fs from 'fs';
 import path from 'path';
 
-const session = pl.create(1000);
+const session = pl.create(10000000);
 
 /**
  * Initializes the Prolog engine by loading the Prolog file.
