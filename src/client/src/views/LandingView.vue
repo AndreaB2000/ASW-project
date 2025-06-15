@@ -53,7 +53,7 @@ socket.on('matchFound', (matchId: string) => {
             >
           </div>
           <div class="col-12 col-md-6">
-            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible = true"
+            <MDBBtn color="secondary" class="w-100 py-3" @click="$router.push('/tutorial')"
               >Tutorial</MDBBtn
             >
           </div>
