@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DialogModal from '@/components/DialogModal.vue';
 import { socket } from '@/services/server-connections';
+import { useMatchStore } from '@/stores/matchStore';
 import { MDBBtn } from 'mdb-vue-ui-kit';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { ref } from 'vue';
@@ -9,9 +10,20 @@ import { useRouter } from 'vue-router';
 const dialogVisible = ref(false);
 
 const router = useRouter();
+const match = useMatchStore();
 
 socket.on('connect', () => {
   router.push('/play');
+});
+
+function playWithBot() {
+  console.log('match with bot requested');
+  socket.emit('requestMatchWithBot');
+}
+
+socket.on('matchFound', (matchId: string) => {
+  match.id = matchId;
+  router.push({ path: '/match' });
 });
 </script>
 
@@ -31,7 +43,7 @@ socket.on('connect', () => {
         </p>
         <div class="row mt-4 g-3">
           <div class="col-12 col-md-6">
-            <MDBBtn color="secondary" class="w-100 py-3" @click="dialogVisible = true"
+            <MDBBtn color="secondary" class="w-100 py-3" @click="playWithBot()"
               >Play with BOT</MDBBtn
             >
           </div>

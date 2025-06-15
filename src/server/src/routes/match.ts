@@ -25,12 +25,13 @@ export const match = (socket: Socket) => {
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
     addMove(matchId, movingPlayer, x, y);
-  });
-
-  socket.on('requestBotMove', async (matchId: string) => {
     const match = await matchService.getMatch(matchId);
-    const botMove: Move = await botService.getMove(match?.computeCurrentState());
-    addMove(matchId, 'bot', botMove.x, botMove.y);
+    console.log(JSON.stringify(match.computeCurrentState()));
+    if (match.player2 == 'bot') {
+      const botMove: Move = await botService.getMove(match?.computeCurrentState());
+      console.log(JSON.stringify(botMove));
+      addMove(matchId, 'bot', botMove.x, botMove.y);
+    }
   });
 
   socket.on('matchHistory', async (username: string, callback) => {

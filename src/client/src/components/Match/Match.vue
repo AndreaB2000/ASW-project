@@ -28,9 +28,6 @@ socket.on('move', async (movingPlayer: string, x: number, y: number) => {
   console.log('Move received from server');
   await match.applyMove(movingPlayer, x, y);
   await match.changeTurn();
-  if (match.player2 == 'bot') {
-    socket.emit('requestBotMove', match.id);
-  }
 });
 
 socket.on('over', (winner: string) => {
