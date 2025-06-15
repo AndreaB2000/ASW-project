@@ -1,4 +1,5 @@
 import { readAllAccounts } from '../repositories/account';
+import { readAccountByUsername } from '../repositories/account';
 
 /**
  * Get the leaderboard of the top 5 accounts sorted by rating and name.
@@ -21,6 +22,20 @@ export const getAccountRanking = async (username: string): Promise<number> => {
   const leaderboard = await getLeaderboard();
   return leaderboard.findIndex(account => account.username === username);
 };
+
+/**
+ * Get the account position and rating.
+ * @param username the username of the account.
+ * @returns the account position and rating.
+ */
+export const getAccountStats = async (username: string) => {
+  const position = await getAccountRanking(username);
+  const rating = (await readAccountByUsername(username)).rating.value;
+  return {
+    position: position + 1, // Convert to 1-based index
+    rating: rating,
+  };
+}
 
 /**
  * Get the leaderboard of accounts sorted by rating and name.
