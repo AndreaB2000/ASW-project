@@ -2,15 +2,18 @@
 import { ref, onUnmounted } from 'vue';
 import router from '@/router';
 import { socket } from '@/services/server-connections';
+import { useMatchStore } from '@/stores/matchStore';
 
 const loading = ref(true);
+const match = useMatchStore();
 
 console.log('entering queue');
 socket.emit('requestMatch');
 
 const onMatchFound = (matchId: string) => {
   loading.value = false;
-  router.push({ path: '/match', query: { id: matchId } });
+  match.id = matchId;
+  router.push({ path: '/match' });
 };
 
 socket.on('matchFound', onMatchFound);
