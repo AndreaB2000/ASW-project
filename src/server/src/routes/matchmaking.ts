@@ -40,10 +40,12 @@ const setGuestUsername = (socket: Socket): string => {
 };
 
 const getGuestUsername = (socket: Socket, postfix: number) => {
-  const candidateUsername = `guest-${socket.id}`;
+  const candidateUsername = postfix === 0 ? `guest-${socket.id}` : `guest-${socket.id}-${postfix}`;
   if (getPlayerSockets().has(candidateUsername)) {
-    return candidateUsername;
-  } else {
+    // Username exists, try next postfix
     return getGuestUsername(socket, postfix + 1);
+  } else {
+    // Username is available
+    return candidateUsername;
   }
 };
