@@ -18,20 +18,36 @@ interface Player {
   username: string;
   rating: string;
 }
-const accounts = ref<Player[]>([]);
+
+interface User {
+  rating: string;
+  position: string;
+}
+const topPlayers = ref<Player[]>([]);
+const currentUser = ref<User>({
+  rating: 'loading...',
+  position: 'loading...',
+});
 
 onMounted(() => {
   socket.emit('getTopPlayers', (response: string) => {
     try {
       const data = JSON.parse(response);
-      console.log('Received top players:', data);
-      if (Array.isArray(data)) {
-        accounts.value = data;
-      } else {
-        accounts.value = [];
-      }
+      topPlayers.value = data;
     } catch (e) {
-      accounts.value = [];
+      console.error('Error parsing top players', e);
+    }
+  });
+
+  socket.emit('getAccountInfo', (response: string) => {
+    try {
+      const data = JSON.parse(response);
+      currentUser.value = {
+        rating: data.rating || 'N/A',
+        position: data.position || 'N/A',
+      };
+    } catch (e) {
+      console.error('Error parsing account info:', e);
     }
   });
 });
@@ -58,15 +74,17 @@ onMounted(() => {
             style="max-width: 50%"
           />
         </figure>
-        <p class="text-uppercase fw-bold mb-0 fs-3 secondary-text">rating: 1500</p>
-        <p class="text-uppercase fw-bold mb-0 fs-1">N° 1111</p>
+        <p class="text-uppercase fw-bold mb-0 fs-3 secondary-text">
+          rating: {{ currentUser.rating }}
+        </p>
+        <p class="text-uppercase fw-bold mb-0 fs-1">N° {{ currentUser.position }}</p>
       </MDBCol>
       <MDBCol class="text-center align-items-center d-md-none justify-content-center">
         <div class="divider my-4 d-block d-md-none"></div>
       </MDBCol>
       <MDBCol class="text-center justify-content-center align-items-center">
         <MDBCard
-          v-for="(player, index) in accounts"
+          v-for="(player, index) in topPlayers"
           :key="index"
           class="mb-3 img-fluid"
           style="max-width: 540px"
