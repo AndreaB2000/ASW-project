@@ -7,3 +7,4 @@
 ## TODO not assigned before ending
 
 - complete documentation
+- add images to tutorial
