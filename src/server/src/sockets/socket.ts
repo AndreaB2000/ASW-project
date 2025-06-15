@@ -26,6 +26,10 @@ export function getIO(): Server {
 
 const playerSockets = new Map<string, Socket>();
 
+export function getPlayerSockets(): Map<string, Socket> {
+  return playerSockets;
+}
+
 export function registerPlayerSocket(username: string, socket: Socket) {
   playerSockets.set(username, socket);
 }
