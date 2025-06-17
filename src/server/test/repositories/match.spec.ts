@@ -12,7 +12,8 @@ describe('Match Repository', () => {
   const OTHER_PLAYER = 'otherplayer';
   const OTHER_ID = '507f1f77bcf86cd79943901a';
   const NOW = new Date();
-  const TEST_ID = '507f1f77bcf86cd799439011';
+  const testId = '507f1f77bcf86cd799439011';
+  const invalidId = 'invalid';
   const mockMatch: Match = MatchFactory.createWithDefaultInitialState(PLAYER1, PLAYER2, NOW);
   const mockUpdatedMatch: Match = MatchFactory.createWithDefaultInitialState(PLAYER3, PLAYER2, NOW);
   let matchRepository: MatchRepository = new MatchRepository();
@@ -28,10 +29,10 @@ describe('Match Repository', () => {
         matchRepository.createMatch,
         DBMatch.prototype,
         'save',
-        { ...mockMatch, _id: TEST_ID },
+        { ...mockMatch, _id: testId },
         [mockMatch],
       );
-      expect(newMatchId).toBe(TEST_ID);
+      expect(newMatchId).toBe(testId);
     });
 
     it('should save a match in the database with the given match ID if it is passed', async () => {
@@ -39,10 +40,10 @@ describe('Match Repository', () => {
         matchRepository.createMatch,
         DBMatch.prototype,
         'save',
-        { ...mockMatch, _id: TEST_ID },
-        [mockMatch, TEST_ID],
+        { ...mockMatch, _id: testId },
+        [mockMatch, testId],
       );
-      expect(newMatchId).toBe(TEST_ID);
+      expect(newMatchId).toBe(testId);
     });
   });
 
@@ -50,11 +51,11 @@ describe('Match Repository', () => {
     it('should call the find function with the given match ID and return the corresponding match', async () => {
       const foundMatch = await checkCalledWith(
         matchRepository.findMatch,
-        [TEST_ID],
+        [testId],
         DBMatch,
         'findById',
         mockMatch,
-        [TEST_ID],
+        [testId],
       );
       expect(foundMatch).toStrictEqual(mockMatch);
     });
@@ -62,11 +63,11 @@ describe('Match Repository', () => {
     it('should return null if a match with the given ID does not exist', async () => {
       const foundMatch = await checkCalledWith(
         matchRepository.findMatch,
-        [TEST_ID],
+        [testId],
         DBMatch,
         'findById',
         null,
-        [TEST_ID],
+        [testId],
       );
       expect(foundMatch).toBe(null);
     });
@@ -80,12 +81,12 @@ describe('Match Repository', () => {
         DBMatch,
         'find',
         [
-          { _id: TEST_ID, ...mockMatch },
+          { _id: testId, ...mockMatch },
           { _id: OTHER_ID, ...mockUpdatedMatch },
         ],
         [PLAYER2],
       );
-      expect(foundMatch).toEqual([TEST_ID, OTHER_ID]);
+      expect(foundMatch).toEqual([testId, OTHER_ID]);
     });
 
     it('should return null if there are no matches played by the given player', async () => {
@@ -103,13 +104,57 @@ describe('Match Repository', () => {
 
   describe('updateMatch', () => {
     it('should call the model update function with the correct parameters', async () => {
-      await checkCalledWith(
-        matchRepository.updateMatch,
-        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }, mockUpdatedMatch],
-        DBMatch,
-        'findOneAndUpdate',
-        [],
-        [TEST_ID, mockUpdatedMatch],
+      jest.spyOn(mongoose.Types.ObjectId, 'isValid').mockImplementation(() => true);
+      const spyFindUpdate = jest
+        .spyOn(DBMatch, 'findOneAndUpdate')
+        .mockResolvedValue(mockUpdatedMatch);
+
+      matchRepository.updateMatch(testId, mockUpdatedMatch);
+
+      expect(spyFindUpdate).toHaveBeenCalledWith(
+        { _id: testId },
+        { $set: mockUpdatedMatch },
+        {
+          new: true,
+          upsert: false,
+          runValidators: true,
+        },
+      );
+    });
+
+    it('should return an error if the provided ID is not vaild', () => {
+      const spyIsValid = jest
+        .spyOn(mongoose.Types.ObjectId, 'isValid')
+        .mockImplementation(() => false);
+      const spyFindUpdate = jest
+        .spyOn(DBMatch, 'findOneAndUpdate')
+        .mockResolvedValue(mockUpdatedMatch);
+
+      expect(matchRepository.updateMatch(invalidId, mockUpdatedMatch)).rejects.toThrowError(
+        `Invalid matchId: ${invalidId}`,
+      );
+      expect(spyIsValid).toHaveBeenCalledWith(invalidId);
+      expect(spyFindUpdate).not.toHaveBeenCalled();
+    });
+
+    it('should return an error if the update operation was not successful', () => {
+      const spyIsValid = jest
+        .spyOn(mongoose.Types.ObjectId, 'isValid')
+        .mockImplementation(() => true);
+      const spyFindUpdate = jest.spyOn(DBMatch, 'findOneAndUpdate').mockResolvedValue(undefined);
+
+      expect(matchRepository.updateMatch(testId, mockUpdatedMatch)).rejects.toThrowError(
+        `Match ${testId} not found or update failed`,
+      );
+      expect(spyIsValid).toHaveBeenCalledWith(testId);
+      expect(spyFindUpdate).toHaveBeenCalledWith(
+        { _id: testId },
+        { $set: mockUpdatedMatch },
+        {
+          new: true,
+          upsert: false,
+          runValidators: true,
+        },
       );
     });
   });
@@ -118,28 +163,28 @@ describe('Match Repository', () => {
     it('should call the model delete function with the correct parameters', async () => {
       await checkCalledWith(
         matchRepository.deleteMatch,
-        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }],
+        [{ _id: new mongoose.Types.ObjectId(testId) }],
         DBMatch,
         'deleteOne',
         {
           acknowledged: true,
           deletedCount: 1,
         },
-        [TEST_ID],
+        [testId],
       );
     });
 
     it('should return true if the given ID exists', async () => {
       const deleted = await checkCalledWith(
         matchRepository.deleteMatch,
-        [{ _id: new mongoose.Types.ObjectId(TEST_ID) }],
+        [{ _id: new mongoose.Types.ObjectId(testId) }],
         DBMatch,
         'deleteOne',
         {
           acknowledged: true,
           deletedCount: 1,
         },
-        [TEST_ID],
+        [testId],
       );
       expect(deleted).toBe(true);
     });
