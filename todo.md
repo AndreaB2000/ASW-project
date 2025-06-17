@@ -5,6 +5,9 @@
 - minor match bug fixes -> Andrea
 - `/play` | `/profile` client-side | delete account -> Filippo
 - leaderboard client-side -> Leonardo
+- Complete PlayView info -> Baso
+- MatchOver for bot matches -> Baso
+- Fix temporary coordinates inversion in botService -> Leonardo
 
 ## TODO not assigned before ending
 
