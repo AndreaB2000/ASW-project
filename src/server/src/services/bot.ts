@@ -29,6 +29,7 @@ export const getMove = async (board: Board): Promise<Move | undefined> => {
   }
 };
 
+// TODO | Randa: Here I am manually inverting coordinates, maybe there's a better way to do it.
 const parseMove = (move: string): Move => {
   // The move format is 'Best = cell(2,2)'"
   const regex = /^Best = cell\((\d+),(\d+)\)$/;
@@ -41,7 +42,7 @@ const parseMove = (move: string): Move => {
   if (isNaN(x) || isNaN(y)) {
     throw new Error('Invalid move coordinates');
   }
-  return MoveFactory.create(x, y);
+  return MoveFactory.create(y, x);
 };
 
 const parseBoard = (Board: Board): string => {
