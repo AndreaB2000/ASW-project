@@ -1,5 +1,3 @@
-import { PileFactory } from '../models/Pile';
-import { BoardFactory } from '../models/Board';
 import { Match, MatchFactory } from '../models/Match';
 import { Move } from '../models/Move';
 import * as endedMatchRepo from '../repositories/endedMatch';

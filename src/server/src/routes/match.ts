@@ -23,13 +23,21 @@ export const match = (socket: Socket) => {
   });
 
   socket.on('addMove', async (matchId: string, movingPlayer: string, x: number, y: number) => {
-    addMove(matchId, movingPlayer, x, y);
-    const match = await matchService.getMatch(matchId);
-    console.log(JSON.stringify(match.computeCurrentState()));
-    if (match.player2 == 'bot') {
-      const botMove: Move = await botService.getMove(match?.computeCurrentState());
-      console.log(JSON.stringify(botMove));
-      addMove(matchId, 'bot', botMove.x, botMove.y);
+    if (socket.rooms.has(matchId)) {
+      matchController.addMove(matchId, movingPlayer, MoveFactory.create(x, y)).then(() => {
+        matchService.getMatch(matchId).then(match => {
+          if (match && match.player2 == 'bot') {
+            const currentState = match.computeCurrentState();
+            botService.getMove(currentState).then(async botMove => {
+              await matchController.addMove(
+                matchId,
+                'bot',
+                MoveFactory.create(botMove.x, botMove.y),
+              );
+            });
+          }
+        });
+      });
     }
   });
 
