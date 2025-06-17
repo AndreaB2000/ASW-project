@@ -4,82 +4,17 @@ defineProps(['numberOfGrains']);
 
 <template>
   <div class="grains-container">
-    <div v-for="i in numberOfGrains" class="grain" :data-count="numberOfGrains"></div>
+    <!-- <div v-for="i in numberOfGrains" class="grain" :data-count="numberOfGrains"></div> -->
+    <img v-if="numberOfGrains == 1" src="../../assets/grains/1.png" />
+    <img v-if="numberOfGrains == 2" src="../../assets/grains/2.png" />
+    <img v-if="numberOfGrains == 3" src="../../assets/grains/3.png" />
+    <img v-if="numberOfGrains == 4" src="../../assets/grains/4.png" />
+    <img v-if="numberOfGrains == 5" src="../../assets/grains/5.png" />
   </div>
 </template>
 
 <style scoped lang="scss">
-.grains-container {
-  --grain-offset: 100%;
-  --grain-size: 1%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+img {
   width: 100%;
-  aspect-ratio: 1;
-
-  .grain {
-    width: var(--grain-size);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background-color: #000;
-    position: absolute;
-    margin: 0;
-
-    &[data-count='2'] {
-      &:nth-child(1) {
-        transform: translate(calc(-1 * var(--grain-offset)), 0);
-      }
-      &:nth-child(2) {
-        transform: translate(var(--grain-offset), 0);
-      }
-    }
-
-    &[data-count='3'] {
-      &:nth-child(1) {
-        transform: translate(0, var(--grain-offset));
-      }
-      &:nth-child(2) {
-        transform: translate(calc(-1 * var(--grain-offset)), calc(-1 * var(--grain-offset)));
-      }
-      &:nth-child(3) {
-        transform: translate(var(--grain-offset), calc(-1 * var(--grain-offset)));
-      }
-    }
-
-    &[data-count='4'] {
-      &:nth-child(1) {
-        transform: translate(calc(-1 * var(--grain-offset)), calc(-1 * var(--grain-offset)));
-      }
-      &:nth-child(2) {
-        transform: translate(var(--grain-offset), calc(-1 * var(--grain-offset)));
-      }
-      &:nth-child(3) {
-        transform: translate(calc(-1 * var(--grain-offset)), var(--grain-offset));
-      }
-      &:nth-child(4) {
-        transform: translate(var(--grain-offset), var(--grain-offset));
-      }
-    }
-
-    &[data-count='5'] {
-      &:nth-child(1) {
-        transform: translate(0, 0);
-      }
-      &:nth-child(2) {
-        transform: translate(calc(-1 * var(--grain-offset)), calc(-1 * var(--grain-offset)));
-      }
-      &:nth-child(3) {
-        transform: translate(var(--grain-offset), calc(-1 * var(--grain-offset)));
-      }
-      &:nth-child(4) {
-        transform: translate(calc(-1 * var(--grain-offset)), var(--grain-offset));
-      }
-      &:nth-child(5) {
-        transform: translate(var(--grain-offset), var(--grain-offset));
-      }
-    }
-  }
 }
 </style>
