@@ -39,7 +39,27 @@ export class MatchRepository {
   }
 
   async updateMatch(matchId: string, newMatch: Match): Promise<void> {
-    await DBMatch.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(matchId) }, newMatch);
+    try {
+      if (!mongoose.Types.ObjectId.isValid(matchId)) {
+        throw new Error(`Invalid matchId: ${matchId}`);
+      }
+
+      const result = await DBMatch.findOneAndUpdate(
+        { _id: matchId },
+        { $set: newMatch },
+        {
+          new: true,
+          upsert: false,
+          runValidators: true,
+        },
+      );
+
+      if (!result) {
+        throw new Error(`Match ${matchId} not found or update failed`);
+      }
+    } catch (error) {
+      throw error; // Rilancia per gestione superiore
+    }
   }
 
   async deleteMatch(matchId: string): Promise<boolean> {
