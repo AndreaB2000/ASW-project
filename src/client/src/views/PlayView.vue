@@ -7,16 +7,11 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } from 'mdb-vue-ui-kit';
 
-// TODO: Here I have to input the actual username of the logged user
-const myUsername = 'beginner';
-
 const router = useRouter();
 const match = useMatchStore();
 const userStore = useUserStore();
 
-const matches = ref<
-  { player1: string; player2: string; winner: string | null; creationDate: Date }[]
->([]);
+const matches = ref<{ opponent: string; winner: string | null; creationDate: Date }[]>([]);
 
 function playPVP() {
   console.log('enterQueue');
@@ -33,39 +28,28 @@ socket.on('matchFound', (matchId: string) => {
   router.push({ path: '/match' });
 });
 
-socket.emit('matchHistory', myUsername, (matchIds: string[]) => {
-  matchIds.forEach((id: string) => {
-    socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
-      if (error) {
-        console.error('Error getting match', error);
-        return;
-      }
-      matches.value.push({
-        player1: matchData.player1,
-        player2: matchData.player2,
-        winner: matchData.winner,
-        creationDate: matchData.creationDate,
+// TODO | BASO: Get this after getting the last match
+const lastOpponentEloPoints = ref(0);
+
+onMounted(async () => {
+  console.log('user', userStore.username);
+  socket.emit('matchHistory', userStore.username, (matchIds: string[]) => {
+    console.log('matchIds', JSON.stringify(matchIds));
+    matchIds.forEach((id: string) => {
+      socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
+        if (error) {
+          console.error('Error getting match', error);
+          return;
+        }
+        matches.value.push({
+          opponent: userStore == matchData.player1 ? matchData.player2 : matchData.player1,
+          winner: matchData.winner,
+          creationDate: matchData.creationDate,
+        });
       });
     });
   });
-});
-
-// TODO | BASO: fill these values with real data from the server
-const lastOpponentUsername: Ref<string | null> = ref('Unknown');
-const lastOpponentEloPoints = ref(0);
-const lastMatchEnding = ref('Won');
-
-// TODO | BASO: fill these values with real data from the server
-onMounted(async () => {
-  if (userStore.rank === -1) {
-    try {
-      const rankRes = await server.get('/account/ranking');
-      userStore.rank = rankRes.data.rank;
-      userStore.eloPoints = rankRes.data.elo;
-    } catch (error) {
-      console.error('Error fetching last match:', error);
-    }
-  }
+  // TODO | BASO : Get information about the current user
 });
 </script>
 
@@ -96,12 +80,16 @@ onMounted(async () => {
     class="fixed-bottom align-items-center d-flex justify-content-center"
     style="background-color: rgba(0, 0, 0, 0) !important"
   >
-    <MDBCard v-if="lastOpponentUsername" class="w-100 mx-3 mb-3" style="max-width: 600px">
+    <MDBCard
+      v-if="matches.length > 0 && matches[0].opponent"
+      class="w-100 mx-3 mb-3"
+      style="max-width: 600px"
+    >
       <MDBCardBody>
         <MDBCardTitle class="text-uppercase">Last game</MDBCardTitle>
         <MDBCardText>
-          You <span class="fw-bold">{{ lastMatchEnding }}</span> against
-          <span class="fw-bold">{{ lastOpponentUsername }}</span> (<span class="fw-bold">{{
+          You <span class="fw-bold">{{ matches[0].winner }}</span> against
+          <span class="fw-bold">{{ matches[0].opponent }}</span> (<span class="fw-bold">{{
             lastOpponentEloPoints
           }}</span
           >)
