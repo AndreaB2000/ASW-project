@@ -26,10 +26,16 @@ export class MatchRepository {
   }
 
   async findMatchesByPlayer(player: string): Promise<string[]> {
+    console.log('PLAYER', player);
     const matches = await DBMatch.find({
       $or: [{ player1: player }, { player2: player }],
     });
-    return matches.map(match => match._id.toString());
+    console.log('MATCHES', JSON.stringify(matches));
+    return matches
+      .sort((a, b) => {
+        return b.creationDate.getTime() - a.creationDate.getTime();
+      })
+      .map(match => match._id.toString());
   }
 
   async updateMatch(matchId: string, newMatch: Match): Promise<void> {
