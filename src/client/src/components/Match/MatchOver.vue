@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { useMatchStore } from '@/stores/matchStore';
 import { MDBRow, MDBCol, MDBContainer, MDBBtn } from 'mdb-vue-ui-kit';
+import { onUnmounted } from 'vue';
 
 const match = useMatchStore();
 const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
 const props = defineProps(['initialScore', 'delta']);
+
+onUnmounted(() => {
+  match.$reset();
+});
 </script>
 
 <template>

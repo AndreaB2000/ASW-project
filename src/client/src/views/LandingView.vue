@@ -4,7 +4,7 @@ import { socket } from '@/services/server-connections';
 import { useMatchStore } from '@/stores/matchStore';
 import { MDBBtn } from 'mdb-vue-ui-kit';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const dialogVisible = ref(false);
@@ -12,18 +12,25 @@ const dialogVisible = ref(false);
 const router = useRouter();
 const match = useMatchStore();
 
-socket.on('connect', () => {
-  router.push('/play');
-});
-
 function playWithBot() {
   console.log('match with bot requested');
   socket.emit('requestMatchWithBot');
 }
 
-socket.on('matchFound', (matchId: string) => {
-  match.id = matchId;
-  router.push({ path: '/match' });
+onMounted(() => {
+  socket.on('connect', () => {
+    router.push('/play');
+  });
+
+  socket.on('matchFound', (matchId: string) => {
+    match.id = matchId;
+    router.push({ path: '/match' });
+  });
+});
+
+onUnmounted(() => {
+  socket.off('connect');
+  socket.off('matchFound');
 });
 </script>
 
