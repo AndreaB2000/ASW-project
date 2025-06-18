@@ -4,7 +4,19 @@
  * It uses the Elo rating system to calculate the new ratings.
  */
 
+import { readAccountByUsername } from '../repositories/account';
 import { roundToDecimal } from '../utils/round';
+
+/**
+ * getPlayerRating
+ * This function retrieves the rating of a player by their username.
+ * @param {string} username - The username of the player.
+ * @returns {Promise<number | undefined>} - The rating of the player, or undefined if the player does not exist.
+ */
+export const getPlayerRating = async (username: string): Promise<number | undefined> => {
+  const account = await readAccountByUsername(username);
+  return account?.rating.value;
+};
 
 /**
  * enum GameResult

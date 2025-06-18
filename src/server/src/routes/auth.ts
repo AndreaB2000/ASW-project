@@ -4,6 +4,7 @@ import { authMatchmaking } from './matchmaking';
 import { account } from './account';
 import { disconnect } from '../sockets/disconnect';
 import { leaderboard } from './leaderboard';
+import { rating } from './rating';
 
 export const auth = async (socket: Socket) => {
   console.log('User connected to auth');
@@ -16,4 +17,5 @@ export const auth = async (socket: Socket) => {
   authMatchmaking(socket);
   account(socket);
   leaderboard(socket);
+  rating(socket);
 };
