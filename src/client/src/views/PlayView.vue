@@ -3,7 +3,7 @@ import NavBar from '@/components/NavBar.vue';
 import { server, socket } from '@/services/server-connections';
 import { useRouter } from 'vue-router';
 import { useMatchStore } from '@/stores/matchStore';
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } from 'mdb-vue-ui-kit';
 
@@ -23,16 +23,17 @@ function playWithBot() {
   socket.emit('requestMatchWithBot');
 }
 
-socket.on('matchFound', (matchId: string) => {
-  match.id = matchId;
-  router.push({ path: '/match' });
-});
-
 // TODO | BASO: Get this after getting the last match
 const lastOpponentEloPoints = ref(0);
 
 onMounted(async () => {
+  socket.on('matchFound', (matchId: string) => {
+    match.id = matchId;
+    router.push({ path: '/match' });
+  });
+
   console.log('user', userStore.username);
+
   socket.emit('matchHistory', userStore.username, (matchIds: string[]) => {
     console.log('matchIds', JSON.stringify(matchIds));
     matchIds.forEach((id: string) => {
@@ -51,6 +52,11 @@ onMounted(async () => {
   });
   // TODO | BASO : Get information about the current user
 });
+
+// DO NOT write this, or matchmaking time will be infinite
+// onUnmounted(() => {
+//   socket.off('matchFound');
+// });
 </script>
 
 <template>

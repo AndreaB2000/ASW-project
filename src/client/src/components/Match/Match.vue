@@ -4,6 +4,7 @@ import Grid from '@/components/Match/Grid.vue';
 import { socket } from '@/services/server-connections';
 import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useMatchStore } from '@/stores/matchStore';
+import { onMounted, onUnmounted } from 'vue';
 
 const match = useMatchStore();
 
@@ -22,23 +23,31 @@ function getMatch(matchId: string) {
   });
 }
 
-getMatch(match.id);
+onMounted(() => {
+  let lastMovePromise = Promise.resolve();
+  socket.on('move', (movingPlayer: string, x: number, y: number) => {
+    console.log('MOVE FROM SOCKET');
+    lastMovePromise = lastMovePromise
+      .then(async () => {
+        console.log('Move received from server');
+        await match.applyMove(movingPlayer, x, y);
+      })
+      .catch(err => {
+        console.error('Error processing move:', err);
+      });
+  });
 
-let lastMovePromise = Promise.resolve();
-socket.on('move', (movingPlayer: string, x: number, y: number) => {
-  lastMovePromise = lastMovePromise
-    .then(async () => {
-      console.log('Move received from server');
-      await match.applyMove(movingPlayer, x, y);
-    })
-    .catch(err => {
-      console.error('Error processing move:', err);
-    });
+  socket.on('over', (winner: string) => {
+    match.winner = winner;
+    console.log(`The winner is ${winner}!`);
+  });
+
+  getMatch(match.id);
 });
 
-socket.on('over', (winner: string) => {
-  match.winner = winner;
-  console.log(`The winner is ${winner}!`);
+onUnmounted(() => {
+  socket.off('move');
+  socket.off('over');
 });
 </script>
 

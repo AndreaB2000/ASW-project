@@ -11,8 +11,19 @@ export const useMatchStore = defineStore('match', () => {
   const id = ref('');
   const turn = ref(player1.value);
   const winner = ref<string | null>(null);
-
   const moveInProgress = ref(false);
+
+  function $reset() {
+    player1.value = '';
+    player2.value = '';
+    whichPlayerAmI.value = 0;
+    myUsername.value = '';
+    currentState.value = <any>{};
+    id.value = '';
+    turn.value = player1.value;
+    winner.value = null;
+    moveInProgress.value = false;
+  }
 
   async function applyMove(movingPlayer: string, x: number, y: number): Promise<void> {
     moveInProgress.value = true;
@@ -72,6 +83,7 @@ export const useMatchStore = defineStore('match', () => {
   }
 
   return {
+    $reset,
     player1,
     player2,
     whichPlayerAmI,
