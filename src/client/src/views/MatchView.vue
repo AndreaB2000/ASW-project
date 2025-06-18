@@ -16,8 +16,9 @@ const match = useMatchStore();
   </MDBRow>
   <MDBRow>
     <MDBCol>
-      <Match v-if="!isMatchOver" />
-      <MatchOver v-else />
+      <!-- <Match v-if="!isMatchOver" />
+      <MatchOver v-else /> -->
+      <MatchOver :initial-score="1547" :delta="847" />
     </MDBCol>
   </MDBRow>
 </template>
