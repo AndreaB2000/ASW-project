@@ -2,7 +2,7 @@
 import Icon from '@/components/Icon.vue';
 import Match from '@/components/Match/Match.vue';
 import MatchOver from '@/components/Match/MatchOver.vue';
-import { MDBContainer, MDBRow, MDBCol } from 'mdb-vue-ui-kit';
+import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { computed } from 'vue';
 import { useMatchStore } from '@/stores/matchStore';
 
@@ -16,9 +16,8 @@ const match = useMatchStore();
   </MDBRow>
   <MDBRow>
     <MDBCol>
-      <!-- <Match v-if="!isMatchOver" />
-      <MatchOver v-else /> -->
-      <MatchOver :initial-score="1547" :delta="847" />
+      <Match v-if="!isMatchOver" />
+      <MatchOver v-else />
     </MDBCol>
   </MDBRow>
 </template>
