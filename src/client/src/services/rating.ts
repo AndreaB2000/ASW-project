@@ -14,19 +14,19 @@ export enum GameResult {
   WinB = 'WinB',
 }
 
+const DEFAULT_K_FACTOR = 32;
+
 /**
  * Calculate the rating change for a player based on the game result.
  * @param ratingA - The current rating of Player A.
  * @param ratingB - The current rating of Player B.
  * @param result - The result of the game.
- * @param kFactor - The K-factor used in the Elo rating system. Default is 32.
  * @returns The rating change for Player A, rounded to 1 decimal place.
  */
 export const getRatingChange = (
   ratingA: number,
   ratingB: number,
   result: GameResult,
-  kFactor: number,
 ): number => {
   const expectedScoreA = getExpectedScore(ratingA, ratingB);
   let scoreA: number;
@@ -41,7 +41,7 @@ export const getRatingChange = (
       scoreB = 1;
       break;
   }
-  const ratingUpdateA = kFactor * (scoreA - expectedScoreA);
+  const ratingUpdateA = DEFAULT_K_FACTOR * (scoreA - expectedScoreA);
 
   const roundedRatingUpdate = roundToDecimal(ratingUpdateA, 1);
 
