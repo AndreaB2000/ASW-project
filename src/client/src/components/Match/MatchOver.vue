@@ -5,10 +5,6 @@ import { onUnmounted } from 'vue';
 
 const match = useMatchStore();
 const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
-const props = defineProps<{
-  initialScore: number;
-  delta: number;
-}>();
 
 onUnmounted(() => {
   match.$reset();
@@ -43,8 +39,7 @@ onUnmounted(() => {
           class="justify-content-center align-items-center sub-element"
           style="border-color: darkorange; color: darkorange"
         >
-          <p id="elo">{{ props.initialScore }}</p>
-          <p id="elo">+-{{ props.delta }}</p>
+          <p id="elo">Score</p>
         </MDBRow>
       </MDBRow>
       <MDBRow
