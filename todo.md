@@ -1,8 +1,5 @@
 # This is a TODO list for the project
 
-- -> Filippo
-- -> Leonardo
-- minor match bug fixes -> Andrea
 - `/play` | `/profile` client-side | delete account -> Filippo
 - leaderboard client-side -> Leonardo
 - Complete PlayView info -> Baso
