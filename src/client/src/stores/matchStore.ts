@@ -4,7 +4,9 @@ import { ref } from 'vue';
 
 export const useMatchStore = defineStore('match', () => {
   const player1 = ref('');
+  const player1RatingChange = ref(0);
   const player2 = ref('');
+  const player2RatingChange = ref(0);
   const whichPlayerAmI = ref(0);
   const myUsername = ref('');
   const currentState = ref<any>({});
@@ -15,7 +17,9 @@ export const useMatchStore = defineStore('match', () => {
 
   function $reset() {
     player1.value = '';
+    player1RatingChange.value = 0;
     player2.value = '';
+    player2RatingChange.value = 0;
     whichPlayerAmI.value = 0;
     myUsername.value = '';
     currentState.value = <any>{};
@@ -85,7 +89,9 @@ export const useMatchStore = defineStore('match', () => {
   return {
     $reset,
     player1,
+    player1RatingChange,
     player2,
+    player2RatingChange,
     whichPlayerAmI,
     myUsername,
     currentState,
