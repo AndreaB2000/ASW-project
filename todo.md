@@ -2,7 +2,6 @@
 
 - `/play` | `/profile` client-side | delete account -> Filippo
 - leaderboard client-side -> Leonardo
-- MatchOver for bot matches -> Baso
 - Fix temporary coordinates inversion in botService -> Leonardo
 
 ## TODO not assigned before ending

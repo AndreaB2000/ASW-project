@@ -11,7 +11,7 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
     if (success) {
       ioHandler.emitToRoom(matchId, 'move', movingPlayer, move.x, move.y);
       await matchService.getMatch(matchId).then(async match => {
-        if (match.winner != null) {
+        if (match.winner != null && match.player2 != 'bot') {
           const ratings: [number, number] = ratingService.getNewRating(
             await ratingService.getPlayerRating(match.player1),
             await ratingService.getPlayerRating(match.player2),
