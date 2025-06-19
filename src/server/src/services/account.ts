@@ -1,5 +1,6 @@
 import * as repository from '../repositories/account';
 import { Account } from '../models/Account';
+import { Rating } from '../models/Rating';
 
 /**
  * Register a new account
@@ -41,7 +42,7 @@ export const getAccount = async (username: string): Promise<Account | null> => {
 };
 
 /**
- * Updates the email of the account associated with the given username.
+ * Updates the email of the given account.
  * @param account the account to update
  * @param newEmail the new email to set
  * @returns {boolean} true if the email was updated successfully, false otherwise
@@ -55,6 +56,20 @@ export const updateEmail = async (account: Account, newEmail: string): Promise<b
   if (!validEmail) return false;
   await repository.updateAccount(account);
   return true;
+};
+
+/**
+ * Updates the rating of the given account.
+ * @param account the account to update
+ * @param newRating the new rating to set
+ * @returns true if the rating was updated successfully, false otherwise
+ */
+export const updateRating = async (account: Account, newRating: Rating): Promise<boolean> => {
+  const success = account.changeRating(newRating);
+  if (success) {
+    await repository.updateAccount(account);
+  }
+  return success;
 };
 
 /**
