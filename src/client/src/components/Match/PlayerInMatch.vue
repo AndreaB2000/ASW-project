@@ -31,7 +31,7 @@ onMounted(() => {
       <MDBCardImg :src="userPlaceholder" top alt="..." />
       <MDBCardBody>
         <MDBCardText>Rating: {{ rating }}</MDBCardText>
-        <MDBCardText>{{ props.ratingChange > 0 ? '+' : '' }}{{ props.ratingChange }}</MDBCardText>
+        <MDBCardText>Prize: {{ props.ratingChange }}</MDBCardText>
         <MDBBtn tag="a" href="#!" color="primary">Profile</MDBBtn>
       </MDBCardBody>
     </MDBCard>
