@@ -1,10 +1,27 @@
 <script setup lang="ts">
+import { socket } from '@/services/server-connections';
 import { useMatchStore } from '@/stores/matchStore';
 import { MDBRow, MDBCol, MDBContainer, MDBBtn } from 'mdb-vue-ui-kit';
-import { onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const match = useMatchStore();
 const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
+const ratingChange = ref(0);
+const initialRating = ref(0);
+
+onMounted(() => {
+  socket.emit('getRating', myUsername, (rating: number) => {
+    initialRating.value = rating;
+    if (myUsername == match.player1) {
+      ratingChange.value = match.player1RatingChange;
+    } else {
+      ratingChange.value = match.player2RatingChange;
+    }
+    if (match.winner != myUsername) {
+      ratingChange.value = -ratingChange.value;
+    }
+  });
+});
 
 onUnmounted(() => {
   match.$reset();
@@ -39,7 +56,7 @@ onUnmounted(() => {
           class="justify-content-center align-items-center sub-element"
           style="border-color: darkorange; color: darkorange"
         >
-          <p id="elo">Score</p>
+          <p id="elo">{{ initialRating }}{{ ratingChange > 0 ? '+' : '' }}{{ ratingChange }}</p>
         </MDBRow>
       </MDBRow>
       <MDBRow
