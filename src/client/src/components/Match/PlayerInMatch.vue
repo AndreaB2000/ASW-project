@@ -17,10 +17,12 @@ const props = defineProps<{ username: string; ratingChange: number }>();
 const rating = ref(0);
 
 onMounted(() => {
-  socket.emit('getRating', props.username, (userRating: number) => {
-    rating.value = userRating;
-    console.log(userRating);
-  });
+  if (props.username != 'bot') {
+    socket.emit('getRating', props.username, (userRating: number) => {
+      rating.value = userRating;
+      console.log(userRating);
+    });
+  }
 });
 </script>
 
