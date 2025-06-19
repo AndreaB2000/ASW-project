@@ -9,10 +9,19 @@ import {
 } from 'mdb-vue-ui-kit';
 
 import userPlaceholder from '@/assets/user-placeholder.jpg';
+import { onMounted, ref } from 'vue';
+import { socket } from '@/services/server-connections';
 
-defineProps(['username']);
-// const glicko = defineProps(['glicko']);
-// const timeLeft = defineProps(['timeLeft']);
+const props = defineProps<{ username: string; ratingChange: number }>();
+
+const rating = ref(0);
+
+onMounted(() => {
+  socket.emit('getRating', props.username, (userRating: number) => {
+    rating.value = userRating;
+    console.log(userRating);
+  });
+});
 </script>
 
 <template>
@@ -21,8 +30,8 @@ defineProps(['username']);
       <MDBCardTitle>{{ username }}</MDBCardTitle>
       <MDBCardImg :src="userPlaceholder" top alt="..." />
       <MDBCardBody>
-        <MDBCardText>Rank: 1000</MDBCardText>
-        <MDBCardText>+400 -150</MDBCardText>
+        <MDBCardText>Rating: {{ rating }}</MDBCardText>
+        <MDBCardText>{{ props.ratingChange > 0 ? '+' : '' }}{{ props.ratingChange }}</MDBCardText>
         <MDBBtn tag="a" href="#!" color="primary">Profile</MDBBtn>
       </MDBCardBody>
     </MDBCard>

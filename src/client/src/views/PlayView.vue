@@ -12,6 +12,10 @@ const match = useMatchStore();
 const userStore = useUserStore();
 
 const matches = ref<{ opponent: string; winner: string | null; creationDate: Date }[]>([]);
+const currentUser = ref({
+  rating: 'loading...',
+  position: 'loading...',
+});
 
 function playPVP() {
   console.log('enterQueue');
@@ -50,7 +54,20 @@ onMounted(async () => {
       });
     });
   });
-  // TODO | BASO : Get information about the current user
+
+  socket.emit('getAccountInfo', (response: string) => {
+    try {
+      const data = JSON.parse(response);
+      userStore.rank = data.position;
+      userStore.eloPoints = data.rating;
+      currentUser.value = {
+        rating: data.rating || 'N/A',
+        position: data.position || 'N/A',
+      };
+    } catch (e) {
+      console.error('Error parsing account info:', e);
+    }
+  });
 });
 
 // DO NOT write this, or matchmaking time will be infinite
