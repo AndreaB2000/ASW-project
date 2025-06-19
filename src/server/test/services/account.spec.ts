@@ -1,10 +1,19 @@
-import { registerAccount, authenticateAccount, getAccount, updateEmail, deleteAccount } from '../../src/services/account';
+import {
+  registerAccount,
+  authenticateAccount,
+  getAccount,
+  updateEmail,
+  updateRating,
+  deleteAccount,
+} from '../../src/services/account';
 import * as repository from '../../src/repositories/account';
 import { AccountFactory } from '../../src/models/Account';
 import { jest, describe, it, expect, beforeAll } from '@jest/globals';
 import { Account } from '../../src/models/Account';
+import { Rating, RatingFactory } from '../../src/models/Rating';
 
 let existingUser: Account;
+let newRating: Rating;
 
 jest.mock('../../src/repositories/account', () => ({
   readAllAccounts: jest.fn(() => Promise.resolve([existingUser])),
@@ -19,7 +28,9 @@ describe('Account Service', () => {
       'existingUser',
       'existing@email.com',
       'hashedPassword',
+      RatingFactory.create(1500),
     );
+    newRating = RatingFactory.create(1800);
   });
 
   describe('registerAccount', () => {
@@ -93,6 +104,14 @@ describe('Account Service', () => {
     });
   });
 
+  describe('updateRating', () => {
+    it('should return true if the rating has been changed', async () => {
+      const result = await updateRating(existingUser, newRating);
+      expect(result).toBe(true);
+      expect(repository.updateAccount).toHaveBeenCalled();
+    });
+  });
+
   describe('deleteAccount', () => {
     it('should throw an error if account does not exist', async () => {
       jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(null);
@@ -101,7 +120,9 @@ describe('Account Service', () => {
 
     it('should call repository.deleteAccount with the found account', async () => {
       const mockAccount = existingUser;
-      jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(mockAccount);
+      jest
+        .spyOn(require('../../src/services/account'), 'getAccount')
+        .mockResolvedValueOnce(mockAccount);
       (repository.deleteAccount as jest.Mock).mockReturnValueOnce(true);
       const result = await deleteAccount(mockAccount.username);
       expect(repository.deleteAccount).toHaveBeenCalledWith(mockAccount);
@@ -110,7 +131,9 @@ describe('Account Service', () => {
 
     it('should return false if repository.deleteAccount returns false', async () => {
       const mockAccount = existingUser;
-      jest.spyOn(require('../../src/services/account'), 'getAccount').mockResolvedValueOnce(mockAccount);
+      jest
+        .spyOn(require('../../src/services/account'), 'getAccount')
+        .mockResolvedValueOnce(mockAccount);
       (repository.deleteAccount as jest.Mock).mockReturnValueOnce(false);
       const result = await deleteAccount(mockAccount.username);
       expect(repository.deleteAccount).toHaveBeenCalledWith(mockAccount);

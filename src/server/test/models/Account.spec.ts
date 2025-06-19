@@ -29,16 +29,16 @@ describe('Account', () => {
 
   it('should not accept an invalid email', async () => {
     const invalidEmail = 'invalidEmail';
-    await expect(AccountFactory.createWithHashing(username, invalidEmail, plainPassword)).rejects.toThrow(
-      'Invalid email',
-    );
+    await expect(
+      AccountFactory.createWithHashing(username, invalidEmail, plainPassword),
+    ).rejects.toThrow('Invalid email');
   });
 
   it('should not accept an invalid username', async () => {
     const invalidUsername = 'tooLongUsernameThatExceedsTheLimit';
-    await expect(AccountFactory.createWithHashing(invalidUsername, email, plainPassword)).rejects.toThrow(
-      'Invalid username',
-    );
+    await expect(
+      AccountFactory.createWithHashing(invalidUsername, email, plainPassword),
+    ).rejects.toThrow('Invalid username');
   });
 
   it('should create an account with a provided hashed password using create', async () => {
@@ -67,5 +67,18 @@ describe('Account', () => {
     const newEmail = 'newEmail@mail.it';
     account.changeEmail(newEmail);
     expect(account.email).toBe(newEmail);
+  });
+
+  it('should change the rating of the account', async () => {
+    const oldRating = RatingFactory.create(1500);
+    const newRating = RatingFactory.create(1800);
+    const account = await AccountFactory.createWithHashing(
+      username,
+      email,
+      plainPassword,
+      oldRating,
+    );
+    account.changeRating(newRating);
+    expect(account.rating).toStrictEqual(newRating);
   });
 });
