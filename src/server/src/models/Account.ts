@@ -31,6 +31,11 @@ export interface Account {
    * @param newEmail the new email to set
    */
   changeEmail(newEmail: string): boolean;
+  /**
+   * Changes the rating of the account.
+   * @param newRating the new email to set
+   */
+  changeRating(newRating: Rating): boolean;
 }
 
 /**
@@ -110,8 +115,14 @@ class AccountImpl implements Account {
     return true;
   }
 
+  changeRating(newRating: Rating): boolean {
+    this._rating = newRating;
+    return true;
+  }
+
   private isValidEmail(email: string): boolean {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()\[\]\\.,;:\s@"]+\.)+[^<>()\[\]\\.,;:\s@"]{2,})$/;
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()\[\]\\.,;:\s@"]+\.)+[^<>()\[\]\\.,;:\s@"]{2,})$/;
     return re.test(email);
   }
 
