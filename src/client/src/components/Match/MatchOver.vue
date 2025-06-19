@@ -36,18 +36,25 @@ onUnmounted(() => {
       </MDBRow>
       <MDBRow class="d-flex flex-column align-content-center" style="min-height: 35vh">
         <MDBRow
-          v-if="match.winner == myUsername"
+          v-if="match.player2 != 'bot' && match.winner == myUsername"
           class="justify-content-center align-items-center sub-element"
           style="border-color: green; color: green"
         >
           <p>You won!</p>
         </MDBRow>
         <MDBRow
-          v-else
+          v-else-if="match.player2 != 'bot' && match.winner != myUsername"
           class="justify-content-center align-items-center sub-element"
           style="border-color: red; color: red"
         >
           <p>{{ match.winner }} won</p>
+        </MDBRow>
+        <MDBRow
+          v-else
+          class="justify-content-center align-items-center sub-element"
+          style="border-color: red; color: red"
+        >
+          <p>You lost!</p>
         </MDBRow>
         <MDBRow
           class="justify-content-center align-items-center sub-element"
@@ -55,7 +62,7 @@ onUnmounted(() => {
         >
           <p>
             {{ user.eloPoints }}
-            <strong>{{ ratingChange > 0 ? '+' : '' }} {{ ratingChange }}</strong>
+            <strong>{{ ratingChange > 0 ? '+' : '' }}{{ ratingChange }}</strong>
           </p>
         </MDBRow>
       </MDBRow>
