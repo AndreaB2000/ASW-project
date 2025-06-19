@@ -3,11 +3,14 @@ import { beforeEach } from 'node:test';
 import { Move, MoveFactory } from '../../src/models/Move';
 import { addMove } from '../../src/controllers/match';
 import * as matchService from '../../src/services/match';
+import * as ratingService from '../../src/services/rating';
+import * as accountService from '../../src/services/account';
 import { Match, MatchFactory } from '../../src/models/Match';
 import { BoardFactory } from '../../src/models/Board';
 import { PileFactory } from '../../src/models/Pile';
 import * as ioHandler from '../../src/sockets/socket';
 import { Server } from 'socket.io';
+import { AccountFactory } from '../../src/models/Account';
 
 describe('Match controller', () => {
   describe('addMove', () => {
@@ -44,6 +47,11 @@ describe('Match controller', () => {
     it('should call emitToRoom twice if there is a winner', async () => {
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
+
+      // Non-relevant mocks
+      jest.spyOn(ratingService, 'getPlayerRating').mockResolvedValue(0);
+      jest.spyOn(accountService, 'updateRating').mockResolvedValue(true);
+      jest.spyOn(accountService, 'getAccount').mockResolvedValue(null);
       const spyEmitToRoom = jest
         .spyOn(ioHandler, 'emitToRoom')
         .mockImplementation(() => {})
