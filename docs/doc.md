@@ -55,7 +55,7 @@ Conquer: the event of a cell where:
 
 ### Clock
 
-Glicko Ranking: ranking rappresenting the strenght of a given player.
+Elo Ranking: ranking rappresenting the strenght of a given player.
 
 Matchmaking: the algorithm responsible for selecting players to face each
 other among the players available.

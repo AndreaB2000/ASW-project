@@ -218,9 +218,9 @@ _Conquer_: the event of a cell where:
 
 _Clock_: time counter that tracks how many seconds each player has left to play to game
 
-_Glicko rating system_: method used to calculate and update player ratings in competitive games and sports ([wikipedia](https://en.wikipedia.org/wiki/Glicko_rating_system)).
+_Elo rating system_: method used to calculate and update player ratings in competitive games and sports ([wikipedia](https://en.wikipedia.org/wiki/Elo_rating_system)).
 
-_Glicko Ranking_: ranking rappresenting the strenght of a given player.
+_Elo Ranking_: ranking rappresenting the strenght of a given player.
 
 _Matchmaking_: the algorithm responsible for selecting players to face each
 other among the players available.
@@ -234,7 +234,7 @@ graph LR
    subgraph gameExperience["Game experience"]
       subgraph matchContext["Match context"]
          player1("Player")
-         glickoRanking1("Glicko Ranking")
+         eloRanking1("Elo Ranking")
          GameBoard
          Cell
          Pile
@@ -250,7 +250,7 @@ graph LR
       end
 
       subgraph matchMaking["Matchmaking"]
-         glickoRanking2("Glicko Ranking") <--> glickoRanking1
+         eloRanking2("Elo Ranking") <--> eloRanking1
          player2("Player") <--> player1
       end
    end
