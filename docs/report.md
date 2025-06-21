@@ -33,8 +33,9 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
         - [Bot Matchmaking](#bot-matchmaking)
           - [Bot Matchmaking sequence diagram](#bot-matchmaking-sequence-diagram)
-      - [Match](#match)
         - [API](#api)
+      - [Match](#match)
+        - [API](#api-1)
       - [Game AI](#game-ai)
   - [Implementation](#implementation)
     - [Game AI](#game-ai-1)
@@ -524,6 +525,32 @@ sequenceDiagram
    Note over Server: creates a match with the bot
    Server-->>Client: emit('matchFound', { matchId })
 ```
+
+##### API
+
+The matchmaking system uses Socket.IO for real-time communication:
+
+**Client to Server Events:**
+
+- `emit('requestMatch')`: Requests to be matched with another player
+  - Behavior:
+    - Adds the player to the matchmaking queue if no suitable match is found
+    - When a match is found, removes both players from the queue
+    - The server will emit a `matchFound` event to both players
+
+- `emit('requestMatchWithBot')`: Requests to play against a bot opponent
+  - Behavior:
+    - Creates a match with a bot immediately
+    - The server will emit a `matchFound` event to the player
+
+**Server to Client Events:**
+
+- `emit('matchFound', { matchId: string })`: Notifies clients that a match has been created
+  - Parameters:
+    - `matchId`: Unique identifier for the created match
+  - Emitted when:
+    - Two players have been successfully matched together
+    - A match with a bot has been created
 
 #### Match
 
