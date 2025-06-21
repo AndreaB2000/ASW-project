@@ -66,6 +66,8 @@ The user can:
 1. User authentication
    1. Register a new account on the website
       1. Choose a unique username
+      1. Choose an email
+      1. Confirm the password
       1. Choose a password
       1. Confirm the password
    1. Login to the website using an existing account
@@ -73,13 +75,10 @@ The user can:
 1. Profile
    1. View profile statistics
    1. View profile game history
-      1. Review old games move by move
    1. Customize profile settings
-      1. Load a custom profile picture
-      1. Set the website theme
-      1. Change profile name
+      1. Change profile username
       1. Change profile password
-      1. Customize the game board style choosing from some given styling options
+      1. Change profile email
 1. Game
    1. As a logged in user
       1. Play a ranked game against other users of similar rating
@@ -89,14 +88,9 @@ The user can:
    1. Gameplay
       1. Add a grain to a controller pile
       1. View opponents moves
-      1. View personal and opponent clock time remaining
-      1. Resign the current game
       1. Disconnect from the current game
 1. View the website leaderboard
 1. View a tutorial on _Sandpiles_ game rules
-1. Developers
-   1. Use the public API to access data about players and games, in an authenticated manner
-   1. Find the public API documentation on the _Sandpiles_ website
 
 #### System Functional Requirements
 
@@ -104,13 +98,11 @@ The user can:
 - gestione dati sensibili (hashing locale, salt in db, conferma e-mail)
 
 1. Security
-   1. Password hashing client side
+   1. Password hashing client side <!-- is this implemented? -->
    1. Matching double password input at registration time
    1. Matching double password input at password change time
    1. Hashed password storage with salting server side
-   1. Profile confirmation with e-mail
 1. User session handling
-1. Badge system handling to encourage user retention
 
 ### Non-Functional Requirements
 
@@ -426,11 +418,15 @@ R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
 
 Where:
 
+- E is the expected score, calculated using the following formula: E = 1 / (1 + 10^((R<sub>opponent</sub> - R<sub>old</sub>) / 400))
 - R<sub>new</sub> is the new rating
 - R<sub>old</sub> is the old rating
+- R<sub>opponent</sub> is the rating of the opponent
 - K is a constant that determines the maximum possible adjustment per game
 - S is the actual score (1 for a win, 0.5 for a draw, 0 for a loss)
-- E is the expected score, calculated using the following formula:
+- 400 is a constant that determines the sensitivity of the rating system
+
+The K constant is set to 32.
 
 #### Matchmaking
 
@@ -596,7 +592,12 @@ The game AI is implemented using [Tau Prolog](https://tau-prolog.org/), a Prolog
 
 ## Technologies
 
-MEVN
+A MEVN technology stack has been used to implement the project:
+
+- **MongoDB**: NoSQL database used to store user accounts, matches and game history.
+- **Express.js**: Web framework for Node.js used to implement the backend API.
+- **Vue.js**: JavaScript framework used to implement the frontend.
+- **Node.js**: JavaScript runtime environment used to run the backend server.
 
 ## Code
 
