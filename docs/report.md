@@ -451,7 +451,7 @@ Where:
 - time<sub>1</sub> and time<sub>2</sub> are the times spent in the queue by the two players in seconds
 - baseValue is a constant that represents the minimum difference in ratings that is acceptable for a match
 
-If a player disconnects from the queue, the server will remove them from the queue and notify them.
+If a player disconnects from the queue, the server will remove them from the queue.
 
 ##### Server side matchmaking class diagram
 
