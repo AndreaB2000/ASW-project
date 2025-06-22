@@ -392,18 +392,140 @@ The arrows should be read as "depends on" (e.g. A --> B should be read A depends
 
 Repository classes should only implement CRUD (Create, Read, Update, Delete) operations, while higher-level operations should be implemented in the Service classes.
 
-#### Game State Data Representation
+#### Match
 
-A given match can be represented uniquely by:
+Matches can be represented uniquely by:
 
+- A pair of players
 - A starting board
 - A list of moves
+- A creation date
 
-The starting board can be represented as a matrix of dimensions dxd where every given x<sub>i,j</sub> is the number of grains in the cell with coordinates i,j.
+The starting board can be represented as a matrix of dimensions $D \times D$ where every given $x_{i,j}$ is a cell that can contain a pile, in which the number of grains is stored.
 
-The list of moves can be represented as a list of tuples (i,j) where the tuple represents the coordinates of the cell where the player has decided to add a grain.
+The list of moves can be represented as a list of tuples $(i,j)$ where the tuple represents the coordinates of the pile where the player has decided to add a grain.
 
 <!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
+
+##### Class diagram
+
+```mermaid
+---
+config:
+    class:
+        hideEmptyMembersBox: true
+---
+
+classDiagram
+    class Move {
+        +x: int
+        +y: int
+    }
+
+    class Match {
+        +player1: string
+        +player2: string
+        +creationDate: Date
+        +initialState: Board
+        +moves: List~Move~
+
+        +addMove(move: Move) boolean
+        -getCurrentState() Board
+    }
+
+    class Database
+
+    %% InProgressMatchRepository handles matches in progress, not yet finished or abandoned.
+    class InProgressMatchRepository {
+        +createMatch(player1: string, player2: string, creationDate: Date) string
+        +findMatch(matchId: string) Match?
+        +findMatchesByPlayer(player: string) List~string~
+        +updateMatch(matchId: string, newMatchData: Match) void
+        +deleteMatch(matchId: string) void
+    }
+
+    %% EndedMatchRepository handles ended matches, to be saved on the database.
+    class EndedMatchRepository {
+        +createMatch(player1: string, player2: string, creationDate: Date) string
+        +findMatch(matchId: string) Match?
+        +findMatchesByPlayer(player: string) List~string~
+        +updateMatch(matchId: string, newMatchData: Match) void
+        +deleteMatch(matchId: string) void
+    }
+
+    %% MatchesService expose higher-level functionalities, and it handles the matches saving logic.
+    class MatchService {
+        +newMatch(player1: string, player2: string, creationDate: Date?) string
+        +getMatch(matchId: string) Match?
+        +getMatchesByPlayer(player: string) List~string~
+        +addMove(matchId: string, movingPlayer: string, move: Move) void
+        +deleteMatch(matchId: string) void
+    }
+
+    %% A fixed-sized matrix of cells
+    class Board {
+        +defaultBoard() Board$
+        +customBoard(piles: Pile[]) Board$
+
+        +getCell(x: int, y: int) Cell
+        +setCell(x: int, y: int, cell: Cell) void
+        +applyMove(movingPlayer: string, move: Move) void
+    }
+
+    %% Board cell which can contain a pile
+    class Cell {
+        +pile: Pile?
+        +addGrain() void
+        +collapse() void
+    }
+
+    class Pile {
+        +numberOfGrains: int
+        +owner: string
+    }
+
+    EndedMatchRepository --> Database
+    MatchService --> InProgressMatchRepository
+    MatchService --> EndedMatchRepository
+    InProgressMatchRepository --> Match
+    EndedMatchRepository --> Match
+    MatchService --> Match
+    Match --> Move
+    Match --> Board
+    Board *-- Cell
+    Cell *-- Pile
+```
+
+##### API
+
+The match system uses Socket.IO for real-time communication:
+
+**Client to Server Events:**
+
+- `emit('getMatch')`:
+  - Gets a match with the given match ID.
+  - Parameters:
+    - `matchId`: the ID of the desired match
+- `emit('addMove')`:
+  - Adds a move to the given match with the provided parameters, if possible.
+  - Parameters:
+    - `matchId`: the ID of the match in which add the move
+    - `movingPlayer`: the username of the player who is performing the move
+    - `x`, `y`: the move coordinates
+- `emit('matchHistory', <username>)`:
+  - Returns a list of match IDs corresponding to ended matches in which the player with the given username has played.
+  - Parameters:
+    - `username`: the username of the player
+
+**Server to Client Events:**
+
+- `emit('move')`:
+  - The server sends a move to interested clients.
+  - Parameters:
+    - `movingPlayer`: the username of the player who is performing the move
+    - `x`, `y`: the move coordinates
+- `emit('over')`:
+  - The server tells clients that the game is over.
 
 #### Rating System
 
@@ -415,7 +537,7 @@ The rating is updated after each match based on the outcome of the match and the
 
 The rating is updated using the following formula:
 
-R<sub>new</sub> = R<sub>old</sub> + K * (S - E)
+R<sub>new</sub> = R<sub>old</sub> + K \* (S - E)
 
 Where:
 
@@ -443,7 +565,7 @@ Every 10 seconds a player spends in the queue, the matchmaking requirements are 
 
 IsValidMatch(baseValue , rating<sub>1</sub> , rating<sub>2</sub> , time<sub>1</sub> , time<sub>2</sub>) =
 
-| rating<sub>1</sub> - rating<sub>2</sub> | <= min( (time<sub>1</sub> / 10), (time<sub>2</sub> / 10) ) * 100 + baseValue
+| rating<sub>1</sub> - rating<sub>2</sub> | <= min( (time<sub>1</sub> / 10), (time<sub>2</sub> / 10) ) \* 100 + baseValue
 
 Where:
 
@@ -533,6 +655,7 @@ The matchmaking system uses Socket.IO for real-time communication:
 **Client to Server Events:**
 
 - `emit('requestMatch')`: Requests to be matched with another player
+
   - Behavior:
     - Adds the player to the matchmaking queue if no suitable match is found
     - When a match is found, removes both players from the queue
@@ -551,59 +674,6 @@ The matchmaking system uses Socket.IO for real-time communication:
   - Emitted when:
     - Two players have been successfully matched together
     - A match with a bot has been created
-
-#### Match
-
-[Match UML](uml/match.md)
-
-##### API
-
-- `POST /match/new`: creates a match, returns its ID
-
-  - Body: `{"player1": string, "player2": string}`
-  - Returns:
-    - 201 Created - `{"matchId": <string>}`
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 500 Internal server error - `{}` when a generic error occurs
-
-- `PUT /match/<id>/move`: Adds a move only if the provided player can make it
-
-  - Body: `{movingPlayer: string, x: number, y: number}`
-  - Returns:
-    - 200 OK - `{}` when the move is successfully added to the match
-    - 400 Bad request - `{}` when the body is not complete
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 403 Forbidden - `{}` when the player can't make a move
-    - 500 Internal server error - `{}` when a generic error occurs
-
-- `GET /match/<id>`: gets a match with the given ID, if it exists
-
-  - Body: `{}`
-  - Returns:
-    - 200 OK - `{id: number, <match>}` when the move is successfully added to the match
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 404 Not found - `{}` when there is no match with the given ID
-    - 500 Internal server error - `{}` when a generic error occurs
-
-- `GET /match/byplayer/<player>`: returns a list of match IDs
-
-  - Body: `{}`
-  - Returns:
-    - 200 OK - `{player: string, matchIDs: string[]}` the list can be empty
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 404 Not found - `{}` when the provided player does not exist
-    - 500 Internal server error - `{}` when a generic error occurs
-
-- `DELETE /match/<id>/delete`: deletes a match
-
-  - Body: `{}`
-  - Returns:
-    - 200 OK - `{}` when the match is successfully deleted
-    - 401 Unauthorized - `{}` when the client is not logged in
-    - 403 Forbidden - `{}` when the player can't delete that match
-    - 404 Not found - `{}` when the provided match ID does not exist
-    - 500 Internal server error - `{}` when a generic error occurs
 
 #### Game AI
 
