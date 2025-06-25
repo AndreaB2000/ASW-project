@@ -6,8 +6,10 @@ import { MDBRow, MDBCol } from 'mdb-vue-ui-kit';
 import { useMatchStore } from '@/stores/matchStore';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { GameResult, getRatingChange } from '@/services/rating';
+import { useUserStore } from '@/stores/userStore';
 
 const match = useMatchStore();
+const user = useUserStore();
 
 const myRatingChange = ref<number>(0);
 const opponentRatingChange = ref<number>(0);
@@ -39,7 +41,7 @@ onMounted(() => {
       match.player2 = matchData.player2;
       match.turn = match.player1;
       match.whichPlayerAmI = whichPlayerAmI;
-      match.myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
+      user.username = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
     }
 
     socket.emit('getRating', match.player1, (player1rating: number) => {

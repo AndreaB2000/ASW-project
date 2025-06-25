@@ -3,21 +3,19 @@ import Pile from '@/components/Match/Pile.vue';
 import { socket } from '@/services/server-connections';
 import { GRID_SIZE } from '@/utils/match';
 import { useMatchStore } from '@/stores/matchStore';
+import { useUserStore } from '@/stores/userStore';
 
 const match = useMatchStore();
+const user = useUserStore();
 
 function handleButtonClick(x: number, y: number) {
   if (!match.moveInProgress) {
     console.log(`Pressed cell ${x}, ${y}. Cell:`, match.currentState[x][y]);
     const p: string =
-      match.myUsername == match.player1
-        ? 'player1'
-        : match.myUsername == match.player2
-          ? 'player2'
-          : '';
+      user.username == match.player1 ? 'player1' : user.username == match.player2 ? 'player2' : '';
     if (document.getElementById(`${x}-${y}`)?.classList.contains(p)) {
       console.log('Emitting move');
-      socket.emit('addMove', match.id, match.myUsername, x, y);
+      socket.emit('addMove', match.id, user.username, x, y);
     }
   }
 }
@@ -30,7 +28,7 @@ function handleButtonClick(x: number, y: number) {
       `grid-template-columns: repeat(${GRID_SIZE}, 1fr);`,
       'border: 0.8vw solid',
       'border-radius: 20px',
-      match.turn == match.myUsername ? 'border-color: green' : 'border-color: gray',
+      match.turn == user.username ? 'border-color: green' : 'border-color: gray',
       'padding: 4%',
       'aspect-ratio: 1',
       'height: 80%',

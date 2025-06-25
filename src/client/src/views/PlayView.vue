@@ -9,7 +9,19 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } fr
 
 const router = useRouter();
 const match = useMatchStore();
-const userStore = useUserStore();
+const user = useUserStore();
+
+if (!user.username || !user.email) {
+  server
+    .get('/account/me')
+    .then(response => {
+      user.setUsername(response.data.username);
+      user.setEmail(response.data.email);
+    })
+    .catch((error: Error) => {
+      console.error('Failed to fetch user data:', error);
+    });
+}
 
 const matches = ref<{ opponent: string; winner: string | null; creationDate: Date }[]>([]);
 const currentUser = ref({
@@ -36,9 +48,9 @@ onMounted(async () => {
     router.push({ path: '/match' });
   });
 
-  console.log('user', userStore.username);
+  console.log('user', user.username);
 
-  socket.emit('matchHistory', userStore.username, (matchIds: string[]) => {
+  socket.emit('matchHistory', user.username, (matchIds: string[]) => {
     console.log('matchIds', JSON.stringify(matchIds));
     matchIds.forEach((id: string) => {
       socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
@@ -47,7 +59,7 @@ onMounted(async () => {
           return;
         }
         matches.value.push({
-          opponent: userStore == matchData.player1 ? matchData.player2 : matchData.player1,
+          opponent: user == matchData.player1 ? matchData.player2 : matchData.player1,
           winner: matchData.winner,
           creationDate: matchData.creationDate,
         });
@@ -58,8 +70,8 @@ onMounted(async () => {
   socket.emit('getAccountInfo', (response: string) => {
     try {
       const data = JSON.parse(response);
-      userStore.rank = data.position;
-      userStore.eloPoints = data.rating;
+      user.rank = data.position;
+      user.eloPoints = data.rating;
       currentUser.value = {
         rating: data.rating || 'N/A',
         position: data.position || 'N/A',
@@ -95,8 +107,8 @@ onMounted(async () => {
       <div class="divider d-none d-md-block"></div>
       <MDBBtn class="text-uppercase" color="primary" @click="playWithBot">Bot</MDBBtn>
     </div>
-    <p class="text-uppercase mt-5 fs-3">current ranking: {{ userStore.rank }}</p>
-    <p class="text-uppercase fs-3">current elo: {{ userStore.eloPoints }}</p>
+    <p class="text-uppercase mt-5 fs-3">current ranking: {{ user.rank }}</p>
+    <p class="text-uppercase fs-3">current elo: {{ user.eloPoints }}</p>
   </div>
 
   <MDBFooter
@@ -111,8 +123,9 @@ onMounted(async () => {
       <MDBCardBody>
         <MDBCardTitle class="text-uppercase">Last game</MDBCardTitle>
         <MDBCardText>
-          You <span class="fw-bold">{{ matches[0].winner }}</span> against
-          <span class="fw-bold">{{ matches[0].opponent }}</span> (<span class="fw-bold">{{
+          You
+          <span class="fw-bold">{{ matches[0].winner == user.username ? 'won' : 'lost' }}</span>
+          against <span class="fw-bold">{{ matches[0].opponent }}</span> (<span class="fw-bold">{{
             lastOpponentEloPoints
           }}</span
           >)

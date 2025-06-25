@@ -8,7 +8,6 @@ export const useMatchStore = defineStore('match', () => {
   const player2 = ref('');
   const player2RatingChange = ref(0);
   const whichPlayerAmI = ref(0);
-  const myUsername = ref('');
   const currentState = ref<any>({});
   const id = ref('');
   const turn = ref(player1.value);
@@ -21,7 +20,6 @@ export const useMatchStore = defineStore('match', () => {
     player2.value = '';
     player2RatingChange.value = 0;
     whichPlayerAmI.value = 0;
-    myUsername.value = '';
     currentState.value = <any>{};
     id.value = '';
     turn.value = player1.value;
@@ -93,7 +91,6 @@ export const useMatchStore = defineStore('match', () => {
     player2,
     player2RatingChange,
     whichPlayerAmI,
-    myUsername,
     currentState,
     id,
     turn,
