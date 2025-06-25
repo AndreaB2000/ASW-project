@@ -102,6 +102,7 @@ const matchSchema = new mongoose.Schema({
       y: { type: Number, required: true },
     },
   ],
+  ratingDelta: { type: Number, required: true, default: null },
 });
 
 export const DBMatch = mongoose.model<Match>('Match', matchSchema);

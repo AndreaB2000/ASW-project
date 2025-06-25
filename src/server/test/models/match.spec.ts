@@ -30,14 +30,22 @@ describe('Match', () => {
     );
   });
 
-  it('should have the correct fields inside, given at creation time', () => {
-    expect(match.player1).toBe(player1);
-    expect(match.player2).toBe(player2);
-    expect(match.creationDate).toBe(NOW);
-  });
+  describe('constructor', () => {
+    it('should have the correct fields inside, given at creation time', () => {
+      expect(match.player1).toBe(player1);
+      expect(match.player2).toBe(player2);
+      expect(match.creationDate).toBe(NOW);
+      expect(match.moves).toStrictEqual([] as Move[]);
+      expect(match.ratingDelta).toBe(null);
+      expect(match.winner).toBe(null);
+    });
 
-  it('should start with an empty moves list', () => {
-    expect(match.moves).toStrictEqual([] as Move[]);
+    it('should create a match with a custom initial state', () => {
+      expect(matchWithCustomBoard.initialState.width).toBe(customWidth);
+      expect(matchWithCustomBoard.initialState.height).toBe(customHeight);
+      expect(matchWithCustomBoard.initialState.getCell(0, 0).pile).not.toBeNull();
+      expect(matchWithCustomBoard.initialState.getCell(0, 0).pile?.numberOfGrains).toBe(1);
+    });
   });
 
   describe('addMove', () => {
@@ -82,13 +90,6 @@ describe('Match', () => {
     });
   });
 
-  it('should create a match with a custom initial state', () => {
-    expect(matchWithCustomBoard.initialState.width).toBe(customWidth);
-    expect(matchWithCustomBoard.initialState.height).toBe(customHeight);
-    expect(matchWithCustomBoard.initialState.getCell(0, 0).pile).not.toBeNull();
-    expect(matchWithCustomBoard.initialState.getCell(0, 0).pile?.numberOfGrains).toBe(1);
-  });
-
   describe('winner', () => {
     it('should be null if the match is not finished', () => {
       expect(match.winner).toBeNull();
@@ -97,6 +98,16 @@ describe('Match', () => {
     it("should be not null and contain the winner's username if the match is finished", () => {
       expect(matchWithCustomBoard.winner).not.toBeNull();
       expect(matchWithCustomBoard.winner).toBe(player1);
+    });
+  });
+
+  describe('setRatingDelta', () => {
+    it('should set a new value for the rating delta', () => {
+      const newRatingDelta: number = 4.8;
+
+      match.ratingDelta = newRatingDelta;
+      expect(match.ratingDelta).not.toBe(null);
+      expect(match.ratingDelta).toBe(newRatingDelta);
     });
   });
 });

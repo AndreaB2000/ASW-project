@@ -30,7 +30,6 @@ export const findMatch = async (matchId: string): Promise<Match | null> =>
 export const findMatchesByPlayer = async (player: string): Promise<string[]> =>
   await repo.findMatchesByPlayer(player);
 
-// Maybe it can return a boolean representing the effectiveness of the update?
 /**
  * Updates the match corresponding to the provided ID.
  *

@@ -37,12 +37,20 @@ export interface Match {
    */
   addMove(newMove: Move): boolean;
 
+  /**
+   * Calculates the current board state applying moves to the initial board state.
+   */
   computeCurrentState(): Board;
 
   /**
    * The winner of the match. It is null when the match is not finished.
    */
   winner: string | null;
+
+  /**
+   * The score delta that the winner has earned and the looser has lost on match ending.
+   */
+  ratingDelta: number | null;
 }
 
 export class MatchFactory {
@@ -53,6 +61,7 @@ export class MatchFactory {
       object.creationDate,
       BoardFactory.createFromObject(object.initialState),
       object.moves,
+      object.ratingDelta,
     );
 
   public static createWithDefaultInitialState = (
@@ -76,6 +85,7 @@ class MatchImpl implements Match {
     public readonly creationDate: Date,
     public readonly initialState: Board,
     public readonly moves: Move[] = [],
+    public ratingDelta: number | null = null,
   ) {}
 
   get winner(): string | null {

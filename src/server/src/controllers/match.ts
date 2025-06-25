@@ -12,11 +12,20 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
       ioHandler.emitToRoom(matchId, 'move', movingPlayer, move.x, move.y);
       await matchService.getMatch(matchId).then(async match => {
         if (match.winner != null && match.player2 != 'bot') {
+          // Get new ratings
+          const player1Rating = await ratingService.getPlayerRating(match.player1);
+          const player2Rating = await ratingService.getPlayerRating(match.player2);
           const ratings: [number, number] = ratingService.getNewRating(
-            await ratingService.getPlayerRating(match.player1),
-            await ratingService.getPlayerRating(match.player2),
+            player1Rating,
+            player2Rating,
             match.winner == match.player1 ? GameResult.WinA : GameResult.WinB,
           );
+
+          // Calculate rating delta and save match
+          const ratingDelta: number = Math.abs(ratings[0] - player1Rating);
+          await matchService.saveMatch(matchId, ratingDelta);
+
+          // Update ratings
           const success: boolean =
             (await accountService.updateRating(
               await accountService.getAccount(match.player1),
@@ -29,6 +38,7 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
           if (!success) {
             console.error('Error updating ratings');
           }
+
           ioHandler.emitToRoom(matchId, 'over', match.winner);
           ioHandler.socketsLeave(matchId);
         }

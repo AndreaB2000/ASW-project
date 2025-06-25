@@ -1,28 +1,28 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-import { socket, server } from '@/services/server-connections'
+import { onMounted, ref } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+import { socket, server } from '@/services/server-connections';
 import NavBar from '@/components/NavBar.vue';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdb-vue-ui-kit';
+import {
+  MDBBtn,
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+  MDBCardTitle,
+  MDBCol,
+  MDBContainer,
+  MDBInput,
+  MDBRow,
+} from 'mdb-vue-ui-kit';
 import DialogModal from '@/components/DialogModal.vue';
 
-const userStore = useUserStore();
+const user = useUserStore();
 const dialog = ref({
   visible: false,
-  text: ''
+  text: '',
 });
 
-if (!userStore.username || !userStore.email) {
-  server.get('/account/me').then(response => {
-    userStore.setUsername(response.data.username);
-    userStore.setEmail(response.data.email);
-  }).catch((error: Error) => {
-    console.error('Failed to fetch user data:', error);
-    dialog.value.text = 'Failed to fetch user data. Refresh the page.';
-    dialog.value.visible = true;
-  });
-}
-const reactiveEmail = ref(userStore.email);
+const reactiveEmail = ref<string>('');
 const isEditing = ref(false);
 
 function changeProfile() {
@@ -30,35 +30,62 @@ function changeProfile() {
 }
 
 function saveProfile() {
-  socket.emit('change email', reactiveEmail.value, (result: { success: boolean, message: string }) => {
-    if (!result.success) {
-      console.error('Failed to change email:', result.message);
-      dialog.value.text = result.message || 'Failed to change email. Please try again.';
-      dialog.value.visible = true;
-      reactiveEmail.value = userStore.email; // Reset to original email
-      return;
-    }
-    isEditing.value = false;
-    userStore.setEmail(reactiveEmail.value);
-  });
+  socket.emit(
+    'change email',
+    reactiveEmail.value,
+    (result: { success: boolean; message: string }) => {
+      if (!result.success) {
+        console.error('Failed to change email:', result.message);
+        dialog.value.text = result.message || 'Failed to change email. Please try again.';
+        dialog.value.visible = true;
+        reactiveEmail.value = user.email; // Reset to original email
+        return;
+      }
+      isEditing.value = false;
+      user.setEmail(reactiveEmail.value);
+    },
+  );
 }
 
 function exitChange() {
   isEditing.value = false;
-  reactiveEmail.value = userStore.email;
+  reactiveEmail.value = user.email;
 }
+
+onMounted(() => {
+  if (!user.username || !user.email) {
+    server
+      .get('/account/me')
+      .then(response => {
+        user.setUsername(response.data.username);
+        user.setEmail(response.data.email);
+      })
+      .catch((error: Error) => {
+        console.error('Failed to fetch user data:', error);
+        dialog.value.text = 'Failed to fetch user data. Refresh the page.';
+        dialog.value.visible = true;
+      });
+  }
+  reactiveEmail.value = user.email;
+});
 </script>
 
 <template>
   <NavBar />
-  <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center px-3 mt-md-5">
+  <div
+    class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center px-3 mt-md-5"
+  >
     <div class="d-flex flex-column flex-md-row align-items-center mt-4 mt-md-0">
       <h1 class="display-1 fw-bold text-uppercase mt-2 mt-md-0 ms-md-3">profile</h1>
     </div>
   </div>
   <MDBContainer class="mt-4">
     <MDBRow class="justify-content-center text-center text-md-start align-items-center">
-      <MDBCol cols="12" md="auto" class="d-flex justify-content-center justify-content-md-end mb-3 mb-md-0">
+      <MDBCol
+        cols="12"
+        md="auto"
+        class="d-flex justify-content-center justify-content-md-end mb-3 mb-md-0"
+      >
         <figure class="profile-image figure mb-0">
           <img
             src="../assets/noProfileImage.webp"
@@ -68,16 +95,23 @@ function exitChange() {
         </figure>
       </MDBCol>
       <MDBCol cols="12" md="auto" class="mb-3 mb-md-0 ms-md-5">
-        <p class="fs-1 fw-bold">{{ userStore.username }}</p>
+        <p class="fs-1 fw-bold">{{ user.username }}</p>
         <MDBRow>
           <MDBCol>
-            <p class="fs-2" v-if="!isEditing">{{ userStore.email }}</p>
-            <MDBInput v-else v-model="reactiveEmail" label="Email" type="email" class="fs-4" white/>
+            <p class="fs-2" v-if="!isEditing">{{ user.email }}</p>
+            <MDBInput
+              v-else
+              v-model="reactiveEmail"
+              label="Email"
+              type="email"
+              class="fs-4"
+              white
+            />
           </MDBCol>
           <MDBCol class="d-flex flex-column justify-content-center mb-3">
             <MDBBtn color="secondary" @click="changeProfile" v-if="!isEditing">Modify</MDBBtn>
             <MDBRow v-else>
-              <MDBCol >
+              <MDBCol>
                 <MDBBtn color="secondary" @click="saveProfile">Save</MDBBtn>
               </MDBCol>
               <MDBCol>
@@ -86,8 +120,8 @@ function exitChange() {
             </MDBRow>
           </MDBCol>
         </MDBRow>
-        <p class="text-uppercase fs-3">current ranking: {{ userStore.rank }}</p>
-        <p class="text-uppercase fs-3">current elo: {{ userStore.eloPoints }}</p>
+        <p class="text-uppercase fs-3">current ranking: {{ user.rank }}</p>
+        <p class="text-uppercase fs-3">current elo: {{ user.eloPoints }}</p>
       </MDBCol>
       <div class="divider mt-4"></div>
       <h2 class="fw-bold text-uppercase mt-md-3">match history</h2>
@@ -98,7 +132,10 @@ function exitChange() {
               <MDBCardTitle>Date: {{ i }}</MDBCardTitle>
               <MDBCardText>
                 {{ i % 2 === 0 ? 'You won' : 'You lost' }} against
-                <span class="fw-bold">Opponent {{ i }}</span> (<span class="fw-bold">{{ 1500 + i * 10 }}</span>)
+                <span class="fw-bold">Opponent {{ i }}</span> (<span class="fw-bold">{{
+                  1500 + i * 10
+                }}</span
+                >)
               </MDBCardText>
             </MDBCol>
             <MDBCol class="d-flex align-items-center justify-content-end">
@@ -109,7 +146,7 @@ function exitChange() {
       </MDBCard>
     </MDBRow>
   </MDBContainer>
-  <DialogModal v-model="dialog.visible" :text=dialog.text @close="dialog.visible = false;" />
+  <DialogModal v-model="dialog.visible" :text="dialog.text" @close="dialog.visible = false" />
 </template>
 
 <style scoped>

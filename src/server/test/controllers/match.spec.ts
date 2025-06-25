@@ -9,24 +9,22 @@ import { Match, MatchFactory } from '../../src/models/Match';
 import { BoardFactory } from '../../src/models/Board';
 import { PileFactory } from '../../src/models/Pile';
 import * as ioHandler from '../../src/sockets/socket';
-import { Server } from 'socket.io';
-import { AccountFactory } from '../../src/models/Account';
 
 describe('Match controller', () => {
-  describe('addMove', () => {
-    const testId: string = '507f1f77bcf86cd799439011';
-    const player1: string = 'Alice';
-    const player2: string = 'Bob';
-    const now = new Date();
-    const move: Move = MoveFactory.create(1, 2);
-    const mockMatch: Match = MatchFactory.createWithDefaultInitialState(player1, player2, now);
-    const mockMatchWithWinner: Match = MatchFactory.createWithCustomInitialState(
-      player1,
-      player2,
-      now,
-      BoardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: PileFactory.create(player1, 1) }]),
-    );
+  const testId: string = '507f1f77bcf86cd799439011';
+  const player1: string = 'Alice';
+  const player2: string = 'Bob';
+  const now = new Date();
+  const move: Move = MoveFactory.create(1, 2);
+  const mockMatch: Match = MatchFactory.createWithDefaultInitialState(player1, player2, now);
+  const mockMatchWithWinner: Match = MatchFactory.createWithCustomInitialState(
+    player1,
+    player2,
+    now,
+    BoardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: PileFactory.create(player1, 1) }]),
+  );
 
+  describe('addMove', () => {
     beforeEach(() => {
       jest.restoreAllMocks();
       jest.clearAllMocks();
@@ -47,9 +45,11 @@ describe('Match controller', () => {
     it('should call emitToRoom twice if there is a winner', async () => {
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
       jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
+      const spySaveMatch = jest.spyOn(matchService, 'saveMatch').mockResolvedValue(testId);
+      jest.spyOn(ratingService, 'getNewRating').mockReturnValue([20, 40]);
 
       // Non-relevant mocks
-      jest.spyOn(ratingService, 'getPlayerRating').mockResolvedValue(0);
+      jest.spyOn(ratingService, 'getPlayerRating').mockResolvedValue(30);
       jest.spyOn(accountService, 'updateRating').mockResolvedValue(true);
       jest.spyOn(accountService, 'getAccount').mockResolvedValue(null);
       const spyEmitToRoom = jest
@@ -66,6 +66,7 @@ describe('Match controller', () => {
       expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player1, move.x, move.y);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player1);
+      expect(spySaveMatch).toHaveBeenCalledWith(testId, Math.abs(20 - 30)); // = Math.abs(40 - 30)
       expect(spySocketsLeave).toHaveBeenCalled();
     });
 
