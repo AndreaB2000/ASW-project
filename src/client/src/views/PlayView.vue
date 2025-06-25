@@ -11,18 +11,6 @@ const router = useRouter();
 const match = useMatchStore();
 const user = useUserStore();
 
-if (!user.username || !user.email) {
-  server
-    .get('/account/me')
-    .then(response => {
-      user.setUsername(response.data.username);
-      user.setEmail(response.data.email);
-    })
-    .catch((error: Error) => {
-      console.error('Failed to fetch user data:', error);
-    });
-}
-
 const matches = ref<{ opponent: string; winner: string | null; creationDate: Date }[]>([]);
 const currentUser = ref({
   rating: 'loading...',
@@ -48,38 +36,48 @@ onMounted(async () => {
     router.push({ path: '/match' });
   });
 
-  console.log('user', user.username);
+  if (!user.username || !user.email) {
+    server
+      .get('/account/me')
+      .then(response => {
+        user.setUsername(response.data.username);
+        user.setEmail(response.data.email);
 
-  socket.emit('matchHistory', user.username, (matchIds: string[]) => {
-    console.log('matchIds', JSON.stringify(matchIds));
-    matchIds.forEach((id: string) => {
-      socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
-        if (error) {
-          console.error('Error getting match', error);
-          return;
-        }
-        matches.value.push({
-          opponent: user == matchData.player1 ? matchData.player2 : matchData.player1,
-          winner: matchData.winner,
-          creationDate: matchData.creationDate,
+        socket.emit('matchHistory', user.username, (matchIds: string[]) => {
+          console.log('matchIds', JSON.stringify(matchIds));
+          matchIds.forEach((id: string) => {
+            socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
+              if (error) {
+                console.error('Error getting match', error);
+                return;
+              }
+              matches.value.push({
+                opponent: user == matchData.player1 ? matchData.player2 : matchData.player1,
+                winner: matchData.winner,
+                creationDate: matchData.creationDate,
+              });
+            });
+          });
         });
-      });
-    });
-  });
 
-  socket.emit('getAccountInfo', (response: string) => {
-    try {
-      const data = JSON.parse(response);
-      user.rank = data.position;
-      user.eloPoints = data.rating;
-      currentUser.value = {
-        rating: data.rating || 'N/A',
-        position: data.position || 'N/A',
-      };
-    } catch (e) {
-      console.error('Error parsing account info:', e);
-    }
-  });
+        socket.emit('getAccountInfo', (response: string) => {
+          try {
+            const data = JSON.parse(response);
+            user.rank = data.position;
+            user.eloPoints = data.rating;
+            currentUser.value = {
+              rating: data.rating || 'N/A',
+              position: data.position || 'N/A',
+            };
+          } catch (e) {
+            console.error('Error parsing account info:', e);
+          }
+        });
+      })
+      .catch((error: Error) => {
+        console.error('Failed to fetch user data:', error);
+      });
+  }
 });
 
 // DO NOT write this, or matchmaking time will be infinite
