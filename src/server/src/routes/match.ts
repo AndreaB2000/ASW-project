@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io/dist';
 import * as matchController from '../controllers/match';
 import * as matchService from '../services/match';
-import { Move, MoveFactory } from '../models/Move';
+import { MoveFactory } from '../models/Move';
 import * as ioHandler from '../sockets/socket';
 import * as botService from '../services/bot';
 

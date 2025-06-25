@@ -76,6 +76,7 @@ db.matches.insertMany([
         ),
     },
     moves: [],
+    ratingDelta: 32.2,
   },
   {
     // A completed match where expert won against beginner
@@ -96,6 +97,7 @@ db.matches.insertMany([
         ),
     },
     moves: [],
+    ratingDelta: 10.1,
   },
   {
     // A completed match where expert won against beginner
@@ -127,6 +129,7 @@ db.matches.insertMany([
       { x: 5, y: 6 }, // beginner moves
       { x: 3, y: 3 }, // expert moves - wins by capturing all beginner's piles
     ],
+    ratingDelta: 27.4,
   },
   {
     // An ongoing match between test and user

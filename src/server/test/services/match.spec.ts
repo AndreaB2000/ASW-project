@@ -193,7 +193,7 @@ describe('Match Service', () => {
       jest.spyOn(inProgressMatchRepo, 'deleteMatch').mockResolvedValue(true);
       jest.spyOn(endedMatchRepo, 'createMatch').mockResolvedValue(otherID);
 
-      const result = await saveMatch(matchID);
+      const result = await saveMatch(matchID, 1);
 
       expect(inProgressMatchRepo.findMatch).toHaveBeenCalledWith(matchID);
       expect(inProgressMatchRepo.deleteMatch).toHaveBeenCalledWith(matchID);
@@ -206,7 +206,7 @@ describe('Match Service', () => {
       jest.spyOn(inProgressMatchRepo, 'deleteMatch');
       jest.spyOn(endedMatchRepo, 'createMatch');
 
-      const result = await saveMatch(matchID);
+      const result = await saveMatch(matchID, 1);
 
       expect(inProgressMatchRepo.findMatch).toHaveBeenCalledWith(matchID);
       expect(inProgressMatchRepo.deleteMatch).not.toHaveBeenCalled();

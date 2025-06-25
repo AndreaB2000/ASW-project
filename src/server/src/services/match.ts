@@ -92,13 +92,15 @@ export const addMove = async (
  * the ID does not change.
  *
  * @param matchId the ID of the match to be saved permanently.
+ * @param ratingDelta the absolute value of the rating score exchanged between players.
  * @returns the new ID of the permanently saved match.
  */
-export const saveMatch = async (matchId: string): Promise<string> => {
-  const match = await inProgressMatchRepo.findMatch(matchId);
+export const saveMatch = async (matchId: string, ratingDelta: number): Promise<string> => {
+  const match: Match = await inProgressMatchRepo.findMatch(matchId);
   if (match == null) {
     return null;
   }
+  match.ratingDelta = ratingDelta;
   await inProgressMatchRepo.deleteMatch(matchId);
   return await endedMatchRepo.createMatch(match, matchId);
 };

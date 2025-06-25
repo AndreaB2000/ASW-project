@@ -6,29 +6,19 @@ import { useMatchStore } from '@/stores/matchStore';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBFooter } from 'mdb-vue-ui-kit';
+import { getMatchHistory, type Match } from '@/services/match-history';
 
 const router = useRouter();
 const match = useMatchStore();
 const user = useUserStore();
 
-const matches = ref<{ opponent: string; winner: string | null; creationDate: Date }[]>([]);
-const currentUser = ref({
-  rating: 'loading...',
-  position: 'loading...',
-});
-
-function playPVP() {
-  console.log('enterQueue');
-  socket.emit('requestMatch');
-}
+const matches = ref<Match[]>([]);
+const lastEndedMatchId = ref(0);
 
 function playWithBot() {
   console.log('match with bot requested');
   socket.emit('requestMatchWithBot');
 }
-
-// TODO | BASO: Get this after getting the last match
-const lastOpponentEloPoints = ref(0);
 
 onMounted(async () => {
   socket.on('matchFound', (matchId: string) => {
@@ -36,48 +26,33 @@ onMounted(async () => {
     router.push({ path: '/match' });
   });
 
-  if (!user.username || !user.email) {
-    server
-      .get('/account/me')
-      .then(response => {
-        user.setUsername(response.data.username);
-        user.setEmail(response.data.email);
+  server
+    .get('/account/me')
+    .then(async response => {
+      user.setUsername(response.data.username);
+      user.setEmail(response.data.email);
 
-        socket.emit('matchHistory', user.username, (matchIds: string[]) => {
-          console.log('matchIds', JSON.stringify(matchIds));
-          matchIds.forEach((id: string) => {
-            socket.emit('getMatch', id, (error: any, matchData: any, whichPlayerAmI: number) => {
-              if (error) {
-                console.error('Error getting match', error);
-                return;
-              }
-              matches.value.push({
-                opponent: user == matchData.player1 ? matchData.player2 : matchData.player1,
-                winner: matchData.winner,
-                creationDate: matchData.creationDate,
-              });
-            });
-          });
-        });
+      matches.value = (await getMatchHistory(user.username)).reverse();
+      while (
+        matches.value.length > lastEndedMatchId.value &&
+        matches.value[lastEndedMatchId.value].winner == null
+      ) {
+        lastEndedMatchId.value += 1;
+      }
 
-        socket.emit('getAccountInfo', (response: string) => {
-          try {
-            const data = JSON.parse(response);
-            user.rank = data.position;
-            user.eloPoints = data.rating;
-            currentUser.value = {
-              rating: data.rating || 'N/A',
-              position: data.position || 'N/A',
-            };
-          } catch (e) {
-            console.error('Error parsing account info:', e);
-          }
-        });
-      })
-      .catch((error: Error) => {
-        console.error('Failed to fetch user data:', error);
+      socket.emit('getAccountInfo', (response: string) => {
+        try {
+          const data = JSON.parse(response);
+          user.rank = data.position;
+          user.eloPoints = data.rating;
+        } catch (e) {
+          console.error('Error parsing account info:', e);
+        }
       });
-  }
+    })
+    .catch((error: Error) => {
+      console.error('Failed to fetch user data:', error);
+    });
 });
 
 // DO NOT write this, or matchmaking time will be infinite
@@ -114,7 +89,7 @@ onMounted(async () => {
     style="background-color: rgba(0, 0, 0, 0) !important"
   >
     <MDBCard
-      v-if="matches.length > 0 && matches[0].opponent"
+      v-if="matches.length > lastEndedMatchId"
       class="w-100 mx-3 mb-3"
       style="max-width: 600px"
     >
@@ -122,10 +97,16 @@ onMounted(async () => {
         <MDBCardTitle class="text-uppercase">Last game</MDBCardTitle>
         <MDBCardText>
           You
-          <span class="fw-bold">{{ matches[0].winner == user.username ? 'won' : 'lost' }}</span>
-          against <span class="fw-bold">{{ matches[0].opponent }}</span> (<span class="fw-bold">{{
-            lastOpponentEloPoints
-          }}</span
+          <span class="fw-bold"
+            >{{ matches[lastEndedMatchId].creationDate }} -
+            {{ matches[lastEndedMatchId].winner == user.username ? 'won' : 'lost' }}</span
+          >
+          against <span class="fw-bold">{{ matches[lastEndedMatchId].opponent }}</span> (<span
+            class="fw-bold"
+            >{{
+              matches[lastEndedMatchId].ratingDelta *
+              (matches[lastEndedMatchId].winner != user.username ? -1 : 1)
+            }}</span
           >)
         </MDBCardText>
       </MDBCardBody>
