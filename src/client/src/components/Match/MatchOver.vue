@@ -6,16 +6,15 @@ import { onMounted, onUnmounted, ref } from 'vue';
 
 const match = useMatchStore();
 const user = useUserStore();
-const myUsername = match.whichPlayerAmI == 1 ? match.player1 : match.player2;
 const ratingChange = ref(0);
 
 onMounted(() => {
-  if (myUsername == match.player1) {
+  if (user.username == match.player1) {
     ratingChange.value = match.player1RatingChange;
   } else {
     ratingChange.value = match.player2RatingChange;
   }
-  if (match.winner != myUsername) {
+  if (match.winner != user.username) {
     ratingChange.value = -ratingChange.value;
   }
 });
@@ -36,14 +35,14 @@ onUnmounted(() => {
       </MDBRow>
       <MDBRow class="d-flex flex-column align-content-center" style="min-height: 35vh">
         <MDBRow
-          v-if="match.player2 != 'bot' && match.winner == myUsername"
+          v-if="match.player2 != 'bot' && match.winner == user.username"
           class="justify-content-center align-items-center sub-element"
           style="border-color: green; color: green"
         >
           <p>You won!</p>
         </MDBRow>
         <MDBRow
-          v-else-if="match.player2 != 'bot' && match.winner != myUsername"
+          v-else-if="match.player2 != 'bot' && match.winner != user.username"
           class="justify-content-center align-items-center sub-element"
           style="border-color: red; color: red"
         >
