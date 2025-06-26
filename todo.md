@@ -3,7 +3,6 @@
 - `/play` | `/profile` client-side | delete account -> Filippo
 - leaderboard client-side -> Leonardo
 - Fix temporary coordinates inversion in botService -> Leonardo
-- Implement missing parts in ProfileView -> Baso
 
 ## TODO not assigned before ending
 

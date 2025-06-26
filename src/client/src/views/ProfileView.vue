@@ -15,6 +15,7 @@ import {
   MDBRow,
 } from 'mdb-vue-ui-kit';
 import DialogModal from '@/components/DialogModal.vue';
+import { getMatchHistory, type Match } from '@/services/match-history';
 
 const user = useUserStore();
 const dialog = ref({
@@ -24,6 +25,7 @@ const dialog = ref({
 
 const reactiveEmail = ref<string>('');
 const isEditing = ref(false);
+const matches = ref<Match[]>([]);
 
 function changeProfile() {
   isEditing.value = true;
@@ -53,19 +55,29 @@ function exitChange() {
 }
 
 onMounted(() => {
-  if (!user.username || !user.email) {
-    server
-      .get('/account/me')
-      .then(response => {
-        user.setUsername(response.data.username);
-        user.setEmail(response.data.email);
-      })
-      .catch((error: Error) => {
-        console.error('Failed to fetch user data:', error);
-        dialog.value.text = 'Failed to fetch user data. Refresh the page.';
-        dialog.value.visible = true;
+  server
+    .get('/account/me')
+    .then(async response => {
+      user.setUsername(response.data.username);
+      user.setEmail(response.data.email);
+
+      matches.value = (await getMatchHistory(user.username)).reverse();
+
+      socket.emit('getAccountInfo', (response: string) => {
+        try {
+          const data = JSON.parse(response);
+          user.rank = data.position;
+          user.eloPoints = data.rating;
+        } catch (e) {
+          console.error('Error parsing account info:', e);
+        }
       });
-  }
+    })
+    .catch((error: Error) => {
+      console.error('Failed to fetch user data:', error);
+      dialog.value.text = 'Failed to fetch user data. Refresh the page.';
+      dialog.value.visible = true;
+    });
   reactiveEmail.value = user.email;
 });
 </script>
@@ -109,7 +121,7 @@ onMounted(() => {
             />
           </MDBCol>
           <MDBCol class="d-flex flex-column justify-content-center mb-3">
-            <MDBBtn color="secondary" @click="changeProfile" v-if="!isEditing">Modify</MDBBtn>
+            <MDBBtn color="secondary" @click="changeProfile" v-if="!isEditing">Edit</MDBBtn>
             <MDBRow v-else>
               <MDBCol>
                 <MDBBtn color="secondary" @click="saveProfile">Save</MDBBtn>
@@ -125,21 +137,26 @@ onMounted(() => {
       </MDBCol>
       <div class="divider mt-4"></div>
       <h2 class="fw-bold text-uppercase mt-md-3">match history</h2>
-      <MDBCard v-for="i in 3" :key="i" class="mt-4 mb-4">
+      <MDBCard v-for="(match, i) in matches" :key="i" class="mt-4 mb-4">
         <MDBCardBody>
           <MDBRow>
             <MDBCol>
-              <MDBCardTitle>Date: {{ i }}</MDBCardTitle>
-              <MDBCardText>
-                {{ i % 2 === 0 ? 'You won' : 'You lost' }} against
-                <span class="fw-bold">Opponent {{ i }}</span> (<span class="fw-bold">{{
-                  1500 + i * 10
+              <MDBCardTitle>Date: {{ match.creationDate }}</MDBCardTitle>
+              <MDBCardText v-if="match.winner != null">
+                {{ match.creationDate }} - You
+                <span v-if="match.winner == user.username" class="fw-bold text-success"> won</span>
+                <span v-else class="fw-bold text-danger"> lost</span>
+                against
+                <span class="fw-bold">{{ match.opponent }}</span>
+                (<span class="fw-bold">{{
+                  match.ratingDelta * (match.winner != user.username ? -1 : 1)
                 }}</span
                 >)
               </MDBCardText>
-            </MDBCol>
-            <MDBCol class="d-flex align-items-center justify-content-end">
-              <MDBBtn color="primary">Replay</MDBBtn>
+              <MDBCardText v-else>
+                A match against <span class="fw-bold">{{ match.opponent }}</span> is
+                <span class="fw-bold text-warning">in progress</span>.
+              </MDBCardText>
             </MDBCol>
           </MDBRow>
         </MDBCardBody>
