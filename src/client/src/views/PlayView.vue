@@ -94,13 +94,16 @@ onMounted(async () => {
       style="max-width: 600px"
     >
       <MDBCardBody>
-        <MDBCardTitle class="text-uppercase">Last game</MDBCardTitle>
+        <MDBCardTitle class="text-uppercase">Last match</MDBCardTitle>
         <MDBCardText>
-          You
-          <span class="fw-bold"
-            >{{ matches[lastEndedMatchId].creationDate }} -
-            {{ matches[lastEndedMatchId].winner == user.username ? 'won' : 'lost' }}</span
+          {{ matches[lastEndedMatchId].creationDate }} - You
+          <span
+            v-if="matches[lastEndedMatchId].winner == user.username"
+            class="fw-bold text-success"
           >
+            won</span
+          >
+          <span v-else class="fw-bold text-danger"> lost</span>
           against <span class="fw-bold">{{ matches[lastEndedMatchId].opponent }}</span> (<span
             class="fw-bold"
             >{{
