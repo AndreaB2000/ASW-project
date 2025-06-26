@@ -5,6 +5,7 @@ import * as accountService from '../services/account';
 import { GameResult } from '../services/rating';
 import * as ioHandler from '../sockets/socket';
 import { RatingFactory } from '../models/Rating';
+import { roundToDecimal } from '../utils/round';
 
 export const addMove = async (matchId: string, movingPlayer: string, move: Move): Promise<void> => {
   await matchService.addMove(matchId, movingPlayer, move).then(async success => {
@@ -22,7 +23,7 @@ export const addMove = async (matchId: string, movingPlayer: string, move: Move)
           );
 
           // Calculate rating delta and save match
-          const ratingDelta: number = Math.abs(ratings[0] - player1Rating);
+          const ratingDelta: number = roundToDecimal(Math.abs(ratings[0] - player1Rating), 1);
           await matchService.saveMatch(matchId, ratingDelta);
 
           // Update ratings

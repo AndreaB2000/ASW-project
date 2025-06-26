@@ -79,9 +79,9 @@ db.matches.insertMany([
     ratingDelta: 32.2,
   },
   {
-    // A completed match where expert won against beginner
+    // A completed match where expert won against test
     player1: 'expert',
-    player2: 'beginner',
+    player2: 'test',
     creationDate: new Date('2025-05-11T14:30:00Z'),
     initialState: {
       height: 9,
@@ -100,8 +100,8 @@ db.matches.insertMany([
     ratingDelta: 10.1,
   },
   {
-    // A completed match where expert won against beginner
-    player1: 'expert',
+    // A completed match where test won against beginner
+    player1: 'test',
     player2: 'beginner',
     creationDate: new Date('2025-05-12T14:30:00Z'),
     initialState: {
@@ -115,7 +115,7 @@ db.matches.insertMany([
             .map((_, col) => ({
               pile:
                 row === 2 && col === 2
-                  ? { owner: 'expert', numberOfGrains: 3 }
+                  ? { owner: 'test', numberOfGrains: 3 }
                   : row === 6 && col === 6
                   ? { owner: 'beginner', numberOfGrains: 3 }
                   : null,
@@ -130,60 +130,6 @@ db.matches.insertMany([
       { x: 3, y: 3 }, // expert moves - wins by capturing all beginner's piles
     ],
     ratingDelta: 27.4,
-  },
-  {
-    // An ongoing match between test and user
-    player1: 'test',
-    player2: 'user',
-    creationDate: new Date('2025-05-20T09:15:00Z'),
-    initialState: {
-      height: 9,
-      width: 9,
-      state: Array(9)
-        .fill()
-        .map((_, row) =>
-          Array(9)
-            .fill()
-            .map((_, col) => ({
-              pile:
-                row === 2 && col === 2
-                  ? { owner: 'test', numberOfGrains: 3 }
-                  : row === 6 && col === 6
-                  ? { owner: 'user', numberOfGrains: 3 }
-                  : null,
-            }))
-        ),
-    },
-    moves: [
-      { x: 2, y: 2 }, // test moves
-      { x: 6, y: 6 }, // user moves
-      { x: 3, y: 2 }, // test moves - match is still in progress
-    ],
-  },
-  {
-    // A new match that just started between beginner and test
-    player1: 'beginner',
-    player2: 'test',
-    creationDate: new Date('2025-05-22T18:45:00Z'),
-    initialState: {
-      height: 9,
-      width: 9,
-      state: Array(9)
-        .fill()
-        .map((_, row) =>
-          Array(9)
-            .fill()
-            .map((_, col) => ({
-              pile:
-                row === 2 && col === 2
-                  ? { owner: 'beginner', numberOfGrains: 3 }
-                  : row === 6 && col === 6
-                  ? { owner: 'test', numberOfGrains: 3 }
-                  : null,
-            }))
-        ),
-    },
-    moves: [], // No moves yet - match just started
   },
 ]);
 

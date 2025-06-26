@@ -9,11 +9,12 @@ const user = useUserStore();
 const ratingChange = ref(0);
 
 onMounted(() => {
-  if (user.username == match.player1) {
+  if (match.winner == match.player1) {
     ratingChange.value = match.player1RatingChange;
-  } else {
+  } else if (match.winner == match.player2) {
     ratingChange.value = match.player2RatingChange;
   }
+
   if (match.winner != user.username) {
     ratingChange.value = -ratingChange.value;
   }

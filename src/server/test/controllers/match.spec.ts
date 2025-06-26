@@ -17,11 +17,17 @@ describe('Match controller', () => {
   const now = new Date();
   const move: Move = MoveFactory.create(1, 2);
   const mockMatch: Match = MatchFactory.createWithDefaultInitialState(player1, player2, now);
-  const mockMatchWithWinner: Match = MatchFactory.createWithCustomInitialState(
+  const mockMatchWithWinner1: Match = MatchFactory.createWithCustomInitialState(
     player1,
     player2,
     now,
     BoardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: PileFactory.create(player1, 1) }]),
+  );
+  const mockMatchWithWinner2: Match = MatchFactory.createWithCustomInitialState(
+    player1,
+    player2,
+    now,
+    BoardFactory.createCustom(9, 9, [{ x: 0, y: 0, pile: PileFactory.create(player2, 1) }]),
   );
 
   describe('addMove', () => {
@@ -42,9 +48,9 @@ describe('Match controller', () => {
       expect(spyEmitToRoom).toHaveBeenCalledWith(testId, 'move', player1, move.x, move.y);
     });
 
-    it('should call emitToRoom twice if there is a winner', async () => {
+    it('should call emitToRoom twice if there is a winner (player1)', async () => {
       jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
-      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner);
+      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner1);
       const spySaveMatch = jest.spyOn(matchService, 'saveMatch').mockResolvedValue(testId);
       jest.spyOn(ratingService, 'getNewRating').mockReturnValue([20, 40]);
 
@@ -66,6 +72,34 @@ describe('Match controller', () => {
       expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player1, move.x, move.y);
       expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player1);
+      expect(spySaveMatch).toHaveBeenCalledWith(testId, Math.abs(20 - 30)); // = Math.abs(40 - 30)
+      expect(spySocketsLeave).toHaveBeenCalled();
+    });
+
+    it('should call emitToRoom twice if there is a winner (player2)', async () => {
+      jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
+      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner2);
+      const spySaveMatch = jest.spyOn(matchService, 'saveMatch').mockResolvedValue(testId);
+      jest.spyOn(ratingService, 'getNewRating').mockReturnValue([20, 40]);
+
+      // Non-relevant mocks
+      jest.spyOn(ratingService, 'getPlayerRating').mockResolvedValue(30);
+      jest.spyOn(accountService, 'updateRating').mockResolvedValue(true);
+      jest.spyOn(accountService, 'getAccount').mockResolvedValue(null);
+      const spyEmitToRoom = jest
+        .spyOn(ioHandler, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
+      const spySocketsLeave = jest
+        .spyOn(ioHandler, 'socketsLeave')
+        .mockImplementation(() => {})
+        .mockClear();
+
+      await addMove(testId, player2, move);
+
+      expect(spyEmitToRoom).toHaveBeenCalledTimes(2);
+      expect(spyEmitToRoom).toHaveBeenNthCalledWith(1, testId, 'move', player2, move.x, move.y);
+      expect(spyEmitToRoom).toHaveBeenNthCalledWith(2, testId, 'over', player2);
       expect(spySaveMatch).toHaveBeenCalledWith(testId, Math.abs(20 - 30)); // = Math.abs(40 - 30)
       expect(spySocketsLeave).toHaveBeenCalled();
     });
@@ -99,6 +133,31 @@ describe('Match controller', () => {
 
       expect(spyGetMatch).not.toHaveBeenCalled();
       expect(spyEmitToRoom).not.toHaveBeenCalled();
+    });
+
+    it('should report an error if the rating updates go wrong', async () => {
+      jest.spyOn(matchService, 'addMove').mockResolvedValue(true);
+      jest.spyOn(matchService, 'getMatch').mockResolvedValue(mockMatchWithWinner1);
+      jest.spyOn(matchService, 'saveMatch').mockResolvedValue(testId);
+      jest.spyOn(ratingService, 'getNewRating').mockReturnValue([20, 40]);
+      const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      // Non-relevant mocks
+      jest.spyOn(ratingService, 'getPlayerRating').mockResolvedValue(30);
+      jest.spyOn(accountService, 'updateRating').mockResolvedValue(false);
+      jest.spyOn(accountService, 'getAccount').mockResolvedValue(null);
+      jest
+        .spyOn(ioHandler, 'emitToRoom')
+        .mockImplementation(() => {})
+        .mockClear();
+      jest
+        .spyOn(ioHandler, 'socketsLeave')
+        .mockImplementation(() => {})
+        .mockClear();
+
+      await addMove(testId, player1, move);
+
+      expect(spyConsoleError).toHaveBeenCalledWith('Error updating ratings');
     });
   });
 });
