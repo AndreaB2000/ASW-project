@@ -211,12 +211,11 @@ _Conquer_: the event of a cell where:
 
 _Clock_: time counter that tracks how many seconds each player has left to play to game
 
-_Elo rating system_: method used to calculate and update player ratings in competitive games and sports ([wikipedia](https://en.wikipedia.org/wiki/Elo_rating_system)).
+_Elo rating_: a value representing the skill of the player ([wikipedia](https://en.wikipedia.org/wiki/Elo_rating_system)).
 
 _Elo Ranking_: ranking rappresenting the strenght of a given player.
 
-_Matchmaking_: the algorithm responsible for selecting players to face each
-other among the players available.
+_Matchmaking_: the phase in which a player searches an opponent among the players available.
 
 #### Context map
 
@@ -388,9 +387,39 @@ This graph represents the dependencies in the hexagonal architecture.
 
 The arrows should be read as "depends on" (e.g. A --> B should be read A depends on B).
 
+#### Model integrity
+
+Every library used is wrapped by an **anti-corruption layer**, an additional layer that abstracts from the library and performs integrity checks.
+
 ### Detailed Design
 
-Repository classes should only implement CRUD (Create, Read, Update, Delete) operations, while higher-level operations should be implemented in the Service classes.
+#### Building blocks
+
+This section explains the mapping between domain concepts and building blocks.
+
+- User: entity
+- Player: aggregate root (contains account, pile, ranking)
+- Account: entity
+- Login: domain event
+- Register: domain event
+- Game Board: aggregate root (contains cells)
+- Cell: entity
+- Pile: entity
+- Grain: value object
+- Match: aggregate root (contains players, game board, clocks)
+- Win Condition: value object
+- Turn: value object
+- Move: value object
+- Collapse: domain event
+- Conquer: domain event
+- Clock: entity
+- Elo rating: entity
+- Elo Ranking: entity
+- Matchmaking: domain event
+
+Repsitories, services and factories are implicit for every entity, value object and aggregate root.
+
+Repositories are needed to save, read, update or delete the relative building block; services are meant to expose business logics in order to decide how to manage the underlying building block; factories help repositories and services to create building blocks on demand.
 
 #### Match
 
@@ -404,8 +433,6 @@ Matches can be represented uniquely by:
 The starting board can be represented as a matrix of dimensions $D \times D$ where every given $x_{i,j}$ is a cell that can contain a pile, in which the number of grains is stored.
 
 The list of moves can be represented as a list of tuples $(i,j)$ where the tuple represents the coordinates of the pile where the player has decided to add a grain.
-
-<!-- RICORDARSI DI INSERIRE COME SONO STATI MAPPATI I VARI CONCETTI DI UBIQUITOUS LANGUAGE (in quale building block) -->
 
 ##### Class diagram
 
@@ -683,6 +710,8 @@ The best move is determined by evaluating all possible moves and selecting the o
 
 ## Implementation
 
+Repository classes should only implement CRUD (Create, Read, Update, Delete) operations, while higher-level operations should be implemented in the Service classes.
+
 ### Game AI
 
 The game AI is implemented using [Tau Prolog](https://tau-prolog.org/), a Prolog interpreter for JavaScript.
@@ -709,6 +738,42 @@ jest and stuff
 <!-- TODO specificare come runnare i test, coverage, decisioni ecc-->
 <!-- TODO cosa non e' compreso nei test-->
 
+## DevOps
+
+### Git hooks
+
+Git hooks have been used to check commit messages: it has been chosen to adhere to [conventional commits standard](https://conventionalcommits.org/en/v1.0.0/). Commits have to have the following structure:
+
+```
+<type>(<scope>)<!>: <description>
+```
+
+Scopes were usually main concepts like "server", "client", "ui", "auth", ...
+
+This system has been used to comply with [semantic release](https://www.npmjs.com/package/semantic-release): a tool that handles versioning adhering to the [SemVer](https://semver.org/) standard.
+
+### Git branches
+
+In addition to the "main" and the "dev" branches, possible "feature" and "refactor" branches have been created to implement project requirements.
+
+### Build automation
+
+- NPM build, serve
+
+### Containerization
+
+- Docker compose
+- Images
+
+### CI/CD
+
+- Renovate bot
+- Sonar
+- Signing with GPG key
+- Semantic release + npm and dockerhub publish
+- Automatic tests
+- Discord send notification
+
 ## Deployment
 
 <!-- Rilascio, installazione e messa in funzione. -->
@@ -727,3 +792,7 @@ root project directory and must contain the following parameters:
 - Improve disconnection handling, right now players are not notified when the opponent disconnects
 - Add a chat system to the match
 - Profile image upload
+
+```
+
+```
