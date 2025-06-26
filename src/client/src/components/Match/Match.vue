@@ -11,9 +11,6 @@ import { useUserStore } from '@/stores/userStore';
 const match = useMatchStore();
 const user = useUserStore();
 
-const myRatingChange = ref<number>(0);
-const opponentRatingChange = ref<number>(0);
-
 onMounted(() => {
   let lastMovePromise = Promise.resolve();
   socket.on('move', (movingPlayer: string, x: number, y: number) => {
@@ -47,27 +44,20 @@ onMounted(() => {
     socket.emit('getRating', match.player1, (player1rating: number) => {
       if (match.player2 != 'bot') {
         socket.emit('getRating', match.player2, (player2rating: number) => {
-          match.player2RatingChange = getRatingChange(
-            player1rating,
-            player2rating,
-            GameResult.WinA,
-          );
           match.player1RatingChange = getRatingChange(
+            player1rating,
+            player2rating,
+            GameResult.WinA,
+          );
+          match.player2RatingChange = getRatingChange(
             player2rating,
             player1rating,
             GameResult.WinA,
           );
-          if (match.whichPlayerAmI == 0) {
-            myRatingChange.value = match.player1RatingChange;
-            opponentRatingChange.value = match.player2RatingChange;
-          } else {
-            myRatingChange.value = match.player2RatingChange;
-            opponentRatingChange.value = match.player1RatingChange;
-          }
         });
       } else {
-        myRatingChange.value = 0;
-        opponentRatingChange.value = 0;
+        match.player1RatingChange = 0;
+        match.player2RatingChange = 0;
       }
     });
   });

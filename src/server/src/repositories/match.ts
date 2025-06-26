@@ -11,7 +11,8 @@ export class MatchRepository {
       player2: match.player2,
       creationDate: match.creationDate,
       initialState: match.initialState,
-      moves: [],
+      moves: match.moves,
+      ratingDelta: match.ratingDelta,
     });
     return (await dbmatch.save())._id.toString();
   }
@@ -102,7 +103,7 @@ const matchSchema = new mongoose.Schema({
       y: { type: Number, required: true },
     },
   ],
-  ratingDelta: { type: Number, required: true, default: null },
+  ratingDelta: { type: Number, default: null },
 });
 
 export const DBMatch = mongoose.model<Match>('Match', matchSchema);

@@ -23,8 +23,10 @@ export const newMatch = async (
   //   player2,
   //   creationDate,
   //   BoardFactory.createCustom(9, 9, [
-  //     { x: 1, y: 1, pile: PileFactory.create(player1, 3) },
-  //     { x: 1, y: 2, pile: PileFactory.create(player2, 3) },
+  //     { x: 1, y: 1, pile: PileFactory.create(player1, 1) },
+  //     { x: 1, y: 2, pile: PileFactory.create(player2, 1) },
+  //     { x: 2, y: 1, pile: PileFactory.create(player1, 1) },
+  //     { x: 2, y: 2, pile: PileFactory.create(player2, 1) },
   //   ]),
   // );
   return await inProgressMatchRepo.createMatch(match);
