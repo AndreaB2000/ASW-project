@@ -767,7 +767,25 @@ In addition to the "main" and the "dev" branches, possible "feature" and "refact
 
 ### Build automation
 
-- NPM build, serve
+Npm features has been used for build automation. In particular, many custom npm scripts has been develop to ease application development. The main 2 are `build` and `serve`.
+
+#### Build
+
+This task has been created to fully automate the building process. All builds will be inserted in the `dist/` directory providing the input for the publishing task (done in GitHub actions). It first build the server, the client and generate the code documentation (extracted from the code comments). 
+
+Then it copies the `package.json` and `package-lock.json` of root, server and client to the corresponding positions in the `dist` directory. This is needed in order to let people downloading the package to start it with the npm commands.
+
+In the end it adds the `LICENSE`, `CHANGELOG` and `README` to the build.
+
+#### Serve
+
+This task has meant to be used for development purposes. It starts in the local machine client, server and the database so that, in one shot, developers can start debug their application. It features _hot-reloads_ so that changes can be applied on the fly, making the development seamless.
+
+### IDE automation
+
+Since all the developers were working with the same IDE (visual studio code) it also has been created some configuration files to automate the IDE environment. For this purpose in the `.vscode` directory it has been created `extensions.json`, listing all vscode extensions suggested to work with this project and `settings.json`, a list of configurations for the IDE to adhere to the code base standards.
+
+Lastly it has been created the file `asw-project.code-workspace` to exploit split client, server and root configuration files in 3 different workspaces.
 
 ### Containerization
 
@@ -781,22 +799,39 @@ Images building are integrated in npm using the "build.docker" task.
 
 The client part uses multi-stage building to expose the service via Nginx and in order to have only compiled code inside the container.
 
-### CI/CD
+### CI/CD - GitHub Actions
 
-- Renovate bot
-- Sonar
-- Signing with GPG key
-- Semantic release + npm and dockerhub publish
-- Automatic tests
-- Discord send notification
+GitHub Actions is used to automate the building, testing, signing, and publishing of the project.
+
+In addition, the project is continuously monitored by the [`Renovate Bot`](https://docs.renovatebot.com/), an automated tool that checks all project dependencies and updates them to the latest available versions. It then creates pull requests with these changes targeting the `main` branch.
+
+To improve efficiency, the GitHub Actions pipeline is configured to ignore pushes made to Renovate branches and to cancel in-progress runs for all branches except `main`.
+
+The pipeline consists of four jobs: `build-test`, `coverage`, `sign-release`, and `send-notification`.
+
+`build-test`
+
+This job builds and tests the project across all major operating systems, using both Node.js versions 20 and 22. It relies on npm tasks defined in the root `package.json`.
+
+`coverage`
+
+If the `build-test` job succeeds, this job sends the test coverage results of the two subprojects to [`SonarCloud`](https://www.sonarsource.com/products/sonarcloud/).
+
+`sign-release`
+
+This job runs in parallel with the `coverage` job. It uses [`semantic-release`](https://github.com/semantic-release/semantic-release) to apply semantic versioning and publish the release artifacts to [`GitHub Releases`](https://github.com/AndreaB2000/ASW-project/releases), [`DockerHub`](https://hub.docker.com/r/andreabiagini5/aswserver), and [`npm`](https://www.npmjs.com/package/@andreabiagini5/applicazioni-e-servizi-web-project).
+Before publishing, the artifacts are signed with a GPG key to ensure authenticity.
+
+Additionally, the job automatically generates a changelog based on the commits made in the branch, provided that the commits follow the Conventional Commits standard.
+
+`send-notification`
+
+The final job is a custom step added by the team to send a notification to the project's Discord server, keeping developers informed about the latest pipeline status.
 
 ## Deployment
 
-<!-- Rilascio, installazione e messa in funzione. -->
-
 To execute the system, it is necessary to create a .env file specifying
-parameters for server and database execution. The `.env` file must be in the
-root project directory and must contain the following parameters:
+parameters for server and database execution. The `.env` file must be in the root project directory and must contain the following parameters:
 
 ## Conclusions
 
