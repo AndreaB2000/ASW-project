@@ -29,6 +29,7 @@ services:
     networks:
       asw_network:
         ipv4_address: ${CLIENT_IP}
+
   server:
     image: andreabiagini5/aswserver
     container_name: aswserver
@@ -54,6 +55,7 @@ services:
     networks:
       asw_network:
         ipv4_address: ${SERVER_IP}
+
   database:
     image: mongo
     container_name: mongodb

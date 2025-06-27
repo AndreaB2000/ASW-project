@@ -449,15 +449,22 @@ classDiagram
         +y: int
     }
 
+    class MatchFactory {
+        +createDefault(player1: string, player2: string, creationDate: Date) Match
+        +createCustom(player1: string, player2: string, creationDate: Date, initialState: Board) Match
+    }
+
     class Match {
         +player1: string
         +player2: string
         +creationDate: Date
         +initialState: Board
         +moves: List~Move~
+        +winner: string | null
+        +ratingDelta: int | null
 
         +addMove(move: Move) boolean
-        -getCurrentState() Board
+        +getCurrentState() Board
     }
 
     class Database
@@ -511,6 +518,8 @@ classDiagram
         +owner: string
     }
 
+    InProgressMatchRepository --> MatchFactory
+    EndedMatchRepository --> MatchFactory
     EndedMatchRepository --> Database
     MatchService --> InProgressMatchRepository
     MatchService --> EndedMatchRepository
@@ -762,8 +771,15 @@ In addition to the "main" and the "dev" branches, possible "feature" and "refact
 
 ### Containerization
 
-- Docker compose
-- Images
+The whole system can be executed in Docker containers using Docker Compose; launching configurations and parameters are stored in the `docker-compose.yaml` file. Three services are instantiated:
+
+- First of all, a database container, using the "mongo" image, that saves DB data in a volume on the host machine
+- Then, a server container, executing the TypeScript backend via npm
+- Lastly, a client container, exposing the Vue.js frontend
+
+Images building are integrated in npm using the "build.docker" task.
+
+The client part uses multi-stage building to expose the service via Nginx and in order to have only compiled code inside the container.
 
 ### CI/CD
 
