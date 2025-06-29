@@ -16,8 +16,8 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
     <p class="text-center">Welcome to the tutorial for Sandpiles!</p>
     <p class="text-start">
       In this brief tutorial you will learn the basic rules of the sandpiles game.<br />Sandpiles is
-      a two player game where each player takes turns placing sand grains on a NxN TODO COMPLETE
-      THIS grid. The goal is to gain control of all of your opponent's piles.<br />Every turn you
+      a two player game where each player takes turns placing sand grains on a 9x9 grid. 
+      The goal is to gain control of all of your opponent's piles.<br />Every turn you
       place a grain of sand on one of your piles. Your piles are rappresented by the blue colored
       squares on the board.
     </p>
