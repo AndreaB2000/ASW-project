@@ -24,7 +24,7 @@ describe('Account', () => {
   it('should exploit bcrypt to check password with checkPassword', async () => {
     const account = await AccountFactory.createWithHashing(username, email, plainPassword);
     await account.checkPassword("doesn't matter");
-    expect(bcrypt.compare).toBeCalledTimes(1);
+    expect(bcrypt.compare).toHaveBeenCalledTimes(1);
   });
 
   it('should not accept an invalid email', async () => {
