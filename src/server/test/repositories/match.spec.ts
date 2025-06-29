@@ -130,7 +130,7 @@ describe('Match Repository', () => {
         .spyOn(DBMatch, 'findOneAndUpdate')
         .mockResolvedValue(mockUpdatedMatch);
 
-      expect(matchRepository.updateMatch(invalidId, mockUpdatedMatch)).rejects.toThrowError(
+      expect(matchRepository.updateMatch(invalidId, mockUpdatedMatch)).rejects.toThrow(
         `Invalid matchId: ${invalidId}`,
       );
       expect(spyIsValid).toHaveBeenCalledWith(invalidId);
@@ -143,7 +143,7 @@ describe('Match Repository', () => {
         .mockImplementation(() => true);
       const spyFindUpdate = jest.spyOn(DBMatch, 'findOneAndUpdate').mockResolvedValue(undefined);
 
-      expect(matchRepository.updateMatch(testId, mockUpdatedMatch)).rejects.toThrowError(
+      expect(matchRepository.updateMatch(testId, mockUpdatedMatch)).rejects.toThrow(
         `Match ${testId} not found or update failed`,
       );
       expect(spyIsValid).toHaveBeenCalledWith(testId);
