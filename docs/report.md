@@ -25,16 +25,18 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
     - [Architecture](#architecture)
       - [Frontend](#frontend)
       - [Backend](#backend)
+      - [Model integrity](#model-integrity)
     - [Detailed Design](#detailed-design)
-      - [Game State Data Representation](#game-state-data-representation)
+      - [Building blocks](#building-blocks)
+      - [Match](#match)
+        - [Class diagram](#class-diagram)
+        - [API](#api)
       - [Rating System](#rating-system)
       - [Matchmaking](#matchmaking)
         - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
         - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
         - [Bot Matchmaking](#bot-matchmaking)
           - [Bot Matchmaking sequence diagram](#bot-matchmaking-sequence-diagram)
-        - [API](#api)
-      - [Match](#match)
         - [API](#api-1)
       - [Game AI](#game-ai)
   - [Implementation](#implementation)
@@ -42,9 +44,29 @@ Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
   - [Technologies](#technologies)
   - [Code](#code)
   - [Tests](#tests)
+    - [Nielsen Heuristics](#nielsen-heuristics)
+    - [Backend testing](#backend-testing)
+    - [Frontend testing](#frontend-testing)
+  - [DevOps](#devops)
+    - [Git hooks](#git-hooks)
+    - [Git branches](#git-branches)
+    - [Build automation](#build-automation)
+      - [Build](#build)
+      - [Serve](#serve)
+    - [IDE automation](#ide-automation)
+    - [Containerization](#containerization)
+    - [CI/CD - GitHub Actions](#cicd---github-actions)
   - [Deployment](#deployment)
   - [Conclusions](#conclusions)
     - [Future Work](#future-work)
+      - [Remove constrains on usernames](#remove-constrains-on-usernames)
+    - [Add a timer to matches](#add-a-timer-to-matches)
+    - [Replay matches](#replay-matches)
+    - [Improve disconnection handling](#improve-disconnection-handling)
+    - [Implement chat system](#implement-chat-system)
+    - [Add profile images](#add-profile-images)
+    - [Improve bot capabilities](#improve-bot-capabilities)
+    - [Usage of email](#usage-of-email)
 
 ## Introduction
 
@@ -96,7 +118,6 @@ The user can:
 #### System Functional Requirements
 
 1. Security
-   1. Password hashing client side <!-- todo is this implemented? -->
    1. Matching double password input at registration time
    1. Matching double password input at password change time
    1. Hashed password storage with salting server side
@@ -824,7 +845,43 @@ The final job is a custom step added by the team to send a notification to the p
 To execute the system, it is necessary to create a .env file specifying
 parameters for server and database execution. The `.env` file must be in the root project directory and must contain the following parameters:
 
-<!-- TODO manca qualcosa qui o lo avete scritto prima? -->
+```env
+DB_PROTOCOL=mongodb
+DB_IP=172.0.0.12
+DB_PORT=27017
+
+DB_NAME=aswdb
+DB_APP_USERNAME=aswuser
+DB_APP_PASSWORD=secret-password
+DB_ADMIN_USERNAME=tempadmin
+DB_ADMIN_PASSWORD=secret-password
+
+MONGODB_COMMAND="mongod --config /etc/mongod.conf"
+
+SERVER_PROTOCOL=http
+SERVER_IP=172.0.0.10
+SERVER_PORT=3000
+SERVER_INTERNAL_PORT=3000
+
+CLIENT_PROTOCOL=http
+CLIENT_IP=172.0.0.11
+CLIENT_PORT=80
+
+JWT_SECRET=supersecret
+JWT_EXPIRATION=3600
+```
+
+Then to run it locally, it is sufficient to run the following command:
+
+```bash
+npm run start
+```
+
+While to run it in production, it is sufficient to run the following command:
+
+```bash
+npm run start:docker
+```
 
 ## Conclusions
 
