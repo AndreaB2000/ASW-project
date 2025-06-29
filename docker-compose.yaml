@@ -32,6 +32,11 @@ services:
 
   server:
     image: andreabiagini5/aswserver
+    build:
+      context: ./src/server
+      args:
+        - NODE_ENV=production
+        - DOCKER=true
     container_name: aswserver
     restart: always
     ports:
@@ -52,6 +57,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       NODE_ENV: 'production'
+      DOCKER: true
     networks:
       asw_network:
         ipv4_address: ${SERVER_IP}
