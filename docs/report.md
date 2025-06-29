@@ -95,11 +95,8 @@ The user can:
 
 #### System Functional Requirements
 
-- usare jwt?
-- gestione dati sensibili (hashing locale, salt in db, conferma e-mail)
-
 1. Security
-   1. Password hashing client side <!-- is this implemented? -->
+   1. Password hashing client side <!-- todo is this implemented? -->
    1. Matching double password input at registration time
    1. Matching double password input at password change time
    1. Hashed password storage with salting server side
@@ -312,51 +309,30 @@ Also some components are present in all pages, such as the header and the footer
 ```mermaid
 graph LR
    subgraph App
-      Header
       Navbar
-      Footer
    end
    Match
    Matchmaking
    Profile
    Leaderboard
-   MatchHistory
-   Replay
    GameEnd
-
+   Play
    Landing
    Login
    Register
-
-   %% Header dependencies
-   Match --> Header
-   Matchmaking --> Header
-   Profile --> Header
-   Leaderboard --> Header
-   MatchHistory --> Header
-   Replay --> Header
-   GameEnd --> Header
+   Tutorial
 
    %% Navbar dependencies
    Match --> Navbar
    Matchmaking --> Navbar
    Profile --> Navbar
    Leaderboard --> Navbar
-   MatchHistory --> Navbar
-   Replay --> Navbar
    GameEnd --> Navbar
-
-   %% Footer dependencies
-   Landing --> Footer
-   Login --> Footer
-   Register --> Footer
-   Match --> Footer
-   Matchmaking --> Footer
-   Profile --> Footer
-   Leaderboard --> Footer
-   MatchHistory --> Footer
-   Replay --> Footer
-   GameEnd --> Footer
+   Play --> Navbar
+   Landing --> Navbar
+   Login --> Navbar
+   Register --> Navbar
+   Tutorial --> Navbar
 ```
 
 Components diagram
@@ -740,12 +716,27 @@ Solo aspetti rilevanti.
 
 ## Tests
 
-<!-- Test effettuati sul codice e test con utenti. -->
+### Nielsen Heuristics
 
-jest and stuff
+Nielsen Heuristics have been used to find any shortcomings in the UX of the project.
 
-<!-- TODO specificare come runnare i test, coverage, decisioni ecc-->
-<!-- TODO cosa non e' compreso nei test-->
+The 10th heuristic, help and documentation, has been found to be the least observed, since although a tutorial for the Sandpiles game is present, there is no complete documentation on the website's usage.
+
+<!-- TODO aggiungere immagini screenshottate al tutorial -->
+
+### Backend testing
+
+To test backend code the jest library is used.
+
+To run backend tests  the following command can be used:
+
+`npm run test:server`
+
+### Frontend testing
+
+Frontend testing has not been automated do to time constrains.
+
+Volunteers have been asked to enact the user stories to test the frontend completeness.
 
 ## DevOps
 
@@ -833,17 +824,55 @@ The final job is a custom step added by the team to send a notification to the p
 To execute the system, it is necessary to create a .env file specifying
 parameters for server and database execution. The `.env` file must be in the root project directory and must contain the following parameters:
 
+<!-- TODO manca qualcosa qui o lo avete scritto prima? -->
+
 ## Conclusions
+
+The group is sadisfied with the project, although many functionalities have been left behind due to time constrains.
 
 ### Future Work
 
-- Chance to change the username -> the username is not unique anymore
-- Timer during a match
-- Replay a match
-- Improve disconnection handling, right now players are not notified when the opponent disconnects
-- Add a chat system to the match
-- Profile image upload
+During development the following future improvements have been considered:
 
-```
+#### Remove constrains on usernames
 
-```
+In the current implementation usernames must be unique as they are used as identifiers for user accounts.
+
+An improvement could be to remove this constrain by using hidden identifiers for user accounts, to allow users to modify their username or choose an already taken username.
+
+### Add a timer to matches
+
+To ensure games finish a timer could be implemented to game matches, similar to how it is used in chess.
+
+### Replay matches
+
+Players can currently see their match history, but are unable to actually replay old matches move by move.
+
+This functionality could be added to allow users to review old games and try to learn from them.
+
+### Improve disconnection handling
+
+Users are currently not notified if the opponent has left the match.
+
+A future improvement could notify a player that the opponent has left the match, allowing them to reclaim instant victory.
+
+### Implement chat system
+
+A chat system could be implemented to allow players to chat with eachother while in a match together.
+
+### Add profile images
+
+Users could be interested in adding profile pictures to their profiles to improve the customization of their profile.
+
+### Improve bot capabilities
+
+The current implemenation of the PVE bot has prooven to be easily beated by a capable player and it has also shown to be pretty slow in deciding the best move in complex scenarios.
+
+Both of these problems could be solved improving the prolog implementation of the bot.
+
+### Usage of email
+
+Although users define an email for their account, it is currently not being used in any way.
+
+The email could be used to recover the password or to improve the security of logins.
+
