@@ -8,7 +8,7 @@ RUN npm install
 RUN npm run build
 
 # Nginx stage
-FROM nginx:1.28-alpine-slim AS production
+FROM nginx:1.29-alpine-slim AS production
 COPY --from=build /dist/client /usr/share/nginx/html
 
 # Optional: custom nginx.conf
