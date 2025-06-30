@@ -29,7 +29,8 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
         style="max-width: 50%"
       />
       <figcaption class="figure-caption">
-        The board shows 4 piles belonging to the blue player.
+        The figure shows a section of the board with blue piles. One pile has 3 grains which means
+        it is about to topple over.
       </figcaption>
     </figure>
     <p class="text-start">
