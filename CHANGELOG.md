@@ -1,3 +1,9 @@
+## [0.3.2](https://github.com/AndreaB2000/ASW-project/compare/0.3.1...0.3.2) (2025-06-30)
+
+### Dependency updates
+
+* **core-deps:** update nginx docker tag to v1.29 ([#340](https://github.com/AndreaB2000/ASW-project/issues/340)) ([8ce2dd0](https://github.com/AndreaB2000/ASW-project/commit/8ce2dd0bb567e6afbead9a17118749c9c5bd2bdd))
+
 ## [0.3.1](https://github.com/AndreaB2000/ASW-project/compare/0.3.0...0.3.1) (2025-06-29)
 
 ### Dependency updates
