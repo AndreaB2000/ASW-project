@@ -1,72 +1,15 @@
-# Sandpiles
-
-Project for the course _Applicazioni e Servizi Web_
-
-Andrea Biagini - 0001145679 <andrea.biagini5@studio.unibo.it>
-
-Filippo Gurioli - 0001146182 <filippo.gurioli@studio.unibo.it>
-
-Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
-
-<!-- TODO PUT DELIVERY DATE HERE -->
-
-- [Sandpiles](#sandpiles)
-  - [Introduction](#introduction)
-  - [Requirements](#requirements)
-    - [Functional Requirements](#functional-requirements)
-      - [User Functional Requirements](#user-functional-requirements)
-      - [System Functional Requirements](#system-functional-requirements)
-    - [Non-Functional Requirements](#non-functional-requirements)
-    - [Implementation Requirements](#implementation-requirements)
-  - [Design](#design)
-    - [Domain Model](#domain-model)
-      - [Context map](#context-map)
-    - [Mockup](#mockup)
-    - [Architecture](#architecture)
-      - [Frontend](#frontend)
-      - [Backend](#backend)
-      - [Model integrity](#model-integrity)
-    - [Detailed Design](#detailed-design)
-      - [Building blocks](#building-blocks)
-      - [Match](#match)
-        - [Class diagram](#class-diagram)
-        - [API](#api)
-      - [Rating System](#rating-system)
-      - [Matchmaking](#matchmaking)
-        - [Server side matchmaking class diagram](#server-side-matchmaking-class-diagram)
-        - [Matchmaking sequence diagram](#matchmaking-sequence-diagram)
-        - [Bot Matchmaking](#bot-matchmaking)
-          - [Bot Matchmaking sequence diagram](#bot-matchmaking-sequence-diagram)
-        - [API](#api-1)
-      - [Game AI](#game-ai)
-  - [Implementation](#implementation)
-    - [Game AI](#game-ai-1)
-  - [Technologies](#technologies)
-  - [Code](#code)
-  - [Tests](#tests)
-    - [Nielsen Heuristics](#nielsen-heuristics)
-    - [Backend testing](#backend-testing)
-    - [Frontend testing](#frontend-testing)
-  - [DevOps](#devops)
-    - [Git hooks](#git-hooks)
-    - [Git branches](#git-branches)
-    - [Build automation](#build-automation)
-      - [Build](#build)
-      - [Serve](#serve)
-    - [IDE automation](#ide-automation)
-    - [Containerization](#containerization)
-    - [CI/CD - GitHub Actions](#cicd---github-actions)
-  - [Deployment](#deployment)
-  - [Conclusions](#conclusions)
-    - [Future Work](#future-work)
-      - [Remove constrains on usernames](#remove-constrains-on-usernames)
-    - [Add a timer to matches](#add-a-timer-to-matches)
-    - [Replay matches](#replay-matches)
-    - [Improve disconnection handling](#improve-disconnection-handling)
-    - [Implement chat system](#implement-chat-system)
-    - [Add profile images](#add-profile-images)
-    - [Improve bot capabilities](#improve-bot-capabilities)
-    - [Usage of email](#usage-of-email)
+---
+title: Sandpiles
+subtitle: Project for the course _Applicazioni e Servizi Web_
+date: 30 June 2025
+author:
+  - Andrea Biagini - 0001145679 <andrea.biagini5@studio.unibo.it>
+  - Filippo Gurioli - 0001146182 <filippo.gurioli@studio.unibo.it>
+  - Leonardo Randacio - 0001125080 <leonardo.randacio@studio.unibo.it>
+toc: true
+documentclass: report
+geometry: 'margin=1.5in'
+---
 
 ## Introduction
 
@@ -142,33 +85,7 @@ The user can:
 
 The following design has been developed starting from the [user stories](user-stories.md). From the user stories we also have derived the domain model (which established an ubiquitous jargon) and the pages flow diagram as shown below.
 
-```mermaid
-flowchart TD
-    A@{ shape: circle, label: "Start" } -->|auto login| Play(Play)
-    A@{ shape: circle, label: "Start" } --> Landing(Landing)
-    Landing <--> Login(Login)
-    Landing <--> Register(Register)
-    Landing <--> Tutorial(Tutorial)
-    Landing -->|play bot| Match
-    Register -->|registration completed| Login
-    Login --> Play
-    Play <--> Tutorial(Tutorial)
-    Play <-->|play ranked| Matchmaking(Matchmaking)
-    Play -->|play bot| Match
-    Play <--> Profile(Profile)
-    Tutorial -->|play ranked| Matchmaking
-    Tutorial -->|play bot| Match
-    Matchmaking -->|opponent found| Match(Match)
-    Match -->|quit| Play
-    Match -->|game over| GameEnd("Game End (stats)")
-    GameEnd -->|play again| Match
-    GameEnd --> Play
-    Play --> Leaderboard(Leaderboard)
-    GameEnd --> Profile
-    Leaderboard <--> Landing
-    Profile <--> MatchHistory(Match History)
-    MatchHistory <--> Replay(Replay)
-```
+![Design based on user stories](./images/graphs/user_stories_design.png)
 
 Based on the pages flow a project mockup has been developed also taking into account user experience and adopting a user centered approach.
 
@@ -239,81 +156,45 @@ _Matchmaking_: the phase in which a player searches an opponent among the player
 
 The following context map arises from the previous description.
 
-```mermaid
-graph LR
-   subgraph gameExperience["Game experience"]
-      subgraph matchContext["Match context"]
-         player1("Player")
-         eloRanking1("Elo Ranking")
-         GameBoard
-         Cell
-         Pile
-         Grain
-         PileOwner
-         Match
-         WinCondition
-         Move
-         Turn
-         Collapse
-         Conquer
-         Clock
-      end
-
-      subgraph matchMaking["Matchmaking"]
-         eloRanking2("Elo Ranking") <--> eloRanking1
-         player2("Player") <--> player1
-      end
-   end
-
-   subgraph accountManagement["Account management"]
-      User <--> player1
-      User <--> player2
-      Login
-      Register
-   end
-```
+![Context map](./images/graphs/context_map.png)
 
 ### Mockup
 
-![Dashboard](images/mockup/Dashboard.png)
+![Dashboard](./images/mockup/Dashboard.png){ width=70% }
 
-![Landing](images/mockup/Landing.png)
+![Landing](./images/mockup/Landing.png){ width=70% }
 
-![Leaderboard](images/mockup/Leaderboard.png)
+![Leaderboard](./images/mockup/Leaderboard.png){ width=70% }
 
-![Login](images/mockup/Login.png)
+![Login](./images/mockup/Login.png){ width=70% }
 
-![Match end](images/mockup/Match%20end.png)
+![Match end](./images/mockup/Match%30end.png){ width=70% }
 
-![Match](images/mockup/Match.png)
+![Match](./images/mockup/Match.png){ width=70% }
 
-![Matchmaking](images/mockup/Matchmaking.png)
+![Matchmaking](./images/mockup/Matchmaking.png){ width=70% }
 
-![Profile and Match History](images/mockup/Profile%20&%20match%20history.png)
+![Profile and Match History](./images/mockup/Profile%30&%20match%20history.png){ width=70% }
 
-![Register](images/mockup/Register.png)
+![Register](./images/mockup/Register.png){ width=70% }
 
 \newpage
 
 The following are the responsive versions of the mockup pages.
 
-![Dashboard Responsive](images/mockup/Dashboard%20Responsive.png)
+![Dashboard Responsive](./images/mockup/Dashboard%20Responsive.png){ height=70% }
 
-![Landing Responsive](images/mockup/Landing%20Responsive.png)
+![Landing Responsive](./images/mockup/Landing%20Responsive.png){ height=70% }
 
-![Leaderboard Responsive](images/mockup/Leaderboard%20Responsive.png)
+![Leaderboard Responsive](./images/mockup/Leaderboard%20Responsive.png){ height=70% }
 
-![Login Responsive](images/mockup/Login%20Responsive.png)
+![Login Responsive](./images/mockup/Login%20Responsive.png){ height=70% }
 
-![Match end Responsive](images/mockup/Match%20end%20Responsive.png)
+![Match Responsive](./images/mockup/Match%20Responsive.png){ height=70% }
 
-![Match Responsive](images/mockup/Match%20Responsive.png)
+![Matchmaking Responsive](./images/mockup/Matchmaking%20Responsive.png){ height=70% }
 
-![Matchmaking Responsive](images/mockup/Matchmaking%20Responsive.png)
-
-![Profile and Match History Responsive](images/mockup/Profile%20&%20history%20Responsive.png)
-
-![Register Responsive](images/mockup/Register%20Responsive.png)
+![Register Responsive](./images/mockup/Register%20Responsive.png){ height=70% }
 
 \newpage
 
@@ -327,34 +208,7 @@ The main components map one-to-one the pages listed in the [mockup](#mockup).
 
 Also some components are present in all pages, such as the header and the footer.
 
-```mermaid
-graph LR
-   subgraph App
-      Navbar
-   end
-   Match
-   Matchmaking
-   Profile
-   Leaderboard
-   GameEnd
-   Play
-   Landing
-   Login
-   Register
-   Tutorial
-
-   %% Navbar dependencies
-   Match --> Navbar
-   Matchmaking --> Navbar
-   Profile --> Navbar
-   Leaderboard --> Navbar
-   GameEnd --> Navbar
-   Play --> Navbar
-   Landing --> Navbar
-   Login --> Navbar
-   Register --> Navbar
-   Tutorial --> Navbar
-```
+![Frontend components diagram](./images/graphs/frontend_components.png)
 
 Components diagram
 
@@ -364,21 +218,7 @@ The arrows should be read as "depends on" (e.g. A --> B should be read A depends
 
 The backend uses an hexagonal architecture, leveraging Domain Driven Design [DDD](https://it.wikipedia.org/wiki/Domain-driven_design) principles.
 
-```mermaid
-graph TD
-      subgraph Domain[Domain]
-         ValueObject
-         Entity
-         AggregateRoot
-      end
-      Factory --> Domain
-      DB
-      Repository --> DB
-      Service --> Repository
-      API --> Service
-      Service --> Factory
-      Repository --> Factory
-```
+![DDD hexagolan architecture](./images/graphs/hex_architecture.png)
 
 This graph represents the dependencies in the hexagonal architecture.
 
@@ -433,101 +273,7 @@ The list of moves can be represented as a list of tuples $(i,j)$ where the tuple
 
 ##### Class diagram
 
-```mermaid
----
-config:
-    class:
-        hideEmptyMembersBox: true
----
-
-classDiagram
-    class Move {
-        +x: int
-        +y: int
-    }
-
-    class MatchFactory {
-        +createDefault(player1: string, player2: string, creationDate: Date) Match
-        +createCustom(player1: string, player2: string, creationDate: Date, initialState: Board) Match
-    }
-
-    class Match {
-        +player1: string
-        +player2: string
-        +creationDate: Date
-        +initialState: Board
-        +moves: List~Move~
-        +winner: string | null
-        +ratingDelta: int | null
-
-        +addMove(move: Move) boolean
-        +getCurrentState() Board
-    }
-
-    class Database
-
-    %% InProgressMatchRepository handles matches in progress, not yet finished or abandoned.
-    class InProgressMatchRepository {
-        +createMatch(player1: string, player2: string, creationDate: Date) string
-        +findMatch(matchId: string) Match?
-        +findMatchesByPlayer(player: string) List~string~
-        +updateMatch(matchId: string, newMatchData: Match) void
-        +deleteMatch(matchId: string) void
-    }
-
-    %% EndedMatchRepository handles ended matches, to be saved on the database.
-    class EndedMatchRepository {
-        +createMatch(player1: string, player2: string, creationDate: Date) string
-        +findMatch(matchId: string) Match?
-        +findMatchesByPlayer(player: string) List~string~
-        +updateMatch(matchId: string, newMatchData: Match) void
-        +deleteMatch(matchId: string) void
-    }
-
-    %% MatchesService expose higher-level functionalities, and it handles the matches saving logic.
-    class MatchService {
-        +newMatch(player1: string, player2: string, creationDate: Date?) string
-        +getMatch(matchId: string) Match?
-        +getMatchesByPlayer(player: string) List~string~
-        +addMove(matchId: string, movingPlayer: string, move: Move) void
-        +deleteMatch(matchId: string) void
-    }
-
-    %% A fixed-sized matrix of cells
-    class Board {
-        +defaultBoard() Board$
-        +customBoard(piles: Pile[]) Board$
-
-        +getCell(x: int, y: int) Cell
-        +setCell(x: int, y: int, cell: Cell) void
-        +applyMove(movingPlayer: string, move: Move) void
-    }
-
-    %% Board cell which can contain a pile
-    class Cell {
-        +pile: Pile?
-        +addGrain() void
-        +collapse() void
-    }
-
-    class Pile {
-        +numberOfGrains: int
-        +owner: string
-    }
-
-    InProgressMatchRepository --> MatchFactory
-    EndedMatchRepository --> MatchFactory
-    EndedMatchRepository --> Database
-    MatchService --> InProgressMatchRepository
-    MatchService --> EndedMatchRepository
-    InProgressMatchRepository --> Match
-    EndedMatchRepository --> Match
-    MatchService --> Match
-    Match --> Move
-    Match --> Board
-    Board *-- Cell
-    Cell *-- Pile
-```
+![Match class diagram](./images/graphs/match_class_diagram.png)
 
 ##### API
 
@@ -611,56 +357,11 @@ If a player disconnects from the queue, the server will remove them from the que
 
 ##### Server side matchmaking class diagram
 
-```mermaid
----
-  config:
-    class:
-      hideEmptyMembersBox: true
----
-
-classDiagram
-    class MatchmakingRoute
-    class MatchmakingRoutine
-    class MatchmakingController
-    class MatchmakingService
-    class Player
-    class Rating
-    class PlayerRepository
-    class MatchmakingQueueRepository
-    class MatchmakingQueue
-    class MatchmakingCandidate
-
-    MatchmakingRoutine --> MatchmakingController
-    MatchmakingRoutine --> MatchmakingService
-    MatchmakingRoute --> MatchmakingController
-    MatchmakingController --> MatchmakingService
-    MatchmakingService --> Player
-    MatchmakingService --> PlayerRepository
-    PlayerRepository --> Player
-    Player --> Rating
-    MatchmakingService --> MatchmakingQueueRepository
-    MatchmakingQueueRepository --> MatchmakingQueue
-    MatchmakingService --> MatchmakingQueue
-    MatchmakingQueue --> MatchmakingCandidate
-```
+![Server side matchmaking class diagram](./images/graphs/matchmaking_class_diagram_server.png)
 
 ##### Matchmaking sequence diagram
 
-```mermaid
-sequenceDiagram
-   participant ClientA
-   participant Server
-   participant ClientB
-
-   ClientB->>Server: emit('requestMatch', { username: usernameA })
-   Note over Server: playerId1 is added to the queue
-
-   ClientB->>Server: emit('requestMatch', { username: usernameB })
-
-   Note over Server: playerId1 is removed from the queue
-   Server-->>ClientA: emit('matchFound', { matchId })
-   Server-->>ClientB: emit('matchFound', { matchId })
-```
+![Matchmakong sequence diagram](./images/graphs/matchmaking_sequence_diagram.png)
 
 ##### Bot Matchmaking
 
@@ -670,16 +371,7 @@ This operation is a lot simpler than the matchmaking between players.
 
 ###### Bot Matchmaking sequence diagram
 
-```mermaid
-sequenceDiagram
-   participant Client
-   participant Server
-
-   Client->>Server: emit('requestMatchWithBot', { username: username })
-
-   Note over Server: creates a match with the bot
-   Server-->>Client: emit('matchFound', { matchId })
-```
+![Bot matchmaking sequence diagram](./images/graphs/bot_matchmaking_sequence_diagram.png)
 
 ##### API
 
@@ -731,10 +423,6 @@ A MEVN technology stack has been used to implement the project:
 - **Vue.js**: JavaScript framework used to implement the frontend.
 - **Node.js**: JavaScript runtime environment used to run the backend server.
 
-## Code
-
-Solo aspetti rilevanti.
-
 ## Tests
 
 ### Nielsen Heuristics
@@ -743,13 +431,11 @@ Nielsen Heuristics have been used to find any shortcomings in the UX of the proj
 
 The 10th heuristic, help and documentation, has been found to be the least observed, since although a tutorial for the Sandpiles game is present, there is no complete documentation on the website's usage.
 
-<!-- TODO aggiungere immagini screenshottate al tutorial -->
-
 ### Backend testing
 
 To test backend code the jest library is used.
 
-To run backend tests  the following command can be used:
+To run backend tests the following command can be used:
 
 `npm run test:server`
 
@@ -783,7 +469,7 @@ Npm features has been used for build automation. In particular, many custom npm 
 
 #### Build
 
-This task has been created to fully automate the building process. All builds will be inserted in the `dist/` directory providing the input for the publishing task (done in GitHub actions). It first build the server, the client and generate the code documentation (extracted from the code comments). 
+This task has been created to fully automate the building process. All builds will be inserted in the `dist/` directory providing the input for the publishing task (done in GitHub actions). It first build the server, the client and generate the code documentation (extracted from the code comments).
 
 Then it copies the `package.json` and `package-lock.json` of root, server and client to the corresponding positions in the `dist` directory. This is needed in order to let people downloading the package to start it with the npm commands.
 
@@ -932,4 +618,3 @@ Both of these problems could be solved improving the prolog implementation of th
 Although users define an email for their account, it is currently not being used in any way.
 
 The email could be used to recover the password or to improve the security of logins.
-
