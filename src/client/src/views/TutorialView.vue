@@ -16,20 +16,20 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
     <p class="text-center">Welcome to the tutorial for Sandpiles!</p>
     <p class="text-start">
       In this brief tutorial you will learn the basic rules of the sandpiles game.<br />Sandpiles is
-      a two player game where each player takes turns placing sand grains on a 9x9 grid. 
-      The goal is to gain control of all of your opponent's piles.<br />Every turn you
-      place a grain of sand on one of your piles. Your piles are rappresented by the blue colored
-      squares on the board.
+      a two player game where each player takes turns placing sand grains on a 9x9 grid. The goal is
+      to gain control of all of your opponent's piles.<br />Every turn you place a grain of sand on
+      one of your piles. Your piles are rappresented by the blue or green colored squares on the
+      board.
     </p>
     <figure class="figure">
       <img
-        src="https://mdbootstrap.com/img/new/slides/041.webp"
+        src="../assets/tutorial/blue topple before.png"
         class="img-fluid"
-        alt="Example of a blue pile on the grid"
+        alt="Example of a blue piles on the grid"
         style="max-width: 50%"
       />
       <figcaption class="figure-caption">
-        The board shows a pile belonging to the blue player, aka you!
+        The board shows 4 piles belonging to the blue player.
       </figcaption>
     </figure>
     <p class="text-start">
@@ -41,43 +41,43 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
     </p>
     <figure class="figure">
       <img
-        src="https://mdbootstrap.com/img/new/slides/041.webp"
+        src="../assets/tutorial/blue topple after.png"
         class="img-fluid"
         alt="Example of a collapsing pile with no neighboars"
         style="max-width: 50%"
       />
       <figcaption class="figure-caption">
-        After placing a grain in the pile showed in the previous image, it would topple causing this
-        new board state.
+        After placing a grain in the pile with 3 grains showed in the previous image, it would
+        topple causing this new board state.
       </figcaption>
     </figure>
     <p class="text-start">
       If the neighboring piles are not empty they each get added a grain.<br />Also if a neighboring
-      pile belongs to your opponent, aka it is red, then it is conquered by you, turning it blue.<br />This
-      is how you gain control of your opponent's piles, and eventually win the game!
+      pile belongs to your opponent, aka it is green, then it is conquered by you, turning it
+      blue.<br />This is how you gain control of your opponent's piles, and eventually win the game!
     </p>
     <MDBRow>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/green topple before.png"
           class="img-fluid"
           alt="Example of a collapsing pile with neighboars, before"
           style="max-width: 50%"
         />
         <figcaption class="figure-caption">
-          A blue pile is about to topple over, notice how it has a blue neighbor and a red neighbor.
+          A green pile is about to topple over, notice how it has blue and green neighbors.
         </figcaption>
       </figure>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/green topple after.png"
           class="img-fluid"
           alt="Example of a collapsing pile with neighboars, after"
           style="max-width: 50%"
         />
         <figcaption class="figure-caption">
-          As the center pile has toppled over every neighbor gains an additional grain. Also all red
-          neighbors turn blue.
+          As the center pile has toppled over every neighbor gains an additional grain. Also all
+          blue neighbors turn green.
         </figcaption>
       </figure>
     </MDBRow>
@@ -88,7 +88,7 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
     <MDBRow>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/chain before.png"
           class="img-fluid"
           alt="Example of a chain reaction, before"
           style="max-width: 50%"
@@ -100,7 +100,7 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
       </figure>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/chain after.png"
           class="img-fluid"
           alt="Example of a chain reaction, after"
           style="max-width: 50%"
@@ -121,18 +121,18 @@ import { MDBContainer, MDBRow } from 'mdb-vue-ui-kit';
     <MDBRow>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/tor before.png"
           class="img-fluid"
           alt="Example of toroidal effect, before"
           style="max-width: 50%"
         />
         <figcaption class="figure-caption">
-            An edge pile is about to topple over, notice how it has a neighbor on the opposite edge.
+          An edge pile is about to topple over, notice how it has a neighbor on the opposite edge.
         </figcaption>
       </figure>
       <figure class="figure">
         <img
-          src="https://mdbootstrap.com/img/new/slides/041.webp"
+          src="../assets/tutorial/tor after.png"
           class="img-fluid"
           alt="Example of toroidal effect, after"
           style="max-width: 50%"
