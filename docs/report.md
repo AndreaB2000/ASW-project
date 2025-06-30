@@ -168,13 +168,13 @@ The following context map arises from the previous description.
 
 ![Login](./images/mockup/Login.png){ width=70% }
 
-![Match end](./images/mockup/Match%30end.png){ width=70% }
+![Match end](./images/mockup/Match_end.png){ width=70% }
 
 ![Match](./images/mockup/Match.png){ width=70% }
 
 ![Matchmaking](./images/mockup/Matchmaking.png){ width=70% }
 
-![Profile and Match History](./images/mockup/Profile%30&%20match%20history.png){ width=70% }
+![Profile and Match History](./images/mockup/Profile_and_match_history.png){ width=70% }
 
 ![Register](./images/mockup/Register.png){ width=70% }
 
@@ -182,19 +182,19 @@ The following context map arises from the previous description.
 
 The following are the responsive versions of the mockup pages.
 
-![Dashboard Responsive](./images/mockup/Dashboard%20Responsive.png){ height=70% }
+![Dashboard Responsive](./images/mockup/Dashboard_Responsive.png){ height=70% }
 
-![Landing Responsive](./images/mockup/Landing%20Responsive.png){ height=70% }
+![Landing Responsive](./images/mockup/Landing_Responsive.png){ height=70% }
 
-![Leaderboard Responsive](./images/mockup/Leaderboard%20Responsive.png){ height=70% }
+![Leaderboard Responsive](./images/mockup/Leaderboard_Responsive.png){ height=70% }
 
-![Login Responsive](./images/mockup/Login%20Responsive.png){ height=70% }
+![Login Responsive](./images/mockup/Login_Responsive.png){ height=70% }
 
-![Match Responsive](./images/mockup/Match%20Responsive.png){ height=70% }
+![Match Responsive](./images/mockup/Match_Responsive.png){ height=70% }
 
-![Matchmaking Responsive](./images/mockup/Matchmaking%20Responsive.png){ height=70% }
+![Matchmaking Responsive](./images/mockup/Matchmaking_Responsive.png){ height=70% }
 
-![Register Responsive](./images/mockup/Register%20Responsive.png){ height=70% }
+![Register Responsive](./images/mockup/Register_Responsive.png){ height=70% }
 
 \newpage
 
