@@ -12,12 +12,11 @@ export function initializeIO(server: http.Server) {
     ip = process.env.CLIENT_IP;
     port = process.env.CLIENT_PORT;
   }
+  const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
+  console.log('CORSSSSSSSSSSS', origin);
   io = new Server(server, {
     cors: {
-      origin:
-        process.env.NODE_ENV === 'production'
-          ? `${protocol}://${ip}:${port}`
-          : 'http://localhost:5173',
+      origin: process.env.NODE_ENV === 'production' ? origin : 'http://localhost:5173',
       credentials: true,
     },
   });
