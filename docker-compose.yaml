@@ -52,6 +52,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       NODE_ENV: 'production'
+      DOCKER: true
     networks:
       asw_network:
         ipv4_address: ${SERVER_IP}

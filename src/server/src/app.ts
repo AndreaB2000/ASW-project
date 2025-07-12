@@ -47,12 +47,16 @@ if (process.env.NODE_ENV === 'production') {
     ip = process.env.CLIENT_IP;
     port = process.env.CLIENT_PORT;
   }
-  app.use(cors({ origin: `${protocol}://${ip}:${port}`, credentials: true }));
+  const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
+  console.log('CORSSSSSSSSSSS', origin);
+  app.use(cors({ origin, credentials: true }));
 } else {
-  app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-  }));
+  app.use(
+    cors({
+      origin: 'http://localhost:5173',
+      credentials: true,
+    }),
+  );
 }
 
 app.use(express.static(path.join(__dirname, '../public')));

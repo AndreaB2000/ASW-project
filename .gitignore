@@ -160,3 +160,6 @@ src/server/secrets/mongo_root_password.txt
 
 # personal binaries folder
 bin/
+
+# HTTPS certificates
+certs/

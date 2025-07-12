@@ -33,7 +33,7 @@ export let socket = io(`${url}/auth`, {
 socket.on('connect_error', () => {
   console.warn('Auth connection failed, falling back to unauthenticated namespace');
   // Fallback to unauthenticated root namespace
-  socket = io(url);
+  socket = io(url, { withCredentials: true });
 });
 
 /**
