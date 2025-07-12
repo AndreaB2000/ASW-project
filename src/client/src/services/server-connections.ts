@@ -5,6 +5,8 @@ let protocol = 'http';
 let ip = 'localhost';
 let port = 3000;
 
+console.log(import.meta.env);
+
 if (import.meta.env.VITE_DOCKER) {
   console.log('Running in Docker');
   protocol = import.meta.env.VITE_SERVER_PROTOCOL;
