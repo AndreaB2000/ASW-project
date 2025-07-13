@@ -1,3 +1,69 @@
+## [1.1.0](https://github.com/AndreaB2000/ASW-project/compare/1.0.0...1.1.0) (2025-07-13)
+
+### Features
+
+* **wip:** work on fix https-only cookies ([73db380](https://github.com/AndreaB2000/ASW-project/commit/73db380b7ceb73128d2a71c77e4df31d49e5178f))
+
+### Dependency updates
+
+* **deps:** update dependency @types/node to v22.15.34 ([#361](https://github.com/AndreaB2000/ASW-project/issues/361)) ([08ef37b](https://github.com/AndreaB2000/ASW-project/commit/08ef37b78a44c332576e32906a48daacc68acb59))
+* **deps:** update dependency @types/node to v22.15.35 ([#325](https://github.com/AndreaB2000/ASW-project/issues/325)) ([02c930f](https://github.com/AndreaB2000/ASW-project/commit/02c930ff34ef33a76b99d5b13866271e1b84a943))
+* **deps:** update dependency @types/node to v22.15.35 ([#364](https://github.com/AndreaB2000/ASW-project/issues/364)) ([05ef793](https://github.com/AndreaB2000/ASW-project/commit/05ef7937400124cf60cd9e089d1f70c31c308792))
+* **deps:** update dependency @types/node to v22.16.0 ([#368](https://github.com/AndreaB2000/ASW-project/issues/368)) ([0f0b05e](https://github.com/AndreaB2000/ASW-project/commit/0f0b05e63970e60b84545e1df73b80b7620a9c12))
+* **deps:** update dependency @types/node to v22.16.0 ([#369](https://github.com/AndreaB2000/ASW-project/issues/369)) ([5a0f0eb](https://github.com/AndreaB2000/ASW-project/commit/5a0f0eb12a98ca3708a9c4e4e23e31014b47b7c3))
+* **deps:** update dependency @types/node to v22.16.1 ([#376](https://github.com/AndreaB2000/ASW-project/issues/376)) ([006bee1](https://github.com/AndreaB2000/ASW-project/commit/006bee1be2617dffee15182bf48e8a83f28007f1))
+* **deps:** update dependency @types/node to v22.16.2 ([#377](https://github.com/AndreaB2000/ASW-project/issues/377)) ([985714c](https://github.com/AndreaB2000/ASW-project/commit/985714caa7bcc2196d14a926dedda996f7ed0036))
+* **deps:** update dependency @types/node to v22.16.2 ([#378](https://github.com/AndreaB2000/ASW-project/issues/378)) ([64cc9c6](https://github.com/AndreaB2000/ASW-project/commit/64cc9c65ecbc1f7e75f1f1942513d79e3c57a7e2))
+* **deps:** update dependency @vitejs/plugin-vue-jsx to v5.0.1 ([#362](https://github.com/AndreaB2000/ASW-project/issues/362)) ([ffeffbd](https://github.com/AndreaB2000/ASW-project/commit/ffeffbd028bd615e728e9230c32620be4e28327e))
+* **deps:** update dependency @vitest/eslint-plugin to v1.3.4 ([#365](https://github.com/AndreaB2000/ASW-project/issues/365)) ([26f21e0](https://github.com/AndreaB2000/ASW-project/commit/26f21e0a61d6d9ae644346a8324ce1c56a7e169f))
+* **deps:** update dependency @vue/eslint-config-typescript to v14.6.0 ([#371](https://github.com/AndreaB2000/ASW-project/issues/371)) ([4162b52](https://github.com/AndreaB2000/ASW-project/commit/4162b52b2a0dca0d6aec5bd13e4c04dc8090e2a0))
+* **deps:** update dependency bcrypt to v6 ([#355](https://github.com/AndreaB2000/ASW-project/issues/355)) ([799ee1e](https://github.com/AndreaB2000/ASW-project/commit/799ee1e342ff16fca870d38cb75dab466ada3edc))
+* **deps:** update dependency cypress to v14.5.1 ([#344](https://github.com/AndreaB2000/ASW-project/issues/344)) ([949513f](https://github.com/AndreaB2000/ASW-project/commit/949513f977b7b80c0e7d161504a926d1305ed23f))
+* **deps:** update dependency dotenv to v17 ([#360](https://github.com/AndreaB2000/ASW-project/issues/360)) ([a179c01](https://github.com/AndreaB2000/ASW-project/commit/a179c0160c2fc62b8050339e0114df094a1c2305))
+* **deps:** update dependency dotenv to v17.1.0 ([#375](https://github.com/AndreaB2000/ASW-project/issues/375)) ([b8b2122](https://github.com/AndreaB2000/ASW-project/commit/b8b21227f2e365cafb741d7845534f56ba70633d))
+* **deps:** update dependency dotenv to v17.2.0 ([#379](https://github.com/AndreaB2000/ASW-project/issues/379)) ([dd4e97f](https://github.com/AndreaB2000/ASW-project/commit/dd4e97f6d94eb5df776cd0d5d7b5d95dce2497fa))
+* **deps:** update dependency eslint to v9.30.0 ([#359](https://github.com/AndreaB2000/ASW-project/issues/359)) ([ecf9b92](https://github.com/AndreaB2000/ASW-project/commit/ecf9b92d2c065c6a6553a23a83450dbc6ded257f))
+* **deps:** update dependency eslint to v9.30.1 ([#367](https://github.com/AndreaB2000/ASW-project/issues/367)) ([92a9142](https://github.com/AndreaB2000/ASW-project/commit/92a9142f75cff3f090619ffe3ae8a65f2ce7b94b))
+* **deps:** update dependency eslint-plugin-vue to v10.3.0 ([#372](https://github.com/AndreaB2000/ASW-project/issues/372)) ([4ec65fe](https://github.com/AndreaB2000/ASW-project/commit/4ec65fe6824f79a6c8b45ca6ee1b0da2ed995519))
+* **deps:** update dependency font-awesome to v6.2.1 ([#346](https://github.com/AndreaB2000/ASW-project/issues/346)) ([21fd8f5](https://github.com/AndreaB2000/ASW-project/commit/21fd8f5731b9df4b6902b7d73322527f15bb751b))
+* **deps:** update dependency font-awesome to v6.3.0 ([#347](https://github.com/AndreaB2000/ASW-project/issues/347)) ([558e237](https://github.com/AndreaB2000/ASW-project/commit/558e237ce71dd279f59ecdc19c76ac0db80d4a24))
+* **deps:** update dependency font-awesome to v6.4.2 ([#348](https://github.com/AndreaB2000/ASW-project/issues/348)) ([c289524](https://github.com/AndreaB2000/ASW-project/commit/c28952464c393496efc4f515184ee1a551d32e57))
+* **deps:** update dependency font-awesome to v6.5.2 ([#349](https://github.com/AndreaB2000/ASW-project/issues/349)) ([e36bb92](https://github.com/AndreaB2000/ASW-project/commit/e36bb92925cb0e865cab0b0792d01319354b18fb))
+* **deps:** update dependency font-awesome to v6.6.0 ([#350](https://github.com/AndreaB2000/ASW-project/issues/350)) ([ddb34c0](https://github.com/AndreaB2000/ASW-project/commit/ddb34c0a373a4461874db4d9173ca5b45020d6a9))
+* **deps:** update dependency font-awesome to v6.7.2 ([#351](https://github.com/AndreaB2000/ASW-project/issues/351)) ([5d20cbe](https://github.com/AndreaB2000/ASW-project/commit/5d20cbeefe5e4531e8f921ba26a7ce6c7f028e27))
+* **deps:** update dependency mongoose to v8.16.2 ([#373](https://github.com/AndreaB2000/ASW-project/issues/373)) ([2c26c8b](https://github.com/AndreaB2000/ASW-project/commit/2c26c8b6c7c03eb5e044c433932d967f16a12f38))
+* **deps:** update dependency prettier to v3.6.2 ([#352](https://github.com/AndreaB2000/ASW-project/issues/352)) ([abb6e48](https://github.com/AndreaB2000/ASW-project/commit/abb6e48ff33783829dc1b6fbf33b84b78eb38374))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.136 ([#331](https://github.com/AndreaB2000/ASW-project/issues/331)) ([0ce6240](https://github.com/AndreaB2000/ASW-project/commit/0ce6240a64515afc5cacfe04f78b7227a62717fe))
+* **deps:** update dependency supertest to v7.1.3 ([#353](https://github.com/AndreaB2000/ASW-project/issues/353)) ([d1acda8](https://github.com/AndreaB2000/ASW-project/commit/d1acda828202414f664ba36c73bb059c087624b5))
+* **deps:** update dependency typedoc to ^0.28.0 ([#354](https://github.com/AndreaB2000/ASW-project/issues/354)) ([d7efe20](https://github.com/AndreaB2000/ASW-project/commit/d7efe2022adb30186fe0bb0ad88cadc53c814464))
+* **deps:** update dependency vue-tsc to v2.2.12 ([#370](https://github.com/AndreaB2000/ASW-project/issues/370)) ([bc58743](https://github.com/AndreaB2000/ASW-project/commit/bc58743c8fa9ae41bafa7fd07858984659a1b606))
+* **deps:** update dependency vue-tsc to v3 ([#366](https://github.com/AndreaB2000/ASW-project/issues/366)) ([bcac47b](https://github.com/AndreaB2000/ASW-project/commit/bcac47b2e371ee7a7fa180c96b6366bd0144f46a))
+* **deps:** update typescript-eslint monorepo to v8.35.1 ([#363](https://github.com/AndreaB2000/ASW-project/issues/363)) ([92d7e79](https://github.com/AndreaB2000/ASW-project/commit/92d7e79b8ea33c8149fddd46eb4e642c069554b4))
+* **deps:** update typescript-eslint monorepo to v8.36.0 ([#374](https://github.com/AndreaB2000/ASW-project/issues/374)) ([51a0ca1](https://github.com/AndreaB2000/ASW-project/commit/51a0ca1d257977b0c2f944dbf866e5e04cff8b6b))
+
+### Bug Fixes
+
+* correct execution in all environments ([ee5f8d2](https://github.com/AndreaB2000/ASW-project/commit/ee5f8d25bf8f6d5ab300d6ea6ff7b8b791da5539))
+* **wip:** socket.io not working with Docker ([c949773](https://github.com/AndreaB2000/ASW-project/commit/c949773a93f4cb81dec70f7477567ba42c74e58f))
+* **wip:** vite production variables in client Dockerfile ([bd47fc5](https://github.com/AndreaB2000/ASW-project/commit/bd47fc593d50ff982e6ea678c6f976d54fdef805))
+
+### Tests
+
+* make tests pass ([394f42b](https://github.com/AndreaB2000/ASW-project/commit/394f42b0aee0ebbbe07f22157351d57b5ecc300d))
+
+### Build and continuous integration
+
+* **deps:** update dependency windows github actions runner to v2025 ([#166](https://github.com/AndreaB2000/ASW-project/issues/166)) ([7e5fd74](https://github.com/AndreaB2000/ASW-project/commit/7e5fd74fed48d69887b4aba1cecbd05fc11f31da))
+
+### General maintenance
+
+* merge conflict solved ([43a2bed](https://github.com/AndreaB2000/ASW-project/commit/43a2bed1534f2586a46fef90814aab5897036cf7))
+* **wip:** replace numeric IPs with docker service names ([a38c20b](https://github.com/AndreaB2000/ASW-project/commit/a38c20be96051ce2f775a984ff09e391d343b48b))
+
+### Refactoring
+
+* **docker:** move values from .env to codebase ([9d8775d](https://github.com/AndreaB2000/ASW-project/commit/9d8775d65794e7bc24ddfd0807782fb1be57a361))
+
 ## [1.0.0](https://github.com/AndreaB2000/ASW-project/compare/0.2.17...1.0.0) (2025-06-30)
 
 ### ⚠ BREAKING CHANGES
