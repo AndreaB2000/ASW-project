@@ -1,6 +1,6 @@
 # SandPiles
 
-*Place your grains. Tip the balance. In this world of unstable equilibrium, every move can trigger a chain reaction. Conquer the board one avalanche at a time.*
+_Place your grains. Tip the balance. In this world of unstable equilibrium, every move can trigger a chain reaction. Conquer the board one avalanche at a time._
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=AndreaB2000_ASW-project&metric=bugs)](https://sonarcloud.io/summary/new_code?id=AndreaB2000_ASW-project)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=AndreaB2000_ASW-project&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=AndreaB2000_ASW-project)
@@ -12,6 +12,7 @@
 An online multiplayer turn-based strategy game based on the mathematical **[Abelian sandpile model](https://en.wikipedia.org/wiki/Abelian_sandpile_model)**, developed for "Applicazioni e Servizi Web" and "Software Process Engineering" exams at UniBo's Computer Science Master Degree courses.
 
 ## Table of Contents
+
 - [Documentation](#-documentation)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -31,34 +32,39 @@ Full technical documentation and academic report available here: [Report](./docs
 - Login to save your progress
 - Leaderboard to check your skill level
 
-## Tech Stack  
-**Frontend**  
+## Tech Stack
+
+**Frontend**
+
 - Vue.js + TypeScript
 - SCSS
 - MDBootstrap
 
-**Backend**  
-- Node.js + Express  
-- Socket.IO  
+**Backend**
+
+- Node.js + Express
+- Socket.IO
 - MongoDB
 - Prolog bot
 
-**DevOps**  
+**DevOps**
+
+- Build automation with npm scripts
 - Docker containerization
 - SonarCloud
 - GitHub Actions CI/CD
 
 ## Installation
 
-1. **Prerequisites**:  
+1. **Prerequisites**:
    - Node.js v20+
    - Docker (for production)
-1. Install dependencies:  
+1. Install dependencies:
    ```bash
-	npm install
-	```
+   npm install
+   ```
 1. Configure environment:
-	- Create a `.env` file in the root directory containing: DB_NAME, DB_APP_USERNAME, DB_APP_PASSWORD, DB_ADMIN_USERNAME, DB_ADMIN_PASSWORD, JWT_SECRET, JWT_EXPIRATION.
+   - Create a `.env` file in the root directory containing: DB_NAME, DB_APP_USERNAME, DB_APP_PASSWORD, DB_ADMIN_USERNAME, DB_ADMIN_PASSWORD, JWT_SECRET, JWT_EXPIRATION.
 
 ## Running system
 
@@ -70,7 +76,13 @@ npm run build && npm start
 
 and the client can be accessed from `http://localhost:4173`.
 
-It can also be started using Docker, by running the following commands:
+To run the system in Docker, you first need to create a valid certificate and key pair using the following commands:
+
+```sh
+openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes -subj "/CN=sandpiles.com"
+```
+
+Then build and start by running the following commands:
 
 ```sh
 npm run build:docker && npm run start:docker
@@ -79,6 +91,8 @@ npm run build:docker && npm run start:docker
 and accessing the client using `https://172.0.0.11`.
 
 ## Contributing
+
+See [CONTRIBUTING](./CONTRIBUTING.md) for details on how to contribute to this project.
 
 ## License
 
