@@ -2,6 +2,10 @@ import { Board, BoardFactory } from './Board';
 import { Cell } from './Cell';
 import { Move } from './Move';
 
+/**
+ * Aggregate root representing a match, containing
+ * two players and the corresponding board.
+ */
 export interface Match {
   /**
    * The first player (who has the first turn).

@@ -1,3 +1,6 @@
+/**
+ * Entity representing a pile.
+ */
 export interface Pile {
   /**
    * The owner of the pile.
