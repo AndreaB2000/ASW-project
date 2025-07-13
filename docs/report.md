@@ -528,46 +528,39 @@ The final job is a custom step added by the team to send a notification to the p
 
 ## Deployment
 
-To execute the system, it is necessary to create a .env file specifying
-parameters for server and database execution. The `.env` file must be in the root project directory and must contain the following parameters:
+1. **Prerequisites**:
+   - Node.js v20+
+   - Docker (for production)
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+1. Configure environment:
+   - Create a `.env` file in the root directory containing: `DB_NAME`, `DB_APP_USERNAME`, `DB_APP_PASSWORD`, `DB_ADMIN_USERNAME`, `DB_ADMIN_PASSWORD`, `JWT_SECRET`, `JWT_EXPIRATION`.
 
-```env
-DB_PROTOCOL=mongodb
-DB_IP=172.0.0.12
-DB_PORT=27017
+### Running system
 
-DB_NAME=aswdb
-DB_APP_USERNAME=aswuser
-DB_APP_PASSWORD=secret-password
-DB_ADMIN_USERNAME=tempadmin
-DB_ADMIN_PASSWORD=secret-password
+The system can be executed locally, using the following commands:
 
-MONGODB_COMMAND="mongod --config /etc/mongod.conf"
-
-SERVER_PROTOCOL=http
-SERVER_IP=172.0.0.10
-SERVER_PORT=3000
-SERVER_INTERNAL_PORT=3000
-
-CLIENT_PROTOCOL=http
-CLIENT_IP=172.0.0.11
-CLIENT_PORT=80
-
-JWT_SECRET=supersecret
-JWT_EXPIRATION=3600
+```sh
+npm run build && npm start
 ```
 
-Then to run it locally, it is sufficient to run the following command:
+and the client can be accessed from `http://localhost:4173`.
 
-```bash
-npm run start
+To run the system in Docker, you first need to create a valid certificate and key pair using the following commands:
+
+```sh
+openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes -subj "/CN=sandpiles.com"
 ```
 
-While to run it in production, it is sufficient to run the following command:
+Then build and start by running the following commands:
 
-```bash
-npm run start:docker
+```sh
+npm run build:docker && npm run start:docker
 ```
+
+and accessing the client using `https://172.0.0.11`.
 
 ## Conclusions
 
