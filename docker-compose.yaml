@@ -12,20 +12,20 @@ services:
     build:
       context: ./src/client
       args:
-        - VITE_SERVER_IP=${SERVER_IP}
-        - VITE_SERVER_PORT=${SERVER_PORT}
-        - VITE_SERVER_PROTOCOL=${SERVER_PROTOCOL}
+        - VITE_SERVER_IP=aswserver
+        - VITE_SERVER_PORT=3000
+        - VITE_SERVER_PROTOCOL=http
         - VITE_DOCKER=true
     container_name: aswclient
     restart: always
     ports:
-      - '${CLIENT_PORT}:80'
+      - '4173:80'
     depends_on:
       - server
     environment:
-      VITE_SERVER_IP: ${SERVER_IP}
-      VITE_SERVER_PORT: ${SERVER_PORT}
-      VITE_SERVER_PROTOCOL: ${SERVER_PROTOCOL}
+      VITE_SERVER_IP: aswserver
+      VITE_SERVER_PORT: 3000
+      VITE_SERVER_PROTOCOL: http
     networks:
       asw_network:
 
@@ -34,20 +34,19 @@ services:
     container_name: aswserver
     restart: always
     ports:
-      - '${SERVER_PORT}:${SERVER_INTERNAL_PORT}'
+      - '3000:3000'
     depends_on:
       - database
     environment:
-      PORT: ${SERVER_INTERNAL_PORT}
+      PORT: 3000
       DB_APP_USERNAME: ${DB_APP_USERNAME}
       DB_APP_PASSWORD: ${DB_APP_PASSWORD}
       DB_NAME: ${DB_NAME}
-      DB_PROTOCOL: ${DB_PROTOCOL}
-      DB_IP: ${DB_IP}
-      DB_PORT: ${DB_PORT}
-      CLIENT_PROTOCOL: ${CLIENT_PROTOCOL}
-      CLIENT_IP: ${CLIENT_IP}
-      CLIENT_PORT: ${CLIENT_PORT}
+      DB_PROTOCOL: mongodb
+      DB_IP: database
+      DB_PORT: 27017
+      CLIENT_PROTOCOL: https
+      CLIENT_IP: 172.0.0.11
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       NODE_ENV: 'production'
@@ -69,14 +68,15 @@ services:
       - server
     networks:
       asw_network:
+        ipv4_address: 172.0.0.11
 
   database:
     image: mongo
     container_name: mongodb
-    command: ${MONGODB_COMMAND}
+    command: 'mongod --config /etc/mongod.conf'
     restart: always
     ports:
-      - '${DB_PORT}:27017'
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_ADMIN_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_ADMIN_PASSWORD}

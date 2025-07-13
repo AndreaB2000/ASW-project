@@ -10,9 +10,9 @@ export function initializeIO(server: http.Server) {
   if (process.env.DOCKER) {
     protocol = process.env.CLIENT_PROTOCOL;
     ip = process.env.CLIENT_IP;
-    port = process.env.CLIENT_PORT;
+    port = null;
   }
-  const origin: string = 'https://sandpiles.com'; // `${protocol}://${ip}${!port ? '' : ':' + port}`;
+  const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
   console.log('CORSSSSSSSSSSS', origin);
   io = new Server(server, {
     cors: {
