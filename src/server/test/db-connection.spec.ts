@@ -1,44 +1,56 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import { connectDB } from '../src/config/db-connection';
-import { jest, describe, beforeEach, afterEach, it, expect, beforeAll } from '@jest/globals';
+import { jest, describe, beforeEach, afterEach, it, expect } from '@jest/globals';
 import { mockConsole } from './test_utils/mock-console';
 
+jest.mock('mongoose');
 jest.mock('dotenv', () => ({ config: jest.fn() }));
 
 describe('connectDB', () => {
-  let mockConnect: any;
-
-  beforeAll(mockConsole);
+  const originalEnv = process.env;
 
   beforeEach(() => {
-    mockConnect = jest.spyOn(mongoose, 'connect').mockResolvedValueOnce({} as any);
-    process.env.NODE_ENV = 'test';
+    mockConsole();
+    jest.resetModules();
+    process.env = { ...originalEnv };
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    process.env = originalEnv;
+    jest.clearAllMocks();
   });
 
-  it('should connect using default values in development/test mode', async () => {
-    await connectDB();
-    expect(mockConnect).toHaveBeenCalledWith('mongodb://aswuser:password@172.0.0.12:27017/aswdb');
+  it('should connect to MongoDB successfully', async () => {
+    process.env.DB_APP_USERNAME = 'testuser';
+    process.env.DB_APP_PASSWORD = 'testpass';
+    process.env.DB_NAME = 'testdb';
+
+    (mongoose.connect as jest.Mock).mockReturnValueOnce({});
+
+    await expect(connectDB()).resolves.toBeUndefined();
+    expect(mongoose.connect).toHaveBeenCalledWith(
+      'mongodb://testuser:testpass@172.0.0.12:27017/testdb',
+    );
   });
 
-  it('should connect using env variables in production mode', async () => {
-    process.env.NODE_ENV = 'production';
-    process.env.DB_PROTOCOL = 'mongo';
-    process.env.DB_APP_USERNAME = 'user';
-    process.env.DB_APP_PASSWORD = 'pass';
-    process.env.DB_NAME = 'name';
-    process.env.DB_PORT = 'port';
-    process.env.DB_IP = 'ip';
-    await connectDB();
-    expect(mockConnect).toHaveBeenCalledWith('mongo://user:pass@ip:port/name');
-  });
+  it('should throw an error if required env variables are missing', async () => {
+    delete process.env.DB_APP_USERNAME;
+    process.env.DB_APP_PASSWORD = 'testpass';
+    process.env.DB_NAME = 'testdb';
 
-  it('should throw if required env vars are missing in production', async () => {
-    process.env.NODE_ENV = 'production';
-    delete process.env.DB_APP_PASSWORD;
     await expect(connectDB()).rejects.toThrow('DB connection failed');
+    expect(mongoose.connect).not.toHaveBeenCalled();
+  });
+
+  it('should throw an error if mongoose.connect fails', async () => {
+    process.env.DB_APP_USERNAME = 'testuser';
+    process.env.DB_APP_PASSWORD = 'testpass';
+    process.env.DB_NAME = 'testdb';
+
+    jest.mocked(mongoose.connect).mockRejectedValueOnce(new Error('Connection failed'));
+
+    await expect(connectDB()).rejects.toThrow('DB connection failed');
+    expect(mongoose.connect).toHaveBeenCalled();
   });
 });
