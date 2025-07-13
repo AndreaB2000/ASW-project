@@ -3,6 +3,9 @@ import { Move } from './Move';
 import { PileFactory } from './Pile';
 import { Pile } from './Pile';
 
+/**
+ * Aggregate root of the game board, containing cells.
+ */
 export interface Board {
   /**
    * The height of the board.

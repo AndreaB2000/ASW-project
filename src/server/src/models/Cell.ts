@@ -1,6 +1,9 @@
 import { Pile } from './Pile';
 import { PileFactory } from './Pile';
 
+/**
+ * Entity representing a single board cell.
+ */
 export interface Cell {
   /**
    * The pile contained in the cell.

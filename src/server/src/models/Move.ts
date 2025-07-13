@@ -3,6 +3,9 @@ export interface Move {
   y: number;
 }
 
+/**
+ * Value object representing a move.
+ */
 export class MoveFactory {
   /**
    * Move factory. Returns a move relative to the given coordinates.

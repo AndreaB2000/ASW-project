@@ -1,3 +1,6 @@
+/**
+ * Entity representing an Elo rating.
+ */
 export interface Rating {
   /**
    * The rating value.
