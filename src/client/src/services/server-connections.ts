@@ -9,12 +9,12 @@ console.log(import.meta.env);
 
 if (import.meta.env.VITE_DOCKER) {
   console.log('Running in Docker');
-  protocol = import.meta.env.VITE_SERVER_PROTOCOL;
-  ip = import.meta.env.VITE_SERVER_IP;
-  port = import.meta.env.VITE_SERVER_PORT;
+  protocol = "https";//import.meta.env.VITE_SERVER_PROTOCOL;
+  ip = "sandpiles.com";//import.meta.env.VITE_SERVER_IP;
+  //port = 443;//import.meta.env.VITE_SERVER_PORT;
 }
 
-const url = `${protocol}://${ip}:${port}`;
+const url = `${protocol}://${ip}/api`;
 console.log(`[API URL]: ${url}/`);
 
 /**
