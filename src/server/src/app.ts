@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
     port = null;
   }
   const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
-  console.log('CORSSSSSSSSSSS', origin);
+  console.log('CORSSSSSSSSSSS APP', origin);
   app.use(cors({ origin, credentials: true }));
 } else {
   app.use(

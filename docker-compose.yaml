@@ -12,9 +12,8 @@ services:
     build:
       context: ./src/client
       args:
-        - VITE_SERVER_IP=aswserver
-        - VITE_SERVER_PORT=3000
-        - VITE_SERVER_PROTOCOL=http
+        - VITE_SERVER_IP=172.0.0.11
+        - VITE_SERVER_PROTOCOL=https
         - VITE_DOCKER=true
     container_name: aswclient
     restart: always
@@ -23,9 +22,8 @@ services:
     depends_on:
       - server
     environment:
-      VITE_SERVER_IP: aswserver
-      VITE_SERVER_PORT: 3000
-      VITE_SERVER_PROTOCOL: http
+      VITE_SERVER_IP: 172.0.0.11
+      VITE_SERVER_PROTOCOL: https
     networks:
       asw_network:
 
@@ -43,7 +41,7 @@ services:
       DB_APP_PASSWORD: ${DB_APP_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_PROTOCOL: mongodb
-      DB_IP: database
+      DB_IP: 172.0.0.12
       DB_PORT: 27017
       CLIENT_PROTOCOL: https
       CLIENT_IP: 172.0.0.11
@@ -72,7 +70,7 @@ services:
 
   database:
     image: mongo
-    container_name: mongodb
+    container_name: database
     command: 'mongod --config /etc/mongod.conf'
     restart: always
     ports:
@@ -89,6 +87,7 @@ services:
       - ./mongod.conf:/etc/mongod.conf
     networks:
       asw_network:
+        ipv4_address: 172.0.0.12
 
 volumes:
   mongo_data:

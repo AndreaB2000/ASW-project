@@ -3,30 +3,33 @@ import { io } from 'socket.io-client';
 
 let protocol = 'http';
 let ip = 'localhost';
-//let port = 3000;
-
-console.log(import.meta.env);
+let port: number | null = 3000;
 
 if (import.meta.env.VITE_DOCKER) {
   console.log('Running in Docker');
-  protocol = 'https'; //import.meta.env.VITE_SERVER_PROTOCOL;
-  ip = 'sandpiles.com'; //import.meta.env.VITE_SERVER_IP;
-  //port = 443;//import.meta.env.VITE_SERVER_PORT;
+  protocol = import.meta.env.VITE_SERVER_PROTOCOL;
+  ip = import.meta.env.VITE_SERVER_IP;
+  port = null;
 }
 
-const url = 'https://sandpiles.com/api'; // `${protocol}://${ip}/api`;
-console.log(`[API URL]: ${url}/`);
+const baseUrl: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
+const serverBasePath: string = ip === 'localhost' ? '' : '/api';
+console.log(`[API URL]: ${baseUrl}/`);
 
 /**
  * Axios instance for making HTTP requests to the server.
  */
-export const server = axios.create({ baseURL: url, timeout: 10000, withCredentials: true });
+export const server = axios.create({
+  baseURL: `${baseUrl}${serverBasePath}`,
+  timeout: 10000,
+  withCredentials: true,
+});
 
 /**
  * Socket connection to the server with authentication
  */
-export let socket = io("https://sandpiles.com/auth", {//`${url}/auth`, {
-  path: '/api/socket.io',
+export let socket = io(`${baseUrl}/auth`, {
+  path: `${serverBasePath}/socket.io`,
   withCredentials: true,
   forceNew: true,
 });
@@ -35,10 +38,11 @@ socket.on('connect_error', error => {
   console.log(error);
   console.warn('Auth connection failed, falling back to unauthenticated namespace');
   // Fallback to unauthenticated root namespace
-  socket = io("https://sandpiles.com", { withCredentials: true,
+  socket = io(baseUrl, {
+    withCredentials: true,
     forceNew: true,
-    path: '/api/socket.io'
-   });
+    path: `${serverBasePath}/socket.io`,
+  });
 });
 
 /**
@@ -46,8 +50,8 @@ socket.on('connect_error', error => {
  */
 export const tryAuth = () => {
   socket.disconnect();
-  socket = io("https://sandpiles.com/auth", {//`${url}/auth`, {
-    path: '/api/socket.io',
+  socket = io(`${baseUrl}/auth`, {
+    path: `${serverBasePath}/socket.io`,
     withCredentials: true,
     forceNew: true,
   });

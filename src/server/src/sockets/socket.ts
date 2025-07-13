@@ -4,22 +4,31 @@ import * as http from 'http';
 let io: Server;
 
 export function initializeIO(server: http.Server) {
-  let protocol = 'http';
-  let ip = 'localhost';
-  let port = '4173';
-  if (process.env.DOCKER) {
-    protocol = process.env.CLIENT_PROTOCOL;
-    ip = process.env.CLIENT_IP;
-    port = null;
+  if (process.env.NODE_ENV === 'production') {
+    let protocol = 'http';
+    let ip = 'localhost';
+    let port = '4173';
+    if (process.env.DOCKER) {
+      protocol = process.env.CLIENT_PROTOCOL;
+      ip = process.env.CLIENT_IP;
+      port = null;
+    }
+    const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
+    console.log('CORSSSSSSSSSSS SOCKET', origin);
+    io = new Server(server, {
+      cors: {
+        origin,
+        credentials: true,
+      },
+    });
+  } else {
+    io = new Server(server, {
+      cors: {
+        origin: 'http://localhost:5173',
+        credentials: true,
+      },
+    });
   }
-  const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
-  console.log('CORSSSSSSSSSSS', origin);
-  io = new Server(server, {
-    cors: {
-      origin: process.env.NODE_ENV === 'production' ? origin : 'http://localhost:5173',
-      credentials: true,
-    },
-  });
 }
 
 export function getIO(): Server {
