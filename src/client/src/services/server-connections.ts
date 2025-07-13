@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 
 let protocol = 'http';
 let ip = 'localhost';
-let port = 3000;
+//let port = 3000;
 
 console.log(import.meta.env);
 
@@ -25,7 +25,8 @@ export const server = axios.create({ baseURL: url, timeout: 10000, withCredentia
 /**
  * Socket connection to the server with authentication
  */
-export let socket = io(`${url}/auth`, {
+export let socket = io("https://sandpiles.com/auth", {//`${url}/auth`, {
+  path: '/api/socket.io',
   withCredentials: true,
   forceNew: true,
 });
@@ -34,7 +35,10 @@ socket.on('connect_error', error => {
   console.log(error);
   console.warn('Auth connection failed, falling back to unauthenticated namespace');
   // Fallback to unauthenticated root namespace
-  socket = io(url, { withCredentials: true });
+  socket = io("https://sandpiles.com", { withCredentials: true,
+    forceNew: true,
+    path: '/api/socket.io'
+   });
 });
 
 /**
@@ -42,7 +46,8 @@ socket.on('connect_error', error => {
  */
 export const tryAuth = () => {
   socket.disconnect();
-  socket = io(`${url}/auth`, {
+  socket = io("https://sandpiles.com/auth", {//`${url}/auth`, {
+    path: '/api/socket.io',
     withCredentials: true,
     forceNew: true,
   });
