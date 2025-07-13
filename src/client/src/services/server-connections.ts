@@ -9,12 +9,12 @@ console.log(import.meta.env);
 
 if (import.meta.env.VITE_DOCKER) {
   console.log('Running in Docker');
-  protocol = "https";//import.meta.env.VITE_SERVER_PROTOCOL;
-  ip = "sandpiles.com";//import.meta.env.VITE_SERVER_IP;
+  protocol = 'https'; //import.meta.env.VITE_SERVER_PROTOCOL;
+  ip = 'sandpiles.com'; //import.meta.env.VITE_SERVER_IP;
   //port = 443;//import.meta.env.VITE_SERVER_PORT;
 }
 
-const url = `${protocol}://${ip}/api`;
+const url = 'https://sandpiles.com/api'; // `${protocol}://${ip}/api`;
 console.log(`[API URL]: ${url}/`);
 
 /**
@@ -30,7 +30,8 @@ export let socket = io(`${url}/auth`, {
   forceNew: true,
 });
 
-socket.on('connect_error', () => {
+socket.on('connect_error', error => {
+  console.log(error);
   console.warn('Auth connection failed, falling back to unauthenticated namespace');
   // Fallback to unauthenticated root namespace
   socket = io(url, { withCredentials: true });

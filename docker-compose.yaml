@@ -28,7 +28,6 @@ services:
       VITE_SERVER_PROTOCOL: ${SERVER_PROTOCOL}
     networks:
       asw_network:
-        ipv4_address: ${CLIENT_IP}
 
   server:
     image: andreabiagini5/aswserver
@@ -55,7 +54,6 @@ services:
       DOCKER: true
     networks:
       asw_network:
-        ipv4_address: ${SERVER_IP}
 
   nginx:
     image: nginx:latest
@@ -71,7 +69,6 @@ services:
       - server
     networks:
       asw_network:
-        ipv4_address: 172.0.0.100
 
   database:
     image: mongo
@@ -92,7 +89,6 @@ services:
       - ./mongod.conf:/etc/mongod.conf
     networks:
       asw_network:
-        ipv4_address: ${DB_IP}
 
 volumes:
   mongo_data:

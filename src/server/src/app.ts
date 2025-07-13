@@ -47,7 +47,7 @@ if (process.env.NODE_ENV === 'production') {
     ip = process.env.CLIENT_IP;
     port = process.env.CLIENT_PORT;
   }
-  const origin: string = `${protocol}://${ip}${!port ? '' : ':' + port}`;
+  const origin: string = 'https://sandpiles.com'; // `${protocol}://${ip}${!port ? '' : ':' + port}`;
   console.log('CORSSSSSSSSSSS', origin);
   app.use(cors({ origin, credentials: true }));
 } else {
