@@ -461,11 +461,12 @@ This system has been used to comply with [semantic release](https://www.npmjs.co
 
 ### Git branches
 
+We decided to adhere to the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model.
 In addition to the "main" and the "dev" branches, possible "feature" and "refactor" branches have been created to implement project requirements.
 
 ### Build automation
 
-Npm features has been used for build automation. In particular, many custom npm scripts has been develop to ease application development. The main 2 are `build` and `serve`.
+Npm features has been used for build automation. In particular, many custom npm scripts has been developed to ease application development. The main 2 are `build` and `serve` that respectively build the application and serve it in development mode.
 
 #### Build
 
@@ -487,11 +488,13 @@ Lastly it has been created the file `asw-project.code-workspace` to exploit spli
 
 ### Containerization
 
-The whole system can be executed in Docker containers using Docker Compose; launching configurations and parameters are stored in the `docker-compose.yaml` file. Three services are instantiated:
+The whole system can be executed in Docker containers using Docker Compose; launching configurations and parameters are stored in the `docker-compose.yaml` file. Three main services are instantiated:
 
 - First of all, a database container, using the "mongo" image, that saves DB data in a volume on the host machine
 - Then, a server container, executing the TypeScript backend via npm
 - Lastly, a client container, exposing the Vue.js frontend
+
+In the end of the startup process a Nginx server is started as a reverse proxy to expose the application on port 443.
 
 Images building are integrated in npm using the "build.docker" task.
 
