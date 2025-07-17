@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/AndreaB2000/ASW-project/compare/1.1.1...1.1.2) (2025-07-17)
+
+### Documentation
+
+* add slides for presentation ([eb7b96a](https://github.com/AndreaB2000/ASW-project/commit/eb7b96a8276c02b71014fc8686fc2751e1e7525c))
+
 ## [1.1.1](https://github.com/AndreaB2000/ASW-project/compare/1.1.0...1.1.1) (2025-07-17)
 
 ### Dependency updates
