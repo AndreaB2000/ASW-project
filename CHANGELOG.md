@@ -1,3 +1,22 @@
+## [1.1.1](https://github.com/AndreaB2000/ASW-project/compare/1.1.0...1.1.1) (2025-07-17)
+
+### Dependency updates
+
+* **deps:** update dependency @types/node to v22.16.3 ([#380](https://github.com/AndreaB2000/ASW-project/issues/380)) ([b0880fc](https://github.com/AndreaB2000/ASW-project/commit/b0880fc22a43148a1d6addbb740b5f072afb270a))
+* **deps:** update dependency @types/node to v22.16.3 ([#381](https://github.com/AndreaB2000/ASW-project/issues/381)) ([144e902](https://github.com/AndreaB2000/ASW-project/commit/144e9021265917f8f832cc5ff84920bd4170f462))
+* **deps:** update dependency eslint to v9.31.0 ([#383](https://github.com/AndreaB2000/ASW-project/issues/383)) ([b45a1a2](https://github.com/AndreaB2000/ASW-project/commit/b45a1a227084847abb0676c027d7f06be1229839))
+* **deps:** update dependency mongoose to v8.16.3 ([#382](https://github.com/AndreaB2000/ASW-project/issues/382)) ([2db0c98](https://github.com/AndreaB2000/ASW-project/commit/2db0c98c7f2324e70f72117fcd6ecdc5f07764c4))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.137 ([#384](https://github.com/AndreaB2000/ASW-project/issues/384)) ([eb01a77](https://github.com/AndreaB2000/ASW-project/commit/eb01a775f20e4d94930123c5a2504b8865ae8bd3))
+
+### Documentation
+
+* add contributing.md ([944b91f](https://github.com/AndreaB2000/ASW-project/commit/944b91fb8c4916624fad133e23a661ce251eb944))
+* add slides ([543093c](https://github.com/AndreaB2000/ASW-project/commit/543093c64dac3c88b9b25bc8c754a315292c4b29))
+* correct deployment section in report ([3057245](https://github.com/AndreaB2000/ASW-project/commit/30572459b17341803e7343410815ca52c3efc0ac))
+* update docker doc with nginx as reverse proxy ([4839c20](https://github.com/AndreaB2000/ASW-project/commit/4839c20cf69a6b794bbe0f1ae7f3edf83e994b31))
+* write docstrings in model interfaces ([aa4359c](https://github.com/AndreaB2000/ASW-project/commit/aa4359c391755e7bed5df12e796ebb16eeefab83))
+* write meaningful README ([bdefb82](https://github.com/AndreaB2000/ASW-project/commit/bdefb82acd637ad6721c27bc942065b1eccb1485))
+
 ## [1.1.0](https://github.com/AndreaB2000/ASW-project/compare/1.0.0...1.1.0) (2025-07-13)
 
 ### Features
