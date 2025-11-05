@@ -1,5 +1,5 @@
 # This is the server dockerfile
-FROM node:22-alpine
+FROM node:24-alpine
 WORKDIR /var/app
 EXPOSE 3000
 RUN apk add --no-cache bash
